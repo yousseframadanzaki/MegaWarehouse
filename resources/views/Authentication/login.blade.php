@@ -25,12 +25,12 @@
                         @csrf
                         <div>
                             <label for="identity" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">الايميل او رقم التليفون</label>
-                            <input name="identity" id="identity" class="bg-gray-50 @error('identity')border-2 border-red-500 @enderror border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <input name="identity" id="identity" class="hover:shadow-md bg-gray-50 @error('identity')border-2 border-red-500 @enderror border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             @error('identity')<p class="text-red-500 text-xs italic">{{__($message)}}</p>@enderror
                         </div>
                         <div>
                             <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">كلمة السر</label>
-                            <input type="password" name="password" id="password" placeholder="" class="bg-gray-50 @error('password') border-2 border-red-500 @enderror border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
+                            <input type="password" name="password" id="password" placeholder="" class="hover:shadow-md bg-gray-50 @error('password') border-2 border-red-500 @enderror border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" >
                             @error('password')<p class="text-red-500 text-xs italic">{{__($message)}}</p>@enderror
                         </div>
                         <div class="flex items-center justify-between">
