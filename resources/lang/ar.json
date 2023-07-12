@@ -3,5 +3,20 @@
     "identity_required":"برجاء ادخال الايميل او رقم التليفون",
     "identity_min":"الايميل او رقم التليفون يجب ان يكون 6 احرف على الاقل",
     "password_required":"برجاء ادخال كلمة السر",
-    "password_min":"كلمة السر يجب ان تكون 6 احرف على الاقل"
+    "password_min":"كلمة السر يجب ان تكون 6 احرف على الاقل",
+    "company_name_required":"برجاء ادخال اسم الشركة",
+    "company_name_min":"اسم الشركة يجب ان تكون 6 احرف على الاقل",
+    "company_type_required":"برجاء ادخال نوع الشركة",
+    "max_users_required":"برجاء ادخال اقصى عدد اعضاء",
+    "max_users_Integer":"برجاء ادخال عدد صحيح",
+    "max_orders_required":"برجاء ادخال اقصى عدد اوردرات",
+    "max_orders_Integer":"برجاء ادخال عدد صحيح",
+    "user_name_required":"برجاء ادخال الاسم",
+    "user_name_min":"الاسم يجب ان تكون 6 احرف على الاقل",
+    "user_phone_1_required":"برجاء ادخال رقم التليفون",
+    "user_phone_1_min":"رقم التليفون يجب ان يكون 11 رقم على الاقل",
+    "user_phone_1_unique":"هذا الرقم مستخدم من قبل",
+    "user_email_required":"برجاء ادخال الايميل",
+    "user_email_email":"يجب ان يكون ايميل صحيح",
+    "user_email_unique":"هذا الايميل مستخدم من قبل"
 }
