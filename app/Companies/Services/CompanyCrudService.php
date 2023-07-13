@@ -24,5 +24,17 @@ class CompanyCrudService implements CompanyCrudServiceInterface{
         $user_id = $this->UserCrudService->CreateOwnerUser($data['user'],$company_id);
         return $company_id;
     }
+    
+    public function GetAllCompanies(){
+        return $this->company_crud_repository->get_all_companies();
+    }
+
+    public function GetCompany($company_id){
+        return $this->company_crud_repository->get_company_by_id($company_id);
+    }
+
+    public function UpdateCompany($company_id,array $comapny_details){
+        return $this->company_crud_repository->update_company_by_id($company_id,$comapny_details);
+    }
 
 }

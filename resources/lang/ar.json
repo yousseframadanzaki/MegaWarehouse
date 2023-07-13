@@ -18,5 +18,18 @@
     "user_phone_1_unique":"هذا الرقم مستخدم من قبل",
     "user_email_required":"برجاء ادخال الايميل",
     "user_email_email":"يجب ان يكون ايميل صحيح",
-    "user_email_unique":"هذا الايميل مستخدم من قبل"
+    "user_email_unique":"هذا الايميل مستخدم من قبل",
+    "company_created_success":"تم أضافة الشركة بنجاح",
+    "company_created_error":"حدث خطاء أثناء أضافة الشركة",
+    "company_activated_success":"تم تفعيل الشركة بنجاح",
+    "company_activated_error":"حدث خطاء اثناء تفعيل الشركة",
+    "company_deactivated_success":"تم الغاء تفعيل الشركة بنجاح",
+    "company_deactivated_error":"حدث خطاء اثناء الغاء تفعيل الشركة",
+    "company_updated_error":"حدث خطاء اثناء تعديل بيانات الشركة",
+    "user_created_success":"تم اضافة العضو بنجاح",
+    "user_created_error":"حدث خطاء أثناء أضافة العضو",
+    "user_activated_success":"تم تفعيل العضو بنجاح",
+    "user_activated_error":"حدث خطاء أثناء تفعيل العضو",
+    "user_deactivated_success":"تم الغاء تفعيل العضو بنجاح",
+    "user_deactivated_error":"حدث خطاء أثناء الغاء تفعيل العضو"
 }

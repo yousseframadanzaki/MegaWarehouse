@@ -5,6 +5,13 @@
 
 
 <div class="p-3">
+   <div class="row">
+   <ul class="breadcrumb">
+      <li><a href="{{route('dashboard')}}">الرئيسية</a></li>
+      <li><a href="{{route('all_companies')}}">الشركات</a></li>
+      <li>اضافة شركة جديدة</li>
+  </ul>
+</div>
    <form class="row  needs-validation" novalidate action="{{route("store_company")}}" method="POST">
       @csrf
       <div class="card p-5 shadow-sm">
@@ -74,7 +81,7 @@
          <div class="row">
             <div class="col-md-6">
                <label  class="form-label">رقم التليفون</label>
-               <input type="text" class="form-control @error('user.email') is-invalid @enderror" name="user[phone_1]" value="{{old('user.phone_1')}}">
+               <input type="text" class="form-control @error('user.phone_1') is-invalid @enderror" name="user[phone_1]" value="{{old('user.phone_1')}}">
                @error('user.phone_1')
                   <div class="invalid-feedback">
                         {{__($message)}}
