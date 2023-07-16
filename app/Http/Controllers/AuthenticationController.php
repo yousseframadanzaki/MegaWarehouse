@@ -19,14 +19,22 @@ class AuthenticationController extends Controller
 
     public function login(LoginRequest $request) {
         $credentials = $request->validated();
-        if($this->LoginService->AttemptUserLogin($credentials)){
+        if(!$this->LoginService->AttemptUserLogin($credentials)){
+            return redirect()->back()->withErrors(['error' => 'login_error']);
+        }
+        if(!auth()->user()->is_admin){
             return redirect()->intended('dashboard');
         }
-        return redirect()->back()->withErrors(['error' => 'login_error']);
+        return redirect()->intended('admin_dashboard');
     }
 
     public function login_form() {
         return view('Authentication.login');
     }
 
+    public function logout(Request $request)
+    {
+        $this->LoginService->Logout($request);
+        return redirect('/');
+    }
 }

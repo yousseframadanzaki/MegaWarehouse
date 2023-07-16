@@ -3,40 +3,58 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\Authenticate;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\CompnayController;
+use App\Http\Controllers\admin\CompnayController;
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\UsersController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-Route::get('/', function () {
-    return redirect('/dashboard');
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RolesController;
+
+
+Route::get('/',function (){
+    if(auth()->user()->is_admin){
+        return redirect()->route('admin_dashboard');
+    }
+    return redirect()->route('dashboard');
+})->middleware('auth');
+
+
+Route::group(['prefix' => 'auth', 'middleware' => ['guest']],function () {
+    Route::get('/login', [AuthenticationController::class,'login_form'])->name('login');
+    Route::post('/login', [AuthenticationController::class,'login']);
 });
-Route::get('/dashboard', function () {
-    return view('welcome');
-})->name('dashboard')->middleware(Authenticate::class);
 
-Route::get('/login', [AuthenticationController::class,'login_form'])->name('login');
-Route::post('/login', [AuthenticationController::class,'login']);
+Route::post('/logout', [AuthenticationController::class,'logout'])->name('logout');
 
-Route::get('/companies', [CompnayController::class,'all'])->name('all_companies');
-Route::get('/companies/add', [CompnayController::class,'create'])->name('add_company');
-Route::post('/companies/add', [CompnayController::class,'store'])->name('store_company');
-Route::get('/companies/{company_id}/activate', [CompnayController::class,'activate'])->name('company_activate');
-Route::get('/companies/{company_id}/deactivate', [CompnayController::class,'deactivate'])->name('company_deactivate');
-Route::get('/companies/{company_id}/edit', [CompnayController::class,'edit'])->name('company_edit');
-Route::post('/companies/{company_id}/edit', [CompnayController::class,'update'])->name('company_update');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function () {
 
-Route::get('/users', [UsersController::class,'all'])->name('all_users')->middleware(Authenticate::class);
-Route::get('/users/add', [UsersController::class,'create'])->name('add_user')->middleware(Authenticate::class);
-Route::post('/users/add', [UsersController::class,'store'])->name('store_user')->middleware(Authenticate::class);
-Route::get('/users/{user_id}/activate', [UsersController::class,'activate'])->name('user_activate')->middleware(Authenticate::class);
-Route::get('/users/{user_id}/deactivate', [UsersController::class,'deactivate'])->name('user_deactivate')->middleware(Authenticate::class);
-Route::get('/users/{user_id}/edit', [UsersController::class,'edit'])->name('user_edit')->middleware(Authenticate::class);
-Route::post('/users/{user_id}/edit', [UsersController::class,'update'])->name('user_update')->middleware(Authenticate::class);
+    Route::get('/',[AdminController::class,'index'])->name('admin_dashboard');
+
+    Route::get('/companies', [CompnayController::class,'all'])->name('all_companies');
+    Route::get('/companies/add', [CompnayController::class,'create'])->name('add_company');
+    Route::post('/companies/add', [CompnayController::class,'store'])->name('store_company');
+    Route::get('/companies/{company_id}/activate', [CompnayController::class,'activate'])->name('company_activate');
+    Route::get('/companies/{company_id}/deactivate', [CompnayController::class,'deactivate'])->name('company_deactivate');
+    Route::get('/companies/{company_id}/edit', [CompnayController::class,'edit'])->name('company_edit');
+    Route::post('/companies/{company_id}/edit', [CompnayController::class,'update'])->name('company_update');
+    
+});
+
+Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {
+
+    Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
+    Route::get('/roles', [RolesController::class,'all'])->name('all_roles');
+    Route::get('/roles/add', [RolesController::class,'create'])->name('add_role');
+    Route::post('/roles/add', [RolesController::class,'store'])->name('store_role');
+    Route::get('/roles/{role_id}/edit', [RolesController::class,'edit'])->name('role_edit');
+    Route::post('/roles/{role_id}/edit', [RolesController::class,'update'])->name('role_update');
+
+    Route::get('/users', [UsersController::class,'all'])->name('all_users');
+    Route::get('/users/add', [UsersController::class,'create'])->name('add_user');
+    Route::post('/users/add', [UsersController::class,'store'])->name('store_user');
+    Route::get('/users/{user_id}/activate', [UsersController::class,'activate'])->name('user_activate');
+    Route::get('/users/{user_id}/deactivate', [UsersController::class,'deactivate'])->name('user_deactivate');
+    Route::get('/users/{user_id}/edit', [UsersController::class,'edit'])->name('user_edit');
+    Route::post('/users/{user_id}/edit', [UsersController::class,'update'])->name('user_update');
+
+});

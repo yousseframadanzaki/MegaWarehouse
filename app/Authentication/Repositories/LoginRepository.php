@@ -3,6 +3,7 @@
 namespace App\Authentication\Repositories;
 
 use Auth;
+use Illuminate\Http\Request;
 use App\Authentication\Interfaces\LoginRepositoryInterface;
 
 
@@ -23,5 +24,13 @@ class LoginRepository implements LoginRepositoryInterface{
             return true;
         }
         return false;
+    }
+
+    public function Logout($request){
+        Auth::logout();
+    
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
     }
 }

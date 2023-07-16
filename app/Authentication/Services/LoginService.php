@@ -22,5 +22,8 @@ class LoginService implements LoginServiceInterface{
         }
         return false;
     }
+    public function Logout($request){
+        $this->repository->Logout($request);
+    }
 
 }

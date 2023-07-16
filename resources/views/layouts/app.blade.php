@@ -19,27 +19,60 @@
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto px-0">
                         <li class="nav-item mb-2">
-                            <a href="#" class="nav-link text-white @if( request()->route()->getName() == "dashboard" ) active @endif" aria-current="page">
+                            <a href="#" class="nav-link text-white" aria-current="page">
                                 <i class="bi bi-house"></i>
                                 الرئيسية
                             </a>
                         </li>
-        
+                        @if (auth()->user()->is_admin)
                         <li>
-                            <a href="#" class="nav-link text-white @if( request()->route()->getName() === "add_company" ) active @endif" data-bs-toggle="collapse"
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
                                 data-bs-target="#company-collapse" >
                                 <i class="bi bi-building"></i>
                                 الشركات
                             </a>
                             <div class="collapse" id="company-collapse" style="">
                                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
-                                    <li class="rounded"><a href="#" class="text-white"> <i class="bi bi-buildings"></i> كل
+                                    <li class="rounded"><a href="{{ route('all_companies') }}" class="text-white"> <i class="bi bi-buildings"></i> كل
                                             الشركات </a></li>
                                     <li class="rounded "><a href="{{ route('add_company') }}" class="text-white"><i
                                                 class="bi bi-building-add "></i> أضافة شركة</a></li>
                                 </ul>
                             </div>
                         </li>
+                        @else
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#users-collapse" >
+                                <i class="bi bi-building"></i>
+                                الاعضاء
+                            </a>
+                            <div class="collapse" id="users-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    <li class="rounded"><a href="{{ route('all_users') }}" class="text-white"> <i class="bi bi-buildings"></i> كل
+                                            الاعضاء </a></li>
+                                    <li class="rounded "><a href="{{ route('add_user') }}" class="text-white"><i
+                                                class="bi bi-building-add "></i> أضافة عضو جديد</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#roles-collapse" >
+                                <i class="bi bi-ui-checks"></i>
+                                الادارات
+                            </a>
+                            <div class="collapse" id="roles-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    <li class="rounded"><a href="{{ route('all_roles') }}" class="text-white"> <i class="bi bi-ui-checks"></i> كل
+                                        الادارات </a></li>
+                                    <li class="rounded "><a href="{{ route('add_role') }}" class="text-white"><i
+                                                class="bi bi-clipboard2-plus"></i> أضافة ادارة جديدة</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        @endif
+                        
         
                     </ul>
                     <hr>
@@ -51,13 +84,13 @@
                             <strong>mdo</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                            <li><a class="dropdown-item" href="#">New project...</a></li>
-                            <li><a class="dropdown-item" href="#">Settings</a></li>
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Sign out</a></li>
+                            
+                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Logout
+                            </a></li>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </ul>
                     </div>
             </div>

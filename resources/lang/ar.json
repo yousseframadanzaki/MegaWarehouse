@@ -26,10 +26,17 @@
     "company_deactivated_success":"تم الغاء تفعيل الشركة بنجاح",
     "company_deactivated_error":"حدث خطاء اثناء الغاء تفعيل الشركة",
     "company_updated_error":"حدث خطاء اثناء تعديل بيانات الشركة",
+    "company_updated_success":"تم تعديل بيانات الشركة بنجاح",
     "user_created_success":"تم اضافة العضو بنجاح",
     "user_created_error":"حدث خطاء أثناء أضافة العضو",
     "user_activated_success":"تم تفعيل العضو بنجاح",
     "user_activated_error":"حدث خطاء أثناء تفعيل العضو",
     "user_deactivated_success":"تم الغاء تفعيل العضو بنجاح",
-    "user_deactivated_error":"حدث خطاء أثناء الغاء تفعيل العضو"
+    "user_deactivated_error":"حدث خطاء أثناء الغاء تفعيل العضو",
+    "Users":"الاعضاء",
+    "Roles":"الادارات",
+    "role_name_required":"برجاء ادخال اسم ادارة",
+    "role_permissions_required":"برجاء اختيار الصلاحيات",
+    "role_created_error":"حدث خطاء أثناء أضافة الادارة",
+    "role_created_success":" تم أضافة الادارة بنجاح"
 }

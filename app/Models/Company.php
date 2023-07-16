@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\User;
 
 class Company extends Model
 {
@@ -12,6 +14,22 @@ class Company extends Model
         'company_type',
         'max_users',
         'max_orders',
+        'owner_id',
     ];
     use HasFactory;
+
+    public function users():HasMany {
+        return $this->hasMany(User::class);
+    }
+
+    /**
+     * Get all of the roles for the Company
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roles(): HasMany
+    {
+        return $this->hasMany(Role::class, 'company_id');
+    }
+
 }

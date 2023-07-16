@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -25,11 +25,11 @@ class CompnayController extends Controller
 
     function all() {
         $companies = $this->CompanyCrudService->GetAllCompanies();
-        return view('Companies.show_all')->with('companies',$companies);
+        return view('Admin.Companies.show_all')->with('companies',$companies);
     }
 
     function create() {
-        return view('Companies.add');
+        return view('Admin.Companies.add');
     }
 
     function store(CreateCompanyRequest $request) {
@@ -45,7 +45,7 @@ class CompnayController extends Controller
         if(!$company){
             return view('404');
         }
-        return view('Companies.edit')->with('company',$company);
+        return view('Admin.Companies.edit')->with('company',$company);
     }
 
     function update(UpdateCompanyRequest $request,$company_id) {

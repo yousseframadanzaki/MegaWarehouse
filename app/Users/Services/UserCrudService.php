@@ -13,12 +13,6 @@ class UserCrudService implements UserCrudServiceInterface{
         $this->user_crud_repository = $user_crud_repository;
     }
 
-    public function CreateOwnerUser(array $user_details,$company_id) {
-        $user_details['is_owner'] = true;
-        $user_details['company_id'] = $company_id;
-        return $this->user_crud_repository->add_user($user_details)->id;
-    }
-
     public function CreateUser(array $user_details,$company_id){
         $user_details['company_id'] = $company_id;
         return $this->user_crud_repository->add_user($user_details);
@@ -30,6 +24,13 @@ class UserCrudService implements UserCrudServiceInterface{
 
     public function GetUser($company_id,$user_id) {
         return $this->user_crud_repository->get_user_by_id($company_id,$user_id);
+    }
+    
+    public function UpdateUserCompanyId($company_id,$user_id){
+        return $this->user_crud_repository->update_where(
+            ['id'=> $user_id ],
+            ['company_id'=> $company_id]
+        );
     }
 
 }

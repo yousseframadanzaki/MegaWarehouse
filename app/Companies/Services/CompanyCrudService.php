@@ -5,24 +5,30 @@ namespace App\Companies\Services;
 use App\Companies\Interfaces\CompanyCrudRepositoryInterface;
 use App\Companies\Interfaces\CompanyCrudServiceInterface;
 use App\Users\Interfaces\UserCrudServiceInterface;
+use App\Roles\Interfaces\RoleCrudServiceInterface;
 
 class CompanyCrudService implements CompanyCrudServiceInterface{
 
     protected CompanyCrudRepositoryInterface $company_crud_repository;
     protected UserCrudServiceInterface $UserCrudService;
+    protected RoleCrudServiceInterface $RoleCrudService;
 
     public function __construct(
         CompanyCrudRepositoryInterface $company_crud_repository,
-        UserCrudServiceInterface $UserCrudService
+        UserCrudServiceInterface $UserCrudService,
+        RoleCrudServiceInterface $RoleCrudService
     ) {
         $this->company_crud_repository = $company_crud_repository;
         $this->UserCrudService = $UserCrudService;
+        $this->RoleCrudService = $RoleCrudService;
     }
 
     public function CreateCompany(array $data){
-        $company_id = $this->company_crud_repository->add_company($data['company']);
-        $user_id = $this->UserCrudService->CreateOwnerUser($data['user'],$company_id);
-        return $company_id;
+        $company = $this->company_crud_repository->add_company($data['company']);
+        $role = $this->RoleCrudService->CreateOwnerRole($company->id);
+        $data['user']['role_id'] = $role->id;
+        $user = $this->UserCrudService->CreateUser($data['user'],$company->id);
+        return $company;
     }
     
     public function GetAllCompanies(){

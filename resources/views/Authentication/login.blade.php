@@ -21,7 +21,7 @@
 						<div class="card shadow">
 							<div class="card-body">
 								<div class="m-sm-3">
-									<form action="{{url('/login')}}" method="POST">
+									<form action="{{route('login')}}" method="POST">
                                         @csrf
                                         @error('error')
                                         <div class="alert alert-danger" role="alert">

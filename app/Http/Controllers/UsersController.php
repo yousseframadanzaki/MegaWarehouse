@@ -11,21 +11,29 @@ use App\Users\Interfaces\UserActionsServiceInterface;
 use App\Users\Requests\CreateUserRequest;
 // use App\Users\Requests\UpdateUserRequest;
 
+use App\CommonData\Interfaces\CommonDataServiceInterface;
+
 class UsersController extends Controller
 {
     private UserCrudServiceInterface $UserCrudService;
     private UserActionsServiceInterface $UserActionsService;
+    private CommonDataServiceInterface $CommonDataService;
 
     public function __construct(
         UserCrudServiceInterface $UserCrudService,
-        UserActionsServiceInterface $UserActionsService
+        UserActionsServiceInterface $UserActionsService,
+        CommonDataServiceInterface $CommonDataService
     ){
         $this->UserCrudService = $UserCrudService;
         $this->UserActionsService = $UserActionsService;
+        $this->CommonDataService = $CommonDataService;
     }
 
     public function create() {
-        return view('Users.add');
+        $company_id = auth()->user()->company_id;
+        $roles = $this->CommonDataService->GetCompanyRoles($company_id);
+        // dd($roles);
+        return view('Dashboard.Users.add')->with('roles',$roles);
     }
     
     public function store(CreateUserRequest $request) {
@@ -40,7 +48,7 @@ class UsersController extends Controller
     public function all() {
         $company_id = auth()->user()->company_id;
         $users = $this->UserCrudService->GetAllUsers($company_id);
-        return view('Users.show_all')->with('users',$users);
+        return view('Dashboard.Users.show_all')->with('users',$users);
     }
 
     public function activate($user_id) {
@@ -65,7 +73,7 @@ class UsersController extends Controller
         if(!$user){
             return view('404');
         }
-        return view('Users.edit')->with('user',$user);
+        return view('Dashboard.Users.edit')->with('user',$user);
     }
 
 }

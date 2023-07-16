@@ -36,7 +36,7 @@
                @enderror
             </div>
          </div>
-         <div class="row">
+         <div class="row mb-3">
             <div class="col-md-6">
                <label  class="form-label">رقم التليفون</label>
                <input type="text" class="form-control @error('phone_1') is-invalid @enderror" name="phone_1" value="{{old('phone_1')}}">
@@ -50,6 +50,21 @@
                <label  class="form-label">كلمة السر</label>
                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{old('password')}}">
                @error('password')
+                  <div class="invalid-feedback">
+                        {{__($message)}}
+                  </div>
+               @enderror
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-6">
+               <label  class="form-label">الادارة</label>
+               <select class="form-select" aria-label="Default select example" name="role_id">
+                  @foreach ($roles as $id => $name)
+                     <option value="{{$id}}">{{$name}}</option>
+                  @endforeach
+               </select>
+               @error('role')
                   <div class="invalid-feedback">
                         {{__($message)}}
                   </div>

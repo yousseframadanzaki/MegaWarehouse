@@ -4,7 +4,7 @@
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
-                <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
+               <li><a href="{{ route('admin_dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_companies') }}">الشركات</a></li>
                 <li><a class="link-dark" href="{{ route('company_edit',$company->id) }}"> تعديل {{$company->name}}</a></li>
             </ul>

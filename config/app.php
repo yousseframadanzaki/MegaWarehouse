@@ -166,6 +166,8 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthenticationProvider::class,
         App\Providers\CompanyServiceProvider::class,
+        App\Providers\RoleServiceProvider::class,
+        App\Providers\CommonDataServiceProvider::class,
         App\Providers\UserServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,

@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_1')->unique();
-            $table->string('phone_2')->nullable();
             $table->string('password');
             $table->boolean('active')->default(1);
-            $table->boolean('company_id');
-            $table->boolean('is_owner')->default(0);
+            $table->boolean('company_id')->nullable();
+            $table->boolean('is_admin')->default(0);
+            $table->unsignedBiginteger('role_id');
+            $table->foreign('role_id')->references('id')
+                 ->on('roles')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });
