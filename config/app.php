@@ -169,6 +169,8 @@ return [
         App\Providers\RoleServiceProvider::class,
         App\Providers\CommonDataServiceProvider::class,
         App\Providers\UserServiceProvider::class,
+        App\Providers\FileUploadServiceProvider::class,
+        App\Providers\MediaServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

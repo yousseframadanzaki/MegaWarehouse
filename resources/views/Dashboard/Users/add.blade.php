@@ -12,7 +12,7 @@
       <li>اضافة عضو جديد</li>
    </ul>
 </div>
-   <form class="row  needs-validation" novalidate action="{{route("store_user")}}" method="POST">
+   <form class="row  needs-validation" novalidate action="{{route("store_user")}}" method="POST" enctype="multipart/form-data">
       @csrf
       <div class="card p-5 shadow-sm">
          <h1 class="text-center">أضافة عضو جديد</h1>
@@ -69,6 +69,17 @@
                         {{__($message)}}
                   </div>
                @enderror
+            </div>
+            <div class="col-md-6">
+               <div class="mb-3">
+                  <label for="formFile" class="form-label">صورة العضو</label>
+                  <input class="form-control @error('image') is-invalid @enderror" type="file" id="formFile" name="image">
+                  @error('image')
+                     <div class="invalid-feedback">
+                           {{__($message)}}
+                     </div>
+                  @enderror
+                </div>
             </div>
          </div>
       <button class="btn btn-lg btn-primary mt-3 shadow-sm">أضافة عضو <i class="bi bi-person-fill-add"></i></button>

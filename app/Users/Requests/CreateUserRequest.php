@@ -3,6 +3,7 @@
 namespace App\Users\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class CreateUserRequest extends FormRequest
 {
@@ -27,6 +28,7 @@ class CreateUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'role_id' => 'required|integer|exists:roles,id',
+            'image'=>'file|max:10240|mimes:jpg,bmp,png'
         ];
     }
 
@@ -43,6 +45,8 @@ class CreateUserRequest extends FormRequest
             'email.unique' => 'user_email_unique',
             'password.required' => 'password_required',
             'password.min' => 'password_min',
+            'image.mimes'=>'image_type_error',
+            'image.max' => 'image_size_error'
         ];
     }
 

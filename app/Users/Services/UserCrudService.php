@@ -4,18 +4,34 @@ namespace App\Users\Services;
 
 use App\Users\Interfaces\UserCrudServiceInterface;
 use App\Users\Interfaces\UserCrudRepositoryInterface;
+use App\FileUpload\Interfaces\UploadServiceInterface;
+use App\Media\Interfaces\MediaCrudServiceInterface;
+
 
 class UserCrudService implements UserCrudServiceInterface{
     
-    protected $user_crud_repository;
+    protected UserCrudRepositoryInterface $user_crud_repository;
+    protected UploadServiceInterface $FileUploadService;
+    protected MediaCrudServiceInterface $MediaCrudService;
 
-    public function __construct(UserCrudRepositoryInterface $user_crud_repository) {
+    public function __construct(
+        UserCrudRepositoryInterface $user_crud_repository,
+        UploadServiceInterface $FileUploadService,
+        MediaCrudServiceInterface $MediaCrudService
+        ) {
         $this->user_crud_repository = $user_crud_repository;
+        $this->FileUploadService = $FileUploadService;
+        $this->MediaCrudService = $MediaCrudService;
     }
 
     public function CreateUser(array $user_details,$company_id){
         $user_details['company_id'] = $company_id;
-        return $this->user_crud_repository->add_user($user_details);
+        $image_file = $user_details['image'];
+        unset($user_details['image']);
+        $user = $this->user_crud_repository->add_user($user_details);
+        $image = $this->FileUploadService->avatar($image_file,$user->id);
+        $this->MediaCrudService->save($image);
+        return $user;
     }
 
     public function GetAllUsers($company_id){
