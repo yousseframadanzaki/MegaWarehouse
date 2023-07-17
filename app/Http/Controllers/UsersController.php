@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Users\Interfaces\UserCrudServiceInterface;
 use App\Users\Interfaces\UserActionsServiceInterface;
 use App\Users\Requests\CreateUserRequest;
-// use App\Users\Requests\UpdateUserRequest;
+use App\Users\Requests\UpdateUserRequest;
 
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 
@@ -73,7 +73,13 @@ class UsersController extends Controller
         if(!$user){
             return view('404');
         }
-        return view('Dashboard.Users.edit')->with('user',$user);
+        $roles = $this->CommonDataService->GetCompanyRoles($company_id);
+        return view('Dashboard.Users.edit')->with(['user'=>$user,'roles'=>$roles]);
     }
-
+    public function update(UpdateUserRequest $request,$user_id) {
+        if(!$this->UserCrudService->UpdateUser($user_id,$request->validated())){
+            return back()->with('error','user_updated_error');
+        }
+        return back()->with('success','user_updated_success');
+    }
 }

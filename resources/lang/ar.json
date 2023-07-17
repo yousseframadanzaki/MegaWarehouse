@@ -33,6 +33,10 @@
     "user_activated_error":"حدث خطاء أثناء تفعيل العضو",
     "user_deactivated_success":"تم الغاء تفعيل العضو بنجاح",
     "user_deactivated_error":"حدث خطاء أثناء الغاء تفعيل العضو",
+
+    "user_updated_error":"حدث خطاء اثناء تعديل بيانات العضو",
+    "user_updated_success":"تم تعديل بيانات العضو بنجاح",
+
     "Users":"الاعضاء",
     "Roles":"الادارات",
     "role_name_required":"برجاء ادخال اسم ادارة",

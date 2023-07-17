@@ -11,7 +11,7 @@
       <li><a class="link-dark" href="{{route('user_edit',$user->id)}}">تعديل عضو {{$user->name}}</a></li>
    </ul>
 </div>
-   <form class="row  needs-validation" novalidate action="{{route("store_user")}}" method="POST">
+   <form class="row  needs-validation" novalidate action="{{route("user_update",$user->id)}}" method="POST">
       @csrf
       <div class="card p-5 shadow-sm">
          <h1 class="text-center">تعديل عضو </h1>
@@ -49,6 +49,21 @@
                <label  class="form-label">كلمة السر</label>
                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
                @error('password')
+                  <div class="invalid-feedback">
+                        {{__($message)}}
+                  </div>
+               @enderror
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-md-6">
+               <label  class="form-label">الادارة</label>
+               <select class="form-select" aria-label="Default select example" name="role_id">
+                  @foreach ($roles as $id => $name)
+                     <option @if($user->role->id === $id) selected @endif value="{{$id}}">{{$name}}</option>
+                  @endforeach
+               </select>
+               @error('role')
                   <div class="invalid-feedback">
                         {{__($message)}}
                   </div>

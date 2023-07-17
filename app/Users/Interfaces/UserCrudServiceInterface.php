@@ -7,4 +7,5 @@ interface UserCrudServiceInterface{
     public function GetAllUsers($company_id);
     public function GetUser($company_id,$user_id);
     public function UpdateUserCompanyId($company_id,$user_id);
+    public function UpdateUser($user_id,array $user_details);
 }

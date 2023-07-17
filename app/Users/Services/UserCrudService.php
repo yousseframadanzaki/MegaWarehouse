@@ -32,5 +32,14 @@ class UserCrudService implements UserCrudServiceInterface{
             ['company_id'=> $company_id]
         );
     }
+    public function UpdateUser($user_id,array $user_details) {
+        if(!$user_details['password']){
+            unset($user_details['password']);
+        }
+        return $this->user_crud_repository->update_where(
+            ['id'=> $user_id ],
+            $user_details
+        );
+    }
 
 }
