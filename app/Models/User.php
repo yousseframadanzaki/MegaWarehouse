@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\Company;
+use App\Models\Media;
 
 class User extends Authenticatable
 {
@@ -60,6 +61,10 @@ class User extends Authenticatable
 
     public function permissions() {
         return $this->hasManyThrough(Permission::class,Role::class);
+    }
+
+    public function avatar() {
+        return $this->hasOne(Media::class,'collection_id')->where('collection','avatars')->latestOfMany();
     }
 
 }

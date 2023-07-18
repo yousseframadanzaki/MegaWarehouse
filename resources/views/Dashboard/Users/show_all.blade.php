@@ -1,5 +1,20 @@
 @extends('layouts.app')
-
+<style>
+    .user-header-avatar{
+        width: 60px;
+        height: 60px;
+        -webkit-border-radius: 60px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 50px;
+        -moz-background-clip: padding;
+        border-radius: 50px;
+        background-clip: padding-box;
+        margin: 7px 0 0 5px;
+        float: left;
+        background-size: cover;
+        background-position: center center;
+    }
+</style>
 @section('content')
     <div class="p-3">
         <div class="row">
@@ -12,6 +27,7 @@
             <table class="table table-hover fs-5">
                 <thead>
                     <tr>
+                        <th scope="col">صورة</th>
                         <th scope="col">اسم العضو</th>
                         <th scope="col">الايميل</th>
                         <th scope="col">رقم تليفون</th>
@@ -23,6 +39,7 @@
                 <tbody>
                     @forelse ($users as $user)
                         <tr class="@if (!$user->active) table-danger @endif">
+                            <td><div class="user-header-avatar" style="background-image: url('{{asset($user->avatar->path ?? '')}}')"></div></td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone_1 }}</td>
@@ -56,6 +73,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div dir="ltr" class="d-flex justify-content-center">
+                {!! $users->links() !!}
+            </div>
         </div>
     </div>
 @endsection
