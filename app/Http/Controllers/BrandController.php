@@ -24,7 +24,7 @@ class BrandController extends Controller
     }
 
     public function create() {
-        return view('Dashboard.Brands.create');
+        return view('Dashboard.Brands.add');
     }
 
     public function store(CreateBrandRequest $request) {

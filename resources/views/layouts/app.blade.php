@@ -82,6 +82,9 @@
                                     <li class="rounded"><a href="{{ route('all_brands') }}" class="text-white"> <i class="bi bi-grid"></i> الماركات </a></li>
                                     <li class="rounded "><a href="{{ route('add_brand') }}" class="text-white"><i
                                                 class="bi bi-clipboard2-plus"></i> أضافة ماركة جديدة</a></li>
+                                    <li class="rounded"><a href="{{ route('all_categories') }}" class="text-white"> <i class="bi bi-bookmarks"></i> التصنيفات </a></li>
+                                    <li class="rounded "><a href="{{ route('add_category') }}" class="text-white"><i
+                                                class="bi bi-bookmark-plus"></i> أضافة تصنيف جديد</a></li>
                                 </ul>
                             </div>
                         </li>

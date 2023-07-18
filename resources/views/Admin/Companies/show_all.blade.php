@@ -40,17 +40,17 @@
                             </td>
                             <td>
                                 @if ($company->active)
-                                    <a href="{{ route('company_deactivate', $company->id) }}" class="link-danger"
+                                    <a href="{{ route('deactivate_company', $company->id) }}" class="link-danger"
                                         title="الغاء تفعيل الشركة">
                                         <i class="bi bi-building-fill-lock"></i>
                                     </a>
                                 @else
-                                    <a href="{{ route('company_activate', $company->id) }}" class="link-success"
+                                    <a href="{{ route('activate_company', $company->id) }}" class="link-success"
                                         title="تفعيل الشركة">
                                         <i class="bi bi-building-fill-check"></i>
                                     </a>
                                 @endif
-                                <a href="{{ route('company_edit', $company->id) }}"" class="link-primary "
+                                <a href="{{ route('edit_company', $company->id) }}"" class="link-primary "
                                     title="تعديل بيانات الشركة">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>

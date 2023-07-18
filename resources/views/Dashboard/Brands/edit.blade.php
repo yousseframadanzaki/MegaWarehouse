@@ -6,10 +6,10 @@
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a  href="{{ route('all_brands') }}">الماركات</a></li>
-                <li ><a class="link-dark"  href="{{ route('brand_edit',$brand->id) }}">تعديل ماركة </a></li>
+                <li ><a class="link-dark"  href="{{ route('edit_brand',$brand->id) }}">تعديل ماركة </a></li>
             </ul>
         </div>
-        <form class="row  needs-validation" novalidate action="{{ route('brand_update',$brand->id) }}" method="POST"
+        <form class="row  needs-validation" novalidate action="{{ route('edit_brand',$brand->id) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
             <div class="card p-5 shadow-sm">

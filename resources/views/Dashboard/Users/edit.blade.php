@@ -8,10 +8,10 @@
    <ul class="breadcrumb">
       <li><a href="{{route('dashboard')}}">الرئيسية</a></li>
       <li><a href="{{route('all_users')}}">الاعضاء</a></li>
-      <li><a class="link-dark" href="{{route('user_edit',$user->id)}}">تعديل عضو {{$user->name}}</a></li>
+      <li><a class="link-dark" href="{{route('edit_user',$user->id)}}">تعديل عضو {{$user->name}}</a></li>
    </ul>
 </div>
-   <form class="row  needs-validation" novalidate action="{{route("user_update",$user->id)}}" method="POST">
+   <form class="row  needs-validation" novalidate action="{{route("update_user",$user->id)}}" method="POST">
       @csrf
       <div class="card p-5 shadow-sm">
          <h1 class="text-center">تعديل عضو </h1>

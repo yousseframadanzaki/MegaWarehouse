@@ -53,17 +53,17 @@
                             </td>
                             <td>
                                 @if ($user->active)
-                                    <a href="{{ route('user_deactivate', $user->id) }}" class="link-danger"
+                                    <a href="{{ route('deactivate_user', $user->id) }}" class="link-danger"
                                         title="الغاء تفعيل العضو">
                                         <i class="bi bi-person-fill-lock"></i>
                                     </a>
                                 @else
-                                    <a href="{{ route('user_activate', $user->id) }}" class="link-success"
+                                    <a href="{{ route('activate_user', $user->id) }}" class="link-success"
                                         title="تفعيل العضو">
                                         <i class="bi bi-person-fill-check"></i>
                                     </a>
                                 @endif
-                                <a href="{{ route('user_edit', $user->id) }}" class="link-primary "
+                                <a href="{{ route('edit_user', $user->id) }}" class="link-primary "
                                     title="تعديل بيانات العضو">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>

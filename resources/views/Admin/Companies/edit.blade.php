@@ -6,10 +6,10 @@
             <ul class="breadcrumb">
                <li><a href="{{ route('admin_dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_companies') }}">الشركات</a></li>
-                <li><a class="link-dark" href="{{ route('company_edit',$company->id) }}"> تعديل {{$company->name}}</a></li>
+                <li><a class="link-dark" href="{{ route('edit_company',$company->id) }}"> تعديل {{$company->name}}</a></li>
             </ul>
         </div>
-            <form class="row  needs-validation" novalidate action="{{route("company_update",$company->id)}}" method="POST">
+            <form class="row  needs-validation" novalidate action="{{route("update_company",$company->id)}}" method="POST">
                 @csrf
                 <div class="card p-5 shadow-sm">
                    <h1 class="text-center"></h1>

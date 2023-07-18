@@ -33,7 +33,7 @@
                             <td><div class="brand-logo" style="background-image: url('{{asset($brand->logo->path ?? '')}}')"></div></td>
                             <td>{{ $brand->name }}</td>
                             <td>
-                                <a  href="{{route('brand_edit',$brand->id)}}" class="link-primary"
+                                <a  href="{{route('edit_brand',$brand->id)}}" class="link-primary"
                                     title="تعديل بيانات الماركة">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>

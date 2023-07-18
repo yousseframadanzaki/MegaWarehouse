@@ -9,7 +9,7 @@
                 <li>تعديل ادارة </li>
             </ul>
         </div>
-        <form class="row  needs-validation" novalidate action="{{ route('role_update',$data['role']->id) }}" method="POST">
+        <form class="row  needs-validation" novalidate action="{{ route('update_role',$data['role']->id) }}" method="POST">
             @csrf
             <div class="card p-5 shadow-sm">
                 <h1 class="text-center">تعديل ادارة</h1>
