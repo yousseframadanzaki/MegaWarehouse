@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\BrandController;
 
 
 Route::get('/',function (){
@@ -42,6 +43,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
+    Route::get('/brands', [BrandController::class,'all'])->name('all_brands');
+    Route::get('/brands/add', [BrandController::class,'create'])->name('add_brand');
+    Route::post('/brands/add', [BrandController::class,'store'])->name('store_brand');
+    Route::get('/brands/{brand_id}/edit', [BrandController::class,'edit'])->name('brand_edit');
+    Route::post('/brands/{brand_id}/edit', [BrandController::class,'update'])->name('brand_update');
+
 
     Route::get('/roles', [RolesController::class,'all'])->name('all_roles');
     Route::get('/roles/add', [RolesController::class,'create'])->name('add_role');

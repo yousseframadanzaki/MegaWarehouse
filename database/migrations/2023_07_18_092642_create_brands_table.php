@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('media', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('file_name');
-            $table->string('mime_type');
-            $table->string('path');
-            $table->string('disk')->default('local');
-            $table->string('file_hash', 64);
-            $table->string('collection')->nullable();
-            $table->integer('collection_id')->nullable();
+            $table->unsignedBiginteger('company_id');
+            $table->foreign('company_id')->references('id')
+                 ->on('companies');
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('media');
+        Schema::dropIfExists('brands');
     }
 };

@@ -171,6 +171,7 @@ return [
         App\Providers\UserServiceProvider::class,
         App\Providers\FileUploadServiceProvider::class,
         App\Providers\MediaServiceProvider::class,
+        App\Providers\BrandServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

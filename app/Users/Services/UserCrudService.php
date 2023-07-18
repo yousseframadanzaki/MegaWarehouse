@@ -26,7 +26,7 @@ class UserCrudService implements UserCrudServiceInterface{
 
     public function CreateUser(array $user_details,$company_id){
         $user_details['company_id'] = $company_id;
-        if(!$user_details['image']){
+        if(!isset($user_details['image'])){
             $user = $this->user_crud_repository->add_user($user_details);
             return $user;
         }

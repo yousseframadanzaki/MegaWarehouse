@@ -71,6 +71,20 @@
                                 </ul>
                             </div>
                         </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#brands-collapse" >
+                                <i class="bi bi-boxes"></i>
+                                المنتجات
+                            </a>
+                            <div class="collapse" id="brands-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    <li class="rounded"><a href="{{ route('all_brands') }}" class="text-white"> <i class="bi bi-grid"></i> الماركات </a></li>
+                                    <li class="rounded "><a href="{{ route('add_brand') }}" class="text-white"><i
+                                                class="bi bi-clipboard2-plus"></i> أضافة ماركة جديدة</a></li>
+                                </ul>
+                            </div>
+                        </li>
                         @endif
                         
         
@@ -81,7 +95,7 @@
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://github.com/mdo.png" alt="" width="32" height="32"
                                 class="rounded-circle me-2">
-                            <strong>mdo</strong>
+                            <strong>{{auth()->user()->name}}</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                             
