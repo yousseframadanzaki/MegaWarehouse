@@ -20,8 +20,7 @@ class ClientCrudService implements ClientCrudServiceInterface{
         if(isset($details['links'])){
             $details['links'] = json_encode($details['links'],true);
         }
-        // dd($details);
-        $client = $this->client_crud_repository->create_Client($details);
+        $client = $this->client_crud_repository->create_client($details);
         return $client;
     }
 

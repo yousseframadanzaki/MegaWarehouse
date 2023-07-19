@@ -14,7 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <div class="container-fluid">
         <div class="row">
-            <div class="d-flex flex-column col-2 flex-shrink-0 p-3 text-white bg-dark sticky-top" style="height:100vh">
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top" style="height:100vh;width:20%">
                     <a href="/" class="d-flex  align-items-center mb-3 mb-md-0 text-white  text-decoration-none">
                         <span class="fs-3 ">Mega Warehouse</span>
                     </a>
@@ -115,6 +115,9 @@
                                     <li class="rounded"><a href="{{ route('all_clients') }}" class="text-white"> <i class="bi bi-people"></i> كل العملاء </a></li>
                                     <li class="rounded "><a href="{{ route('add_client') }}" class="text-white"><i
                                                 class="bi bi-person-plus"></i> أضافة عميل جديد</a></li>
+                                    <li class="rounded"><a href="{{ route('all_client_groups') }}" class="text-white"> <i class="bi bi-people"></i> مجموعات العملاء </a></li>
+                                    <li class="rounded "><a href="{{ route('add_client_group') }}" class="text-white"><i
+                                                class="bi bi-person-plus"></i> أضافة مجموعة عملاء جديدة</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -140,7 +143,7 @@
                         </ul>
                     </div>
             </div>
-            <div class="col col-10" style="" id="main">
+            <div class="col " style="width:80%" id="main">
                 @include('partials.flash-messages')
                 @yield('content')
             </div>

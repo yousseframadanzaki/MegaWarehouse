@@ -5,62 +5,57 @@ namespace App\Http\Controllers;
 use App\Models\ClientGroup;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Clients\Interfaces\ClientGroupCrudServiceInterface;
+use App\Clients\Requests\CreateClientGroupRequest;
+use App\Clients\Requests\UpdateClientGroupRequest;
 
 class ClientGroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+
+    private ClientGroupCrudServiceInterface $ClientGroupCrudService;
+
+    public function __construct(ClientGroupCrudServiceInterface $ClientGroupCrudService)
     {
-        //
+        $this->ClientGroupCrudService = $ClientGroupCrudService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function all()
+    {
+        $company_id = auth()->user()->company_id;
+        $client_groups = $this->ClientGroupCrudService->GetCompanyClientGroups($company_id);
+        return view('Dashboard.ClientGroups.show_all')->with('client_groups',$client_groups);
+    }
+
     public function create()
     {
-        //
+        return view('Dashboard.ClientGroups.add');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    
+    public function store(CreateClientGroupRequest $request)
     {
-        //
+        $company_id = auth()->user()->company_id;
+        $client_group = $this->ClientGroupCrudService->CreateClientGroup($company_id,$request->validated());
+        if($client_group){
+            return back()->with('success','client_group_created_success');
+        }
+        return back()->with('error','client_group_created_error');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ClientGroup $clientGroup)
+    
+    public function edit($client_group_id)
     {
-        //
+        $client_group = $this->ClientGroupCrudService->GetClientGroup($client_group_id);
+        return view('Dashboard.ClientGroups.edit')->with('client_group',$client_group);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ClientGroup $clientGroup)
+    
+    public function update(UpdateClientGroupRequest $request,$client_group_id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, ClientGroup $clientGroup)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ClientGroup $clientGroup)
-    {
-        //
+        if(!$this->ClientGroupCrudService->UpdateClientGroup($client_group_id,$request->validated())){
+            return back()->with('error','client_group_updated_error');
+        }
+        return back()->with('success','client_group_updated_success');
     }
 }

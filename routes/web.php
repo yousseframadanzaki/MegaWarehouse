@@ -11,6 +11,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientGroupController;
 
 
 Route::get('/',function (){
@@ -47,6 +48,12 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
 
+
+    Route::get('/client_groups', [ClientGroupController::class,'all'])->name('all_client_groups');
+    Route::get('/client_groups/add', [ClientGroupController::class,'create'])->name('add_client_group');
+    Route::post('/client_groups/add', [ClientGroupController::class,'store'])->name('store_client_group');
+    Route::get('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'edit'])->name('edit_client_group');
+    Route::post('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'update'])->name('update_client_group');
 
     Route::get('/clients', [ClientController::class,'all'])->name('all_clients');
     Route::get('/clients/add', [ClientController::class,'create'])->name('add_client');

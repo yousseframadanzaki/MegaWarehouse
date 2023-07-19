@@ -30,7 +30,7 @@ class CreateClientRequest extends FormRequest
             'city_id'=>'required|exists:cities,id',
             'area_id'=>'required|exists:areas,id',
             'links'=>'nullable',
-            'client_groups'=>'nullable|exists:client_groups,id'
+            'client_group_id'=>'nullable|exists:client_groups,id'
         ];
     }
 
@@ -49,7 +49,7 @@ class CreateClientRequest extends FormRequest
             'city_id.exists'=>'city_id_exists',
             'area_id.required'=>'area_id_required',
             'area_id.exists'=>'area_id_exists',
-            'client_groups.exists'=>'client_groups_exists',
+            'client_group_id.exists'=>'client_groups_exists',
         ];
     }   
 }

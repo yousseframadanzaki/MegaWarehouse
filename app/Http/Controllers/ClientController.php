@@ -21,9 +21,6 @@ class ClientController extends Controller
         $this->ClientCrudService = $ClientCrudService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function all()
     {
         $company_id = auth()->user()->company_id;
@@ -31,9 +28,6 @@ class ClientController extends Controller
         return view('Dashboard.Clients.show_all')->with('clients',$clients);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $company_id = auth()->user()->company_id;
@@ -42,9 +36,6 @@ class ClientController extends Controller
         return view('Dashboard.Clients.add')->with(['client_groups' => $client_groups, 'countries' => $countries]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(CreateClientRequest $request)
     {
         $company_id = auth()->user()->company_id;
