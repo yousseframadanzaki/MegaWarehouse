@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('phone');
-            $table->json('payment_methods');
-            $table->json('contacts');
+            $table->json('payment_methods')->nullable();
+            $table->json('contacts')->nullable();
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')
             ->references('id')->on('companies');

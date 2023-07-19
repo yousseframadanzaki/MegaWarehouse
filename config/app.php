@@ -174,6 +174,7 @@ return [
         App\Providers\BrandServiceProvider::class,
         App\Providers\CategoryServiceProvider::class,
         App\Providers\ClientServiceProvider::class,
+        App\Providers\SupplierServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

@@ -12,6 +12,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientGroupController;
+use App\Http\Controllers\SupplierController;
 
 
 Route::get('/',function (){
@@ -48,6 +49,12 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
 
+
+    Route::get('/suppliers', [SupplierController::class,'all'])->name('all_suppliers');
+    Route::get('/suppliers/add', [SupplierController::class,'create'])->name('add_supplier');
+    Route::post('/suppliers/add', [SupplierController::class,'store'])->name('store_supplier');
+    Route::get('/suppliers/{supplier_id}/edit', [SupplierController::class,'edit'])->name('edit_supplier');
+    Route::post('/suppliers/{supplier_id}/edit', [SupplierController::class,'update'])->name('update_supplier');
 
     Route::get('/client_groups', [ClientGroupController::class,'all'])->name('all_client_groups');
     Route::get('/client_groups/add', [ClientGroupController::class,'create'])->name('add_client_group');

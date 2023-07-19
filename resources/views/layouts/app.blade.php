@@ -121,6 +121,21 @@
                                 </ul>
                             </div>
                         </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#suppliers-collapse" >
+                                <i class="bi bi-person-lines-fill"></i>
+                                الموردين
+                            </a>
+                            <div class="collapse" id="suppliers-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    
+                                    <li class="rounded"><a href="{{ route('all_suppliers') }}" class="text-white"> <i class="bi bi-people"></i> كل الموردين </a></li>
+                                    <li class="rounded "><a href="{{ route('add_supplier') }}" class="text-white"><i
+                                                class="bi bi-person-plus"></i> أضافة مورد جديد</a></li>
+                                </ul>
+                            </div>
+                        </li>
                         @endif
                         
         

@@ -12,7 +12,7 @@ class SupplierCrudRepository implements SupplierCrudRepositoryInterface{
     }
 
     public function get_company_suppliers($company_id){
-        return Supplier::where('company_id',$company_id)->get();
+        return Supplier::where('company_id',$company_id)->paginate(10);
     }
 
     public function get_supplier_by_id($supplier_id){
