@@ -10,14 +10,16 @@
 </head>
 
 <body>
+    @vite(['resources/js/app.js'])
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <div class="container-fluid">
         <div class="row">
             <div class="d-flex flex-column col-2 flex-shrink-0 p-3 text-white bg-dark sticky-top" style="height:100vh">
                     <a href="/" class="d-flex  align-items-center mb-3 mb-md-0 text-white  text-decoration-none">
-                        <span class="fs-4 ">Mega Warehouse</span>
+                        <span class="fs-3 ">Mega Warehouse</span>
                     </a>
                     <hr>
-                    <ul class="nav nav-pills flex-column mb-auto px-0">
+                    <ul class="nav nav-pills flex-column mb-auto px-0 fs-5">
                         <li class="nav-item mb-2">
                             <a href="#" class="nav-link text-white" aria-current="page">
                                 <i class="bi bi-house"></i>
@@ -44,15 +46,15 @@
                         <li>
                             <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
                                 data-bs-target="#users-collapse" >
-                                <i class="bi bi-building"></i>
+                                <i class="bi bi-person"></i>
                                 الاعضاء
                             </a>
                             <div class="collapse" id="users-collapse" style="">
                                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
-                                    <li class="rounded"><a href="{{ route('all_users') }}" class="text-white"> <i class="bi bi-buildings"></i> كل
+                                    <li class="rounded"><a href="{{ route('all_users') }}" class="text-white"> <i class="bi bi-people"></i> كل
                                             الاعضاء </a></li>
                                     <li class="rounded "><a href="{{ route('add_user') }}" class="text-white"><i
-                                                class="bi bi-building-add "></i> أضافة عضو جديد</a></li>
+                                                class="bi bi-person-add "></i> أضافة عضو جديد</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -74,17 +76,45 @@
                         <li>
                             <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
                                 data-bs-target="#brands-collapse" >
-                                <i class="bi bi-boxes"></i>
-                                المنتجات
+                                <i class="bi bi-grid"></i>
+                                الماركات
                             </a>
                             <div class="collapse" id="brands-collapse" style="">
                                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
-                                    <li class="rounded"><a href="{{ route('all_brands') }}" class="text-white"> <i class="bi bi-grid"></i> الماركات </a></li>
+                                    <li class="rounded"><a href="{{ route('all_brands') }}" class="text-white"> <i class="bi bi-grid"></i> كل الماركات </a></li>
                                     <li class="rounded "><a href="{{ route('add_brand') }}" class="text-white"><i
                                                 class="bi bi-clipboard2-plus"></i> أضافة ماركة جديدة</a></li>
-                                    <li class="rounded"><a href="{{ route('all_categories') }}" class="text-white"> <i class="bi bi-bookmarks"></i> التصنيفات </a></li>
+                                    
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#categories-collapse" >
+                                <i class="bi bi-bookmark"></i>
+                                التصنيفات
+                            </a>
+                            <div class="collapse" id="categories-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    
+                                    <li class="rounded"><a href="{{ route('all_categories') }}" class="text-white"> <i class="bi bi-bookmarks"></i> كل التصنيفات </a></li>
                                     <li class="rounded "><a href="{{ route('add_category') }}" class="text-white"><i
                                                 class="bi bi-bookmark-plus"></i> أضافة تصنيف جديد</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#clients-collapse" >
+                                <i class="bi bi-person-hearts"></i>
+                                العملاء
+                            </a>
+                            <div class="collapse" id="clients-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    
+                                    <li class="rounded"><a href="{{ route('all_clients') }}" class="text-white"> <i class="bi bi-people"></i> كل العملاء </a></li>
+                                    <li class="rounded "><a href="{{ route('add_client') }}" class="text-white"><i
+                                                class="bi bi-person-plus"></i> أضافة عميل جديد</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -96,8 +126,7 @@
                     <div class="dropdown">
                         <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                             id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://github.com/mdo.png" alt="" width="32" height="32"
-                                class="rounded-circle me-2">
+                           
                             <strong>{{auth()->user()->name}}</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
@@ -118,7 +147,8 @@
         </div>
     </div>
 
-    @vite(['resources/js/app.js'])
+
+
 </body>
 
 </html>

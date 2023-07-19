@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 
 
 Route::get('/',function (){
@@ -44,6 +45,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
+
+
+    Route::get('/clients', [ClientController::class,'all'])->name('all_clients');
+    Route::get('/clients/add', [ClientController::class,'create'])->name('add_client');
+    Route::post('/clients/add', [ClientController::class,'store'])->name('store_client');
+    Route::get('/clients/{client_id}/edit', [ClientController::class,'edit'])->name('edit_client');
+    Route::post('/clients/{client_id}/edit', [ClientController::class,'update'])->name('update_client');
 
     Route::get('/categories', [CategoryController::class,'all'])->name('all_categories');
     Route::get('/categories/add', [CategoryController::class,'create'])->name('add_category');
