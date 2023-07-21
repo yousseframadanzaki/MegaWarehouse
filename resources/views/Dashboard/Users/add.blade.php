@@ -56,7 +56,7 @@
                @enderror
             </div>
          </div>
-         <div class="row">
+         <div class="row mb-3">
             <div class="col-md-6">
                <label  class="form-label">الادارة</label>
                <select class="form-select" aria-label="Default select example" name="role_id">
@@ -70,6 +70,21 @@
                   </div>
                @enderror
             </div>
+            <div class="col-md-6">
+               <label  class="form-label">المخزن</label>
+               <select class="form-select" aria-label="Default select example" name="warehouse_id">
+                  @foreach ($warehouses as $id => $name)
+                     <option value="{{$id}}">{{$name}}</option>
+                  @endforeach
+               </select>
+               @error('role')
+                  <div class="invalid-feedback">
+                        {{__($message)}}
+                  </div>
+               @enderror
+            </div>
+         </div>
+         <div class="row">
             <div class="col-md-6">
                <div class="mb-3">
                   <label for="formFile" class="form-label">صورة العضو</label>

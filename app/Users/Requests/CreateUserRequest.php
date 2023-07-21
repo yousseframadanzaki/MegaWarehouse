@@ -28,6 +28,7 @@ class CreateUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'role_id' => 'required|integer|exists:roles,id',
+            'warehouse_id' => 'required|integer|exists:warehouses,id',
             'image'=>'file|max:10240|mimes:jpg,bmp,png'
         ];
     }

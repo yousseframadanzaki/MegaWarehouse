@@ -9,4 +9,5 @@ interface CommonDataServiceInterface{
     public function GetCountries();
     public function GetCities($country_id=NULL);
     public function GetAreas($city_id=NULL);
+    public function GetCompanyWarehouses($company_id);
 }

@@ -29,8 +29,8 @@
                     <tr>
                         <th scope="col">صورة</th>
                         <th scope="col">اسم العضو</th>
-                        <th scope="col">الايميل</th>
-                        <th scope="col">رقم تليفون</th>
+                        <th scope="col">ادارة</th>
+                        <th scope="col">المخزن</th>
                         <th scope="col">تاريخ الاضافة</th>
                         <th scope="col">حالة العضو</th>
                         <th scope="col">actions</th>
@@ -38,11 +38,11 @@
                 </thead>
                 <tbody>
                     @forelse ($users as $user)
-                        <tr class="@if (!$user->active) table-danger @endif">
+                        <tr>
                             <td><div class="user-header-avatar" style="background-image: url('{{asset($user->avatar->path ?? '')}}')"></div></td>
                             <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->phone_1 }}</td>
+                            <td>{{ $user->role->name }}</td>
+                            <td>{{ $user->warehouse->name }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
                                 @if ($user->active)

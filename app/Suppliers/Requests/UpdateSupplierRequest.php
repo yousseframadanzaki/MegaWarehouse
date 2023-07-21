@@ -3,6 +3,7 @@
 namespace App\Suppliers\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSupplierRequest extends FormRequest
 {
@@ -21,8 +22,15 @@ class UpdateSupplierRequest extends FormRequest
      */
     public function rules(): array
     {
+        $supplier_id = $this->route()->parameter('supplier_id');
         return [
-            'name' => 'required|min:3',
+            'name'=>[
+                'required',
+                'min:3',
+                Rule::unique('suppliers', 'name')
+                ->where('company_id', auth()->user()->company_id)
+                ->ignore($supplier_id,'id')
+            ],
             'address' => 'required|min:10',    
             'phone' => 'required|min:11',    
             'payment_methods' => 'nullable',    

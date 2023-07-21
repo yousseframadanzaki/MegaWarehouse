@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('suppliers', function (Blueprint $table) {
+        Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('address');
-            $table->string('phone');
-            $table->json('payment_methods')->nullable();
-            $table->json('contacts')->nullable();
             $table->unsignedBigInteger('company_id');
             $table->unique(['name', 'company_id']);
             $table->foreign('company_id')
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('suppliers');
+        Schema::dropIfExists('warehouses');
     }
 };

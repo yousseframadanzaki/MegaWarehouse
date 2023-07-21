@@ -32,8 +32,9 @@ class UsersController extends Controller
     public function create() {
         $company_id = auth()->user()->company_id;
         $roles = $this->CommonDataService->GetCompanyRoles($company_id);
+        $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         // dd($roles);
-        return view('Dashboard.Users.add')->with('roles',$roles);
+        return view('Dashboard.Users.add')->with(['roles'=>$roles,'warehouses'=>$warehouses]);
     }
     
     public function store(CreateUserRequest $request) {
@@ -74,7 +75,12 @@ class UsersController extends Controller
             return view('404');
         }
         $roles = $this->CommonDataService->GetCompanyRoles($company_id);
-        return view('Dashboard.Users.edit')->with(['user'=>$user,'roles'=>$roles]);
+        $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
+        return view('Dashboard.Users.edit')->with([
+            'user'=>$user,
+            'roles'=>$roles,
+            'warehouses'=>$warehouses
+        ]);
     }
     public function update(UpdateUserRequest $request,$user_id) {
         if(!$this->UserCrudService->UpdateUser($user_id,$request->validated())){

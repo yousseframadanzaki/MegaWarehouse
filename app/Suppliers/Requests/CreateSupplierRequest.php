@@ -3,6 +3,7 @@
 namespace App\Suppliers\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateSupplierRequest extends FormRequest
 {
@@ -22,7 +23,11 @@ class CreateSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:3',
+            'name' => [
+                'required',
+                Rule::unique('suppliers', 'name')->where('company_id', auth()->user()->company_id),
+                'min:3'
+            ],
             'address' => 'required|min:10',    
             'phone' => 'required|min:11',    
             'payment_methods' => 'nullable',    
@@ -35,6 +40,7 @@ class CreateSupplierRequest extends FormRequest
         return [
             'name.required' => 'supplier_name_required',
             'name.min' => 'supplier_name_min',
+            'name.unique' => 'supplier_name_unique',
             'address.required' => 'address_required',    
             'address.min' => 'address_min',    
             'phone.required' => 'phone_required',    

@@ -8,6 +8,7 @@ use App\Models\ClientGroup;
 use App\Models\Country;
 use App\Models\City;
 use App\Models\Area;
+use App\Models\Warehouse;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -40,6 +41,10 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
             return Area::all()->pluck('name','id');
         }
         return Area::where(['city_id'=>$city_id])->pluck('name','id');
+    }
+
+    public function get_company_warehouses($company_id){
+        return Warehouse::where(['company_id'=>$company_id])->pluck('name','id');
     }
     
 }

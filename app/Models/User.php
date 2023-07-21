@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\Company;
 use App\Models\Media;
+use App\Models\Warehouse;
 
 class User extends Authenticatable
 {
@@ -57,6 +58,10 @@ class User extends Authenticatable
 
     public function role() {
         return $this->belongsTo(Role::class);
+    }
+    
+    public function warehouse() {
+        return $this->belongsTo(Warehouse::class);
     }
 
     public function permissions() {

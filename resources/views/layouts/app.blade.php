@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
     @vite(['resources/sass/app.scss', 'resources/css/app.css'])
+    <style>
+        .sidebar{
+            overflow-y: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,7 +19,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <div class="container-fluid">
         <div class="row">
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top" style="height:100vh;width:20%">
+
+            <div class="d-flex sidebar flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top" style="height:100vh;width:20%">
                     <a href="/" class="d-flex  align-items-center mb-3 mb-md-0 text-white  text-decoration-none">
                         <span class="fs-3 ">Mega Warehouse</span>
                     </a>
@@ -136,6 +142,21 @@
                                 </ul>
                             </div>
                         </li>
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#warehouse-collapse" >
+                                <i class="bi bi-building"></i>
+                                المخازن
+                            </a>
+                            <div class="collapse" id="warehouse-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    <li class="rounded"><a href="{{ route('all_warehouses') }}" class="text-white"> <i class="bi bi-buildings"></i> كل
+                                            المخازن </a></li>
+                                    <li class="rounded "><a href="{{ route('add_warehouse') }}" class="text-white"><i
+                                                class="bi bi-building-add "></i> أضافة مخزن جديد</a></li>
+                                </ul>
+                            </div>
+                        </li>
                         @endif
                         
         
@@ -158,6 +179,7 @@
                         </ul>
                     </div>
             </div>
+
             <div class="col " style="width:80%" id="main">
                 @include('partials.flash-messages')
                 @yield('content')

@@ -37,6 +37,7 @@ class UpdateUserRequest extends FormRequest
             ],
             'password' => 'nullable|min:6',
             'role_id' => 'required|integer|exists:roles,id',
+            'warehouse_id' => 'required|integer|exists:warehouses,id',
         ];
     }
 

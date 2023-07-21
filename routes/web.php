@@ -13,6 +13,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientGroupController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\WarehouseController;
 
 
 Route::get('/',function (){
@@ -48,7 +49,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
-
+    Route::get('/warehouses', [WarehouseController::class,'all'])->name('all_warehouses');
+    Route::get('/warehouses/add', [WarehouseController::class,'create'])->name('add_warehouse');
+    Route::post('/warehouses/add', [WarehouseController::class,'store'])->name('store_warehouse');
+    Route::get('/warehouses/{warehouse_id}/edit', [WarehouseController::class,'edit'])->name('edit_warehouse');
+    Route::post('/warehouses/{warehouse_id}/edit', [WarehouseController::class,'update'])->name('update_warehouse');
 
     Route::get('/suppliers', [SupplierController::class,'all'])->name('all_suppliers');
     Route::get('/suppliers/add', [SupplierController::class,'create'])->name('add_supplier');
@@ -79,7 +84,6 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/brands/add', [BrandController::class,'store'])->name('store_brand');
     Route::get('/brands/{brand_id}/edit', [BrandController::class,'edit'])->name('edit_brand');
     Route::post('/brands/{brand_id}/edit', [BrandController::class,'update'])->name('update_brand');
-
 
     Route::get('/roles', [RolesController::class,'all'])->name('all_roles');
     Route::get('/roles/add', [RolesController::class,'create'])->name('add_role');

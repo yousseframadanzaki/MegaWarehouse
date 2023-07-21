@@ -36,7 +36,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">اقصى عدد الاعضاء</label>
                         <input type="number" class="form-control @error('company.max_users') is-invalid @enderror"
@@ -52,6 +52,18 @@
                         <input type="number" class="form-control @error('company.max_orders') is-invalid @enderror"
                             name="company[max_orders]" value="{{ old('company.max_orders') }}">
                         @error('company.max_orders')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="form-label">اسم المخزن الرئيسى</label>
+                        <input type="text" class="form-control @error('warehouse.name') is-invalid @enderror"
+                            name="warehouse[name]" value="{{ old('warehouse.name') }}">
+                        @error('warehouse.name')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
                             </div>
