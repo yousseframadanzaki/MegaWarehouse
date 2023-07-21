@@ -21,8 +21,15 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $category_id = $this->route()->parameter('category_id');
         return [
-            'name'=>'required|min:3',
+            'name'=>[
+                'required',
+                'min:3',
+                Rule::unique('categories', 'name')
+                ->where('company_id', auth()->user()->company_id)
+                ->ignore($category_id,'id')
+            ],
             'parent_id'=>'nullable|exists:categories,id'
         ];
     }

@@ -22,7 +22,11 @@ class CreateBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|min:3',
+            'name'=>[
+                'required',
+                'min:3',
+                Rule::unique('brands', 'name')->where('company_id', auth()->user()->company_id)
+            ],
             'logo'=>'nullable|file|max:1024|mimes:jpg,bmp,png'
         ];
     }

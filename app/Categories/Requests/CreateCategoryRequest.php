@@ -22,7 +22,11 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|min:3',
+            'name'=>[
+                'required',
+                'min:3',
+                Rule::unique('categories', 'name')->where('company_id', auth()->user()->company_id)
+            ],
             'parent_id'=>'nullable|exists:categories,id'
         ];
     }

@@ -21,8 +21,15 @@ class UpdateBrandRequest extends FormRequest
      */
     public function rules(): array
     {
+        $brand_id = $this->route()->parameter('brand_id');
         return [
-            'name'=>'required|min:3',
+            'name'=>[
+                'required',
+                'min:3',
+                Rule::unique('brands', 'name')
+                ->where('company_id', auth()->user()->company_id)
+                ->ignore($brand_id,'id')
+            ],
             'logo'=>'nullable|file|max:1024|mimes:jpg,bmp,png'
         ];
     }
