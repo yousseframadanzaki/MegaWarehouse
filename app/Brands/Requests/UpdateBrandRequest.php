@@ -3,6 +3,7 @@
 namespace App\Brands\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBrandRequest extends FormRequest
 {
