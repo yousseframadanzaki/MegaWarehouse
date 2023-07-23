@@ -22,10 +22,12 @@
                             <td>{{ $warehouse->name }}</td>
                             <td>{{ $warehouse->users_count }}</td>
                             <td>
-                                <a  href="{{route('edit_warehouse',$warehouse->id)}}" class="link-primary"
-                                    title="تعديل بيانات المخزن">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+                                @can('edit','App\Models\Warehouse')
+                                    <a  href="{{route('edit_warehouse',$warehouse->id)}}" class="link-primary"
+                                        title="تعديل بيانات المخزن">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                     @empty

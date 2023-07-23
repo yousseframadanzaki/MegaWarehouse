@@ -57,7 +57,7 @@ class UsersController extends Controller
         if(!$this->UserActionsService->Activate($company_id,$user_id)){
             return back()->with('error','edit_userd_error');
         }
-        return back()->with('success','edit_userd_success');
+        return back()->with('success','user_activated_success');
     }
 
     public function deactivate($user_id) {

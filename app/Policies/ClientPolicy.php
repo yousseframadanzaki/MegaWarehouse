@@ -46,7 +46,7 @@ class ClientPolicy
         return true;
     }
     
-    public function view_client_group(User $user): bool
+    public function view_client_groups(User $user): bool
     {
         if(!$user->role->permissions->contains('slug','view_client_groups')){
             return false;

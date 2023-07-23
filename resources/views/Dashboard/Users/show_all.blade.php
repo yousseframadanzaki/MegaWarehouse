@@ -52,21 +52,32 @@
                                 @endif
                             </td>
                             <td>
+                                
+                                    
+                                
                                 @if ($user->active)
-                                    <a href="{{ route('deactivate_user', $user->id) }}" class="link-danger"
-                                        title="الغاء تفعيل العضو">
-                                        <i class="bi bi-person-fill-lock"></i>
-                                    </a>
+                                    @can('deactivate', 'App/Models/User')
+                                        <a href="{{ route('deactivate_user', $user->id) }}" class="link-danger"
+                                            title="الغاء تفعيل العضو">
+                                            <i class="bi bi-person-fill-lock"></i>
+                                        </a>
+                                    @endcan
                                 @else
-                                    <a href="{{ route('activate_user', $user->id) }}" class="link-success"
-                                        title="تفعيل العضو">
-                                        <i class="bi bi-person-fill-check"></i>
-                                    </a>
+                                    @can('activate', 'App/Models/User')
+                                        <a href="{{ route('activate_user', $user->id) }}" class="link-success"
+                                            title="تفعيل العضو">
+                                            <i class="bi bi-person-fill-check"></i>
+                                        </a>
+                                    @endcan
                                 @endif
-                                <a href="{{ route('edit_user', $user->id) }}" class="link-primary "
-                                    title="تعديل بيانات العضو">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+
+                                @can('edit','App/Models/User')
+                                    <a href="{{ route('edit_user', $user->id) }}" class="link-primary "
+                                        title="تعديل بيانات العضو">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                @endcan
+                                
                             </td>
                         </tr>
                     @empty

@@ -24,10 +24,12 @@
                             <td>{{ $supplier->phone }}</td>
                             <td>{{ $supplier->address }}</td>
                             <td>
-                                <a  href="{{route('edit_supplier',$supplier->id)}}" class="link-primary"
-                                    title="تعديل بيانات المورد">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+                                @can('edit','App\Models\Supplier')
+                                    <a  href="{{route('edit_supplier',$supplier->id)}}" class="link-primary"
+                                        title="تعديل بيانات المورد">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                     @empty

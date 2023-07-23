@@ -47,5 +47,14 @@
     "role_created_error":"حدث خطاء أثناء أضافة الادارة",
     "role_created_success":" تم أضافة الادارة بنجاح",
     "image_type_error":"صيغة الملف غير مدعومة",
-    "image_size_error":"الحد الاقصى لحجم الصورة 2 ميجا"
+    "image_size_error":"الحد الاقصى لحجم الصورة 2 ميجا",
+    "brand_created_success":"تم أنشاء الماركة بنجاح",
+    "brand_updated_success":"تم تعديل بيانات الماركة بنجاح",
+    "category_created_success":"تم أنشاء التصنيف بنجاح",
+    "client_created_success":"تم أنشاء العميل بنجاح",
+    "client_group_created_success":"تم أنشاء مجموعة العملاء بنجاح",
+    "client_updated_success":"تم تعديل بيانات العميل بنجاح",
+    "client_group_updated_success":"تم تعديل بيانات مجموعة العملاء بنجاح",
+    "role_updated_success":"تم تعديل الادارة بنجاح",
+    "category_updated_success":"تم تعديل بيانات التصنيف بنجاح"
 }

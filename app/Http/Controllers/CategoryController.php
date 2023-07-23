@@ -74,11 +74,4 @@ class CategoryController extends Controller
         return back()->with('success','category_updated_success');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
-    }
 }

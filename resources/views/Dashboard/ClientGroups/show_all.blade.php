@@ -24,10 +24,12 @@
                             <td>{{ $client_group->discount }}</td>
                             <td>{{ $client_group->clients_count?? '' }}</td>
                             <td>
-                                <a  href="{{route('edit_client_group',$client_group->id)}}" class="link-primary"
-                                    title="تعديل بيانات المجموعة">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
+                                @can('edit_client_group','App\Models\ClientGroup')
+                                    <a  href="{{route('edit_client_group',$client_group->id)}}" class="link-primary"
+                                        title="تعديل بيانات المجموعة">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                     @empty
