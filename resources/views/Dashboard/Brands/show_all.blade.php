@@ -24,7 +24,9 @@
                     <tr>
                         <th scope="col" style="width: 1%">صورة</th>
                         <th scope="col">اسم الماركة</th>
-                        <th scope="col">actions</th>
+                        @can('edit','App\Models\Brand')
+                            <th scope="col">actions</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -32,12 +34,14 @@
                         <tr class="">
                             <td><div class="brand-logo" style="background-image: url('{{asset($brand->logo->path ?? '')}}')"></div></td>
                             <td>{{ $brand->name }}</td>
-                            <td>
-                                <a  href="{{route('edit_brand',$brand->id)}}" class="link-primary"
-                                    title="تعديل بيانات الماركة">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                            </td>
+                            @can('edit','App\Models\Brand')
+                                <td>
+                                    <a  href="{{route('edit_brand',$brand->id)}}" class="link-primary"
+                                        title="تعديل بيانات الماركة">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </td>
+                            @endcan
                         </tr>
                     @empty
                     @endforelse

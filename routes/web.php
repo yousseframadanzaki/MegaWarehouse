@@ -49,54 +49,180 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
-    Route::get('/warehouses', [WarehouseController::class,'all'])->name('all_warehouses');
-    Route::get('/warehouses/add', [WarehouseController::class,'create'])->name('add_warehouse');
-    Route::post('/warehouses/add', [WarehouseController::class,'store'])->name('store_warehouse');
-    Route::get('/warehouses/{warehouse_id}/edit', [WarehouseController::class,'edit'])->name('edit_warehouse');
-    Route::post('/warehouses/{warehouse_id}/edit', [WarehouseController::class,'update'])->name('update_warehouse');
+    Route::get('/warehouses', [WarehouseController::class,'all'])
+    ->name('all_warehouses')
+    ->can('view','App\Models\Warehouse');
 
-    Route::get('/suppliers', [SupplierController::class,'all'])->name('all_suppliers');
-    Route::get('/suppliers/add', [SupplierController::class,'create'])->name('add_supplier');
-    Route::post('/suppliers/add', [SupplierController::class,'store'])->name('store_supplier');
-    Route::get('/suppliers/{supplier_id}/edit', [SupplierController::class,'edit'])->name('edit_supplier');
-    Route::post('/suppliers/{supplier_id}/edit', [SupplierController::class,'update'])->name('update_supplier');
+    Route::get('/warehouses/add', [WarehouseController::class,'create'])
+    ->name('add_warehouse')
+    ->can('add','App\Models\Warehouse');
 
-    Route::get('/client_groups', [ClientGroupController::class,'all'])->name('all_client_groups');
-    Route::get('/client_groups/add', [ClientGroupController::class,'create'])->name('add_client_group');
-    Route::post('/client_groups/add', [ClientGroupController::class,'store'])->name('store_client_group');
-    Route::get('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'edit'])->name('edit_client_group');
-    Route::post('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'update'])->name('update_client_group');
+    Route::post('/warehouses/add', [WarehouseController::class,'store'])
+    ->name('store_warehouse')
+    ->can('add','App\Models\Warehouse');
 
-    Route::get('/clients', [ClientController::class,'all'])->name('all_clients');
-    Route::get('/clients/add', [ClientController::class,'create'])->name('add_client');
-    Route::post('/clients/add', [ClientController::class,'store'])->name('store_client');
-    Route::get('/clients/{client_id}/edit', [ClientController::class,'edit'])->name('edit_client');
-    Route::post('/clients/{client_id}/edit', [ClientController::class,'update'])->name('update_client');
+    Route::get('/warehouses/{warehouse_id}/edit', [WarehouseController::class,'edit'])
+    ->name('edit_warehouse')
+    ->can('update',['App\Models\Warehouse','warehouse_id']);
 
-    Route::get('/categories', [CategoryController::class,'all'])->name('all_categories');
-    Route::get('/categories/add', [CategoryController::class,'create'])->name('add_category');
-    Route::post('/categories/add', [CategoryController::class,'store'])->name('store_category');
-    Route::get('/categories/{category_id}/edit', [CategoryController::class,'edit'])->name('edit_category');
-    Route::post('/categories/{category_id}/edit', [CategoryController::class,'update'])->name('update_category');
+    Route::post('/warehouses/{warehouse_id}/edit', [WarehouseController::class,'update'])
+    ->name('update_warehouse')
+    ->can('update',['App\Models\Warehouse','warehouse_id']);
 
-    Route::get('/brands', [BrandController::class,'all'])->name('all_brands');
-    Route::get('/brands/add', [BrandController::class,'create'])->name('add_brand');
-    Route::post('/brands/add', [BrandController::class,'store'])->name('store_brand');
-    Route::get('/brands/{brand_id}/edit', [BrandController::class,'edit'])->name('edit_brand');
-    Route::post('/brands/{brand_id}/edit', [BrandController::class,'update'])->name('update_brand');
 
-    Route::get('/roles', [RolesController::class,'all'])->name('all_roles');
-    Route::get('/roles/add', [RolesController::class,'create'])->name('add_role');
-    Route::post('/roles/add', [RolesController::class,'store'])->name('store_role');
-    Route::get('/roles/{role_id}/edit', [RolesController::class,'edit'])->name('edit_role');
-    Route::post('/roles/{role_id}/edit', [RolesController::class,'update'])->name('update_role');
+    Route::get('/suppliers', [SupplierController::class,'all'])
+    ->name('all_suppliers')
+    ->can('view','App\Models\Supplier');
 
-    Route::get('/users', [UsersController::class,'all'])->name('all_users');
-    Route::get('/users/add', [UsersController::class,'create'])->name('add_user');
-    Route::post('/users/add', [UsersController::class,'store'])->name('store_user');
-    Route::get('/users/{user_id}/activate', [UsersController::class,'activate'])->name('activate_user');
-    Route::get('/users/{user_id}/deactivate', [UsersController::class,'deactivate'])->name('deactivate_user');
-    Route::get('/users/{user_id}/edit', [UsersController::class,'edit'])->name('edit_user');
-    Route::post('/users/{user_id}/edit', [UsersController::class,'update'])->name('update_user');
+    Route::get('/suppliers/add', [SupplierController::class,'create'])
+    ->name('add_supplier')
+    ->can('add','App\Models\Supplier');
+
+    Route::post('/suppliers/add', [SupplierController::class,'store'])
+    ->name('store_supplier')
+    ->can('add','App\Models\Supplier');
+
+    Route::get('/suppliers/{supplier_id}/edit', [SupplierController::class,'edit'])
+    ->name('edit_supplier')
+    ->can('update',['App\Models\Supplier','supplier_id']);
+
+    Route::post('/suppliers/{supplier_id}/edit', [SupplierController::class,'update'])
+    ->name('update_supplier')
+    ->can('update',['App\Models\Supplier','supplier_id']);
+
+
+    Route::get('/client_groups', [ClientGroupController::class,'all'])
+    ->name('all_client_groups')
+    ->can('view_client_group','App\Models\ClientGroup');
+
+    Route::get('/client_groups/add', [ClientGroupController::class,'create'])
+    ->name('add_client_group')
+    ->can('add_client_group','App\Models\ClientGroup');
+
+    Route::post('/client_groups/add', [ClientGroupController::class,'store'])
+    ->name('store_client_group')
+    ->can('add_client_group','App\Models\ClientGroup');
+
+    Route::get('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'edit'])
+    ->name('edit_client_group')
+    ->can('update_client_group',['App\Models\ClientGroup','client_group_id']);
+
+    Route::post('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'update'])
+    ->name('update_client_group')
+    ->can('update_client_group',['App\Models\ClientGroup','client_group_id']);
+
+
+    Route::get('/clients', [ClientController::class,'all'])
+    ->name('all_clients')
+    ->can('view_clients','App\Models\Client');
+
+    Route::get('/clients/add', [ClientController::class,'create'])
+    ->name('add_client')
+    ->can('add_client','App\Models\Client');
+
+    Route::post('/clients/add', [ClientController::class,'store'])
+    ->name('store_client')
+    ->can('add_client','App\Models\Client');
+
+    Route::get('/clients/{client_id}/edit', [ClientController::class,'edit'])
+    ->name('edit_client')
+    ->can('update',['App\Models\Client','client_id']);
+
+    Route::post('/clients/{client_id}/edit', [ClientController::class,'update'])
+    ->name('update_client')
+    ->can('update',['App\Models\Client','client_id']);
+
+
+    Route::get('/categories', [CategoryController::class,'all'])
+    ->name('all_categories')
+    ->can('view','App\Models\Categroy');
+
+    Route::get('/categories/add', [CategoryController::class,'create'])
+    ->name('add_category')
+    ->can('add','App\Models\Categroy');
+
+    Route::post('/categories/add', [CategoryController::class,'store'])
+    ->name('store_category')
+    ->can('add','App\Models\Categroy');
+
+    Route::get('/categories/{category_id}/edit', [CategoryController::class,'edit'])
+    ->name('edit_category')
+    ->can('update',['App\Models\Brand','category_id']);
+
+    Route::post('/categories/{category_id}/edit', [CategoryController::class,'update'])
+    ->name('update_category')
+    ->can('update',['App\Models\Brand','category_id']);
+
+ 
+    Route::get('/brands', [BrandController::class,'all'])
+    ->name('all_brands')
+    ->can('view','App\Models\Brand');
+
+    Route::get('/brands/add', [BrandController::class,'create'])
+    ->name('add_brand')
+    ->can('add','App\Models\Brand');
+
+    Route::post('/brands/add', [BrandController::class,'store'])
+    ->name('store_brand')
+    ->can('add','App\Models\Brand');
+
+    Route::get('/brands/{brand_id}/edit', [BrandController::class,'edit'])
+    ->name('edit_brand')
+    ->can('update',['App\Models\Brand','brand_id']);
+
+    Route::post('/brands/{brand_id}/edit', [BrandController::class,'update'])
+    ->name('update_brand')
+    ->can('update',['App\Models\Brand','brand_id']);
+
+
+    Route::get('/roles', [RolesController::class,'all'])
+    ->name('all_roles')
+    ->can('view','App\Models\Role');
+
+    Route::get('/roles/add', [RolesController::class,'create'])
+    ->name('add_role')
+    ->can('add','App\Models\Role');
+
+    Route::post('/roles/add', [RolesController::class,'store'])
+    ->name('store_role')
+    ->can('add','App\Models\Role');
+
+    Route::get('/roles/{role_id}/edit', [RolesController::class,'edit'])
+    ->name('edit_role')
+    ->can('update',['App\Models\Role','role_id']);
+
+    Route::post('/roles/{role_id}/edit', [RolesController::class,'update'])
+    ->name('update_role')
+    ->can('update',['App\Models\Role','role_id']);
+
+
+    Route::get('/users', [UsersController::class,'all'])
+    ->name('all_users')
+    ->can('view','App\Models\User');
+
+    Route::get('/users/add', [UsersController::class,'create'])
+    ->name('add_user')
+    ->can('add','App\Models\User');
+
+    Route::post('/users/add', [UsersController::class,'store'])
+    ->name('store_user')
+    ->can('add','App\Models\User');
+
+    Route::get('/users/{user_id}/activate', [UsersController::class,'activate'])
+    ->name('activate_user')
+    ->can('activate_user_id',['App\Models\User','user_id']);
+
+    Route::get('/users/{user_id}/deactivate', [UsersController::class,'deactivate'])
+    ->name('deactivate_user')
+    ->can('deactivate_user_id',['App\Models\User','user_id']);
+
+    Route::get('/users/{user_id}/edit', [UsersController::class,'edit'])
+    ->name('edit_user')
+    ->can('update_user',['App\Models\User','user_id']);
+
+    Route::post('/users/{user_id}/edit', [UsersController::class,'update'])
+    ->name('update_user')
+    ->can('update_user',['App\Models\User','user_id']);
+
 
 });
