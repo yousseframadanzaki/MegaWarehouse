@@ -18,4 +18,8 @@ class Brand extends Model
         return $this->hasOne(Media::class,'collection_id')->where('collection','brand')->latestOfMany();
     }
 
+    public function products() {
+        return $this->hasMany(Product::class);
+    }
+
 }

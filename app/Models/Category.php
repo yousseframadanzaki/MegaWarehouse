@@ -20,4 +20,16 @@ class Category extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    public function mainCategoryProducts() {
+        return $this->hasMany(Product::class,'main_category_id');
+    }
+
+    public function subCategoryProducts() {
+        return $this->hasMany(Product::class,'sub_category_id');
+    }
+
+    public function products() {
+        return $this->mainCategoryProducts->merge($this->subCategoryProducts);
+    }
+
 }

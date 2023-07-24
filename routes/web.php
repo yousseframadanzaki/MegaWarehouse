@@ -14,6 +14,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientGroupController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\ProductController;
 
 
 Route::get('/',function (){
@@ -48,6 +49,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
+
+
+    Route::get('/products/add', [ProductController::class,'create'])
+    ->name('add_product');
+    Route::post('/products/add', [ProductController::class,'store'])
+    ->name('store_product');
 
     Route::get('/warehouses', [WarehouseController::class,'all'])
     ->name('all_warehouses')
