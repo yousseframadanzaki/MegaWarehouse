@@ -21,6 +21,18 @@ class CommonDataService implements CommonDataServiceInterface{
         return $this->common_data_repository->get_categories_by_company_id($company_id);
     }
 
+    public function GetCompanyBrands($company_id){
+        return $this->common_data_repository->get_brands_by_company_id($company_id);
+    }
+
+    public function GetSubCategories($category_id){
+        return $this->common_data_repository->get_sub_categories($category_id);
+    }
+
+    public function GetCompanySuppliers($company_id){
+        return $this->common_data_repository->get_suppliers_by_company_id($company_id);
+    }
+
     public function GetCompanyClientGroups($company_id){
         return $this->common_data_repository->get_client_groups_by_company_id($company_id);
     }

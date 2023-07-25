@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('country/{country_id}/cities', [CommonDataController::class ,'city'])->name('country_cities');
 Route::get('city/{city_id}/areas', [CommonDataController::class ,'area'])->name('city_area');
+Route::get('categories/{category_id}/sub_categories', [CommonDataController::class ,'sub_categories'])->name('category_sub_categories');

@@ -9,10 +9,28 @@ use App\Products\Repositories\ProductAttributesRepository;
 use App\Products\Repositories\ProductCrudRepository;
 use App\Products\Repositories\ProductVariantsRepository;
 
+use App\CommonData\Interfaces\CommonDataServiceInterface;
+
+
 class ProductController extends Controller
 {
+
+    public function __construct(CommonDataServiceInterface $CommonDataService)
+    {
+        $this->CommonDataService = $CommonDataService;
+    }
+
     public function create() {
-        return view('Dashboard.Products.add');
+        $company_id = auth()->user()->company_id;
+        $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
+        $categories = $this->CommonDataService->GetCompanyCategories($company_id);
+        $brands = $this->CommonDataService->GetCompanyBrands($company_id);
+        $data = array(
+            'suppliers'=>$suppliers,
+            'categories'=>$categories,
+            'brands'=>$brands
+        );
+        return view('Dashboard.Products.add')->with('data',$data);
     }
     
     public function store(Request $request) {

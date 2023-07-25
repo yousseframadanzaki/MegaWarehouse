@@ -4,6 +4,8 @@ namespace App\CommonData\Repositories;
 
 use App\Models\Role;
 use App\Models\Category;
+use App\Models\Supplier;
+use App\Models\Brand;
 use App\Models\ClientGroup;
 use App\Models\Country;
 use App\Models\City;
@@ -19,6 +21,18 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     
     public function get_categories_by_company_id($company_id){
         return Category::where('company_id',$company_id)->pluck('name','id');
+    }
+
+    public function get_suppliers_by_company_id($company_id){
+        return Supplier::where('company_id',$company_id)->pluck('name','id');
+    }
+
+    public function get_brands_by_company_id($company_id){
+        return Brand::where('company_id',$company_id)->pluck('name','id');
+    }
+    
+    public function get_sub_categories($category_id){
+        return Category::where(['parent_id'=>$category_id])->pluck('name','id');
     }
 
     public function get_client_groups_by_company_id($company_id){
