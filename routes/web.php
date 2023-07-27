@@ -101,7 +101,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/client_groups', [ClientGroupController::class,'all'])
     ->name('all_client_groups')
-    ->can('view_client_group','App\Models\ClientGroup');
+    ->can('view_clients','App\Models\ClientGroup');
 
     Route::get('/client_groups/add', [ClientGroupController::class,'create'])
     ->name('add_client_group')
@@ -134,11 +134,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/clients/{client_id}/edit', [ClientController::class,'edit'])
     ->name('edit_client')
-    ->can('update',['App\Models\Client','client_id']);
+    ->can('update_client',['App\Models\Client','client_id']);
 
     Route::post('/clients/{client_id}/edit', [ClientController::class,'update'])
     ->name('update_client')
-    ->can('update',['App\Models\Client','client_id']);
+    ->can('update_client',['App\Models\Client','client_id']);
 
 
     Route::get('/categories', [CategoryController::class,'all'])

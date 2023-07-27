@@ -16,8 +16,7 @@ class Product extends Model
         'company_id',
         'supplier_id',
         'brand_id',
-        'main_category_id',
-        'sub_category_id',
+        'category_id',
         'cost',
         'price',
         'sale_price',
@@ -31,12 +30,8 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function main_category() {
-        return $this->belongsTo(Category::class,'main_category_id');
-    }
-
-    public function sub_category() {
-        return $this->belongsTo(Category::class,'sub_category_id');
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 
     public function attributes() {

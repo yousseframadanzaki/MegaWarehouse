@@ -43,3 +43,49 @@ ul.breadcrumb {
     color: #01447e;
     text-decoration: underline;
   }
+
+.dropzone{
+  border: 5px dashed var(--bs-primary) !important;
+}
+.dz-progress {
+  /* progress bar covers file name */
+  display: none !important;
+}
+
+.dz-remove
+{
+    display:inline-block !important;
+    width:1.2em;
+    height:1.2em;
+    
+    position:absolute;
+    top:5px;
+    right:5px;
+    z-index:1000;
+    
+    font-size:1.2em !important;
+    line-height:1em;
+   
+    text-align:center;
+    font-weight:bold;
+    border:1px solid rgb(255, 0, 0) !important;
+    border-radius:1.2em;
+    color:rgb(255, 255, 255);
+    background-color:rgb(255, 0, 0);
+    opacity:.5;
+    
+}
+.tumbnail-selected{
+  border: 5px solid var(--bs-success);
+}
+.dz-remove:hover
+{
+    text-decoration:none !important;
+    opacity:1;
+}
+.dz-details{
+  display: none !important;
+}
+.dropzone .dz-preview:hover .dz-image img{
+  filter: blur(0) !important;
+}

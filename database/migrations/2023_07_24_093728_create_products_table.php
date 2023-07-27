@@ -21,17 +21,14 @@ return new class extends Migration
 
             $table->unsignedBiginteger('supplier_id');
             $table->unsignedBiginteger('brand_id');
-            $table->unsignedBiginteger('main_category_id');
-            $table->unsignedBiginteger('sub_category_id');
+            $table->unsignedBiginteger('category_id');
             $table->unsignedBiginteger('company_id');
 
             $table->foreign('supplier_id')->references('id')
                  ->on('suppliers');
             $table->foreign('brand_id')->references('id')
                  ->on('brands');
-            $table->foreign('main_category_id')->references('id')
-                 ->on('categories');
-            $table->foreign('sub_category_id')->references('id')
+            $table->foreign('category_id')->references('id')
                  ->on('categories');
             $table->foreign('company_id')->references('id')
                  ->on('companies');

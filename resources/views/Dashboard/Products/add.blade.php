@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
-<style>
+    <style>
+        .hover-danger:hover {
+            color: white;
+            background: var(--bs-danger);
+            border-color: transparent;
+        }
+    </style>
 
-    .hover-danger:hover{
-        color: white;
-        background: var(--bs-danger);
-        border-color: transparent;
-    }
-</style>
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
@@ -16,10 +16,10 @@
                 <li>اضافة منتج جديد</li>
             </ul>
         </div>
-        <form class="row  needs-validation" novalidate action="{{ route('store_product') }}" method="POST">
+        <div   class="row  needs-validation " novalidate >
             @csrf
             <div class="card p-5 shadow-sm">
-                <h1 class="text-center">أضافة منتج جديدة</h1>
+                <h1 class="text-center">أضافة منتج جديد</h1>
                 <div class="row mb-3">
                     <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3>
                     <div class="row mb-3">
@@ -48,18 +48,7 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label">وصف المنتج</label>
-                            <textarea type="text" class="form-control @error('description') is-invalid @enderror" name="description"
-                                value="{{ old('description') }}"></textarea>
-                            @error('description')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
+                    
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
@@ -73,8 +62,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">السعر بعد الخصم</label>
-                            <input type="number" class="form-control @error('sale_price') is-invalid @enderror" name="sale_price"
-                                value="{{ old('sale_price') }}">
+                            <input type="number" class="form-control @error('sale_price') is-invalid @enderror"
+                                name="sale_price" value="{{ old('sale_price') }}">
                             @error('sale_price')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
@@ -110,11 +99,12 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">تصنيف الرئيسى<span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="main_category_id" id="main_category_id">
-                                <option>اختار تصنيف الرئيسى</option>
-                                @foreach ($data['categories'] as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
+                            <label class="form-label">تصنيف<span class="text-danger">*</span></label>
+                            <select class="form-select" aria-label="Default select example" name="category_id"
+                                id="category_id">
+                                <option>اختار تصنيف </option>
+                                @foreach ($data['categories']->get() as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>
                             @error('main_category_id')
@@ -123,12 +113,14 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">تصنيف الفرعى<span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="sub_category_id" id="sub_category_id">
-                                
-                            </select>
-                            @error('sub_category_id')
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">وصف المنتج</label>
+                            <textarea id="summernote" type="text" class="form-control @error('description') is-invalid @enderror" name="description"
+                                value="{{ old('description') }}"></textarea>
+                                {{-- <div class="form-control" name="description" id="summernote"></div> --}}
+                            @error('description')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -136,39 +128,84 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <h3 >اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
-                    <div class="options mt-3">
+
+                <div class="row mb-3">
+                    <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
+                    <div class="col-md-12">
+                    <form class="dropzone"  id="product-form" action="{{ route('store_product') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="name" value="name"/>
+                        <div class="dropzone-previews">
+
+                        </div>
+                        <div class="dz-message" data-dz-message><span>قم بالضغط لرفع الصور</span></div>
+                    </form>
+                    </div>
+                </div>
+
+                <div class="row mb-3 mt-2">
+                    <h3>اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
+                    <div class="options">
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <button class="btn btn-primary mt-3" id="add_option_btn">أضافة اختيار</button>
-                            <button class="btn btn-success mt-3" id="save_options_btn" style="display: none">حفظ الاختيارات</button>
+                            <button class="btn btn-success mt-3" id="save_options_btn" style="display: none">حفظ
+                                الاختيارات</button>
+                            <button class="btn btn-dark mt-3" id="edit_options_btn" style="display: none">تعديل
+                                الاختيارات</button>
                         </div>
-                        
                     </div>
-                    
+
                 </div>
-        </form>
+
+                <div class="row mb-3">
+                    <table class="table table-hover fs-4" id="variants_table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th scope="col">اسم</th>
+                                <th scope="col">سعر</th>
+                                <th scope="col">sku</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                    <button id="add_product_btn" type="submit" class="btn btn-primary btn-lg">أضافة المنتج <i class="bi bi-plus-square"></i></button>
+                </div>
         <datalist id="default_options">
             <option value="المقاس">
             <option value="اللون">
             <option value="الخامة">
         </datalist>
     </div>
+@endsection
+
+@section('script')
     <script>
+
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            height: 300,
+            
+        });
+    })
 
         form_options_array = [];
         form_options_values = new Object();
+        options = {};
 
-        $("#add_option_btn").click(function (e) {
+        $("#add_option_btn").click(function(e) {
             e.preventDefault();
             var options_count = form_options_array.length;
             add_option();
-            if(options_count >= 0){
+            if (options_count >= 0) {
                 $('#save_options_btn').fadeIn();
             }
-            if(options_count+1 == 3){
+            if (options_count + 1 == 3) {
                 $(this).fadeOut();
             }
         })
@@ -177,21 +214,33 @@
             var option_id = uid();
             form_options_array.push(option_id);
             var option_template = `
-            <div class="option row mb-3 border shadow-sm p-3" id="`+option_id+`">
+            <div class="option row mb-3 border shadow-sm p-3" id="` + option_id + `">
                 <div class="col-md-5">
                     <label class="form-label">اسم الاختيار <span class="text-danger">*</span></label>
                     <input type="text" class="form-control option_name"  list="default_options">
+                    <div class="invalid-feedback">
+                        برجاء أضافة اسم الاختيار
+                    </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 values_display" style="display:none;">
+                    <label class="form-label">قيم الاختيار:-</label> 
+                    <div class="option_values_div">
+
+                    </div> 
+                </div>
+                <div class="col-md-5 option_value_div">
                     <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control option_values" data-option-id="`+option_id+`">
+                    <input type="text" class="form-control option_values" data-option-id="` + option_id + `" placeholder="برجاء ادخال القيمة والضغط على زر enter">
+                    <div id="invalid-` + option_id + `" class="invalid-feedback">
+                        برجاء أضافة قيم الاختيار
+                    </div>
                 </div>
                 <div class="col-md-2 d-md-flex align-items-end">
-                    <a class="remove_option btn btn-danger" data-remove-id="`+option_id+`"><i class="bi bi-trash"></i></a>
+                    <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3 values_edit">
                     <label class="form-label">قيم الاختيار:-</label> 
-                    <div class="col-md-8 option_values_div">
+                    <div class="option_values_div">
 
                     </div> 
                 </div>
@@ -200,56 +249,65 @@
             $('.options').append(option_template);
         }
 
-        $(document).on("click",".remove_option",function(e){
+        $(document).on("click", ".remove_option", function(e) {
             e.preventDefault();
             var remove_id = $(this).attr("data-remove-id");
-            $("#"+remove_id).fadeOut();
-            $("#"+remove_id).remove();
+            $("#" + remove_id).fadeOut();
+            $("#" + remove_id).remove();
             delete form_options_values[remove_id];
-            update_from_options();
+            delete options[remove_id];
+            update_form_options();
             const index = form_options_array.indexOf(remove_id);
-            
+
             if (index > -1) {
                 form_options_array.splice(index, 1);
             }
-            if(form_options_array.length < 3){
+            if (form_options_array.length < 3) {
                 $("#add_option_btn").fadeIn();
             }
             var options_count = form_options_array.length;
-            if(options_count === 0){
+            if (options_count === 0) {
                 $('#save_options_btn').fadeOut();
+                $('#variants_table tbody').html("");
+                $('#variants_table').fadeOut();
             }
         });
 
-        const uid = function(){
+        const uid = function() {
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
 
-        $(document).on("keypress",".option_values",function(e) {
-            if(e.keyCode==13){
+        $(document).on("keypress", ".option_name", function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        })
+
+        $(document).on("keypress", ".option_values", function(e) {
+            if (e.keyCode == 13) {
                 e.preventDefault();
                 var value = $(this).val();
-                if(!value){
+                if (!value) {
                     return false;
                 }
                 var option_id = $(this).attr('data-option-id');
-                if(form_options_values[option_id]){
+                if (form_options_values[option_id]) {
                     form_options_values[option_id].push(value);
-                }else{
+                } else {
                     form_options_values[option_id] = [value];
                 }
                 $(this).val("");
-                update_from_options();
+                update_form_options();
             }
         });
 
-        function update_from_options() {
+        function update_form_options() {
             $('.option_values_div').html('')
             Object.keys(form_options_values).forEach(key => {
-                form_options_values[key].forEach(value=>{
+                form_options_values[key].forEach(value => {
                     var template = `
                     <div 
-                        class="remove_option_value hover-danger btn btn-success option_value_`+key+`" 
+                        class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
                         style="margin-left:10px" 
                         data-value="${value}"
                         data-option-id="${key}"
@@ -257,12 +315,12 @@
                         ${value}
                         <i class="bi bi-trash"></i>
                     </div>`
-                    $('#'+key+' .option_values_div').append(template);
+                    $('#' + key + ' .option_values_div').append(template);
                 });
             });
         }
 
-        $(document).on("click",".remove_option_value",function(e){
+        $(document).on("click", ".remove_option_value", function(e) {
             var option_id = $(this).attr("data-option-id");
             var value = $(this).attr("data-value");
 
@@ -270,29 +328,200 @@
             if (index > -1) {
                 form_options_values[option_id].splice(index, 1);
             }
-            update_from_options();
-        })
-        
-        $(document).on("click","#save_options_btn",function(e){
-            e.preventDefault();
-            console.log(form_options_array);
-            console.log(form_options_values);
+            update_form_options();
         })
 
-        $("#main_category_id").change(function () {
-            var category_id = this.value;
-            $("#sub_category_id").html('');
-            $.ajax({
-                type:'GET',
-                url:`/api/categories/${category_id}/sub_categories`,
-                dataType: "text",
-            }).then((response)=>{
-                data = JSON.parse(response);
-                $('#sub_category_id').html('<option value="">-- اختار التصنيف الفرعى --</option>');
-                $.each(data, function (key, value) {
-                    $("#sub_category_id").append('<option value="' + key + '">' + value + '</option>');
-                });
-            })
+        $(document).on("click", "#save_options_btn", function(e) {
+            e.preventDefault();
+
+
+            if (!options_data_valid()) {
+                return;
+            }
+
+            form_options_array.forEach(option_id => {
+                var option_name = $('#' + option_id + ' .option_name').val();
+                options[option_id] = {
+                    option_name: option_name,
+                    option_values: form_options_values[option_id]
+                };
+            });
+
+            generate_variants();
+
+            $(".option_value_div").fadeOut();
+            $(".remove_option").fadeOut();
+            $(".remove_option_value i").fadeOut();
+            $(".remove_option_value").removeClass('hover-danger');
+            $(".option_name").prop('readonly', true);
+            $(".remove_option_value").prop('disabled', true);
+            $("#add_option_btn").fadeOut();
+            $(".values_edit").fadeOut();
+            $(".values_display").fadeIn();
+
+            $("#edit_options_btn").fadeIn();
+            $(this).fadeOut();
+
         })
+
+        $(document).on("click", "#edit_options_btn", function(e) {
+            e.preventDefault();
+            $(".option_value_div").fadeIn();
+            $(".remove_option").fadeIn();
+            $(".remove_option_value i").fadeIn();
+            $(".remove_option_value").addClass('hover-danger');
+            $(".option_name").prop('readonly', false);
+            $(".remove_option_value").prop('disabled', false);
+            $("#add_option_btn").fadeIn();
+            $(".values_edit").fadeIn();
+            $(".values_display").fadeOut();
+            $("#save_options_btn").fadeIn();
+            $(this).fadeOut();
+            console.log(options);
+        })
+
+        function options_data_valid() {
+            var valid = true;
+            form_options_array.forEach(option_id => {
+                var option_name = $('#' + option_id + ' .option_name').val();
+                var option_values = form_options_values[option_id];
+
+                if (!option_name) {
+                    valid = false;
+                    $("#" + option_id + " .invalid-feedback").fadeIn();
+                    $("#" + option_id + " .option_name").addClass("is-invalid");
+                } else {
+                    $("#" + option_id + " .invalid-feedback").fadeOut();
+                    $("#" + option_id + " .option_name").removeClass("is-invalid");
+                }
+
+
+                if (option_values === undefined || option_values.length == 0) {
+                    valid = false;
+                    $("#" + option_id + " #invalid-" + option_id).fadeIn();
+                    $("#" + option_id + " .option_values").addClass("is-invalid");
+                } else {
+                    $("#" + option_id + " #invalid-" + option_id).fadeOut();
+                    $("#" + option_id + " .option_values").removeClass("is-invalid");
+                }
+
+            });
+            return valid;
+        }
+
+        function generate_variants() {
+            var variants = [];
+
+            var attributes = {};
+
+            Object.entries(options).forEach(element => {
+                attributes[element[1].option_name] = element[1].option_values;
+            });
+
+            for (const [attr, values] of Object.entries(attributes))
+                variants.push(values.map(v => ({
+                    [attr]: v
+                })));
+
+            variants = variants.reduce((a, b) => a.flatMap(d => b.map(e => ({
+                ...d,
+                ...e
+            }))));
+
+            variants.forEach(variant => {
+                variant.name = Object.keys(variant).map(key => variant[key]).join(' / ');
+                console.log(variant);
+            });
+
+            add_variants_to_table(variants);
+
+        }
+
+        function add_variants_to_table(variants) {
+            $("#variants_table tbody").html("");
+            variants.forEach(element => {
+                var template = `
+                    <tr>
+                    <td>` + element.name + `</td>
+                    <td><input class="price form-control" type="number"/></td>
+                    <td><input class="sku form-control" type="text"/></td>
+                    </tr>
+                `
+                $("#variants_table tbody").append(template);
+            });
+            $("#variants_table").fadeIn();
+        }
+
+    Dropzone.options.productForm = {
+        
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 5,
+        maxFiles: 5,
+        
+        addRemoveLinks: true,
+        dictRemoveFile:"×",
+        paramName: "product_images",
+        error: function(file, msg){
+            console.log(msg);
+        },
+        init: function() {
+            var myDropzone = this;
+            
+            this.on("thumbnail", function(file) {
+                
+                file.previewElement.addEventListener("click", function() {
+                    if(file.is_main){
+                        $(this).removeClass("tumbnail-selected");
+                        file.is_main = false;
+                    }else{
+                        $(".dz-preview").removeClass("tumbnail-selected");
+                        myDropzone.files.forEach(element => {
+                            element.is_main = false;
+                        });
+                        $(this).addClass("tumbnail-selected");
+                        file.is_main = true;
+                    }
+                });
+            });
+
+            $("#add_product_btn").click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (myDropzone.getQueuedFiles().length === 0) {
+                    var blob = new Blob();
+                    blob.upload = { 'chunked': myDropzone.defaultOptions.chunking };
+                    myDropzone.uploadFile(blob);
+                } else {
+                    myDropzone.processQueue();
+                }
+
+            });
+            
+            this.on("sendingmultiple", function(data, xhr, formData) {
+                myDropzone.files.forEach(file => {
+                    if(file.is_main){
+                        formData.append("main_image", file);
+                    }else{
+                        formData.append("product_images[]", file);
+                    }
+                });
+                append_product_data();
+            });
+
+            this.on("successmultiple", function(files, response) {
+                console.log(response);
+            });
+
+            this.on("errormultiple", function(files, response) {
+                console.log(response);
+            });
+        }
+    }
+
+    function append_product_data() {
+        
+    }
     </script>
 @endsection
