@@ -17,7 +17,7 @@ return new class extends Migration
             $table->longText('description');
             $table->float('cost');
             $table->float('price');
-            $table->float('sale_price');
+            $table->float('before_sale_price');
 
             $table->unsignedBiginteger('supplier_id');
             $table->unsignedBiginteger('brand_id');

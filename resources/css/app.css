@@ -19,7 +19,7 @@ a:link{text-decoration:none}
 }
 
 ul.breadcrumb {
-    padding: 10px 0px;
+    
     list-style: none;
   }
   
@@ -89,3 +89,5 @@ ul.breadcrumb {
 .dropzone .dz-preview:hover .dz-image img{
   filter: blur(0) !important;
 }
+
+

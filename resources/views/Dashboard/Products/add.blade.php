@@ -7,6 +7,13 @@
             background: var(--bs-danger);
             border-color: transparent;
         }
+        .checkbox { position: absolute;
+            top: 0%;
+            left: 0%;
+            z-index: 10;
+            width: 20px;
+            height: 20px;
+         }
     </style>
 
     <div class="p-3">
@@ -19,12 +26,12 @@
         </div>
         <div class="row  needs-validation " novalidate>
             @csrf
-            <div class="card p-5 shadow-sm">
-                <h1 class="text-center">أضافة منتج جديد</h1>
+            <div class="card p-3 shadow-sm">
+                <h3 class="text-center">أضافة منتج جديد</h3>
                 <div class="row mb-3">
                     <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3>
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
                             <input type="text" class="form-control product_info @error('name') is-invalid @enderror"
                                 name="name" value="{{ old('name') }}">
@@ -34,9 +41,9 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                            <select class="form-select product_info" aria-label="Default  select example" name="brand_id">
+                            <select class="form-select product_info" aria-label="Default  select example" name="brand_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار الماركة</option>
                                 @foreach ($data['brands'] as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
@@ -48,10 +55,7 @@
                             </div>
 
                         </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
                             <input type="number" class="form-control product_info @error('price') is-invalid @enderror"
                                 name="price" value="{{ old('price') }}">
@@ -61,18 +65,19 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">السعر بعد الخصم</label>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">السعر قبل الخصم</label>
                             <input type="number"
-                                class="form-control product_info @error('sale_price') is-invalid @enderror"
-                                name="sale_price" value="{{ old('sale_price') }}">
-                            <div class="invalid-feedback sale_price">
+                                class="form-control product_info @error('before_sale_price') is-invalid @enderror"
+                                name="before_sale_price" value="{{ old('before_sale_price') }}">
+                            <div class="invalid-feedback before_sale_price">
 
                             </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
                             <input type="number" class="form-control product_info @error('cost') is-invalid @enderror"
                                 name="cost" value="{{ old('cost') }}">
@@ -82,7 +87,7 @@
                             </div>
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">المورد <span class="text-danger">*</span></label>
                             <select class="form-select product_info" aria-label="Default select example" name="supplier_id">
                                 <option value="">اختار المورد</option>
@@ -181,10 +186,14 @@
     <meta name="_token" content="{{ csrf_token() }}">
     @endsection
 @section('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
             $('#summernote').summernote({
-                height: 300,
+                height: 200,
+            });
+            $('select.product_info').select2({
+                padding: 'resolve',
             });
         })
 
@@ -463,6 +472,7 @@
             addRemoveLinks: true,
             dictRemoveFile: "×",
             paramName: "product_images",
+            thumbnailMethod:"contain",
             error: function(file, msg) {
                 console.log(msg);
             },
@@ -470,19 +480,26 @@
                 var myDropzone = this;
 
                 this.on("thumbnail", function(file) {
-
-                    file.previewElement.addEventListener("click", function() {
+                    $(file.previewElement).append("<input type='checkbox'  class='form-check-input checkbox' id='"+file.upload.uuid+"' />");
+                    
+                    $("#"+file.upload.uuid).click(function () {
                         if (file.is_main) {
-                            $(this).removeClass("tumbnail-selected");
                             file.is_main = false;
+                            $(this).prop("checked",false);
                         } else {
-                            $(".dz-preview").removeClass("tumbnail-selected");
+                            $("#product-form input[type=checkbox]").prop("checked",false);
                             myDropzone.files.forEach(element => {
                                 element.is_main = false;
                             });
-                            $(this).addClass("tumbnail-selected");
                             file.is_main = true;
+                            $(this).prop("checked",true);
                         }
+                        console.log(file);
+                    })
+                    
+
+                    file.previewElement.addEventListener("click", function() {
+                        
                     });
                 });
 

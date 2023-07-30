@@ -19,7 +19,7 @@ class Product extends Model
         'category_id',
         'cost',
         'price',
-        'sale_price',
+        'before_sale_price',
     ];
 
     public function supplier() {

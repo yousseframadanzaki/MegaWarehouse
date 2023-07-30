@@ -76,8 +76,8 @@
     "product_info_price_required":"برجاء ادخال السعر",
     "product_info_price_numeric":"برجاء ادخال السعر",
 
-    "product_info_sale_price_numeric":"برجاء ادخال السعر بعد الخصم بشكل صحيح",
-    "product_info_sale_price_lt":"برجاء ادخال السعر بعد الخصم اقل من السعر",
+    "product_info_sale_price_numeric":"برجاء ادخال السعر قبل الخصم بشكل صحيح",
+    "product_info_before_sale_price_gt":"برجاء ادخال السعر قبل الخصم اعلى من السعر",
     
     "product_info_cost_required":"برجاء ادخال تكلفة المنتج",
     "product_info_cost_numeric":"برجاء ادخال تكلفة المنتج بشكل صحيح",

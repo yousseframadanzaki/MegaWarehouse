@@ -28,8 +28,8 @@ class CreateProductRequest extends FormRequest
             'product_info.supplier_id'=>'required|numeric|exists:suppliers,id',
             'product_info.category_id'=>'required|numeric|exists:categories,id',
             'product_info.price'=>'required|numeric',
-            'product_info.sale_price'=>'nullable|numeric|lt:product_info.price',
-            'product_info.cost'=>'required|numeric|lt:product_info.price',
+            'product_info.before_sale_price'=>'nullable|numeric|gt:product_info.price',
+            'product_info.cost'=>'required|numeric',
         ];
     }
 
@@ -54,13 +54,11 @@ class CreateProductRequest extends FormRequest
             "product_info.price.required" => __("product_info_price_required"),
             "product_info.price.numeric" => __("product_info_price_numeric"),
 
-            "product_info.sale_price.numeric" => __("product_info_sale_price_numeric"),
-            "product_info.sale_price.lt" => __("product_info_sale_price_lt"),
+            "product_info.before_sale_price.numeric" => __("product_info_before_sale_price_numeric"),
+            "product_info.before_sale_price.gt" => __("product_info_before_sale_price_gt"),
 
             "product_info.cost.required" => __("product_info_cost_required"),
             "product_info.cost.numeric" => __("product_info_cost_numeric"),
-            "product_info.cost.lt" => __("product_info_cost_lt"),
-
         ];
     }
 

@@ -10,11 +10,7 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
     public function add_default_variant($product){
         $variant = new Variant();
         $variant->name = $product->name;
-        if($product->sale_price){
-            $variant->price = $product->sale_price;
-        }else{
-            $variant->price = $product->price;
-        }
+        $variant->price = $product->price;
         $variant->is_default = true;
         $variant->product_id = $product->id;
         $variant->save();
@@ -27,24 +23,16 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
       foreach ($variants as $variant) {
         $variant_info = $this->array_exclude($variant,['options']);
         $variant_info['product_id'] = $product->id;
-        
-        if(empty($variant_info['price'])){
-            if($product->sale_price){
-                $variant_info['price'] = $product->sale_price;
-            }else{
-                $variant_info['price'] = $product->price;
-            }
+        if(!isset($variant_info['price'])){
+            $variant_info['price'] = $product->price;
         }
-
         $created_variant = Variant::create($variant_info);
-
         if(empty($variant_info['sku'])){
             $variant_info['sku'] = implode("-",array_values($attributes));
             $variant_info['sku'] = $product->id .'-'. $created_variant->id ."-" . $variant_info['sku'];
             $created_variant->sku = $variant_info['sku'];
             $created_variant->save();
         }
-
         $prepared_attributes = $this->prepare_attributes($variant['options'],$attributes);
         $created_variant->attributes()->sync($prepared_attributes);
       }
