@@ -26,6 +26,13 @@ class ProductController extends Controller
         $this->ProductCrudService = $ProductCrudService;
     }
 
+
+    public function all() {
+        $company_id = auth()->user()->company_id;
+        $products = $this->ProductCrudService->GetCompanyProducts($company_id);
+        return view("Dashboard.Products.show_all")->with('products',$products);
+    }
+
     public function create() {
         $company_id = auth()->user()->company_id;
         $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);

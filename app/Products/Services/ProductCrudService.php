@@ -67,4 +67,8 @@ class ProductCrudService implements ProductCrudServiceInterface{
         return false;
     }
 
+    public function GetCompanyProducts($company_id){
+        return $this->product_crud_repository->get_products_by_company_id($company_id);
+    }
+
 }

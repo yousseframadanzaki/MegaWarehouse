@@ -52,6 +52,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
 
+    Route::get('/products', [ProductController::class,'all'])
+    ->name('all_products');
     Route::get('/products/add', [ProductController::class,'create'])
     ->name('add_product');
     Route::post('/products/add', [ProductController::class,'store'])

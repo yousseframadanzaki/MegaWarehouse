@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Media;
 class Product extends Model
 {
 
@@ -40,6 +40,14 @@ class Product extends Model
 
     public function variants() {
         return $this->hasMany(Variant::class);
+    }
+
+    public function main_image() {
+        return $this->hasOne(Media::class,'collection_id')->where('collection','product.main_image')->latest();
+    }
+
+    public function images() {
+        return $this->hasMany(Media::class,'collection_id')->where('collection','product');
     }
 
 }

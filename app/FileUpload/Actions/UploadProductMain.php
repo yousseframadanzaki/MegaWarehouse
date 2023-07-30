@@ -17,7 +17,7 @@ class UploadProductMain implements UploadProductMainInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "product/main_images/$name/$name",
+            path: "product/main/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',

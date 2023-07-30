@@ -20,7 +20,7 @@
         <div class="row">
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-                <li><a href="{{ route('all_roles') }}">المنتجات</a></li>
+                <li><a href="{{ route('all_products') }}">المنتجات</a></li>
                 <li>اضافة منتج جديد</li>
             </ul>
         </div>
