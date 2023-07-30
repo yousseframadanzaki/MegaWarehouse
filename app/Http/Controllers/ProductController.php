@@ -5,19 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Products\Repositories\ProductAttributesRepository;
-use App\Products\Repositories\ProductCrudRepository;
-use App\Products\Repositories\ProductVariantsRepository;
 
 use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Products\Requests\CreateProductRequest;
+use App\Products\Interfaces\ProductCrudServiceInterface;
 
 
 class ProductController extends Controller
 {
 
-    public function __construct(CommonDataServiceInterface $CommonDataService)
+    private CommonDataServiceInterface $CommonDataService;
+    private ProductCrudServiceInterface $ProductCrudService;
+
+    public function __construct(
+        CommonDataServiceInterface $CommonDataService,
+        ProductCrudServiceInterface $ProductCrudService
+    )
     {
         $this->CommonDataService = $CommonDataService;
+        $this->ProductCrudService = $ProductCrudService;
     }
 
     public function create() {
@@ -33,30 +39,19 @@ class ProductController extends Controller
         return view('Dashboard.Products.add')->with('data',$data);
     }
     
-    public function store(Request $request) {
-        dd($request->all());
-        // $data["main_image"] = $request->main_image->getClientOriginalName();
-        // $data["product_images_count"] = count($request->product_images);
-        // $data["files_count"] = count($_FILES);
-        // $data['product_info']['cost'] = 20;
-        // $data['product_info']['price'] = 120;
-        // $data['product_info']['sale_price'] = 100;
-        // $data['product_info']['brand_id'] = 1;
-        // $data['product_info']['main_category_id'] = 3;
-        // $data['product_info']['sub_category_id'] = 4;
-        // $data['product_info']['company_id'] = auth()->user()->company_id;
-        // $data['product_info']['supplier_id'] = 1;
-        // $data['product_info']['description'] = 'description';
+    public function store(CreateProductRequest $request) {
+        $data = $request->all();
+        // dd($data);
+        $company_id = auth()->user()->company_id;
 
-        // // dd($data);
+        $product = $this->ProductCrudService->AddProduct($company_id,$data);
 
-        // $attribute_repo = new ProductAttributesRepository();
-        // $product_repo = new ProductCrudRepository();
-        // $variant_repo = new ProductVariantsRepository();
+        if(!$product){
+            $request->session()->flash('erroe', 'error adding product');
+            return response()->json();
+        }
 
-        // $product = $product_repo->add_product($data['product_info']);
-        // $attributes = $attribute_repo->add_attributes($product->id,$data['product_attributes']);
-        // $variants = $variant_repo->add_variants($product->id,$attributes,$data['product_variants']);
-        return response()->json($data);
+        $request->session()->flash('success', 'New product added successfully.');
+        return response()->json($product);
     }
 }

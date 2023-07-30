@@ -6,6 +6,6 @@ use App\FileUpload\DTO\File;
 
 interface UploadInterface{
 
-    public function handle($fille,$collection_id=NULL): File;
+    public function handle($file,$collection_id=NULL): File;
 
 }

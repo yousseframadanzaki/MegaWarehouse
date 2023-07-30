@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @section('content')
     <style>
@@ -16,7 +17,7 @@
                 <li>اضافة منتج جديد</li>
             </ul>
         </div>
-        <div   class="row  needs-validation " novalidate >
+        <div class="row  needs-validation " novalidate>
             @csrf
             <div class="card p-5 shadow-sm">
                 <h1 class="text-center">أضافة منتج جديد</h1>
@@ -25,106 +26,100 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                value="{{ old('name') }}">
-                            @error('name')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+                            <input type="text" class="form-control product_info @error('name') is-invalid @enderror"
+                                name="name" value="{{ old('name') }}">
+
+                            <div class="invalid-feedback name">
+
+                            </div>
+
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="brand_id">
-                                <option>اختار الماركة</option>
+                            <select class="form-select product_info" aria-label="Default  select example" name="brand_id">
+                                <option value="">اختار الماركة</option>
                                 @foreach ($data['brands'] as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                            @error('brand_id')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+
+                            <div class="invalid-feedback brand_id">
+
+                            </div>
+
                         </div>
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control @error('price') is-invalid @enderror" name="price"
-                                value="{{ old('price') }}">
-                            @error('price')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+                            <input type="number" class="form-control product_info @error('price') is-invalid @enderror"
+                                name="price" value="{{ old('price') }}">
+
+                            <div class="invalid-feedback price">
+
+                            </div>
+
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">السعر بعد الخصم</label>
-                            <input type="number" class="form-control @error('sale_price') is-invalid @enderror"
+                            <input type="number"
+                                class="form-control product_info @error('sale_price') is-invalid @enderror"
                                 name="sale_price" value="{{ old('sale_price') }}">
-                            @error('sale_price')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+                            <div class="invalid-feedback sale_price">
+
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control @error('cost') is-invalid @enderror" name="cost"
-                                value="{{ old('cost') }}">
-                            @error('cost')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+                            <input type="number" class="form-control product_info @error('cost') is-invalid @enderror"
+                                name="cost" value="{{ old('cost') }}">
+
+                            <div class="invalid-feedback cost">
+
+                            </div>
+
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">المورد <span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="supplier_id">
-                                <option>اختار المورد</option>
+                            <select class="form-select product_info" aria-label="Default select example" name="supplier_id">
+                                <option value="">اختار المورد</option>
                                 @foreach ($data['suppliers'] as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                            @error('supplier_id')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+
+                            <div class="invalid-feedback supplier_id">
+
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">تصنيف<span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="category_id"
+                            <select class="form-select product_info" aria-label="Default  select example" name="category_id"
                                 id="category_id">
-                                <option>اختار تصنيف </option>
+                                <option value="">اختار تصنيف </option>
                                 @foreach ($data['categories']->get() as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>
-                            @error('main_category_id')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+
+                            <div class="invalid-feedback category_id">
+
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="form-label">وصف المنتج</label>
-                            <textarea id="summernote" type="text" class="form-control @error('description') is-invalid @enderror" name="description"
-                                value="{{ old('description') }}"></textarea>
-                                {{-- <div class="form-control" name="description" id="summernote"></div> --}}
-                            @error('description')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+                            <textarea id="summernote" type="text" class="form-control product_info @error('description') is-invalid @enderror"
+                                name="description"></textarea>
+                            <div class="invalid-feedback description">
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -132,14 +127,14 @@
                 <div class="row mb-3">
                     <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
                     <div class="col-md-12">
-                    <form class="dropzone"  id="product-form" action="{{ route('store_product') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="name" value="name"/>
-                        <div class="dropzone-previews">
+                        <form class="dropzone" id="product-form" action="{{ route('store_product') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="dropzone-previews">
 
-                        </div>
-                        <div class="dz-message" data-dz-message><span>قم بالضغط لرفع الصور</span></div>
-                    </form>
+                            </div>
+                            <div class="dz-message" data-dz-message><span>قم بالضغط لرفع الصور</span></div>
+                        </form>
                     </div>
                 </div>
 
@@ -174,25 +169,24 @@
                     </table>
                 </div>
 
-                    <button id="add_product_btn" type="submit" class="btn btn-primary btn-lg">أضافة المنتج <i class="bi bi-plus-square"></i></button>
-                </div>
-        <datalist id="default_options">
-            <option value="المقاس">
-            <option value="اللون">
-            <option value="الخامة">
-        </datalist>
+                <button id="add_product_btn" type="submit" class="btn btn-primary btn-lg">أضافة المنتج <i
+                        class="bi bi-plus-square"></i></button>
+            </div>
+            <datalist id="default_options">
+                <option value="المقاس">
+                <option value="اللون">
+                <option value="الخامة">
+            </datalist>
     </div>
-@endsection
-
+    <meta name="_token" content="{{ csrf_token() }}">
+    @endsection
 @section('script')
     <script>
-
-    $(document).ready(function () {
-        $('#summernote').summernote({
-            height: 300,
-            
-        });
-    })
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300,
+            });
+        })
 
         form_options_array = [];
         form_options_values = new Object();
@@ -306,15 +300,15 @@
             Object.keys(form_options_values).forEach(key => {
                 form_options_values[key].forEach(value => {
                     var template = `
-                    <div 
-                        class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
-                        style="margin-left:10px" 
-                        data-value="${value}"
-                        data-option-id="${key}"
-                    >
-                        ${value}
-                        <i class="bi bi-trash"></i>
-                    </div>`
+                <div 
+                    class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
+                    style="margin-left:10px" 
+                    data-value="${value}"
+                    data-option-id="${key}"
+                >
+                    ${value}
+                    <i class="bi bi-trash"></i>
+                </div>`
                     $('#' + key + ' .option_values_div').append(template);
                 });
             });
@@ -430,7 +424,7 @@
 
             variants.forEach(variant => {
                 variant.name = Object.keys(variant).map(key => variant[key]).join(' / ');
-                console.log(variant);
+                // console.log(variant);
             });
 
             add_variants_to_table(variants);
@@ -439,89 +433,139 @@
 
         function add_variants_to_table(variants) {
             $("#variants_table tbody").html("");
-            variants.forEach(element => {
+            variants.forEach((element, index) => {
                 var template = `
-                    <tr>
-                    <td>` + element.name + `</td>
-                    <td><input class="price form-control" type="number"/></td>
-                    <td><input class="sku form-control" type="text"/></td>
-                    </tr>
-                `
+                <tr>
+                <td>` + element.name + `</td>
+                <td><input class=" product_variant form-control" name="product_variants[` + index + `][price]" type="number"/></td>
+                <td><input class="sku product_variant form-control" name="product_variants[` + index + `][sku]" type="text"/></td>
+                <input type="hidden" class="product_variant" name="product_variants[` + index +
+                    `][name]" value="` + element.name + `"/>`
+                Object.entries(element).forEach(option_value => {
+                    if (option_value[0] != 'name') {
+                        template += `<input type="hidden" class="product_variant" name="product_variants[` +
+                            index + `][options][` + option_value[0] + `]" value="` + option_value[1] + `"/>`
+                    }
+                });
+                template += `</tr>`;
                 $("#variants_table tbody").append(template);
             });
             $("#variants_table").fadeIn();
         }
 
-    Dropzone.options.productForm = {
-        
-        autoProcessQueue: false,
-        uploadMultiple: true,
-        parallelUploads: 5,
-        maxFiles: 5,
-        
-        addRemoveLinks: true,
-        dictRemoveFile:"×",
-        paramName: "product_images",
-        error: function(file, msg){
-            console.log(msg);
-        },
-        init: function() {
-            var myDropzone = this;
-            
-            this.on("thumbnail", function(file) {
-                
-                file.previewElement.addEventListener("click", function() {
-                    if(file.is_main){
-                        $(this).removeClass("tumbnail-selected");
-                        file.is_main = false;
-                    }else{
-                        $(".dz-preview").removeClass("tumbnail-selected");
-                        myDropzone.files.forEach(element => {
-                            element.is_main = false;
-                        });
-                        $(this).addClass("tumbnail-selected");
-                        file.is_main = true;
-                    }
+        Dropzone.options.productForm = {
+
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 5,
+            maxFiles: 5,
+
+            addRemoveLinks: true,
+            dictRemoveFile: "×",
+            paramName: "product_images",
+            error: function(file, msg) {
+                console.log(msg);
+            },
+            init: function() {
+                var myDropzone = this;
+
+                this.on("thumbnail", function(file) {
+
+                    file.previewElement.addEventListener("click", function() {
+                        if (file.is_main) {
+                            $(this).removeClass("tumbnail-selected");
+                            file.is_main = false;
+                        } else {
+                            $(".dz-preview").removeClass("tumbnail-selected");
+                            myDropzone.files.forEach(element => {
+                                element.is_main = false;
+                            });
+                            $(this).addClass("tumbnail-selected");
+                            file.is_main = true;
+                        }
+                    });
                 });
-            });
 
-            $("#add_product_btn").click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
+                $("#add_product_btn").click(function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    append_product_data();
+                    if (myDropzone.getQueuedFiles().length === 0) {
+                        var blob = new Blob();
+                        blob.upload = {
+                            'chunked': myDropzone.defaultOptions.chunking
+                        };
+                        myDropzone.uploadFile(blob);
+                    } else {
+                        myDropzone.processQueue();
+                    }
 
-                if (myDropzone.getQueuedFiles().length === 0) {
-                    var blob = new Blob();
-                    blob.upload = { 'chunked': myDropzone.defaultOptions.chunking };
-                    myDropzone.uploadFile(blob);
-                } else {
-                    myDropzone.processQueue();
+                });
+
+                this.on("sendingmultiple", function(data, xhr, formData) {
+                    myDropzone.files.forEach(file => {
+                        if (file.is_main) {
+                            formData.append("main_image", file);
+                        } else {
+                            formData.append("product_images[]", file);
+                        }
+                    });
+
+                });
+
+                this.on("successmultiple", function(files, response) {
+                    window.location.href = window.location.href;
+                    // console.log(response);
+                });
+
+                this.on("errormultiple", function(files, response) {
+                    Object.entries(response.errors).forEach(error => {
+                        error_field_type = error[0].split('.')[0];
+                        error_field = error[0].split('.')[1];
+                        console.log(".invalid-feedback." + error_field);
+                        $("input[name=" + error_field + "]").addClass("is-invalid");
+                        $("select[name=" + error_field + "]").addClass("is-invalid");
+                        $(".invalid-feedback." + error_field).text(error[1]);
+                    });
+
+                    $("#product-form input[type=hidden]").remove();
+                    token = $('meta[name="_token"]').attr('content')
+                    $("#product-form").append("<input type='hidden' name='_token' value="+token+" />");
+                    $(window).scrollTop(0);
+                });
+            }
+        }
+
+        function append_product_data() {
+            $(".product_info").each(function() {
+
+                if($(this).attr('name') === "description"){
+                    var template = `<input type="hidden" name="product_info[` + $(this).attr('name') + `]" value="` + $(
+                    this).summernote("code") + `" />`
+                    $("#product-form").append(template);
+                    return;
                 }
 
+                var template = `<input type="hidden" name="product_info[` + $(this).attr('name') + `]" value="` + $(
+                    this).val() + `" />`
+                $("#product-form").append(template);
             });
-            
-            this.on("sendingmultiple", function(data, xhr, formData) {
-                myDropzone.files.forEach(file => {
-                    if(file.is_main){
-                        formData.append("main_image", file);
-                    }else{
-                        formData.append("product_images[]", file);
-                    }
+            Object.entries(options).forEach(element => {
+                var option = element[1];
+                option.option_values.forEach(value => {
+                    var option_template = `<input type="hidden" name="product_attributes[` + option
+                        .option_name + `][]" value="` + value + `"/>`;
+                    $("#product-form").append(option_template);
                 });
-                append_product_data();
             });
 
-            this.on("successmultiple", function(files, response) {
-                console.log(response);
+            $(".product_variant").each(function() {
+                var template = `<input type="hidden" name="` + $(this).attr('name') + `" value="` + $(this).val() +
+                    `" />`
+                $("#product-form").append(template);
             });
 
-            this.on("errormultiple", function(files, response) {
-                console.log(response);
-            });
         }
-    }
 
-    function append_product_data() {
-        
-    }
     </script>
 @endsection

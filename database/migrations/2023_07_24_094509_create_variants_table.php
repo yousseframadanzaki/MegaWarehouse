@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('quantity')->default(0);
             $table->float('price');
-            $table->string('sku');
+            $table->string('sku')->nullable();
             $table->boolean('is_default')->default(0);
             $table->unsignedBiginteger('product_id');
             $table->foreign('product_id')->references('id')
