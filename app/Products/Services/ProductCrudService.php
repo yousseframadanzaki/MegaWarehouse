@@ -32,31 +32,15 @@ class ProductCrudService implements ProductCrudServiceInterface{
             $variants = $this->product_variants_repository->add_default_variant($product);
         }
 
-        if(isset($details["main_image"])){
-           $file = $this->FileUploadService->product_main($details["main_image"],$product->id);
-           $this->MediaService->save($file);
-        }
+
+        $this->add_images($product->id,$details);
+
         
-        if(isset($details["product_images"])){
-            if(isset($details["main_image"])){
-                foreach ($details["product_images"] as $image) {       
-                    if(!$this->compare_files($image,$details["main_image"])){
-                        $file = $this->FileUploadService->product($image,$product->id);
-                        $this->MediaService->save($file);
-                    }         
-                }
-            }else{
-                foreach ($details["product_images"] as $image) {       
-                    $file = $this->FileUploadService->product($image,$product->id);
-                    $this->MediaService->save($file);     
-                }
-            }
-        }
 
         return $product;
     }
 
-    private function compare_files($file1,$file2) {
+    private function files_equal($file1,$file2) {
         if(
             $file1->getClientOriginalName() === $file2->getClientOriginalName()
             &&
@@ -70,5 +54,71 @@ class ProductCrudService implements ProductCrudServiceInterface{
     public function GetCompanyProducts($company_id){
         return $this->product_crud_repository->get_products_by_company_id($company_id);
     }
+
+    public function GetProduct($product_id) {
+        return $this->product_crud_repository->get_product_by_id($product_id);
+    }
+
+    public function UpdateProduct($product_id,array $details) {
+        $product = $this->product_crud_repository->update_product_by_id($product_id,$details['product_info']);
+
+        $this->update_images($product_id,$details);
+
+        return $product;
+    }
+
+    private function add_images($product_id,$data) {     
+        
+
+        if(count($data["product_images"]) == 1 && $data["product_images"][0]->getClientOriginalName() == "blob"){
+            return;
+        }
+
+        if(isset($data['main_image'])){
+            $main_image = $this->FileUploadService->product_main($data["main_image"],$product_id);
+            $this->MediaService->save($main_image);
+        }else{
+            $main_image = $this->FileUploadService->product_main($data["product_images"][0],$product_id);
+            $this->MediaService->save($main_image);
+        }
+
+        foreach ($data["product_images"] as $image) {
+            if(!$this->files_equal($image,$data["main_image"])){
+                $file = $this->FileUploadService->product($image,$product_id);
+                $this->MediaService->save($file);
+            }
+        }
+    }
+
+    private function update_images($product_id,$data) {     
+        
+
+        if(count($data["product_images"]) == 1 && $data["product_images"][0]->getClientOriginalName() == "blob"){
+            return;
+        }
+
+        if(isset($data['main_image'])){
+            $old_main = $this->MediaService->GetMediaByCollection("product.main_image",$product_id);
+            if($old_main){
+                $this->MediaService->UpdateMediaCollection($old_main->id,"product");
+            }
+            $main_image = $this->FileUploadService->product_main($data["main_image"],$product_id);
+            $this->MediaService->save($main_image);
+        }else{
+            $main_image = $this->FileUploadService->product_main($data["product_images"][0],$product_id);
+            $this->MediaService->save($main_image);
+            unset($data["product_images"][0]);
+        }
+
+        foreach ($data["product_images"] as $image) {
+            if(!isset($data["main_image"]) || !$this->files_equal($image,$data["main_image"])){
+                $file = $this->FileUploadService->product($image,$product_id);
+                $this->MediaService->save($file);
+            }
+        }
+    }
+
+
+
 
 }

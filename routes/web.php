@@ -58,6 +58,12 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('add_product');
     Route::post('/products/add', [ProductController::class,'store'])
     ->name('store_product');
+    Route::get('/products/{product_id}', [ProductController::class,'show'])
+    ->name('show_product');
+    Route::get('/products/{product_id}/edit', [ProductController::class,'edit'])
+    ->name('edit_product');
+    Route::post('/products/{product_id}/edit', [ProductController::class,'update'])
+    ->name('update_product');
 
     Route::get('/warehouses', [WarehouseController::class,'all'])
     ->name('all_warehouses')

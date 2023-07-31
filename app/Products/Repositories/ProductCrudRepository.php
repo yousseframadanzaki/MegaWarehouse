@@ -13,6 +13,19 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
     public function get_products_by_company_id($company_id){
         return Product::with(['main_image','category','brand','supplier'])->where('company_id',$company_id)->paginate(10);
     }
+
+    public function get_product_by_id($product_id){
+        return Product::with([
+            'attributes',
+            'variants',
+            'main_image',
+            'images',
+            'category',
+            'supplier',
+            'brand'
+        ])->findOrfail($product_id);
+    }
+
     // public function get_company_products($company_id){
     //     return Product::where('company_id',$company_id)->paginate(10);
     // }
@@ -21,8 +34,9 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
     //     return Product::findOrFail($product_id);
     // }
 
-    // public function update_product_by_id($product_id,array $product_details){
-    //     return Product::where(['id'=>$product_id])->update($product_details);
-    // }
+    
+    public function update_product_by_id($product_id,array $product_details){
+        return Product::where(['id'=>$product_id])->update($product_details);
+    }
 
 }

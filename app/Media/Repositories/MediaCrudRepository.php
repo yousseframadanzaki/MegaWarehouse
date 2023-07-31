@@ -13,4 +13,16 @@ class MediaCrudRepository implements MediaCrudRepositoryInterface
     public function create(File $file){
         return Media::create($file->toArray());
     }
+    
+    public function remove($id){
+        return Media::destroy($id);
+    }
+
+    public function update_media_collection($id,$collection){
+        return Media::where(['id' => $id ])->update(['collection' => $collection]);
+    }
+    
+    public function get_media_by_collection($collection,$collection_id){
+        return Media::where(['collection' => $collection,'collection_id'=>$collection_id])->first();
+    }
 }

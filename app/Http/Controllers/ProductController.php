@@ -26,6 +26,10 @@ class ProductController extends Controller
         $this->ProductCrudService = $ProductCrudService;
     }
 
+    public function show($product_id) {
+        $product = $this->ProductCrudService->GetProduct($product_id);
+        return view("Dashboard.Products.show_one")->with('product',$product);
+    }
 
     public function all() {
         $company_id = auth()->user()->company_id;
@@ -61,4 +65,31 @@ class ProductController extends Controller
         $request->session()->flash('success', 'New product added successfully.');
         return response()->json($product);
     }
+
+    public function edit($product_id) {
+        $product = $this->ProductCrudService->GetProduct($product_id);
+        $company_id = auth()->user()->company_id;
+        $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
+        $categories = $this->CommonDataService->GetCompanyCategories($company_id);
+        $brands = $this->CommonDataService->GetCompanyBrands($company_id);
+        $data = array(
+            'suppliers'=>$suppliers,
+            'categories'=>$categories,
+            'brands'=>$brands,
+            'product'=>$product
+        );
+        return view("Dashboard.Products.edit")->with('data',$data);
+    }
+    public function update(CreateProductRequest $request,$product_id){
+        $data = $request->all();
+        $product = $this->ProductCrudService->UpdateProduct($product_id,$data);
+        if(!$product){
+            $request->session()->flash('erroe', 'error adding product');
+            return response()->json();
+        }
+
+        $request->session()->flash('success', 'New product added successfully.');
+        return response()->json($product);
+    }
+
 }

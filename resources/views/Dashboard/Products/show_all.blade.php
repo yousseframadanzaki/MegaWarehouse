@@ -48,12 +48,16 @@
                         <td>{{ $product->brand->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>
-                            {{-- @can('edit','App\Models\Supplier')
-                                <a  href="{{route('edit_product',$product->id)}}" class="link-primary"
-                                    title="تعديل بيانات المورد">
-                                    <i class="bi bi-pencil-square"></i>
+                            @can('edit','App\Models\Supplier')
+                                <a  href="{{route('show_product',$product->id)}}" class="link-primary"
+                                    title="مشاهدة المنتج">
+                                    <i class="bi bi-eye-fill"></i>
                                 </a>
-                            @endcan --}}
+                                <a  href="{{route('edit_product',$product->id)}}" class="link-primary"
+                                    title="تعديل المنتج">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                            @endcan
                         </td>
                     </tr>
                 @empty
