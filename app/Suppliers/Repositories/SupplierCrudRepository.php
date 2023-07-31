@@ -23,5 +23,12 @@ class SupplierCrudRepository implements SupplierCrudRepositoryInterface{
         return Supplier::where(['id'=>$supplier_id])->update($supplier_details);
     }
 
+    public function get_supplier_with_products($id){
+        $supplier = $this->get_supplier_by_id($id);
+        $products = $supplier->products()->paginate(10);
+        $data['supplier'] = $supplier;
+        $data['products'] = $products;
+        return $data;
+    }
 
 }

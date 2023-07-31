@@ -7,4 +7,5 @@ interface SupplierCrudServiceInterface{
     public function GetCompanySuppliers($company_id);
     public function GetSupplier($supplier_id);
     public function UpdateSupplier($supplier_id,array $supplier_details);
+    public function GetSupplierWithProducts($id);
 }

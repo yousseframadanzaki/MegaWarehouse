@@ -33,4 +33,8 @@ class SupplierCrudService implements SupplierCrudServiceInterface{
         return $this->supplier_crud_repository->get_supplier_by_id($id);
     }
     
+    public function GetSupplierWithProducts($id){
+        return $this->supplier_crud_repository->get_supplier_with_products($id);
+    }
+
 }

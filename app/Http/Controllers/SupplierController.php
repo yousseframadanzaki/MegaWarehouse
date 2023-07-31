@@ -48,5 +48,10 @@ class SupplierController extends Controller
         return back()->with('success','supplier_updated_success');
     }
 
+    public function show($supplier_id) {
+        $data = $this->SupplierCrudService->GetSupplierWithProducts($supplier_id);
+        // dd($data);
+        return view("Dashboard.Suppliers.show_one")->with('data',$data);
+    }
 
 }

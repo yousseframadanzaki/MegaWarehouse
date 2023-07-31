@@ -90,6 +90,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_suppliers')
     ->can('view','App\Models\Supplier');
 
+    Route::get('/suppliers/{supplier_id}', [SupplierController::class,'show'])
+    ->name('show_supplier');
+
     Route::get('/suppliers/add', [SupplierController::class,'create'])
     ->name('add_supplier')
     ->can('add','App\Models\Supplier');
