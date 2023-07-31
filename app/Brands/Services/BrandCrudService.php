@@ -56,5 +56,8 @@ class BrandCrudService implements BrandCrudServiceInterface{
     public function GetBrand($id){
         return $this->brand_crud_repository->get_brand_by_id($id);
     }
+    public function GetBrandWithProducts($id){
+        return $this->brand_crud_repository->get_brand_with_products($id);
+    }
     
 }

@@ -7,4 +7,5 @@ interface BrandCrudRepositoryInterface{
     public function update_brand($brand_id,array $details);
     public function get_brands_by_company_id($company_id);
     public function get_brand_by_id($id);
+    public function get_brand_with_products($id);
 }

@@ -178,6 +178,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('add_brand')
     ->can('add','App\Models\Brand');
 
+    Route::get('/brands/{brand_id}', [BrandController::class,'show'])
+    ->name('show_brand');
+
     Route::post('/brands/add', [BrandController::class,'store'])
     ->name('store_brand')
     ->can('add','App\Models\Brand');

@@ -48,4 +48,9 @@ class BrandController extends Controller
         return back()->with('success','brand_updated_success');
     }
 
+    public function show($brand_id) {
+        $data = $this->BrandCrudService->GetBrandWithProducts($brand_id);
+        return view("Dashboard.Brands.show_one")->with('data',$data);
+    }
+
 }

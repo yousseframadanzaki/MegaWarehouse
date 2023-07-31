@@ -23,4 +23,12 @@ class BrandCrudRepository implements BrandCrudRepositoryInterface{
         return Brand::with('logo')->where('id', $id)->get()->first();
     }
 
+    public function get_brand_with_products($id){
+        $brand = $this->get_brand_by_id($id);
+        $products = $brand->products()->paginate(10);
+        $data['brand'] = $brand;
+        $data['products'] = $products;
+        return $data;
+    }
+
 }

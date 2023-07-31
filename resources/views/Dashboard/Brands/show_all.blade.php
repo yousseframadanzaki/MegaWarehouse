@@ -40,6 +40,10 @@
                                         title="تعديل بيانات الماركة">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
+                                    <a  href="{{route('show_brand',$brand->id)}}" class="link-primary"
+                                        title="مشاهدة منتجات الماركة">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </a>
                                 </td>
                             @endcan
                         </tr>
