@@ -92,9 +92,6 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_suppliers')
     ->can('view','App\Models\Supplier');
 
-    Route::get('/suppliers/{supplier_id}', [SupplierController::class,'show'])
-    ->name('show_supplier');
-
     Route::get('/suppliers/add', [SupplierController::class,'create'])
     ->name('add_supplier')
     ->can('add','App\Models\Supplier');
@@ -102,6 +99,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/suppliers/add', [SupplierController::class,'store'])
     ->name('store_supplier')
     ->can('add','App\Models\Supplier');
+
+    Route::get('/suppliers/{supplier_id}', [SupplierController::class,'show'])
+    ->name('show_supplier');
+
+    
 
     Route::get('/suppliers/{supplier_id}/edit', [SupplierController::class,'edit'])
     ->name('edit_supplier')

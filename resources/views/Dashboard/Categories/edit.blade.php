@@ -29,9 +29,9 @@
                             <label for="formFile" class="form-label">التصنيف الاب</label>
                             <select class="form-select" aria-label="Default select example" name="parent_id">
                                 <option value="">بدون تصنيف</option>
-                                @foreach ($categories as $id => $name)
-                                   @if($category->id != $id)
-                                    <option @if($category->parent_id === $id) selected @endif value="{{$id}}">{{$name}}</option>
+                                @foreach ($categories as $cat)
+                                   @if($category->id != $cat->id)
+                                    <option @if($category->parent_id ===$cat->id) selected @endif value="{{$cat->id}}">{{$cat->name}}</option>
                                    @endif                                
                                 @endforeach
                              </select>

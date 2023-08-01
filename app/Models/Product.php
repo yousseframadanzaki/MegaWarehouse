@@ -50,4 +50,11 @@ class Product extends Model
         return $this->hasMany(Media::class,'collection_id')->where('collection','product');
     }
 
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
+
 }

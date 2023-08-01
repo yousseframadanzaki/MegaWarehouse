@@ -51,8 +51,8 @@ class ProductCrudService implements ProductCrudServiceInterface{
         return false;
     }
 
-    public function GetCompanyProducts($company_id){
-        return $this->product_crud_repository->get_products_by_company_id($company_id);
+    public function GetCompanyProducts($company_id,$filters){
+        return $this->product_crud_repository->get_products_by_company_id($company_id,$filters);
     }
 
     public function GetProduct($product_id) {
@@ -104,10 +104,6 @@ class ProductCrudService implements ProductCrudServiceInterface{
             }
             $main_image = $this->FileUploadService->product_main($data["main_image"],$product_id);
             $this->MediaService->save($main_image);
-        }else{
-            $main_image = $this->FileUploadService->product_main($data["product_images"][0],$product_id);
-            $this->MediaService->save($main_image);
-            unset($data["product_images"][0]);
         }
 
         foreach ($data["product_images"] as $image) {

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Products\Requests\CreateProductRequest;
 use App\Products\Interfaces\ProductCrudServiceInterface;
+use App\Products\Filters\ProductFilters;
 
 
 class ProductController extends Controller
@@ -31,10 +32,20 @@ class ProductController extends Controller
         return view("Dashboard.Products.show_one")->with('product',$product);
     }
 
-    public function all() {
+    public function all(ProductFilters $filters) {
         $company_id = auth()->user()->company_id;
-        $products = $this->ProductCrudService->GetCompanyProducts($company_id);
-        return view("Dashboard.Products.show_all")->with('products',$products);
+        $products = $this->ProductCrudService->GetCompanyProducts($company_id,$filters);
+
+        $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
+        $categories = $this->CommonDataService->GetCompanyCategories($company_id);
+        $brands = $this->CommonDataService->GetCompanyBrands($company_id);
+        $data = array(
+            'suppliers'=>$suppliers,
+            'categories'=>$categories,
+            'brands'=>$brands
+        );
+
+        return view("Dashboard.Products.show_all")->with(['products'=>$products,'data'=>$data]);
     }
 
     public function create() {

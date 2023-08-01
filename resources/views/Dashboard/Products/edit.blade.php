@@ -105,7 +105,7 @@
                             <select class="form-select product_info" aria-label="Default  select example" name="category_id"
                                 id="category_id">
                                 <option value="">اختار تصنيف </option>
-                                @foreach ($data['categories']->get() as $cat)
+                                @foreach ($data['categories'] as $cat)
                                     <option @if($data['product']->category_id == $cat->id) selected @endif value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>
@@ -134,7 +134,7 @@
                             @if($data['product']->main_image)
                                 <div class="mx-2" id="{{$data['product']->main_image->id}}">
                                     <div >
-                                        <img src="{{asset($data['product']->main_image->path ?? '')}}" width="200"/>
+                                        <img src="{{asset($data['product']->main_image->path ?? '')}}" style="object-fit: contain;height: 15vw;" />
                                     </div>
                                     <div class="d-flex justify-content-center my-2">
                                         <a data-id="{{$data['product']->main_image->id ?? ''}}" class="btn btn-danger remove_image">حذف الصورة</a>
@@ -144,7 +144,7 @@
                             @foreach ($data['product']->images as $image)
                                 <div class="mx-2" id="{{$image->id}}">
                                     <div >
-                                        <img src="{{asset($image->path)}}" width="200" />
+                                        <img src="{{asset($image->path)}}" style="object-fit: contain;height: 15vw;" />
                                     </div>
                                     <div class="d-flex justify-content-center my-2">
                                         <a data-id="{{$image->id}}" class="btn btn-danger remove_image">حذف الصورة</a>

@@ -20,7 +20,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     }
     
     public function get_categories_by_company_id($company_id){
-        return Category::where('company_id',$company_id);
+        return Category::where('company_id',$company_id)->get();
     }
 
     public function get_suppliers_by_company_id($company_id){

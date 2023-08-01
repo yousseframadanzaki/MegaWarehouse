@@ -25,12 +25,13 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        
                         <div class="mb-3">
                             <label for="formFile" class="form-label">التصنيف الاب</label>
                             <select class="form-select" aria-label="Default select example" name="parent_id">
                                 <option value="">بدون تصنيف</option>
-                                @foreach ($categories as $id => $name)
-                                   <option value="{{$id}}">{{$name}}</option>
+                                @foreach ($categories as $cat)
+                                   <option value="{{$cat->id}}">{{$cat->name}}</option>
                                 @endforeach
                              </select>
                             @error('parent_id')

@@ -10,8 +10,8 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
     public function add_product(array $product_details){
         return Product::create($product_details);
     }
-    public function get_products_by_company_id($company_id){
-        return Product::with(['main_image','category','brand','supplier'])->where('company_id',$company_id)->paginate(10);
+    public function get_products_by_company_id($company_id,$filters){
+        return Product::with(['main_image','category','brand','supplier'])->where('company_id',$company_id)->filter($filters)->paginate(10);
     }
 
     public function get_product_by_id($product_id){
