@@ -64,6 +64,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('edit_product');
     Route::post('/products/{product_id}/edit', [ProductController::class,'update'])
     ->name('update_product');
+    Route::get('/products/{variant_id}/print', [ProductController::class,'print'])
+    ->name('print_variant');
 
     Route::get('/warehouses', [WarehouseController::class,'all'])
     ->name('all_warehouses')

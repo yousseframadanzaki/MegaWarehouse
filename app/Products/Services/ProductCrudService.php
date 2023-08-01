@@ -118,6 +118,10 @@ class ProductCrudService implements ProductCrudServiceInterface{
         }
     }
 
+    public function GetVariantPrint($variant_id) {
+        return $this->product_variants_repository->get_variant_by_id($variant_id);
+    }
+
 
 
 

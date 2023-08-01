@@ -52,13 +52,13 @@
             </div>
         </div>
         <div class="col-md-9">
-            <h1 class="m-0 p-0">{{$product->name}}</h1>
+            <div class="badge p-2 mb-2" style="background: rgb(8 47 73)"><h1 class="m-0 p-0">{{$product->name}}</h1></div>
             <div class="row">
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر: </span><span>{{$product->price}}</span></div>
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر قبل الخصم : </span><span>{{$product->before_sale_price}}</span></div>
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">الماركة : </span><span><a href="{{ route('show_brand',$product->brand_id) }}">{{$product->brand->name}}</a></span></div>
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">المورد : </span><span><a href="{{ route('show_supplier',$product->supplier_id) }}">{{$product->supplier->name}}</a></span></div>
-                <div class="col-md-3 fs-5"><span style="font-weight: 600;">التصنيف : </span><span><a href="{{ route('show_category',$product->category_id) }}">{{$product->category->parents_names}}</a></span></div>
+                <div class="col-md-12 fs-5"><span style="font-weight: 600;">التصنيف : </span><span><a href="{{ route('show_category',$product->category_id) }}">{{$product->category->parents_names}}</a></span></div>
             </div>
             <div class="row mt-2">
                 @foreach ($product->attributes as $attribute)
@@ -97,7 +97,7 @@
                     <td>{{ $variant->price }}</td>
                     <td>{{ $variant->quantity }}</td>
                     <td>{{ $variant->sku }}</td>
-                    <td><a href=""><i class="bi bi-printer-fill"></i></a></td>
+                    <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
                 </tr>
             @empty
             @endforelse

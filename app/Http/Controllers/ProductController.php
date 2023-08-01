@@ -92,4 +92,9 @@ class ProductController extends Controller
         return response()->json($product);
     }
 
+    public function print($variant_id) {
+        $variant = $this->ProductCrudService->GetVariantPrint($variant_id);
+        return view('Dashboard.Products.print')->with('variant',$variant);
+    }
+
 }

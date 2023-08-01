@@ -53,8 +53,8 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         return $array;
     }
 
-    public function prepare_data($product_id,$attributes,$variants) {
-        
+    public function get_variant_by_id($variant_id){
+        return Variant::with('product','attributes')->where('id',$variant_id)->first();
     }
 
 }

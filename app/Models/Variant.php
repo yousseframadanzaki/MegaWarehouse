@@ -23,7 +23,7 @@ class Variant extends Model
     }
 
     public function attributes() {
-        return $this->belongsToMany(Attribute::class,'variants_attributes','variant_id','attribute_id');
+        return $this->belongsToMany(Attribute::class,'variants_attributes','variant_id','attribute_id')->withPivot('value');
     }
 
 }
