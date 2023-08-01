@@ -80,13 +80,14 @@
 </div>
 
 <div class="row card mt-3 p-2 shadow-sm">
-    <table class="table  table-hover">
+    <table class="table  table-hover fs-5">
         <thead>
             <tr>
                 <th scope="col">اسم</th>
                 <th scope="col">السعر</th>
                 <th scope="col">الكمية</th>
                 <th scope="col">sku</th>
+                <th scope="col">طباعة</th>
             </tr>
         </thead>
         <tbody>
@@ -96,6 +97,7 @@
                     <td>{{ $variant->price }}</td>
                     <td>{{ $variant->quantity }}</td>
                     <td>{{ $variant->sku }}</td>
+                    <td><a href=""><i class="bi bi-printer-fill"></i></a></td>
                 </tr>
             @empty
             @endforelse
