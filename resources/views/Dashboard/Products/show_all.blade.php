@@ -3,8 +3,8 @@
 
 <style>
     .product-main{
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         -webkit-border-radius: 60px;
         -webkit-background-clip: padding-box;
         -moz-border-radius: 50px;
@@ -12,7 +12,6 @@
         border-radius: 50px;
         background-clip: padding-box;
         margin: 7px 0 0 5px;
-        float: left;
         background-size: contain;
         background-position: center center;
     }
@@ -41,18 +40,18 @@
             <tbody>
                 @forelse ($products as $product)
                     <tr class="">
-                        <td><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ $product->supplier->name }}</td>
-                        <td>{{ $product->category->parents_names }}</td>
-                        <td>{{ $product->brand->name }}</td>
+                        <td class="text-center"><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
+                        <td><a  href="{{route('show_product',$product->id)}}" class="link-primary"
+                            title="مشاهدة المنتج">{{ $product->name }}</a></td>
+
+                        <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name }}</td>
+                        <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
+                        <td><a href="{{ route('show_brand',$product->brand_id) }}">{{ $product->brand->name }}</a></td>
+
                         <td>{{ $product->price }}</td>
                         <td>
                             @can('edit','App\Models\Supplier')
-                                <a  href="{{route('show_product',$product->id)}}" class="link-primary"
-                                    title="مشاهدة المنتج">
-                                    <i class="bi bi-eye-fill"></i>
-                                </a>
+                                
                                 <a  href="{{route('edit_product',$product->id)}}" class="link-primary"
                                     title="تعديل المنتج">
                                     <i class="bi bi-pencil-fill"></i>

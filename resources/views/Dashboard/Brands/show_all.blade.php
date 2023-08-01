@@ -33,16 +33,12 @@
                     @forelse ($brands as $brand)
                         <tr class="">
                             <td><div class="brand-logo" style="background-image: url('{{asset($brand->logo->path ?? '')}}')"></div></td>
-                            <td>{{ $brand->name }}</td>
+                            <td><a href="{{ route('show_brand',$brand->id) }}">{{ $brand->name }}</a></td>
                             @can('edit','App\Models\Brand')
                                 <td>
                                     <a  href="{{route('edit_brand',$brand->id)}}" class="link-primary"
                                         title="تعديل بيانات الماركة">
                                         <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a  href="{{route('show_brand',$brand->id)}}" class="link-primary"
-                                        title="مشاهدة منتجات الماركة">
-                                        <i class="bi bi-eye-fill"></i>
                                     </a>
                                 </td>
                             @endcan

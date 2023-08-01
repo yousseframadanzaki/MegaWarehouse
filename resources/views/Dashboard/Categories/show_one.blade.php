@@ -22,22 +22,18 @@
     <div class="row">
         <ul class="breadcrumb">
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-            <li><a href="{{ route('all_brands') }}">الماركات</a></li>
-            <li><a >{{$data['brand']->name}}</a></li>
+            <li><a href="{{ route('all_categories') }}">التصنيفات</a></li>
+            @foreach ($data['category']->parent()->get() as $parent)
+                <li><a href="{{ route('show_category',$parent->id) }}">{{$parent->name}}</a></li>
+            @endforeach
+            <li><a >{{$data['category']->name}}</a></li>
         </ul>
     </div>
     <div class="card fs-5 p-3 row mb-3 shadow-sm">
         <div class="d-flex justify-content-between align-items-center"> 
             <div class="fs-2">
-                الماركة : <span class="badge  bg-success">{{$data['brand']->name}}</span>
+                التصنيف : <span class="badge  bg-success">{{$data['category']->parents_names}}</span>
             </div>
-            @if($data['brand']->logo)
-                <div>
-                    <div>
-                        <img src="{{asset($data['brand']->logo->path ?? '')}}" width="200px"/>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
     <div class="row card p-2 shadow-sm">
@@ -48,6 +44,7 @@
                     <th scope="col">اسم المنتج</th>
                     <th scope="col">المورد</th>
                     <th scope="col">التصنيف</th>
+                    <th scope="col">الماركة</th>
                     <th scope="col">السعر</th>
                 </tr>
             </thead>
@@ -57,9 +54,9 @@
                         <td><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
                         <td><a  href="{{route('show_product',$product->id)}}" class="link-primary"
                             title="مشاهدة المنتج">{{ $product->name }}</a></td>
-                            <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name }}</td>
-                            <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
-
+                        <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name }}</td>
+                        <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
+                        <td><a href="{{ route('show_brand',$product->brand_id) }}">{{ $product->brand->name }}</a></td>
                         <td>{{ $product->price }}</td>
                     </tr>
                 @empty

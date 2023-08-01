@@ -22,7 +22,7 @@
     <div class="row">
         <ul class="breadcrumb">
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-            <li><a href="{{ route('all_suppliers') }}">الماركات</a></li>
+            <li><a href="{{ route('all_suppliers') }}">الموردين</a></li>
             <li><a >{{$data['supplier']->name}}</a></li>
         </ul>
     </div>
@@ -50,9 +50,9 @@
                         <td><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
                         <td><a  href="{{route('show_product',$product->id)}}" class="link-primary"
                             title="مشاهدة المنتج">{{ $product->name }}</a></td>
-                        <td>{{ $product->brand->name }}</td>
-                        <td>{{ $product->category->parents_names }}</td>
-                        <td>{{ $product->price }}</td>
+                            <td><a href="{{ route('show_brand',$product->brand_id) }}">{{ $product->brand->name }}</a></td>
+                            <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
+                            <td>{{ $product->price }}</td>
                     </tr>
                 @empty
                 @endforelse

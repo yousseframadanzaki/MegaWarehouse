@@ -19,8 +19,9 @@
                 <tbody>
                     @forelse ($categories as $category)
                         <tr class="">
-                            <td>{{ $category->name }}</td>
-                            <td>{{ $category->parent->name ?? '' }}</td>
+                            <td><a  href="{{route('show_category',$category->id)}}" class="link-primary"
+                                title="مشاهدة منتجات التصنيف">{{ $category->name }}</a></td>
+                            <td><a href="{{route('show_category',$category->parent->id ?? '')}}">{{ $category->parent->name ?? '' }}</td>
                             <td>
                                 <a  href="{{route('edit_category',$category->id)}}" class="link-primary"
                                     title="تعديل بيانات التصنيف">

@@ -50,7 +50,6 @@ class SupplierController extends Controller
 
     public function show($supplier_id) {
         $data = $this->SupplierCrudService->GetSupplierWithProducts($supplier_id);
-        // dd($data);
         return view("Dashboard.Suppliers.show_one")->with('data',$data);
     }
 

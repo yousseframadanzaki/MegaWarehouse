@@ -156,14 +156,18 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_categories')
     ->can('view','App\Models\Category');
 
+    
     Route::get('/categories/add', [CategoryController::class,'create'])
     ->name('add_category')
     ->can('add','App\Models\Category');
-
+    
     Route::post('/categories/add', [CategoryController::class,'store'])
     ->name('store_category')
     ->can('add','App\Models\Category');
-
+    
+    Route::get('/categories/{category_id}', [CategoryController::class,'show'])
+    ->name('show_category');
+    
     Route::get('/categories/{category_id}/edit', [CategoryController::class,'edit'])
     ->name('edit_category')
     ->can('update',['App\Models\Category','category_id']);

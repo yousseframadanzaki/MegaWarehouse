@@ -20,7 +20,7 @@
                 <tbody>
                     @forelse ($suppliers as $supplier)
                         <tr class="">
-                            <td>{{ $supplier->name }}</td>
+                            <td><a href="{{route('show_supplier',$supplier->id)}}">{{ $supplier->name }}</a></td>
                             <td>{{ $supplier->phone }}</td>
                             <td>{{ $supplier->address }}</td>
                             <td>

@@ -74,4 +74,9 @@ class CategoryController extends Controller
         return back()->with('success','category_updated_success');
     }
 
+    public function show($category_id) {
+        $data = $this->CategoryCrudService->GetCategoryWithProducts($category_id);
+        return view("Dashboard.Categories.show_one")->with('data',$data);
+    }
+
 }

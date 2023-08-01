@@ -56,9 +56,9 @@
             <div class="row">
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر: </span><span>{{$product->price}}</span></div>
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر قبل الخصم : </span><span>{{$product->before_sale_price}}</span></div>
-                <div class="col-md-3 fs-5"><span style="font-weight: 600;">الماركة : </span><span>{{$product->brand->name}}</span></div>
-                <div class="col-md-3 fs-5"><span style="font-weight: 600;">المورد : </span><span>{{$product->supplier->name}}</span></div>
-                <div class="col-md-3 fs-5"><span style="font-weight: 600;">التصنيف : </span><span>{{$product->category->parents_names}}</span></div>
+                <div class="col-md-3 fs-5"><span style="font-weight: 600;">الماركة : </span><span><a href="{{ route('show_brand',$product->brand_id) }}">{{$product->brand->name}}</a></span></div>
+                <div class="col-md-3 fs-5"><span style="font-weight: 600;">المورد : </span><span><a href="{{ route('show_supplier',$product->supplier_id) }}">{{$product->supplier->name}}</a></span></div>
+                <div class="col-md-3 fs-5"><span style="font-weight: 600;">التصنيف : </span><span><a href="{{ route('show_category',$product->category_id) }}">{{$product->category->parents_names}}</a></span></div>
             </div>
             <div class="row mt-2">
                 @foreach ($product->attributes as $attribute)

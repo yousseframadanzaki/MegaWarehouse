@@ -33,4 +33,8 @@ class CategoryCrudService implements CategoryCrudServiceInterface{
         return $this->category_crud_repository->get_category_by_id($id);
     }
     
+    public function GetCategoryWithProducts($id){
+        return $this->category_crud_repository->get_category_with_products($id);
+    }
+
 }

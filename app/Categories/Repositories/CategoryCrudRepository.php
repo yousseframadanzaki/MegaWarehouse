@@ -4,7 +4,7 @@ namespace App\Categories\Repositories;
 
 use App\Models\Category;
 use App\Categories\Interfaces\CategoryCrudRepositoryInterface;
-
+use App\Helpers\PaginationHelper;
 class CategoryCrudRepository implements CategoryCrudRepositoryInterface{
 
     public function create_category(array $details){
@@ -21,6 +21,17 @@ class CategoryCrudRepository implements CategoryCrudRepositoryInterface{
 
     public function get_category_by_id($id){
         return Category::with('parent')->where('id', $id)->get()->first();
+    }
+
+    public function get_category_with_products($id){
+        $category = Category::with(['children'])->where('id', $id)->get()->first();
+        $products = $category->products;
+        foreach ($category->children as $child) {
+            $products =  $products->merge($child->products);
+        }
+        $data['category'] = $category;
+        $data['products'] = PaginationHelper::paginate($products,10);
+        return $data;
     }
 
 }
