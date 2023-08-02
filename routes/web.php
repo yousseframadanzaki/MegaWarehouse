@@ -52,6 +52,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
 
+    Route::get('/stock/add', [StockController::class,'add'])
+    ->name('add_stock');
+
     Route::get('/products', [ProductController::class,'all'])
     ->name('all_products')
     ->can('view','App\Models\Product');

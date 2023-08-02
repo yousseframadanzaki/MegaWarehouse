@@ -433,7 +433,7 @@
             }))));
 
             variants.forEach(variant => {
-                variant.name = Object.keys(variant).map(key => variant[key]).join(' / ');
+                variant.name = Object.keys(variant).map(key => variant[key]).join('-');
                 // console.log(variant);
             });
 

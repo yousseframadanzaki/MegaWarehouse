@@ -104,9 +104,10 @@
                                 </a>
                                 <div class="card-body">
                                     <div class="text-center">
-                                        <h5 class="card-title m-0"><a
+                                        <h5 class="card-title m-0" style="overflow: auto;text-overflow: ellipsis;overflow-y: hidden;overflow-x: hidden;white-space: nowrap;"><a
+                                            class="text-break link-dark" 
                                                 href="{{ route('show_product', $product->id) }}">{{ $product->name }}</a></h5>
-                                        <p class="text-muted mb-2"><a class="" 
+                                        <p class="text-muted mb-2"><a class="text-break link-dark" 
                                                 href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
                                         </p>
                                     </div>

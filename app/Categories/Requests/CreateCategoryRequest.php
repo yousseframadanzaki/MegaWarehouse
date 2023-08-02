@@ -26,7 +26,6 @@ class CreateCategoryRequest extends FormRequest
             'name'=>[
                 'required',
                 'min:3',
-                Rule::unique('categories', 'name')->where('company_id', auth()->user()->company_id)
             ],
             'parent_id'=>'nullable|exists:categories,id'
         ];
