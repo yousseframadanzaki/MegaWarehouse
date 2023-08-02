@@ -96,7 +96,7 @@
                         <div class="mt-3 col">
                             <div class="card border-0 shadow card-hover @isset($product->images[0]) has-second @endisset text-black" style="transition:all 0.3s ease-in-out">
                                 <a href="{{route('show_product',$product->id)}}">
-                                    <img src="{{ asset($product->main_image->path ?? '') }}" class="card-img-top" style="object-fit: contain;height: 15vw;"  onerror="this.src = 'https://placehold.co/400?text=no+image'"@isset($product->images[0]) onerror="this.src = '{{asset($product->images[0] ?? '')}}'" @endisset />
+                                    <img src="{{ asset($product->main_image->path ?? '') }}" class="card-img-top" style="object-fit: contain;height: 15vw;"  onerror="this.src = 'https://placehold.co/400?text=no+image'" @isset($product->images[0]) onerror="this.src = '{{asset($product->images[0] ?? '')}}'" @endisset />
                                     
                                     @isset($product->images[0])
                                         <img src="{{ asset($product->images[0]->path ?? '') }}" class="card-img-top" style="object-fit: contain;height: 15vw;display:none;" onerror="this.src = 'https://placehold.co/400?text=no+image'" />
@@ -123,7 +123,11 @@
                                     <div class="d-flex justify-content-between total font-weight-bold mt-2">
                                         <span>السعر</span><span>{{ $product->price }} </span>
                                     </div>
-                                    <a class="btn btn-primary d-block mt-2" href="{{route('edit_product',$product->id)}}"> تعديل <i class="bi bi-pencil-square"></i></a>
+                                    @can('edit','App\Models\Product')
+                                        <a class="btn btn-primary d-block mt-2" href="{{route('edit_product',$product->id)}}"> 
+                                            تعديل <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>

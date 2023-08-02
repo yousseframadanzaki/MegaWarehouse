@@ -16,6 +16,7 @@ class Media extends Model
         'path',
         'disk',
         'file_hash',
+        'company_id',
         'collection',
         'collection_id'
     ];

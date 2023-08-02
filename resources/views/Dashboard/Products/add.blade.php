@@ -135,6 +135,7 @@
                         <form class="dropzone" id="product-form" action="{{ route('store_product') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
+                            <textarea style="display: none" name="product_info[description]" id="description"></textarea>
                             <div class="dropzone-previews">
 
                             </div>
@@ -557,9 +558,7 @@
             $(".product_info").each(function() {
 
                 if($(this).attr('name') === "description"){
-                    var template = `<input type="hidden" name="product_info[` + $(this).attr('name') + `]" value="` + $(
-                    this).summernote("code") + `" />`
-                    $("#product-form").append(template);
+                    $("textarea#description").html($(this).summernote("code"));
                     return;
                 }
 

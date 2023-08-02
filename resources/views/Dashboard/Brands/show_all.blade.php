@@ -19,7 +19,7 @@
             </ul>
         </div>
         <div class="row card p-2 shadow-sm">
-            <table class="table fs-5">
+            <table class="table fs-5" style="vertical-align: middle;">
                 <thead>
                     <tr>
                         <th scope="col" style="width: 1%">صورة</th>
@@ -32,7 +32,8 @@
                 <tbody>
                     @forelse ($brands as $brand)
                         <tr class="">
-                            <td><div class="brand-logo" style="background-image: url('{{asset($brand->logo->path ?? '')}}')"></div></td>
+                            {{-- <td><div class="brand-logo" style="background-image: url('{{asset($brand->logo->path ?? '')}}')"></div></td> --}}
+                            <td><img src="{{asset($brand->logo->path ?? '')}}" style="object-fit: contain;height: 3vw;width:3vw" onerror="this.src = 'https://placehold.co/400?text=no+image'" /></td>
                             <td><a href="{{ route('show_brand',$brand->id) }}">{{ $brand->name }}</a></td>
                             @can('edit','App\Models\Brand')
                                 <td>

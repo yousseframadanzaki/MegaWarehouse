@@ -3,8 +3,8 @@
 
 <style>
     .main_image{
-        width: 100%;
-        height: 200px;
+        width: 35vw;
+        height: 35vh;
         background-clip:padding-box;
         background-repeat: no-repeat;
         background-position: center right;
@@ -54,9 +54,11 @@
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="badge p-2 mb-2" style="background: rgb(8 47 73)"><h1 class="m-0 p-0">{{$product->name}}</h1></div>
-                <div>
-                    <a class="btn btn-primary" href="{{route('edit_product',$product->id)}}"> <i class="bi bi-pencil-square"></i> تعديل </a>
-                </div>
+                @can('edit','App\\Models\Product')
+                    <div>
+                        <a class="btn btn-primary" href="{{route('edit_product',$product->id)}}"> <i class="bi bi-pencil-square"></i> تعديل </a>
+                    </div>
+                @endcan
             </div>
             <div class="row">
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر: </span><span>{{$product->price}}</span></div>
@@ -78,7 +80,7 @@
             </div>
             <div class="fs-5 mt-3">
                 <span style="font-weight: 600;">وصف المنتج</span>
-                <p>{{$product->description}}</p>
+                <p>{!! $product->description !!}</p>
             </div>
         </div>
     </div>

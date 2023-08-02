@@ -53,19 +53,32 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
     Route::get('/products', [ProductController::class,'all'])
-    ->name('all_products');
+    ->name('all_products')
+    ->can('view','App\Models\Product');
+
     Route::get('/products/add', [ProductController::class,'create'])
-    ->name('add_product');
+    ->name('add_product')
+    ->can('add','App\Models\Product');
+
     Route::post('/products/add', [ProductController::class,'store'])
-    ->name('store_product');
+    ->name('store_product')
+    ->can('add','App\Models\Product');
+
     Route::get('/products/{product_id}', [ProductController::class,'show'])
-    ->name('show_product');
+    ->name('show_product')
+    ->can('view_one',['App\Models\Product','product_id']);
+
     Route::get('/products/{product_id}/edit', [ProductController::class,'edit'])
-    ->name('edit_product');
+    ->name('edit_product')
+    ->can('update',['App\Models\Product','product_id']);
+
     Route::post('/products/{product_id}/edit', [ProductController::class,'update'])
-    ->name('update_product');
+    ->name('update_product')
+    ->can('update',['App\Models\Product','product_id']);
+
     Route::get('/products/{variant_id}/print', [ProductController::class,'print'])
-    ->name('print_variant');
+    ->name('print_variant')
+    ->can('print',['App\Models\Product','variant_id']);
 
     Route::get('/warehouses', [WarehouseController::class,'all'])
     ->name('all_warehouses')
