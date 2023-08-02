@@ -52,7 +52,12 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="badge p-2 mb-2" style="background: rgb(8 47 73)"><h1 class="m-0 p-0">{{$product->name}}</h1></div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="badge p-2 mb-2" style="background: rgb(8 47 73)"><h1 class="m-0 p-0">{{$product->name}}</h1></div>
+                <div>
+                    <a class="btn btn-primary" href="{{route('edit_product',$product->id)}}"> <i class="bi bi-pencil-square"></i> تعديل </a>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر: </span><span>{{$product->price}}</span></div>
                 <div class="col-md-3 fs-5"><span style="font-weight: 600;">السعر قبل الخصم : </span><span>{{$product->before_sale_price}}</span></div>

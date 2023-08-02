@@ -21,7 +21,8 @@
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_products') }}">المنتجات</a></li>
-                <li>تعديل منتج جديد</li>
+                <li><a href="{{ route('show_product',$data['product']->id) }}">{{$data['product']->name}}</a></li>
+                <li>تعديل منتج</li>
             </ul>
         </div>
         <div class="row  needs-validation " novalidate>
@@ -134,7 +135,7 @@
                             @if($data['product']->main_image)
                                 <div class="mx-2" id="{{$data['product']->main_image->id}}">
                                     <div >
-                                        <img src="{{asset($data['product']->main_image->path ?? '')}}" style="object-fit: contain;height: 15vw;" />
+                                        <img src="{{asset($data['product']->main_image->path ?? '')}}" style="object-fit: contain;height: 15vw;width:15vw;" />
                                     </div>
                                     <div class="d-flex justify-content-center my-2">
                                         <a data-id="{{$data['product']->main_image->id ?? ''}}" class="btn btn-danger remove_image">حذف الصورة</a>

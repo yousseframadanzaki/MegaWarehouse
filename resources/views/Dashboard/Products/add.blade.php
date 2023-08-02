@@ -107,7 +107,7 @@
                             <select class="form-select product_info" aria-label="Default  select example" name="category_id"
                                 id="category_id">
                                 <option value="">اختار تصنيف </option>
-                                @foreach ($data['categories']->get() as $cat)
+                                @foreach ($data['categories'] as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>

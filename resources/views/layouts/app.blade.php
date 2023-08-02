@@ -77,6 +77,27 @@
                                 </li>
                             @endcanany
                             
+                            <li>
+                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                    data-bs-target="#products-collapse" >
+                                    <i class="bi bi-box-seam"></i>
+                                    المنتجات
+                                </a>
+                                <div class="collapse" id="products-collapse" style="">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                        @can('view','App\Models\User')
+                                            <li class="rounded"><a href="{{ route('all_products') }}" class="text-white"> <i class="bi bi-boxes"></i> كل
+                                                المنتجات </a></li>
+                                        @endcan
+
+                                        @can('add','App\Models\User')
+                                            <li class="rounded "><a href="{{ route('add_product') }}" class="text-white"><i
+                                                        class="bi bi-plus-circle-fill"></i> أضافة منتج جديد</a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+
                             @canany(['view','add'],'App\Models\Role')
                                 <li>
                                     <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
