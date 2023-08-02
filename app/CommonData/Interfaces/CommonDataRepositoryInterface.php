@@ -13,4 +13,5 @@ interface CommonDataRepositoryInterface{
     public function get_cities($country_id=NULL);
     public function get_areas($city_id=NULL);
     public function get_company_warehouses($company_id);
+    public function get_company_products($company_id);
 }

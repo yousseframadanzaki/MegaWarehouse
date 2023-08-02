@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\City;
 use App\Models\Area;
 use App\Models\Warehouse;
+use App\Models\Product;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -59,6 +60,10 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
 
     public function get_company_warehouses($company_id){
         return Warehouse::where(['company_id'=>$company_id])->pluck('name','id');
+    }
+
+    public function get_company_products($company_id){
+        return Product::where(['company_id'=>$company_id])->pluck('name','id');
     }
     
 }

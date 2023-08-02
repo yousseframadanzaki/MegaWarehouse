@@ -15,6 +15,7 @@ use App\Http\Controllers\ClientGroupController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockController;
 
 
 Route::get('/',function (){
@@ -52,8 +53,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
 
-    Route::get('/stock/add', [StockController::class,'add'])
+    Route::get('/stock/add', [StockController::class,'create'])
     ->name('add_stock');
+
+    Route::post('/stock/add', [StockController::class,'store'])
+    ->name('store_stock');
 
     Route::get('/products', [ProductController::class,'all'])
     ->name('all_products')

@@ -53,5 +53,9 @@ class CommonDataService implements CommonDataServiceInterface{
         return $this->common_data_repository->get_company_warehouses($company_id);
     }
 
+    public function GetCompanyProducts($company_id){
+        return $this->common_data_repository->get_company_products($company_id);
+    }
+
 
 }
