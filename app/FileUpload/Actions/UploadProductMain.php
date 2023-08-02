@@ -7,7 +7,7 @@ use App\FileUpload\Interfaces\UploadProductMainInterface;
 use App\FileUpload\DTO\File;
 class UploadProductMain implements UploadProductMainInterface
 {
-    public function handle($file,$collection_id=NULL): File
+    public function handle($file,$company_id,$collection_id=NULL): File
     {
         $name = $file->hashName();
  
@@ -25,6 +25,7 @@ class UploadProductMain implements UploadProductMainInterface
                     path: "app\\$upload",
                 ),
             ),
+            company_id :$company_id,
             collection: 'product.main_image',
             collection_id: $collection_id,
         );

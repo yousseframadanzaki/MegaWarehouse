@@ -32,7 +32,7 @@ class BrandCrudService implements BrandCrudServiceInterface{
         $logo = $details['logo'];
         unset($details['logo']);
         $brand = $this->brand_crud_repository->create_brand($details);
-        $image = $this->FileUploadService->brand($logo,$brand->id);
+        $image = $this->FileUploadService->brand($logo,$company_id,$brand->id);
         $this->MediaCrudService->save($image);
         return $brand;
     }
@@ -44,7 +44,8 @@ class BrandCrudService implements BrandCrudServiceInterface{
         $logo = $details['logo'];
         unset($details['logo']);
         $brand = $this->brand_crud_repository->update_brand($brand_id,$details);
-        $image = $this->FileUploadService->brand($logo,$brand_id);
+        $brand = $this->GetBrand($brand_id);
+        $image = $this->FileUploadService->brand($logo,$brand->$company_id,$brand_id);
         $this->MediaCrudService->save($image);
         return $brand;
     }

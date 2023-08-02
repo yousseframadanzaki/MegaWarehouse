@@ -33,7 +33,7 @@ class UserCrudService implements UserCrudServiceInterface{
         $image_file = $user_details['image'];
         unset($user_details['image']);
         $user = $this->user_crud_repository->add_user($user_details);
-        $image = $this->FileUploadService->avatar($image_file,$user->id);
+        $image = $this->FileUploadService->avatar($image_file,$company_id,$user->id);
         $this->MediaCrudService->save($image);
         return $user;
     }

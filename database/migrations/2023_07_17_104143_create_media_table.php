@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('path');
             $table->string('disk')->default('local');
             $table->string('file_hash', 64);
+            $table->unsignedBiginteger('company_id');
+            $table->foreign('company_id')->references('id')
+                 ->on('companies');
             $table->string('collection')->nullable();
             $table->integer('collection_id')->nullable();
             $table->timestamps();

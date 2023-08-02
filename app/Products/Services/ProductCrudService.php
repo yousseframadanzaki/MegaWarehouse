@@ -33,7 +33,7 @@ class ProductCrudService implements ProductCrudServiceInterface{
         }
 
 
-        $this->add_images($product->id,$details);
+        $this->add_images($product->id,$company_id,$details);
 
         
 
@@ -61,13 +61,13 @@ class ProductCrudService implements ProductCrudServiceInterface{
 
     public function UpdateProduct($product_id,array $details) {
         $product = $this->product_crud_repository->update_product_by_id($product_id,$details['product_info']);
-
-        $this->update_images($product_id,$details);
+        $product = $this->product_crud_repository->get_product_by_id($product_id);
+        $this->update_images($product_id,$product->company_id,$details);
 
         return $product;
     }
 
-    private function add_images($product_id,$data) {     
+    private function add_images($product_id,$company_id,$data) {     
         
 
         if(count($data["product_images"]) == 1 && $data["product_images"][0]->getClientOriginalName() == "blob"){
@@ -75,22 +75,22 @@ class ProductCrudService implements ProductCrudServiceInterface{
         }
 
         if(isset($data['main_image'])){
-            $main_image = $this->FileUploadService->product_main($data["main_image"],$product_id);
+            $main_image = $this->FileUploadService->product_main($data["main_image"],$company_id,$product_id);
             $this->MediaService->save($main_image);
         }else{
-            $main_image = $this->FileUploadService->product_main($data["product_images"][0],$product_id);
+            $main_image = $this->FileUploadService->product_main($data["product_images"][0],$company_id,$product_id);
             $this->MediaService->save($main_image);
         }
 
         foreach ($data["product_images"] as $image) {
             if(!$this->files_equal($image,$data["main_image"])){
-                $file = $this->FileUploadService->product($image,$product_id);
+                $file = $this->FileUploadService->product($image,$company_id,$product_id);
                 $this->MediaService->save($file);
             }
         }
     }
 
-    private function update_images($product_id,$data) {     
+    private function update_images($product_id,$company_id,$data) {     
         
 
         if(count($data["product_images"]) == 1 && $data["product_images"][0]->getClientOriginalName() == "blob"){
@@ -100,15 +100,15 @@ class ProductCrudService implements ProductCrudServiceInterface{
         if(isset($data['main_image'])){
             $old_main = $this->MediaService->GetMediaByCollection("product.main_image",$product_id);
             if($old_main){
-                $this->MediaService->UpdateMediaCollection($old_main->id,"product");
+                $this->MediaService->UpdateMediaCollection($old_main->id,$company_id,"product");
             }
-            $main_image = $this->FileUploadService->product_main($data["main_image"],$product_id);
+            $main_image = $this->FileUploadService->product_main($data["main_image"],$company_id,$product_id);
             $this->MediaService->save($main_image);
         }
 
         foreach ($data["product_images"] as $image) {
-            if(!isset($data["main_image"]) || !$this->files_equal($image,$data["main_image"])){
-                $file = $this->FileUploadService->product($image,$product_id);
+            if(!isset($data["main_image"]) || !$this->files_equal($image,$company_id,$data["main_image"])){
+                $file = $this->FileUploadService->product($image,$company_id,$product_id);
                 $this->MediaService->save($file);
             }
         }

@@ -18,20 +18,20 @@ class UploadService implements UploadServiceInterface{
         private readonly UploadProductMainInterface $product_main
     ) {}
 
-    public function avatar($file,$collection_id=NULL): File{
-        return $this->avatar->handle($file,$collection_id);
+    public function avatar($file,$company_id,$collection_id=NULL): File{
+        return $this->avatar->handle($file,$company_id,$collection_id);
     }
 
-    public function brand($file,$collection_id=NULL): File{
-        return $this->brand->handle($file,$collection_id);
+    public function brand($file,$company_id,$collection_id=NULL): File{
+        return $this->brand->handle($file,$company_id,$collection_id);
     }
 
-    public function product($file,$collection_id=NULL): File{
-        return $this->product->handle($file,$collection_id);
+    public function product($file,$company_id,$collection_id=NULL): File{
+        return $this->product->handle($file,$company_id,$collection_id);
     }
 
-    public function product_main($file,$collection_id=NULL): File{
-        return $this->product_main->handle($file,$collection_id);
+    public function product_main($file,$company_id,$collection_id=NULL): File{
+        return $this->product_main->handle($file,$company_id,$collection_id);
     }
 }
 

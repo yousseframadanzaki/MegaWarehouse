@@ -7,7 +7,7 @@ use App\FileUpload\Interfaces\UploadAvatarInterface;
 use App\FileUpload\DTO\File;
 class UploadAvatar implements UploadAvatarInterface
 {
-    public function handle($file,$collection_id=NULL): File
+    public function handle($file,$company_id,$collection_id=NULL): File
     {
         $name = $file->hashName();
  
@@ -27,6 +27,7 @@ class UploadAvatar implements UploadAvatarInterface
                     path: "app\\$upload",
                 ),
             ),
+            company_id:$company_id,
             collection: 'avatars',
             collection_id: $collection_id,
         );
