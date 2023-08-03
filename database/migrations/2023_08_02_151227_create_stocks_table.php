@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->Integer('quantity');
             $table->string('note')->nullable();
-            $table->enum('enum', array('move','buy','sell','returned_orders','returned_suppliers'));
+            $table->enum('type', array('move','buy','sell','returned_orders','returned_suppliers'));
 
             $table->foreign('variant_id')->references('id')
                  ->on('variants');

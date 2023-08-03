@@ -13,7 +13,7 @@ class File
         public readonly string $hash,
         public readonly string $company_id,
         public readonly null|string $collection = null,
-        public readonly null|string $collection_id = null,
+        public null|string $collection_id = null,
     ) {}
  
     public function toArray(): array

@@ -9,11 +9,13 @@ use App\Products\Interfaces\ProductCrudRepositoryInterface;
 use App\Products\Interfaces\ProductCrudServiceInterface;
 use App\Products\Interfaces\ProductAttributesRepositoryInterface;
 use App\Products\Interfaces\ProductVariantsRepositoryInterface;
+use App\Products\Interfaces\VariantStockServiceInterface;
 
 use App\Products\Repositories\ProductAttributesRepository;
 use App\Products\Repositories\ProductVariantsRepository;
 use App\Products\Repositories\ProductCrudRepository;
 use App\Products\Services\ProductCrudService;
+use App\Products\Services\VariantStockService;
 
 
 class ProductServiceProvider extends ServiceProvider
@@ -27,6 +29,7 @@ class ProductServiceProvider extends ServiceProvider
         $this->app->bind(ProductVariantsRepositoryInterface::class,ProductVariantsRepository::class);
         $this->app->bind(ProductCrudRepositoryInterface::class,ProductCrudRepository::class);
         $this->app->bind(ProductCrudServiceInterface::class,ProductCrudService::class);
+        $this->app->bind(VariantStockServiceInterface::class,VariantStockService::class);
     }
 
     /**

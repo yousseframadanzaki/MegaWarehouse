@@ -12,6 +12,8 @@ use App\Models\City;
 use App\Models\Area;
 use App\Models\Warehouse;
 use App\Models\Product;
+use App\Models\Variant;
+use App\Models\User;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -65,5 +67,15 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     public function get_company_products($company_id){
         return Product::where(['company_id'=>$company_id])->pluck('name','id');
     }
+
+    public function get_product_variants($product_id){
+        return Variant::where(['product_id'=>$product_id])->get();
+    }
+
+    public function get_company_users($company_id){
+        return User::where(['company_id'=>$company_id])->pluck('name','id');
+    }
+
+
     
 }

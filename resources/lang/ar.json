@@ -82,5 +82,11 @@
     
     "product_info_cost_required":"برجاء ادخال تكلفة المنتج",
     "product_info_cost_numeric":"برجاء ادخال تكلفة المنتج بشكل صحيح",
-    "product_info_cost_lt":"برجاء ادخال تكلفة المنتج اقل من السعر" 
+    "product_info_cost_lt":"برجاء ادخال تكلفة المنتج اقل من السعر",
+    "warehouse_id_required":"برجاء اختيار المخزن",
+    "type_required":"برجاء اختيار نوع العملية",
+    "product_variants_required":"برجاء اختيار المنتج",
+    "buy":"شراء",
+    "sell":"بيع",
+    "move":"نقل"
 }

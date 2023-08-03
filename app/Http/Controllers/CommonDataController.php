@@ -25,4 +25,8 @@ class CommonDataController extends Controller
     public function sub_categories($category_id) {
         return response()->json($this->CommonDataService->GetSubCategories($category_id));
     }
+
+    public function variants($product_id) {
+        return response()->json($this->CommonDataService->GetProductVariants($product_id));
+    }
 }

@@ -14,4 +14,5 @@ interface CommonDataServiceInterface{
     public function GetAreas($city_id=NULL);
     public function GetCompanyWarehouses($company_id);
     public function GetCompanyProducts($company_id);
+    public function GetCompanyUsers($company_id);
 }

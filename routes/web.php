@@ -53,6 +53,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
 
+    Route::get('/stock', [StockController::class,'all'])
+    ->name('all_stocks');
+
     Route::get('/stock/add', [StockController::class,'create'])
     ->name('add_stock');
 
