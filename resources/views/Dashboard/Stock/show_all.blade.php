@@ -157,7 +157,9 @@
                             <td>{{$operation->quantity}}</td>
                             <td>{{$operation->order_id}}</td>
                             <td>{{$operation->note}}</td>
-                            <td><a  class="link-primary show_image" 
+                            <td>
+                                @if($operation->image)
+                                <a  class="link-primary show_image" 
                                     style="cursor: pointer" 
                                     data-bs-toggle="modal" 
                                     data-bs-target="#imageModal"
@@ -165,6 +167,7 @@
                                     >
                                     <i class="bi bi-image"></i>
                                 </a>
+                                @endif
                             </td>
                             <td>{{$operation->created_at}}</td>
                         </tr>

@@ -13,7 +13,7 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
     }
     
     public function get_operations_by_company_id($company_id,$filters) {
-        return Stock::where(['company_id'=>$company_id])->filter($filters)->paginate(10);
+        return Stock::where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
     }
 
 }

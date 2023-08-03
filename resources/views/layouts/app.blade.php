@@ -243,6 +243,12 @@
                                             <li class="rounded "><a href="{{ route('add_warehouse') }}" class="text-white"><i
                                                         class="bi bi-building-add "></i> أضافة مخزن جديد</a></li>
                                         @endcan
+                                        
+                                        <li class="rounded "><a href="{{ route('all_stocks') }}" class="text-white"><i
+                                            class="bi bi-stack "></i> عمليات الخصم والاضافة</a></li>
+                                        <li class="rounded "><a href="{{ route('add_stock') }}" class="text-white"><i
+                                            class="bi bi-plus "></i> أضافة عملية</a></li>
+
                                     </ul>
                                 </div>
                             </li>
