@@ -24,11 +24,13 @@ class StockController extends Controller
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         $products   = $this->CommonDataService->GetCompanyProducts($company_id);
         $users   = $this->CommonDataService->GetCompanyUsers($company_id);
+        $suppliers   = $this->CommonDataService->GetCompanySuppliers($company_id);
 
         $data = array(
             "warehouses"=>$warehouses,
             "products"=>$products,
             "users"=>$users,
+            "suppliers"=>$suppliers,
         );
 
         return view('Dashboard.Stock.show_all')->with(['stock'=>$stock,'data'=>$data]);
@@ -42,6 +44,7 @@ class StockController extends Controller
     }
 
     public function store(CreateStockRequest $request) {
+        // dd($request->all());
         $user = auth()->user();
         $ids = $this->StockOperationService->CreateOperation($user,$request->all());
         if($ids){

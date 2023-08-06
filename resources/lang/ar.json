@@ -88,5 +88,7 @@
     "product_variants_required":"برجاء اختيار المنتج",
     "buy":"شراء",
     "sell":"بيع",
-    "move":"نقل"
+    "move":"نقل",
+    "warehouse_to_id_different":"برجاء اختيار مخزن مختلف",
+    "stock_add_error":"الكمية غير كافية للنقل"
 }

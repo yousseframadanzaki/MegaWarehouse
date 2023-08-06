@@ -27,6 +27,7 @@ class CreateStockRequest extends FormRequest
             'type' => 'required|in:buy,sell,move',    
             'product_variants' => 'required|array|min:1',
             'product_variants.id' => 'exists:variants,id',
+            'warehouse_to_id'=>'required_if:type,move|different:warehouse_id'
         ];
     }
 
@@ -37,6 +38,8 @@ class CreateStockRequest extends FormRequest
             'warehouse_id.exists' => 'warehouse_id_exists',
             'type.required' => 'type_required',
             'product_variants.required' => 'product_variants_required',
+            'warehouse_to_id.required_if' => 'warehouse_to_id_required_if',
+            'warehouse_to_id.different' => 'warehouse_to_id_different',
         ];
     }
 

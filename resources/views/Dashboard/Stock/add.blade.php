@@ -49,7 +49,7 @@
                     <div class="col-md-4">
                         <label class="form-label">نوع العملية<span class="text-danger">*</span></label>
                         <select class="form-select @error('type') is-invalid @enderror product_info" aria-label="Default  select example" name="type"
-                            id="">
+                            id="type_id">
                             <option value="">اختار نوع العملية </option>
                                 <option value="move">نقل لمخزن اخر</option>
                                 <option value="buy">شراء</option>
@@ -74,13 +74,39 @@
     
                             </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             <label class="form-label">ملاحظة</label>
                             
                             <textarea rows="1" name="note" id="" class="form-control"></textarea>
                             <div class="invalid-feedback product_id">
 
                             </div>
+                        </div>
+                        <div class="col-md-4" >
+                            <label class="form-label" id="warehouse_to_label" 
+                            @if (!$errors->has('warehouse_to_id'))
+                                style="display:none"
+                            @endif>الى مخزن<span class="text-danger">*</span></label>
+                            <select   name="warehouse_to_id"
+                                id="warehouse_to_id" 
+                                @if ($errors->has('warehouse_to_id'))
+                                    
+                                    class="form-select is-invalid product_info"
+                                @else
+                                    class="form-select"
+                                    style="display:none"
+                                @endif
+                                >
+                                <option value="">اختار المخزن </option>
+                                @foreach ($warehouses as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            @error('warehouse_to_id')
+                                <div class="invalid-feedback">
+                                    {{__($message)}}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -137,13 +163,18 @@ $('#product_id').change(function () {
     })
 })
 
-
-// $("#form").submit(function (e) {
-//     e.preventDefault();
-
-
-
-// })
+$('#type_id').change(function () {
+    var type = $(this).val();   
+   if(type == 'move'){
+        $("#warehouse_to_id").fadeIn()
+        $("#warehouse_to_label").fadeIn()
+        $("#warehouse_to_id").select2()
+   }else{
+        $("#warehouse_to_id").next(".select2-container").hide();
+        $("#warehouse_to_id").val("");
+        $("#warehouse_to_label").fadeOut()
+   }
+})
 
 </script>
 

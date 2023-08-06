@@ -9,6 +9,7 @@ use App\Stock\Filters\DateFromFilter;
 use App\Stock\Filters\DateToFilter;
 use App\Stock\Filters\TypeFilter;
 use App\Stock\Filters\VariantFilter;
+use App\Stock\Filters\SupplierFilter;
 
 class StockFilters
 {
@@ -21,6 +22,7 @@ class StockFilters
         'date_from' => DateFromFilter::class,
         'date_to' => DateToFilter::class,
         'type' => TypeFilter::class,
+        'supplier_id' => SupplierFilter::class,
     ];
 
     public function apply($query)

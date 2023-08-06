@@ -16,4 +16,8 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         return Stock::where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
     }
 
+    public function get_variant_stock_in_warehouse($variant_id,$warehouse_id){
+        return Stock::where(['variant_id'=>$variant_id,'warehouse_id'=>$warehouse_id])->sum('quantity');
+    }
+
 }

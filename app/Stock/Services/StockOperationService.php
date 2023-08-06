@@ -28,35 +28,58 @@ class StockOperationService implements StockOperationServiceInterface{
     }
     
     function move($user,$details) {
-
-        $details['admin_id'] = $user->id;
-
-        if(isset($details['image'])){
-            $image = $details['image'];
-            unset($details['image']);
+        foreach ($details['product_variants'] as $variant) {
+            $current_stock = $this->stock_operation_repository->get_variant_stock_in_warehouse($variant['id'],$details['warehouse_id']);
+            if($current_stock < $variant['quantity']){
+                return false;
+            }
         }
 
-        $remove_details = $details;
-        $add_details = $details;
+        $ids = array();
 
-        $remove_details['quantity'] = $remove_details['quantity']*-1;
-        unset($remove_details['warehouse_to']);
-        $remove_id = $this->stock_operation_repository->create($remove_details);
+        //remove stock from warehouse_id
 
-        $add_details['warehouse'] = $add_details['warehouse_to'];
-        unset($add_details['warehouse_to']);
-        $add_id = $this->stock_operation_repository->create();
+        $remove_operation['warehouse_id'] = $details['warehouse_id'];
+        $remove_operation['note'] = $details['note'];
+        $remove_operation['type'] = $details['type'];
+        $remove_operation['admin_id'] = $user->id;
+        $remove_operation['company_id'] = $user->company_id;
 
-        if($image){
-            $file = $this->FileUploadService->stock($image,$user->company_id,$remove_id);
-            $this->MediaService->save($file);
-    
-            $file->collection_id = $add_id;
-            $this->MediaService->save($file);
+        foreach ($details['product_variants'] as $variant) {
+            if($variant['quantity']){
+                $remove_operation['variant_id'] = $variant['id'];
+                $remove_operation['quantity'] = $variant['quantity'] * -1;
+                $ids[] = $this->stock_operation_repository->create($remove_operation);
+            }
         }
 
-        return $add_id;
 
+        //add stock to warehouse_to_id
+
+        $add_operation['warehouse_id'] = $details['warehouse_to_id'];
+        $add_operation['note'] = $details['note'];
+        $add_operation['type'] = $details['type'];
+        $add_operation['admin_id'] = $user->id;
+        $add_operation['company_id'] = $user->company_id;
+
+        foreach ($details['product_variants'] as $variant) {
+            if($variant['quantity']){
+                $add_operation['variant_id'] = $variant['id'];
+                $add_operation['quantity'] = $variant['quantity'];
+                $ids[] = $this->stock_operation_repository->create($add_operation);
+            }
+        }
+
+
+        if(isset($details['image']) && count($ids) > 0){
+            $file = $this->FileUploadService->stock($details['image'],$user->company_id);
+            foreach ($ids as $id) {
+                $file->collection_id = $id;
+                $this->MediaService->save($file);
+            }
+        }
+        
+        return $ids;
     }
 
     function buy($user,$details) {
