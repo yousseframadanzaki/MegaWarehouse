@@ -15,4 +15,5 @@ interface CommonDataServiceInterface{
     public function GetCompanyWarehouses($company_id);
     public function GetCompanyProducts($company_id);
     public function GetCompanyUsers($company_id);
+    public function GetCompanyClients($company_id);
 }

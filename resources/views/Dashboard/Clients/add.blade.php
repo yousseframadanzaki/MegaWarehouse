@@ -137,6 +137,8 @@
             </div>
         </form>
     </div>
+@endsection
+@section('script')
     <script>
         $("#country-select").change(function () {
             var country_id = this.value;

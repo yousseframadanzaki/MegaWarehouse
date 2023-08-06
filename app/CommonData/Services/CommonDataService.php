@@ -44,26 +44,23 @@ class CommonDataService implements CommonDataServiceInterface{
     public function GetCities($country_id=NULL){
         return $this->common_data_repository->get_cities($country_id);
     }
-
     public function GetAreas($city_id=NULL){
         return $this->common_data_repository->get_areas($city_id);
     }
-
     public function GetCompanyWarehouses($company_id){
         return $this->common_data_repository->get_company_warehouses($company_id);
     }
-
     public function GetCompanyProducts($company_id){
         return $this->common_data_repository->get_company_products($company_id);
     }
-
     public function GetProductVariants($product_id){
         return $this->common_data_repository->get_product_variants($product_id);
     }
-
     public function GetCompanyUsers($company_id){
         return $this->common_data_repository->get_company_users($company_id);
     }
-
+    public function GetCompanyClients($company_id){
+        return $this->common_data_repository->get_company_clients($company_id);
+    }
 
 }

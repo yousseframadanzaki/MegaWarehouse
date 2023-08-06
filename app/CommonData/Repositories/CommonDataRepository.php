@@ -14,6 +14,7 @@ use App\Models\Warehouse;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\User;
+use App\Models\Client;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -76,6 +77,8 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return User::where(['company_id'=>$company_id])->pluck('name','id');
     }
 
-
+    public function get_company_clients($company_id){
+        return Client::where(['company_id'=>$company_id])->get();
+    }
     
 }

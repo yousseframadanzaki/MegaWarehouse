@@ -16,6 +16,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/',function (){
@@ -51,6 +52,16 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
+
+
+    Route::get('/orders', [OrderController::class,'all'])
+    ->name('all_orders');
+
+    Route::get('/orders/add', [OrderController::class,'create'])
+    ->name('add_order');
+
+    Route::post('/orders/add', [OrderController::class,'store'])
+    ->name('store_order');
 
 
     Route::get('/stock', [StockController::class,'all'])
