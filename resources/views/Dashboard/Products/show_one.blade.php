@@ -28,6 +28,29 @@
     
 </style>
 
+
+<div class="modal fade" id="quantities" tabindex="-1" aria-labelledby="quantitiesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-body text-center">
+                <table class="table hover-table">
+                    <thead>
+                        <tr>
+                            <th>اسم المخزن</th>
+                            <th>الكمية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stock">
+
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
 <div class="p-3">
 
 <div class="row">
@@ -102,7 +125,7 @@
                 <tr class="">
                     <td>{{ $variant->name }}</td>
                     <td>{{ $variant->price }}</td>
-                    <td>{{ $variant->quantity }}</td>
+                    <td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->quantity }}</a></td>
                     <td>{{ $variant->sku }}</td>
                     <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
                 </tr>
@@ -124,6 +147,34 @@ $(".small-image").hover(function () {
     $(".main_image").css('background-image',url);
 })
 
+$("#quantities").on('show.bs.modal',function (e) {
+    var id = $(e.relatedTarget).attr('data-id');
+
+    $.ajax({
+        url:`/api/variants/${id}/stock`,
+        method:"GET",
+        dataType: "text",
+    }).then(response => {
+        data = JSON.parse(response);
+        // console.log(data);
+        add_data(data);
+    })
+})
+
+function add_data(data) {
+    $("#stock").html("");
+    data.forEach(element => {
+        if(element.sum != "0"){
+            var template = `
+            <tr>
+                <td>${element.warehouse.name}</td>
+                <td>${element.sum}</td>
+            </tr>
+            `;
+            $("#stock").append(template);
+        }
+    });
+}
 
 </script>
 

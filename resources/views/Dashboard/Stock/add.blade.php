@@ -6,6 +6,7 @@
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_warehouses') }}">المخازن</a></li>
+                <li><a href="{{ route('all_stocks') }}">عمليات الخصم والاضافة</a></li>
                 <li><a class="link-dark">اضافة عملية</a></li>
             </ul>
         </div>
@@ -69,19 +70,21 @@
                         <div class="col-md-4">
                             <label class="form-label">صورة</label>
                             
-                            <input type="file" name="image" id="" class="form-control">
+                            <input type="file" name="image" id="image" class="form-control">
                             <div class="invalid-feedback product_id">
     
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <label class="form-label">ملاحظة</label>
                             
-                            <textarea rows="1" name="note" id="" class="form-control"></textarea>
+                            <textarea rows="2" name="note" id="" class="form-control"></textarea>
                             <div class="invalid-feedback product_id">
 
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-4" >
                             <label class="form-label" id="warehouse_to_label" 
                             @if (!$errors->has('warehouse_to_id'))
@@ -107,6 +110,11 @@
                                     {{__($message)}}
                                 </div>
                             @enderror
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div id="preview" style="display: none">
+                            <img id="preview_img" style="width: 200px;height:200px;object-fit:contain"/>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -174,6 +182,14 @@ $('#type_id').change(function () {
         $("#warehouse_to_id").val("");
         $("#warehouse_to_label").fadeOut()
    }
+})
+
+$("input#image").change(function (e) {
+    const [file] = e.target.files;
+    if(file){
+        $("#preview_img").attr('src',URL.createObjectURL(file));
+        $("#preview").fadeIn();
+    }
 })
 
 </script>

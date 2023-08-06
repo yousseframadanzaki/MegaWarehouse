@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommonDataController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('country/{country_id}/cities', [CommonDataController::class ,'city'])->name('country_cities');
 Route::get('city/{city_id}/areas', [CommonDataController::class ,'area'])->name('city_areas');
 Route::get('product/{product_id}/variants', [CommonDataController::class ,'variants'])->name('product_variants');
+Route::get('variants/{variant_id}/stock', [StockController::class ,'variants_stock'])->name('variants_stock');
 Route::get('categories/{category_id}/sub_categories', [CommonDataController::class ,'sub_categories'])->name('category_sub_categories');
 Route::delete('media/{id}', [MediaController::class,'destroy'])->name('delete_media');

@@ -35,22 +35,30 @@ class StockController extends Controller
 
         return view('Dashboard.Stock.show_all')->with(['stock'=>$stock,'data'=>$data]);
     }
-
     public function create() {
         $company_id = auth()->user()->company_id;
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         $products   = $this->CommonDataService->GetCompanyProducts($company_id);
         return view('Dashboard.Stock.add')->with(compact('warehouses','products'));
     }
-
     public function store(CreateStockRequest $request) {
-        // dd($request->all());
         $user = auth()->user();
         $ids = $this->StockOperationService->CreateOperation($user,$request->all());
         if($ids){
-            return redirect()->back()->with('success','stock_add_success');
+            return redirect()->route('all_stocks')->with('success','stock_add_success');
         }
         return redirect()->back()->with('error','stock_add_error');
+    }
+    public function delete(Request $request) {
+        if($this->StockOperationService->DeleteOperations($request->input('opertation_ids'))){
+            return redirect()->route('all_stocks')->with('success','stock_delete_success');
+        }
+        return redirect()->back()->with('error','stock_delete_error');
+    }
+
+    public function variants_stock($variant_id) {
+        $data = $this->StockOperationService->GetVarintsStock($variant_id);
+        return response()->json($data);
     }
 
 }

@@ -20,4 +20,22 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         return Stock::where(['variant_id'=>$variant_id,'warehouse_id'=>$warehouse_id])->sum('quantity');
     }
 
+    public function get_operation_by_id($id){
+        return Stock::where(['id'=>$id])->first();
+    }
+
+    public function delete_operation_by_id($id){
+        return Stock::destroy($id);
+    }
+    public function get_variant_stock_warehouse($variant_id) {
+        return Stock::with(
+            ['warehouse' => function ($query) {
+                $query->select('id', 'name');
+            }]
+        )
+        ->groupBy('warehouse_id')
+        ->where('variant_id',$variant_id)
+        ->selectRaw('sum(quantity) as sum, warehouse_id')
+        ->get();
+    }
 }

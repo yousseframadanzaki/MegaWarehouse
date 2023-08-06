@@ -16,6 +16,23 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-body text-center">
+                    <p>
+                        هل انت متأكد من الحذف؟
+                    </p>
+                    <div>
+                        <a class="delete_btn btn btn-danger">نعم </a>
+                        <a data-bs-dismiss="modal" class="delete_btn btn btn-secondary">لا</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 
     <div class="p-3">
         <div class="row">
@@ -150,10 +167,16 @@
             </form>
         </div>
 
+        <div class="card shadow-sm mt-3 p-3 d-flex flex-row">
+            <div class="fs-2"  title="أضافة عملية "><a href="{{route('add_stock')}}"><i class="text-primary bi bi-plus-square-fill"></i></a></div>
+            <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
+        </div>
+
         <div class="mt-3 shadow-sm">
             <table class="table table-hover border">
                 <thead>
                     <tr>
+                        <th scope="col"><input type="checkbox" class="form-check-input fs-3" id="check_all"/></th>
                         <th scope="col">نوع العملية</th>
                         <th scope="col"> المخزن </th>
                         <th scope="col"> الادمن</th>
@@ -170,6 +193,7 @@
                 <tbody>
                     @foreach ($stock as $operation)
                         <tr>
+                            <td><input type="checkbox" class="form-check-input fs-3 operation_id" value="{{$operation->id}}" name="operation_id"/></td>
                             <td>{{ __($operation->type) }}</td>
                             <td>{{ $operation->warehouse->name }}</td>
                             <td>{{ $operation->admin->name }}</td>
@@ -206,6 +230,11 @@
             {!! $stock->appends($_GET)->links() !!}
         </div>
     </div>
+
+    <form id="delete_form" action="{{route('delete_stock')}}" method="POST">
+        @csrf
+    </form>
+
 @endsection
 
 @section('script')
@@ -225,8 +254,6 @@
             $("#imageModal .modal-body a").attr('target', '_blank');
             $("#imageModal .modal-body a img").attr('src', image);
         })
-
-
         $("#product_id").change(function() {
             var id = this.value;
             $('#variant_id').html("");
@@ -248,8 +275,6 @@
                 $('#variant_id').select2();
             })
         })
-
-
         $("#search").submit(function(e) {
             e.preventDefault();
             const query = {};
@@ -260,6 +285,19 @@
             })
             let params = new URLSearchParams(query);
             window.location.search = params.toString();
+        })
+        $("#check_all").click(function () {
+            $(".operation_id").click();
+        })
+        $(".delete_btn").click(function (e) {
+            ids = []
+            $("input.operation_id:checked").each((index,element) => {
+                ids.push($(element).val());
+            });
+            ids.forEach(element => {
+                $('#delete_form').append("<input type='hidden' name='opertation_ids[]' value='"+element+"'' />");
+            });
+            $('#delete_form').submit();
         })
     </script>
 @endsection
