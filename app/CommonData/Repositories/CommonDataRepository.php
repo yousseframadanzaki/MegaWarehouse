@@ -15,6 +15,7 @@ use App\Models\Product;
 use App\Models\Variant;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Attribute;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -79,6 +80,14 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
 
     public function get_company_clients($company_id){
         return Client::where(['company_id'=>$company_id])->get();
+    }
+
+    public function get_product_attributes($product_id){
+        return Attribute::where(['product_id'=>$product_id])->get();
+    }
+
+    public function get_variant_by_id($variant_id){
+        return Variant::with('product')->where(['id'=>$variant_id])->first();
     }
     
 }

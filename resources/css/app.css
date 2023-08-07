@@ -105,3 +105,6 @@ ul.breadcrumb {
   border: var(--bs-border-width) solid var(--bs-border-color) !important;
   border-radius:var(--bs-border-radius) !important;
 }
+.form-control::placeholder{
+  opacity: 0.4;
+}

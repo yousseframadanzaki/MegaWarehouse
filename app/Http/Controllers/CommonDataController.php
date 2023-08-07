@@ -29,4 +29,12 @@ class CommonDataController extends Controller
     public function variants($product_id) {
         return response()->json($this->CommonDataService->GetProductVariants($product_id));
     }
+    public function attributes($product_id) {
+        return response()->json($this->CommonDataService->GetProductAttributes($product_id));
+    }
+
+    public function variant_data($variant_id) {
+        return response()->json($this->CommonDataService->GetVariant($variant_id));
+    }
+
 }

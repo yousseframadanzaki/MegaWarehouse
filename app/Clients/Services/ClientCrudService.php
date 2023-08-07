@@ -35,5 +35,9 @@ class ClientCrudService implements ClientCrudServiceInterface{
     public function GetClient($id){
         return $this->client_crud_repository->get_client_by_id($id);
     }
+
+    public function GetClientByPhone($phone){
+        return $this->client_crud_repository->get_client_where(array('phone_1'=>$phone));
+    }
     
 }

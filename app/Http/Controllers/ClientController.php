@@ -71,4 +71,12 @@ class ClientController extends Controller
         }
         return back()->with('success','client_updated_success');
     }
+
+    public function get_client_by_phone($phone) {
+        $client = $this->ClientCrudService->GetClientByPhone($phone);
+        $citites = $this->CommonDataService->GetCities($client->country_id);
+        $areas = $this->CommonDataService->GetAreas($client->city_id);
+        return response()->json(array('client'=>$client,'areas'=>$areas,'citites'=>$citites));
+    }
+
 }
