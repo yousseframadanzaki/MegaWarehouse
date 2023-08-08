@@ -21,6 +21,11 @@ class OrderController extends Controller
         $this->OrdersService = $OrdersService;
     }
 
+    public function all() {
+        $orders = $this->OrdersService->GetCompanyOrders($this->company_id());
+        return view('Dashboard.Orders.show_all')->with(compact('orders'));
+    }
+
     public function create() {
         $company_id = $this->company_id();
         $clients = $this->CommonDataService->GetCompanyClients($company_id);
@@ -34,7 +39,7 @@ class OrderController extends Controller
         if( $this->OrdersService->AddOrder(auth()->user(),$request->all()) ){
             return redirect()->back()->with('success','order_created_success');
         }
-        return redirect()->back()->with('error','order_created_error');
+        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')]);
     }
 
 }

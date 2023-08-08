@@ -44,4 +44,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
         
     }
 
+    public function get_company_orders($company_id){
+        return Order::where(['company_id'=>$company_id])->paginate(20);
+    }
+
+
 }
