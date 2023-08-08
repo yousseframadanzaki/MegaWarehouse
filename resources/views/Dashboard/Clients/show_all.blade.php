@@ -29,9 +29,11 @@
                             <td>{{ $client->phone_2 }}</td>
                             <td>{{ $client->address }}</td>
                             <td>
-                                @foreach (json_decode($client->links) as $name => $value)
-                                    <a class="bi bi-{{$name}}" href="{{$value}}"></a>
-                                @endforeach
+                                @isset($client->links)
+                                    @foreach (json_decode($client->links) as $name => $value)
+                                        <a class="bi bi-{{$name}}" href="{{$value}}"></a>
+                                    @endforeach
+                                @endisset
                             </td>
                             <td>
                                 @can('edit_client','App\Models\Client')

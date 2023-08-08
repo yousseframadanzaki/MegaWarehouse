@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
 
 class OrderController extends Controller
 {
     private CommonDataServiceInterface $CommonDataService;
+    private OrdersServiceInterface $OrdersService;
     public function __construct(
         CommonDataServiceInterface $CommonDataService,
+        OrdersServiceInterface $OrdersService
     )
     {
         $this->CommonDataService = $CommonDataService;
+        $this->OrdersService = $OrdersService;
     }
 
     public function create() {
@@ -27,7 +31,10 @@ class OrderController extends Controller
     }
 
     public function store(CreateOrderRequest $request){
-        dd($request->all());
+        if( $this->OrdersService->AddOrder(auth()->user(),$request->all()) ){
+            return redirect()->back()->with('success','order_created_success');
+        }
+        return redirect()->back()->with('error','order_created_error');
     }
 
 }

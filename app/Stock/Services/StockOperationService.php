@@ -111,8 +111,21 @@ class StockOperationService implements StockOperationServiceInterface{
         return $ids;
     }
 
-    function sell($details) {
-
+    function sell($user,$details) {
+        // dd($details);
+        $operation['admin_id'] = $user->id;
+        $operation['company_id'] = $user->company_id;
+        $operation['type'] = $details['type'];
+        $operation['order_id'] = $details['order_id'];
+        $ids = [];
+        foreach ($details['items'] as $id => $item) {
+            $operation['variant_id'] = $id;
+            $operation['warehouse_id'] = $item['warehouse_id'];
+            $operation['quantity'] = $item['quantity'] * -1;
+            $ids[]   = $this->stock_operation_repository->create($operation);
+            $this->VariantStockService->UpdateStock($id,$operation['quantity']);
+        }
+        return $ids;
     }
 
     function returned_orders($details) { 
@@ -133,6 +146,16 @@ class StockOperationService implements StockOperationServiceInterface{
 
     function GetVarintsStock($variant_id) {
         return $this->stock_operation_repository->get_variant_stock_warehouse($variant_id);
+    }
+
+    public function CheckItemsAvailable($items) {
+        foreach ($items as $variant_id => $item) {
+            $stock = (int)$this->stock_operation_repository->get_variant_stock_by_warehouse_id($variant_id,$item['warehouse_id']);
+            if($stock <= (int)$item['quantity']){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

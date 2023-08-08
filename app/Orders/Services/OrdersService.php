@@ -2,38 +2,40 @@
 
 namespace App\Orders\Services;
 
-use App\Orders\Interfaces\OrdersRepsoitoryInterface;
+use App\Orders\Interfaces\OrdersRepositoryInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
+use App\Stock\Interfaces\StockOperationServiceInterface;
+use App\Clients\Interfaces\ClientCrudServiceInterface;
 
 class OrdersService implements OrdersServiceInterface{
 
 
     public function __construct(
         protected readonly  ClientCrudServiceInterface $ClientCrudService,
-        protected readonly  StockServiceInterface $StockService,
-        protected readonly  OrdersRepsoitoryInterface $orders_crud_repository,
+        protected readonly  StockOperationServiceInterface $StockService,
+        protected readonly  OrdersRepositoryInterface $orders_crud_repository,
     ) {}
 
-    public function AddOrder($company_id,array $data){
-
-        $items = $data['items'];
-        unset($data['items']);
-
-        if(!$this->StockService->CheckAvailableItems($items)){
+    public function AddOrder($user,array $order_details){
+        if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
             return false;
         }
-        $data['company_id'] = $company_id;
-        if(!isset($data['client_id'])){
-            $saved_client = $this->ClientCrudService->CreateClient($company_id,$data['client']);
-            $data['client_id'] = $saved_client->id;
+
+        if(!isset($order_details['client_id'])){
+            $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);
+            $order_details['client_id'] = $client->id;
         }
-        $order =  $this->orders_crud_repository($data);
-        $prepared_items = [];
-        foreach ($items as $item) {
-            $prepared_items[$item['id']] = ['value' => $item];
-        }
-        $items['order_id'] = $order->id;
-        $this->StockService->buy($items);
-        return;
+        // dd('stop');
+        $order_details['admin_id'] = $user->id;
+        $order_details['company_id'] = $user->company_id;
+        $order = $this->orders_crud_repository->create_order($order_details);
+        // dd($order);
+        $order_details['type'] = 'sell';
+        $order_details['order_id'] = $order->id;
+
+        $this->StockService->CreateOperation($user,$order_details);
+
+        return true;
+
     }
 }

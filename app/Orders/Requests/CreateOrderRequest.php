@@ -23,16 +23,15 @@ class CreateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|min:3',
-            'phone_1'=>'required|min:11',
-            'phone_2'=>'nullable|min:11',
-            'address'=>'required|min:10',
-            'country_id'=>'required|exists:countries,id',
-            'city_id'=>'required|exists:cities,id',
-            'area_id'=>'required|exists:areas,id',
+            'client.name'=>'required|min:3',
+            'client.phone_1'=>'required|min:11',
+            'client.phone_2'=>'nullable|min:11',
+            'client.address'=>'required|min:10',
+            'client.country_id'=>'required|exists:countries,id',
+            'client.city_id'=>'required|exists:cities,id',
+            'client.area_id'=>'required|exists:areas,id',
             'items'=>'required|array|min:1',
-            'items.*.id'=>'required|exists:variants,id',
-            'items.*.warehouse'=>'required|exists:warehouses,id',
+            'items.*.warehouse_id'=>'required|exists:warehouses,id',
             'items.*.quantity'=>'required|numeric|gt:0',
         ];
     }

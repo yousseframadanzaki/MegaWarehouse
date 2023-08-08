@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Variant;
 
-class Order extends Pivot
+class Order extends Model
 {
+    protected $table = 'orders';
     protected $fillable = [
         'name',
         'phone_1',
@@ -22,11 +23,9 @@ class Order extends Pivot
         'status_id',
         'admin_id',
     ];
-
-    
     public function items()
     {
-        return $this->belongsToMany(Variant::class, 'orders_items', 'orders_id', 'variants_id');
+        return $this->belongsToMany(Variant::class, 'orders_items', 'orders_id', 'variants_id')->withPivot('warehouse_id', 'quantity');
     }
 
 }

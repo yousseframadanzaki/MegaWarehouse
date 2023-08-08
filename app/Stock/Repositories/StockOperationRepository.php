@@ -38,4 +38,13 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         ->selectRaw('sum(quantity) as sum, warehouse_id')
         ->get();
     }
+    public function get_variant_stock_by_warehouse_id($variant_id,$warehouse_id) {
+        return Stock::where([
+            'variant_id'=>$variant_id,
+            'warehouse_id'=>$warehouse_id
+            ])
+        ->selectRaw('sum(quantity) as sum')
+        ->value('sum');
+    }
+    
 }

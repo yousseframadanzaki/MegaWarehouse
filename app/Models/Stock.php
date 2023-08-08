@@ -13,6 +13,7 @@ class Stock extends Model
         'variant_id',
         'admin_id',
         'company_id',
+        'order_id',
         'note',
         'type',
         'quantity',
