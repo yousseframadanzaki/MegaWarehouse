@@ -39,7 +39,7 @@ class OrderController extends Controller
         if( $this->OrdersService->AddOrder(auth()->user(),$request->all()) ){
             return redirect()->back()->with('success','order_created_success');
         }
-        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')]);
+        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')])->withInput();
     }
 
 }
