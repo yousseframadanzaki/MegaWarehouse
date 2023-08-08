@@ -90,5 +90,7 @@
     "sell":"بيع",
     "move":"نقل",
     "warehouse_to_id_different":"برجاء اختيار مخزن مختلف",
-    "stock_add_error":"الكمية غير كافية للنقل"
+    "stock_add_error":"الكمية غير كافية للنقل",
+    "order_created_success":"تم أضافة الاوردر بنجاح",
+    "order_created_error":"الكمية غير كافية"
 }

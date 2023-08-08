@@ -84,9 +84,9 @@
                         <h4>بيانات العميل</h4>
                         <div class="col-md-4">
                             <label class="form-label">الاسم </label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="client[name]"
-                                id="name" value="{{ old('name') }}">
-                            @error('name')
+                            <input type="text" class="form-control @error('client.name') is-invalid @enderror" name="client[name]"
+                                id="name" value="{{ old('client.name') }}">
+                            @error('client.name')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -94,9 +94,9 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">رقم التليفون</label>
-                            <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('phone_1') is-invalid @enderror form-control"
-                                autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف">
-                            @error('phone_1')
+                            <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('client.phone_1') is-invalid @enderror form-control"
+                                autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
+                            @error('client.phone_1')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -105,9 +105,9 @@
 
                         <div class="col-md-4">
                             <label class="form-label">رقم التليفون 2 </label>
-                            <input type="text" class="form-control @error('phone_2') is-invalid @enderror" name="client[phone_2]"
-                                id="phone_2" value="{{ old('phone_2') }}">
-                            @error('phone_2')
+                            <input type="text" class="form-control @error('client.phone_2') is-invalid @enderror" name="client[phone_2]"
+                                id="phone_2" value="{{ old('client.phone_2') }}">
+                            @error('client.phone_2')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -116,9 +116,9 @@
                         <div class="col-md-6 mt-3">
                             <label class="form-label">عنوان <i class="bi bi-map-marker">
                                 </i></label>
-                            <input type="text" class="form-control @error('address') is-invalid @enderror" id="address"
-                                name="client[address]" value="{{ old('address') }}">
-                            @error('address')
+                            <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address"
+                                name="client[address]" value="{{ old('client.address') }}">
+                            @error('client.address')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -128,14 +128,14 @@
                     <div class="row mt-3">
                         <div class="col-md-4">
                             <label class="form-label"> الدولة </label>
-                            <select id="country-select" class="form-select @error('country_id') is-invalid @enderror"
+                            <select id="country-select" class="form-select @error('client.country_id') is-invalid @enderror"
                                 aria-label="Default select example" name="client[country_id]">
                                 <option value="">اختار</option>
                                 @foreach ($countries as $id => $name)
                                     <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                            @error('country_id')
+                            @error('client.country_id')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -143,12 +143,12 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">المدينة </label>
-                            <select id="city-select" class="form-select @error('city_id') is-invalid @enderror"
+                            <select id="city-select" class="form-select @error('client.city_id') is-invalid @enderror"
                                 aria-label="Default select example" name="client[city_id]">
 
 
                             </select>
-                            @error('city_id')
+                            @error('client.city_id')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -156,11 +156,11 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label ">المنطقة </label>
-                            <select id="area-select" class="form-select @error('area_id') is-invalid @enderror"
+                            <select id="area-select" class="form-select @error('client.area_id') is-invalid @enderror"
                                 aria-label="Default select example" name="client[area_id]">
 
                             </select>
-                            @error('area_id')
+                            @error('client.area_id')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -172,6 +172,11 @@
                         @error('items')
                         <div class="alert alert-danger" role="alert">
                             برجاء اضافة منتج واحد على الاقل
+                        </div>
+                        @enderror
+                        @error('items.*.warehouse_id')
+                        <div class="alert alert-danger" role="alert">
+                            برجاء اختيار المخزن لكل منتج
                         </div>
                         @enderror
                         <table class="table table-hover" id="variants_table">
