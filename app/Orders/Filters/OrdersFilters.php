@@ -2,6 +2,7 @@
 
 namespace App\Orders\Filters;
 
+use App\Orders\Filters\OrderCodeFilter;
 use App\Orders\Filters\ClientFilter;
 use App\Orders\Filters\StatusFilter;
 use App\Orders\Filters\CityFilter;
@@ -13,6 +14,7 @@ class OrdersFilters
 {
 
     protected $filters = [
+        'order_code' => OrderCodeFilter::class,
         'client_id' => ClientFilter::class,
         'status_id' => StatusFilter::class,
         'city_id'   => CityFilter::class,

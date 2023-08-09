@@ -26,6 +26,7 @@ class CreateCompanyRequest extends FormRequest
             'company.company_type' => 'required',
             'company.max_users' => 'required|Integer',
             'company.max_orders' => 'required|Integer',
+            'company.code' => 'required|min:3',
             'warehouse.name' => 'required|min:3',
             'user.name' => 'required|min:6',
             'user.phone_1' => 'required|min:11|unique:users,phone_1',

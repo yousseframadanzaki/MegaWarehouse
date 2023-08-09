@@ -28,6 +28,7 @@ class OrdersService implements OrdersServiceInterface{
         // dd('stop');
         $order_details['admin_id'] = $user->id;
         $order_details['company_id'] = $user->company_id;
+        $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
         $order = $this->orders_crud_repository->create_order($order_details);
         // dd($order);
         $order_details['type'] = 'sell';
@@ -42,4 +43,13 @@ class OrdersService implements OrdersServiceInterface{
     public function GetCompanyOrders($company_id,$filters) {
         return $this->orders_crud_repository->get_company_orders($company_id,$filters);
     }
+
+    public function GetOrder($order_id){
+        return $this->orders_crud_repository->get_order_by_id($order_id);
+    }
+
+    public function ChangeOrderStatus($order_id,$data){
+        return $this->orders_crud_repository->change_order_status($order_id,$data);
+    }
+
 }

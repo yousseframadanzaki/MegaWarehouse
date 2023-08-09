@@ -135,7 +135,7 @@
                     @endforeach
                 </div>
                 <div dir="ltr" class="d-flex justify-content-center mt-5">
-                    {!! $products->links() !!}
+                    {!! $products->appends($_GET)->links() !!}
                 </div>
         </div>
 

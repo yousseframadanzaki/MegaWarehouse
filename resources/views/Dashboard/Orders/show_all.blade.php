@@ -9,10 +9,15 @@
                 <li><a class="link-dark" href="{{ route('all_orders') }}">الاوردرات</a></li>
             </ul>
         </div>
-
+    <div class="row">
         <div class="card shadow-sm p-3" >
             <form method="GET" action="{{route('all_orders')}}" id="search">
                 <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">رقم الاوردر</label>
+                        <input class="form-control" name="order_code" id=""
+                            value="{{ Request::get('order_code') }}">
+                    </div>
                     <div class="col-md-4">
                         <label class="form-label">العميل</label>
                         <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
@@ -39,19 +44,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">الحالة</label>
-                        <select class="form-select product_info" name="status_id">
-                            <option value="">اختار الحالة</option>
-                            @foreach ($statuses as $status)
-                                <option  @if(Request::get('status_id') == $status->id) selected @endif value="{{ $status->id }}">{{ $status->name }}</option>
-                            @endforeach
-                        </select>
-
-                        <div class="invalid-feedback supplier_id">
-
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-4">
@@ -70,6 +63,21 @@
                             id="area_id">
                         </select>
                     </div>
+                    <div class="col-md-4">
+                        <label class="form-label">الحالة</label>
+                        <select class="form-select product_info" name="status_id">
+                            <option value="">اختار الحالة</option>
+                            @foreach ($statuses as $status)
+                                <option  @if(Request::get('status_id') == $status->id) selected @endif value="{{ $status->id }}">{{ $status->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <div class="invalid-feedback supplier_id">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
                     <div class="col-md-4">
                         <label class="form-label">تاريخ من</label>
                         <input class="form-control datetimeplugin" name="date_from" id=""
@@ -106,7 +114,7 @@
             <tbody>
                 @foreach($orders as $order)
                     <tr>
-                        <td>{{$order->id}}</td>
+                        <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
                         <td>{{$order->admin->name}}</td>
                         <td>{{$order->status->name}}</td>
                         <td>{{$order->name}}</td>
@@ -119,6 +127,10 @@
                 @endforeach
             </tbody>
         </table>
+        <div dir="ltr" class="d-flex justify-content-center">
+            {!! $orders->appends($_GET)->links() !!}
+        </div>
+    </div>
     </div>
 
 @endsection

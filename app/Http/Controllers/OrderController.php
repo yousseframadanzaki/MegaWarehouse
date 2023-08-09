@@ -37,6 +37,13 @@ class OrderController extends Controller
             ));
     }
 
+    public function show_one($order_id) {
+        $order = $this->OrdersService->GetOrder($order_id);
+        $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
+        // dd($statuses);   
+        return view('Dashboard.Orders.show_one',compact('order','statuses'));
+    }
+
     public function create() {
         $company_id = $this->company_id();
         $clients = $this->CommonDataService->GetCompanyClients($company_id);
@@ -51,6 +58,17 @@ class OrderController extends Controller
             return redirect()->back()->with('success','order_created_success');
         }
         return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')])->withInput();
+    }
+
+    public function change_status(Request $request,$order_id) {
+
+        $data = $request->all();
+        $data['admin_id'] = auth()->user()->id;
+
+        if($this->OrdersService->ChangeOrderStatus($order_id,$data)){
+            return redirect()->back()->with('succes','order_status_change_success');
+        }
+        return redirect()->back()->with('succes','order_status_change_error');
     }
 
 }

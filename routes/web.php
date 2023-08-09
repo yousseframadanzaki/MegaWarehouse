@@ -57,12 +57,17 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders');
 
+
     Route::get('/orders/add', [OrderController::class,'create'])
     ->name('add_order');
 
     Route::post('/orders/add', [OrderController::class,'store'])
     ->name('store_order');
 
+    Route::get('/orders/{order_id}', [OrderController::class,'show_one'])
+    ->name('show_order');
+    Route::post('/orders/{order_id}/status', [OrderController::class,'change_status'])
+    ->name('change_order_status');
 
     Route::get('/stock', [StockController::class,'all'])
     ->name('all_stocks');
