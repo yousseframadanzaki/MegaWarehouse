@@ -52,5 +52,10 @@ class Order extends Model
     {
         return $this->belongsTo(Area::class);
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
     
 }

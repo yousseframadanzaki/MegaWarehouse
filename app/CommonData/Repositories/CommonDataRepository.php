@@ -16,6 +16,7 @@ use App\Models\Variant;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Attribute;
+use App\Models\Status;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -88,6 +89,10 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
 
     public function get_variant_by_id($variant_id){
         return Variant::with('product')->where(['id'=>$variant_id])->first();
+    }
+
+    public function get_company_statuses($company_id){
+        return Status::where(['company_id'=>$company_id])->get();
     }
     
 }

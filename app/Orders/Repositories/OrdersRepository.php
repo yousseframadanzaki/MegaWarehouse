@@ -35,17 +35,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
         return $total;
     }
 
-    function add_items_to_order($order,$items) {
-        $prepared_items = [];
-        foreach ($items as $id => $value) {
-            $prepared_items[$id] = ['value'=>$value];
-        }
-        dd($prepared_items);
-        
-    }
-
-    public function get_company_orders($company_id){
-        return Order::where(['company_id'=>$company_id])->paginate(20);
+    public function get_company_orders($company_id,$filters){
+        return Order::where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
     }
 
 

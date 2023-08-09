@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
+use App\Orders\Filters\OrdersFilters;
 
 class OrderController extends Controller
 {
@@ -21,9 +22,19 @@ class OrderController extends Controller
         $this->OrdersService = $OrdersService;
     }
 
-    public function all() {
-        $orders = $this->OrdersService->GetCompanyOrders($this->company_id());
-        return view('Dashboard.Orders.show_all')->with(compact('orders'));
+    public function all(OrdersFilters $filters) {
+        $clients = $this->CommonDataService->GetCompanyClients($this->company_id());
+        $cities = $this->CommonDataService->GetCities();
+        $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
+
+        $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
+        return view('Dashboard.Orders.show_all')->with(
+            compact(
+                'orders',
+                'clients',
+                'cities',
+                'statuses'
+            ));
     }
 
     public function create() {
