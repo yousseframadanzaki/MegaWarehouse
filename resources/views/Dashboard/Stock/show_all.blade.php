@@ -168,11 +168,16 @@
             </form>
         </div>
 
+        @canany(['add', 'delete'], 'App\\Models\Stock')
         <div class="card shadow-sm mt-3 p-3 d-flex flex-row">
-            <div class="fs-2"  title="أضافة عملية "><a href="{{route('add_stock')}}"><i class="text-primary bi bi-plus-square-fill"></i></a></div>
-            <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
+            @can('add','App\\Models\Stock')
+                <div class="fs-2"  title="أضافة عملية "><a href="{{route('add_stock')}}"><i class="text-primary bi bi-plus-square-fill"></i></a></div>
+            @endcan
+            @can('delete','App\\Models\Stock')
+                <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
+            @endcan
         </div>
-
+        @endcanany
         <div class="mt-3 shadow-sm">
             <table class="table table-hover border">
                 <thead>

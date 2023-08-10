@@ -9,6 +9,7 @@ use App\Stock\Interfaces\StockOperationServiceInterface;
 use App\Stock\Filters\StockFilters;
 
 use App\Stock\Requests\CreateStockRequest;
+use App\Stock\Requests\DeleteStockRequest;
 
 class StockController extends Controller
 {
@@ -49,7 +50,7 @@ class StockController extends Controller
         }
         return redirect()->back()->with('error','stock_add_error');
     }
-    public function delete(Request $request) {
+    public function delete(DeleteStockRequest $request) {
         if($this->StockOperationService->DeleteOperations($request->input('opertation_ids'))){
             return redirect()->route('all_stocks')->with('success','stock_delete_success');
         }

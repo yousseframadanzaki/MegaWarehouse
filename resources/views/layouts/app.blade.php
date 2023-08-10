@@ -77,6 +77,28 @@
                             </li>
                         @endcanany
                         
+                        @canany(['view','add'],'App\Models\Order')
+                            <li>
+                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                    data-bs-target="#orders-collapse" >
+                                    <i class="bi bi-basket"></i>
+                                    الاوردرات
+                                </a>
+                                <div class="collapse" id="orders-collapse" style="">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                        @can('view','App\Models\Order')
+                                            <li class="rounded"><a href="{{ route('all_orders') }}" class="text-white"> <i class="bi bi-basket"></i> كل
+                                                الاوردرات </a></li>
+                                        @endcan
+
+                                        @can('add','App\Models\Order')
+                                            <li class="rounded "><a href="{{ route('add_order') }}" class="text-white"><i
+                                                        class="bi bi-bag-plus"></i> أضافة اوردر جديد</a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
                         @canany(['view','add'],'App\Models\Product')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
@@ -244,11 +266,14 @@
                                                         class="bi bi-building-add "></i> أضافة مخزن جديد</a></li>
                                         @endcan
                                         
+                                        @can('view','App\Models\Stock')
                                         <li class="rounded "><a href="{{ route('all_stocks') }}" class="text-white"><i
                                             class="bi bi-stack "></i> عمليات الخصم والاضافة</a></li>
+                                        @endcan
+                                        @can('add','App\Models\Stock')
                                         <li class="rounded "><a href="{{ route('add_stock') }}" class="text-white"><i
                                             class="bi bi-plus "></i> أضافة عملية</a></li>
-
+                                        @endcan
                                     </ul>
                                 </div>
                             </li>

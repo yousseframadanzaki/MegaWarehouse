@@ -477,7 +477,9 @@
                     $(quantity).parent().find('.text-danger').remove();
                 }
             }
-            console.log("hi");
+            if(error){
+                return;
+            }
             $("#order_form").submit();
 
         })

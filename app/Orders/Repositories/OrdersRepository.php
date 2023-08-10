@@ -22,7 +22,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order = Order::create($order_data);
 
         $order->items()->sync($data['items']);
-        $order->order_status()->sync([$order_data['status_id'] => ['admin_id' => $order_data['admin_id'],'note'=>'']]);
+        $order->order_status()->sync([$order_data['status_id'] => ['admin_id' => $order_data['admin_id'],'note'=>'','current'=>true]]);
 
         return  $order;
     }

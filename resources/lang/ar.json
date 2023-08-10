@@ -42,6 +42,7 @@
     "Suppliers":"الموردين",
     "Warehouses":"المخازن",
     "Clients":"العملاء",
+    "Orders":"الاوردرات",
     "Products":"المنتجات",
     "role_name_required":"برجاء ادخال اسم ادارة",
     "role_permissions_required":"برجاء اختيار الصلاحيات",

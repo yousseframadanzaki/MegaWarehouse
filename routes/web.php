@@ -55,28 +55,36 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
     Route::get('/orders', [OrderController::class,'all'])
-    ->name('all_orders');
-
+    ->name('all_orders')
+    ->can('view','App\Models\Order');
 
     Route::get('/orders/add', [OrderController::class,'create'])
-    ->name('add_order');
+    ->name('add_order')
+    ->can('add','App\Models\Order');
 
     Route::post('/orders/add', [OrderController::class,'store'])
-    ->name('store_order');
+    ->name('store_order')
+    ->can('add','App\Models\Order');
 
     Route::get('/orders/{order_id}', [OrderController::class,'show_one'])
-    ->name('show_order');
+    ->name('show_order')
+    ->can('view_one',['App\Models\Order','order_id']);
+
     Route::post('/orders/{order_id}/status', [OrderController::class,'change_status'])
-    ->name('change_order_status');
+    ->name('change_order_status')
+    ->can('change_status',['App\Models\Order','order_id']);
 
     Route::get('/stock', [StockController::class,'all'])
-    ->name('all_stocks');
+    ->name('all_stocks')
+    ->can('view','App\\Models\Stock');
 
     Route::get('/stock/add', [StockController::class,'create'])
-    ->name('add_stock');
+    ->name('add_stock')
+    ->can('add','App\\Models\Stock');
 
     Route::post('/stock/add', [StockController::class,'store'])
-    ->name('store_stock');
+    ->name('store_stock')
+    ->can('add','App\\Models\Stock');
 
     Route::post('/stock/delete', [StockController::class,'delete'])
     ->name('delete_stock');

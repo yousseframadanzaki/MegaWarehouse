@@ -74,9 +74,12 @@
             <li><a class="link-dark" href="{{ route('show_order',$order->id) }}">{{$order->order_code}} </a></li>
         </ul>
 
-        <div class="card p-3 shadow-sm d-flex flex-row">
-            <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
-        </div>
+        @can('edit_change_status','App\\Models\Order')
+            <div class="card p-3 shadow-sm d-flex flex-row">
+                <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+            </div>
+        @endcan
+
 
         <div class="card p-3 shadow-sm mt-3">
             <div class="row">
