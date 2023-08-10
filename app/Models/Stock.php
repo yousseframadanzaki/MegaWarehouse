@@ -44,6 +44,11 @@ class Stock extends Model
         return $this->hasOne(Media::class,'collection_id')->where('collection','stock');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);

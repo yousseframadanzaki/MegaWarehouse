@@ -43,7 +43,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->role->name }}</td>
                             <td>{{ $user->warehouse->name }}</td>
-                            <td>{{ $user->created_at }}</td>
+                            <td>@date_format($user->created_at)</td>
                             <td>
                                 @if ($user->active)
                                     <span class="badge rounded-pill bg-success">فعال</span>

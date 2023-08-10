@@ -215,7 +215,7 @@
                                     <span class="text-success fw-bolder">{{ $operation->quantity }}</span>
                                 @endif
                             </td>
-                            <td>{{ $operation->order_id }}</td>
+                            <td><a href="{{route('show_order',$operation->order_id ?? '')}}">{{ $operation->order->order_code ?? ''}}</a></td>
                             <td>{{ $operation->note }}</td>
                             <td>
                                 @if ($operation->image)
@@ -226,7 +226,7 @@
                                     </a>
                                 @endif
                             </td>
-                            <td dir="ltr">{{ $operation->created_at }}</td>
+                            <td dir="ltr">@date_format($operation->created_at)</td>
                         </tr>
                     @endforeach
                 </tbody>

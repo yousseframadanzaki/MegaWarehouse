@@ -119,7 +119,7 @@
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold">تاريخ الاضافة :</label>
-                    <label>{{$order->created_at}}</label>
+                    <label>@date_format($order->created_at)</label>
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> الاجمالى :</label>
@@ -191,7 +191,7 @@
                                         <a class="link-primary" data-id="{{$status->pivot->id}}" style="cursor: pointer" data-bs-target="#imageModal" data-bs-toggle="modal"><i class="bi bi-eye"></i></a>
                                     @endif
                                 </td>
-                                <td>{{$status->pivot->created_at}}</td>
+                                <td>@date_format($status->pivot->created_at)</td>
                             </tr>
                         @endforeach
                     </tbody>

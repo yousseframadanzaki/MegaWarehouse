@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Africa/Cairo',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +179,7 @@ return [
         App\Providers\ProductServiceProvider::class,
         App\Providers\StockServiceProvider::class,
         App\Providers\OrderServiceProvider::class,
+        App\Providers\BladeDirectivesServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

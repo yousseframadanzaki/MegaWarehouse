@@ -108,3 +108,19 @@ ul.breadcrumb {
 .form-control::placeholder{
   opacity: 0.4;
 }
+.sidebar-bg{
+  background-color: #582b8c;
+}
+.sidebar-bg .nav-pills .nav-link:hover{
+  background-color: #6e35ae;
+}
+.sidebar-bg .collapsible-sidenav li:hover{
+  background-color: #6e35ae;
+}
+.btn-primary{
+  background-color: #582b8c;
+}
+
+.btn-primary:hover{
+  background-color: #6e35ae;
+}

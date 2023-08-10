@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="row">
 
-            <div class="d-flex sidebar flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top" style="height:100vh;width:20%">
+            <div class="d-flex sidebar sidebar-bg flex-column flex-shrink-0 p-3 text-white sticky-top" style="height:100vh;width:20%">
                 <a href="/" class="d-flex  align-items-center mb-3 mb-md-0 text-white  text-decoration-none">
                     <span class="fs-3 ">Mega Warehouse</span>
                 </a>
