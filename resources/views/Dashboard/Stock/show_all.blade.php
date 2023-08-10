@@ -130,23 +130,7 @@
 
                     </div>
 
-                    <div class="col-md-4">
-                        <label class="form-label">تاريخ من</label>
-                        <input class="form-control datetimeplugin" name="date_from" id=""
-                            value="{{ Request::get('date_from') }}">
-
-                        <div class="invalid-feedback name">
-
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-4">
-                        <label class="form-label">تاريخ الى</label>
-                        <input class="form-control datetimeplugin" name="date_to" id=""
-                            value="{{ Request::get('date_to') }}">
-                    </div>
+                    
                     <div class="col-md-4">
                         <label class="form-label">الموردين</label>
                         <select class="form-select product_info" aria-label="Default  select example" name="supplier_id"
@@ -158,6 +142,24 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <label class="form-label">تاريخ من</label>
+                        <input class="form-control datetimeplugin" name="date_from" id=""
+                            value="{{ Request::get('date_from') }}">
+
+                        <div class="invalid-feedback name">
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">تاريخ الى</label>
+                        <input class="form-control datetimeplugin" name="date_to" id=""
+                            value="{{ Request::get('date_to') }}">
+                    </div>
+                    
                 </div>
 
                 <div class="d-flex mt-3 justify-content-end">
@@ -249,10 +251,33 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
+            
             $('select.product_info').select2({
                 padding: 'resolve',
             });
             $(".air-datepicker-global-container").attr('dir', 'ltr');
+
+            var params = new URLSearchParams(window.location.search);
+
+            var product_id = params.get('product_id');
+            var variant_id = params.get('variant_id');
+            if(product_id && variant_id){
+                $.ajax({
+                type: 'GET',
+                url: `/api/product/${product_id}/variants`,
+                dataType: "text",
+                }).then(async (response) => {
+                    data = JSON.parse(response);
+                    $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                    $.each(data, function(index, item) {
+                        $("#variant_id").append('<option value="' + item.id + '">' + item.name +
+                            '</option>');
+                    });
+                    $('#variant_id').fadeIn();
+                    $('#variant_id').val(variant_id);
+                    $('#variant_id').select2();
+                })
+            }
         })
         $('.show_image').click(function() {
             var image = $(this).attr('data-image');
