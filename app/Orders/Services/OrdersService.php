@@ -2,6 +2,9 @@
 
 namespace App\Orders\Services;
 
+use App\FileUpload\Interfaces\UploadServiceInterface;
+use App\Media\Interfaces\MediaCrudServiceInterface;
+
 use App\Orders\Interfaces\OrdersRepositoryInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Stock\Interfaces\StockOperationServiceInterface;
@@ -9,11 +12,12 @@ use App\Clients\Interfaces\ClientCrudServiceInterface;
 
 class OrdersService implements OrdersServiceInterface{
 
-
     public function __construct(
         protected readonly  ClientCrudServiceInterface $ClientCrudService,
         protected readonly  StockOperationServiceInterface $StockService,
         protected readonly  OrdersRepositoryInterface $orders_crud_repository,
+        protected readonly  UploadServiceInterface $FileUploadService,
+        protected readonly  MediaCrudServiceInterface $MediaService,
     ) {}
 
     public function AddOrder($user,array $order_details){
@@ -49,7 +53,14 @@ class OrdersService implements OrdersServiceInterface{
     }
 
     public function ChangeOrderStatus($order_id,$data){
-        return $this->orders_crud_repository->change_order_status($order_id,$data);
+        $id = $this->orders_crud_repository->change_order_status($order_id,$data);
+        if(isset($data['status_images'])){
+            foreach ($data['status_images'] as $image) {
+                $file = $this->FileUploadService->status($image,$data['company_id'],$id);
+                $this->MediaService->save($file);
+            }
+        }
+        return $id;
     }
 
 }

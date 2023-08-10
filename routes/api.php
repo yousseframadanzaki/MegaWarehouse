@@ -32,3 +32,4 @@ Route::get('variants/{variant_id}', [CommonDataController::class ,'variant_data'
 Route::get('clients/{client_phone}', [ClientController::class ,'get_client_by_phone'])->name('client_search');
 Route::get('categories/{category_id}/sub_categories', [CommonDataController::class ,'sub_categories'])->name('category_sub_categories');
 Route::delete('media/{id}', [MediaController::class,'destroy'])->name('delete_media');
+Route::get('status/{status_id}/images', [MediaController::class,'status_images'])->name('status_media');

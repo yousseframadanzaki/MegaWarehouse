@@ -18,4 +18,8 @@ class MediaController extends Controller
         $response = $this->MediaCrudService->remove($id);
         return response()->json($response);
     }
+    public function status_images($status_id) {
+        $images = $this->MediaCrudService->GetImagesByCollection('order_status',$status_id);
+        return response()->json($images);
+    }
 }

@@ -25,4 +25,8 @@ class MediaCrudRepository implements MediaCrudRepositoryInterface
     public function get_media_by_collection($collection,$collection_id){
         return Media::where(['collection' => $collection,'collection_id'=>$collection_id])->first();
     }
+
+    public function get_images_by_collection($collection,$collection_id){
+        return Media::where(['collection' => $collection,'collection_id'=>$collection_id])->get();
+    }
 }

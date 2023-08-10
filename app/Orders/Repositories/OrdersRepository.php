@@ -61,7 +61,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order->save();
         $note = isset($data['note']) ? $data['note'] : '';
 
-        $order->order_status()->newPivotStatement()->where('current',true)->update(['current'=>false]);
+        $order->order_status()->newPivotStatement()->where(['order_id'=>$order_id,'current'=>true])->update(['current'=>false]);
 
         $order->order_status()->attach([
         $data['status_id'] => [
@@ -69,7 +69,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'note'=> $note,
             'current'=> true,
         ]]);
-        return $order;
+        $id = $order->order_status()->get()[0]->pivot->id;
+        return $id;
     }
 
 }

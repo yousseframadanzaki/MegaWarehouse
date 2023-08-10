@@ -39,7 +39,7 @@ class Order extends Model
     {
         return $this->belongsToMany(Status::class)
         ->using(OrderStatus::class)
-        ->withPivot('admin_id','note','current')
+        ->withPivot('admin_id','note','current','id')
         ->withTimestamps()
         ->orderByPivot('created_at','desc');
     }

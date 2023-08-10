@@ -8,6 +8,7 @@ use App\FileUpload\Interfaces\UploadBrandInterface;
 use App\FileUpload\Interfaces\UploadProductInterface;
 use App\FileUpload\Interfaces\UploadProductMainInterface;
 use App\FileUpload\Interfaces\UploadStockInterface;
+use App\FileUpload\Interfaces\UploadStatusInterface;
 use App\FileUpload\DTO\File;
 
 class UploadService implements UploadServiceInterface{
@@ -17,7 +18,8 @@ class UploadService implements UploadServiceInterface{
         private readonly UploadBrandInterface $brand,
         private readonly UploadProductInterface $product,
         private readonly UploadProductMainInterface $product_main,
-        private readonly UploadStockInterface $stock
+        private readonly UploadStockInterface $stock,
+        private readonly UploadStatusInterface $status
     ) {}
 
     public function avatar($file,$company_id,$collection_id=NULL): File{
@@ -38,6 +40,10 @@ class UploadService implements UploadServiceInterface{
 
     public function stock($file,$company_id,$collection_id=NULL): File{
         return $this->stock->handle($file,$company_id,$collection_id);
+    }
+
+    public function status($file,$company_id,$collection_id=NULL): File{
+        return $this->status->handle($file,$company_id,$collection_id);
     }
 }
 

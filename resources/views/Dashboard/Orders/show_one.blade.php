@@ -2,10 +2,29 @@
 
 @section('content')
 
+
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="{{route('change_order_status',$order->id)}}" method="POST">
+            <form action="{{route('change_order_status',$order->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -24,6 +43,12 @@
                                 <label class="form-label">ملاحظة</label>
                                 <textarea class="form-control" name="note" id="note" rows="3"></textarea>
                             </div>
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-primary add_image">أضافة صورة</button>
+                        </div>
+                        <div id="images" class="mt-2">
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -157,10 +182,10 @@
                             <tr class="@if($status->pivot->current) table-primary @endif">
                                 <td>{{$status->pivot->admin->name}}</td>
                                 <td>{{$status->name}}</td>
-                                <td>{{$status->pivot->note}}</td>
-                                <td>
+                                <td class="truncate">{{$status->pivot->note}}</td>
+                                <td >
                                     @if (count($status->pivot->images) > 0)
-                                        <i class="bi bi-eye"></i>
+                                        <a class="link-primary" data-id="{{$status->pivot->id}}" style="cursor: pointer" data-bs-target="#imageModal" data-bs-toggle="modal"><i class="bi bi-eye"></i></a>
                                     @endif
                                 </td>
                                 <td>{{$status->pivot->created_at}}</td>
@@ -173,6 +198,7 @@
 
     </div>
 </div>
+
 @endsection
 
 @section('script')
@@ -186,5 +212,64 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 dropdownParent: $('#statusModal')
             });
         })
+        const uid = function() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+        $('.add_image').click(function (e) {
+            e.preventDefault();
+            var id = uid();
+            var template = `
+            <div id="${id}" class="d-flex flex-column align-items-center">
+                <div class="input-group mb-3" dir="ltr" >
+                    <button class="btn btn-danger remove_image" data-id="${id}"><i class="bi bi-trash"></i></button>
+                    <input type='file' class='form-control image_file' data-id="${id}" name='status_images[]' aria-describedby="inputGroupFileAddon03" aria-label="Upload">
+                </div>
+            </div>
+            `
+            $("#images").append(template);
+        })
+        $(document).on('change',".image_file",function (e) {
+            const [file] = e.target.files;
+            if(file){
+                var template = `<img 
+                src='${URL.createObjectURL(file)}' 
+                class='image_preview' 
+                style="width: 100px;height:100px;object-fit:contain;"
+                />`
+                var id= $(this).attr('data-id');
+                $("#"+id).prepend(template)
+            }
+        })
+        $(document).on('click',".remove_image",function (e) {
+            var id = $(this).attr('data-id');
+            $("#"+id).fadeOut();
+            $("#"+id).remove();
+        })
+
+        $("#imageModal").on('show.bs.modal',function (e) {
+            var id = $(e.relatedTarget).attr('data-id');
+            $("#imageModal .modal-body").html("")
+            $.ajax({
+                url:`/api/status/${id}/images`,
+                method:'GET',
+                dataType:'text'
+            }).then(response =>{
+                data = JSON.parse(response);
+                if(data){
+                    data.forEach(image => {
+                        var template = `
+                            <div class="d-flex justify-content-center mt-1">
+                                <a href="/storage/${image.path}" target="_blank"><img src='/storage/${image.path}'  
+                                    style="width: 250px;height:250px;object-fit:contain;"
+                                ></a>
+                            </div>
+                        `
+                        $("#imageModal .modal-body").append(template);
+                    });
+                }
+
+            })
+        })
+
     </script>
 @endsection

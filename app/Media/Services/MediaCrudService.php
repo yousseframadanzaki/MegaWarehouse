@@ -31,5 +31,9 @@ class MediaCrudService implements MediaCrudServiceInterface{
         return $this->media_crud_repository->get_media_by_collection($collection,$collection_id);
     }
 
+    public function GetImagesByCollection($collection,$collection_id){
+        return $this->media_crud_repository->get_images_by_collection($collection,$collection_id);
+    }
+
 }
 

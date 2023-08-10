@@ -35,7 +35,7 @@
                         <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                             <option value="">اختار رقم التليفون</option>
                             @foreach ($clients as $client)
-                                <option @if(Request::get('client_id') == $client->id) selected @endif value="{{ $client->id }}">{{ $client->phone_1 }}</option>
+                                <option  value="{{ $client->id }}">{{ $client->phone_1 }}</option>
                             @endforeach
                         </select>
 

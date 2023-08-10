@@ -64,6 +64,7 @@ class OrderController extends Controller
 
         $data = $request->all();
         $data['admin_id'] = auth()->user()->id;
+        $data['company_id'] = auth()->user()->company_id;
 
         if($this->OrdersService->ChangeOrderStatus($order_id,$data)){
             return redirect()->back()->with('succes','order_status_change_success');
