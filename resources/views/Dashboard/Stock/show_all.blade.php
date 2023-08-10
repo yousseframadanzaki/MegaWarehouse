@@ -170,6 +170,18 @@
             </form>
         </div>
 
+        @if($data['filters'])
+            <div class="card shadow-sm p-3 mt-2">
+                <div class="d-flex justify-content-start row row-cols-5">
+                    @foreach ($data['filters'] as $key => $value)
+                        <div class="col sidebar-bg p-2 m-1" style="color: white">
+                            {{__($key)}}: {{__($value)}}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
         @canany(['add', 'delete'], 'App\\Models\Stock')
         <div class="card shadow-sm mt-3 p-3 d-flex flex-row">
             @can('add','App\\Models\Stock')
@@ -180,6 +192,9 @@
             @endcan
         </div>
         @endcanany
+
+
+
         <div class="mt-3 shadow-sm">
             <table class="table table-hover border">
                 <thead>

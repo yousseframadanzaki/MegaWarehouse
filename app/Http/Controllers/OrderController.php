@@ -28,12 +28,16 @@ class OrderController extends Controller
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
 
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
+
+        $filters = $filters->get_values();
+
         return view('Dashboard.Orders.show_all')->with(
             compact(
                 'orders',
                 'clients',
                 'cities',
-                'statuses'
+                'statuses',
+                'filters'
             ));
     }
 

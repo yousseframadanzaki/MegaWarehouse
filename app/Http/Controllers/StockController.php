@@ -27,21 +27,26 @@ class StockController extends Controller
         $users   = $this->CommonDataService->GetCompanyUsers($company_id);
         $suppliers   = $this->CommonDataService->GetCompanySuppliers($company_id);
 
+        $filters = $filters->get_values();
+
         $data = array(
             "warehouses"=>$warehouses,
             "products"=>$products,
             "users"=>$users,
             "suppliers"=>$suppliers,
+            "filters"=>$filters,
         );
 
         return view('Dashboard.Stock.show_all')->with(['stock'=>$stock,'data'=>$data]);
     }
+
     public function create() {
         $company_id = auth()->user()->company_id;
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         $products   = $this->CommonDataService->GetCompanyProducts($company_id);
         return view('Dashboard.Stock.add')->with(compact('warehouses','products'));
     }
+
     public function store(CreateStockRequest $request) {
         $user = auth()->user();
         $ids = $this->StockOperationService->CreateOperation($user,$request->all());

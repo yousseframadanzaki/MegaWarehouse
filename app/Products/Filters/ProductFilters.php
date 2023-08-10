@@ -7,6 +7,10 @@ use App\Products\Filters\BrandFilter;
 use App\Products\Filters\NameFilter;
 use App\Products\Filters\SupplierFilter;
 
+use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Supplier;
+
 class ProductFilters
 {
 
@@ -32,5 +36,23 @@ class ProductFilters
     public function receivedFilters()
     {
         return request()->only(array_keys($this->filters));
+    }
+    public function get_values() {
+        $filters = $this->receivedFilters();
+        foreach ($filters as $key => $value) {
+            if($key == 'category_id'){
+                $filters['category_id'] = Category::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'brand_id'){
+                $filters['brand_id'] = Brand::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'supplier_id'){
+                $filters['supplier_id'] = Supplier::findOrfail($value)->name;
+                continue;
+            }
+        }
+        return $filters;
     }
 }

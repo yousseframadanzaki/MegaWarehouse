@@ -11,6 +11,12 @@ use App\Stock\Filters\TypeFilter;
 use App\Stock\Filters\VariantFilter;
 use App\Stock\Filters\SupplierFilter;
 
+use App\Models\Warehouse;
+use App\Models\User;
+use App\Models\Product;
+use App\Models\Variant;
+use App\Models\Supplier;
+
 class StockFilters
 {
 
@@ -39,4 +45,30 @@ class StockFilters
         return request()->only(array_keys($this->filters));
     }
 
+    public function get_values() {
+        $filters = $this->receivedFilters();
+        foreach ($filters as $key => $value) {
+            if($key == 'warehouse_id'){
+                $filters['warehouse_id'] = Warehouse::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'admin_id'){
+                $filters['admin_id'] = User::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'product_id'){
+                $filters['product_id'] = Product::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'variant_id'){
+                $filters['variant_id'] = Variant::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'supplier_id'){
+                $filters['supplier_id'] = Supplier::findOrfail($value)->name;
+                continue;
+            }
+        }
+        return $filters;
+    }
 }

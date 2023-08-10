@@ -10,6 +10,11 @@ use App\Orders\Filters\AreaFilter;
 use App\Orders\Filters\DateFromFilter;
 use App\Orders\Filters\DateToFilter;
 
+use App\Models\Client;
+use App\Models\Status;
+use App\Models\City;
+use App\Models\Area;
+
 class OrdersFilters
 {
 
@@ -39,4 +44,28 @@ class OrdersFilters
     {
         return request()->only(array_keys($this->filters));
     }
+
+    public function get_values() {
+        $filters = $this->receivedFilters();
+        foreach ($filters as $key => $value) {
+            if($key == 'client_id'){
+                $filters['client_id'] = Client::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'status_id'){
+                $filters['status_id'] = Status::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'city_id'){
+                $filters['city_id'] = City::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'area_id'){
+                $filters['area_id'] = Area::findOrfail($value)->name;
+                continue;
+            }
+        }
+        return $filters;
+    }
+
 }

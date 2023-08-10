@@ -89,6 +89,18 @@
             </form>
         </div>
 
+        @if($data['filters'])
+        <div class="card shadow-sm p-3 mt-2">
+            <div class="d-flex justify-content-start">
+                @foreach ($data['filters'] as $key => $value)
+                    <div class=" sidebar-bg p-2 m-1" style="color: white">
+                        {{__($key)}}: {{$value}}
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <div class="mt-3">
             <div class="card p-3" style="background: #fff;">
                 <div class="row row-cols-5">

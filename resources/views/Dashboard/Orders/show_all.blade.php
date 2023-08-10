@@ -97,6 +97,19 @@
             </form>
         </div>
 
+        @if($filters)
+        <div class="card shadow-sm p-3 mt-2">
+            <div class="d-flex justify-content-start">
+                @foreach ($filters as $key => $value)
+                    <div class=" sidebar-bg p-2 m-1" style="color: white">
+                        {{__($key)}}: {{$value}}
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+ 
+
         <table class="mt-3 table table-hover">
             <thead>
                 <tr>
