@@ -39,12 +39,14 @@ class ProductController extends Controller
         $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
         $categories = $this->CommonDataService->GetCompanyCategories($company_id);
         $brands = $this->CommonDataService->GetCompanyBrands($company_id);
+        $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         $filters = $filters->get_values();
         $data = array(
             'suppliers'=>$suppliers,
             'categories'=>$categories,
             'brands'=>$brands,
-            'filters'=>$filters
+            'filters'=>$filters,
+            'warehouses'=>$warehouses
         );
 
         return view("Dashboard.Products.show_all")->with(['products'=>$products,'data'=>$data]);

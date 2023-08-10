@@ -16,6 +16,58 @@
         }
     </style>
 
+<div class="modal fade" id="addToCartModal" tabindex="-1"  role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mt-2" id="variants">
+                        <label class="form-label" for="variant_id">المتغيرات</label>
+                        <select name="variant_id" id="variant_id" class="form-select variant_info" style="padding: 0.375rem 0.75rem;width:100%">
+                        
+                            
+                        </select>
+                    </div>
+                    <div class="col-md-12 mt-2" id="variants">
+                        <label class="form-label" for="warehouse_id">المخزن</label>
+                        <select name="warehouse_id" id="warehouse_id" class="form-select" style="padding: 0.375rem 0.75rem;width:100%">
+                            <option value="">اختار المخزن</option>
+                            @foreach ($data['warehouses'] as $id => $name)
+                                <option value="{{$id}}">{{$name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-12 mt-2" id="variants">
+                        <label class="form-label">الكمية</label>
+                        <input type="number" name="quantity" id="quantity" class="form-control">
+                    </div>
+                    <div class="col-md-12 mt-2" id="variants">
+                        <table class="table hover-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم المخزن</th>
+                                    <th>الكمية</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
@@ -90,15 +142,15 @@
         </div>
 
         @if($data['filters'])
-        <div class="card shadow-sm p-3 mt-2">
-            <div class="d-flex justify-content-start">
-                @foreach ($data['filters'] as $key => $value)
-                    <div class=" sidebar-bg p-2 m-1" style="color: white">
-                        {{__($key)}}: {{$value}}
-                    </div>
-                @endforeach
+            <div class="card shadow-sm p-3 mt-2">
+                <div class="d-flex justify-content-start">
+                    @foreach ($data['filters'] as $key => $value)
+                        <div class=" sidebar-bg p-2 m-1" style="color: white">
+                            {{__($key)}}: {{$value}}
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
         @endif
 
         <div class="mt-3">
@@ -137,9 +189,14 @@
                                         <span>السعر</span><span>{{ $product->price }} </span>
                                     </div>
                                     @can('edit','App\Models\Product')
-                                        <a class="btn btn-primary d-block mt-2" href="{{route('edit_product',$product->id)}}"> 
-                                            تعديل <i class="bi bi-pencil-square"></i>
+                                    <div class="d-flex flex-row justify-content-between">
+                                        <a class="btn btn-primary d-block mt-2 border-0" title="تعديل المنتج"  style="width:48%" href="{{route('edit_product',$product->id)}}"> 
+                                             <i class="bi bi-pencil-square"></i>
                                         </a>
+                                        <a class="btn btn-primary d-block mt-2 border-0" title="أضافة الى عربة" style="width:48%" data-id="{{$product->id}}" data-bs-toggle="modal" data-bs-target="#addToCartModal"> 
+                                             <i class="bi bi-cart-plus"></i>
+                                        </a>
+                                    </div>
                                     @endcan
                                 </div>
                             </div>
@@ -197,6 +254,60 @@
         let params = new URLSearchParams(query);
         window.location.search = params.toString();
     })
+
+    $("#addToCartModal").on('show.bs.modal',function (e) {
+        var product_id = $(e.relatedTarget).attr('data-id');
+        $("#variant_id").html("");
+        $("#stock").html("");
+        $("#quantity").val("");
+        $("#warehouse_id").val("");
+        $.ajax({
+                url:`/api/product/${product_id}/variants`,
+                method:`GET`,
+                dataType:'text'
+            }).then(response =>{
+                data = JSON.parse(response);
+                $("#variant_id").append(`<option value="">اختار المتغير</option>`)
+                data.forEach(element => {
+                
+                    $("#variant_id").append(`<option value="${element.id}">${element.name}</option>`)
+                })
+                $('#variant_id').select2({
+                    dropdownParent: $('#addToCartModal')
+                });
+                $('#warehouse_id').select2({
+                    dropdownParent: $('#addToCartModal')
+                });
+            })
+    })
+
+    $('#variant_id').change(function () {
+        var variant_id = $(this).val();
+
+        $.ajax({
+            url:`/api/variants/${variant_id}/stock`,
+            method:"GET",
+            dataType: "text",
+        }).then(response => {
+            data = JSON.parse(response);
+            add_stock(data);
+        })
+    })
+
+    function add_stock(data) {
+        $("#stock").html("");
+        data.forEach(element => {
+            if(element.sum != "0"){
+                var template = `
+                <tr>
+                    <td>${element.warehouse.name}</td>
+                    <td>${element.sum}</td>
+                </tr>
+                `;
+                $("#stock").append(template);
+            }
+        });
+    }
 
 </script>
 @endsection
