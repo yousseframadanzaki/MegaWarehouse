@@ -29,4 +29,9 @@ class CartService implements CartServiceInterface{
     {
         return $this->cart_repository->delete_from_cart($variant_id);
     }
+
+    public function EmptyCart()
+    {
+        return $this->cart_repository->empty_cart();
+    }
 }

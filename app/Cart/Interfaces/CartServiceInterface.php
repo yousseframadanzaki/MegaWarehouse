@@ -8,4 +8,6 @@ interface CartServiceInterface{
     public function UpdateCart($item);
 
     public function DeleteFromCart($item);
+
+    public function EmptyCart();
 }

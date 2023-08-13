@@ -9,6 +9,7 @@ use App\Orders\Interfaces\OrdersRepositoryInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Stock\Interfaces\StockOperationServiceInterface;
 use App\Clients\Interfaces\ClientCrudServiceInterface;
+use App\Cart\Interfaces\CartServiceInterface;
 
 class OrdersService implements OrdersServiceInterface{
 
@@ -16,6 +17,7 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  ClientCrudServiceInterface $ClientCrudService,
         protected readonly  StockOperationServiceInterface $StockService,
         protected readonly  OrdersRepositoryInterface $orders_crud_repository,
+        protected readonly  CartServiceInterface $CartService,
         protected readonly  UploadServiceInterface $FileUploadService,
         protected readonly  MediaCrudServiceInterface $MediaService,
     ) {}
@@ -29,16 +31,16 @@ class OrdersService implements OrdersServiceInterface{
             $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);
             $order_details['client_id'] = $client->id;
         }
-        // dd('stop');
         $order_details['admin_id'] = $user->id;
         $order_details['company_id'] = $user->company_id;
         $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
         $order = $this->orders_crud_repository->create_order($order_details);
-        // dd($order);
         $order_details['type'] = 'sell';
         $order_details['order_id'] = $order->id;
 
         $this->StockService->CreateOperation($user,$order_details);
+
+        $this->CartService->EmptyCart();
 
         return true;
 

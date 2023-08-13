@@ -54,6 +54,13 @@ class CartRepository implements CartRepositoryInterface{
         return true;
     }
 
+    public function empty_cart()
+    {
+        session(['cart' => []]);
+        Session::save();
+        return true;
+    }
+
     private function exists($id, $cart)
     {
         for ($i = 0; $i < count($cart); $i++) {

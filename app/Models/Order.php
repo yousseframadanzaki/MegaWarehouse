@@ -10,6 +10,7 @@ use App\Models\Status;
 use App\Models\City;
 use App\Models\Area;
 use App\Models\Client;
+use App\Models\OrderItem;
 use App\Models\OrderStatus;
 
 class Order extends Model
@@ -32,7 +33,9 @@ class Order extends Model
     ];
     public function items()
     {
-        return $this->belongsToMany(Variant::class, 'orders_items', 'orders_id', 'variants_id')->withPivot('warehouse_id', 'quantity');
+        return $this->belongsToMany(Variant::class, 'orders_items','orders_id','variants_id')
+        ->using(OrderItem::class)
+        ->withPivot('warehouse_id', 'quantity');
     }
 
     public function order_status()

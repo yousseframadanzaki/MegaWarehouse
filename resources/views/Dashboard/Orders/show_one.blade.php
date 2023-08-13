@@ -144,6 +144,7 @@
                         <tr>
                             <th>اسم المنتج</th>
                             <th>اسم المتغير</th>
+                            <th>المخزن</th>
                             <th>السعر</th>
                             <th>الكمية</th>
                             <th>الاجمالى</th>
@@ -154,6 +155,7 @@
                             <tr>
                                 <td>{{$item->product->name}}</td>
                                 <td>{{$item->name}}</td>
+                                <td>{{$item->pivot->warehouse->name}}</td>
                                 <td>{{$item->price}}</td>
                                 <td>{{$item->pivot->quantity}}</td>
                                 <td>{{$item->pivot->quantity * $item->price}}</td>
@@ -186,7 +188,7 @@
                                 <td>{{$status->pivot->admin->name}}</td>
                                 <td>{{$status->name}}</td>
                                 <td class="truncate">{{$status->pivot->note}}</td>
-                                <td >
+                                <td>
                                     @if (count($status->pivot->images) > 0)
                                         <a class="link-primary" data-id="{{$status->pivot->id}}" style="cursor: pointer" data-bs-target="#imageModal" data-bs-toggle="modal"><i class="bi bi-eye"></i></a>
                                     @endif
