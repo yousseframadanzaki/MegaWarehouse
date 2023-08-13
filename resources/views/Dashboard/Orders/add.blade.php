@@ -9,7 +9,9 @@
         }
     </style>
 
+    <div id="message" style="display: none">
 
+    </div>
     <div class="modal fade" id="quantities" tabindex="-1" aria-labelledby="quantitiesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -32,28 +34,55 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ProductsModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="ProductsModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-
                 <div class="modal-body">
-                    <form action="">
+                    <form action="{{route('store_cart')}}" method="POST" id="cart_form">
+                        @csrf
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="product_id">المنتج</label>
-                            <select name="product_id" id="product_id" class="form-select product_info" style="padding: 0.375rem 0.75rem;width:100%">
+                            <select id="product_id" class="form-select product_info" style="padding: 0.375rem 0.75rem;width:100%">
                                 <option value="">اختار المنتج</option>
                                 @foreach ($products as $id => $name)
                                     <option value="{{$id}}">{{$name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-12 mt-2" id="variants" style="display: none;">
+                        <div class="col-md-12 mt-2" id="variants">
                             <label class="form-label" for="variant_id">المتغيرات</label>
                             <select name="variant_id" id="variant_id" class="form-select variant_info" style="padding: 0.375rem 0.75rem;width:100%">
                             
                                 
                             </select>
+                        </div>
+                        <div class="col-md-12 mt-2" >
+                            <label class="form-label" for="warehouse_id">المخزن</label>
+                            <select name="warehouse_id" id="warehouse_id" class="form-select"
+                                style="padding: 0.375rem 0.75rem;width:100%">
+                                <option value="">اختار المخزن</option>
+                                @foreach ($warehouses as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <label class="form-label">الكمية</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control">
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <table class="table hover-table">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المخزن</th>
+                                        <th>الكمية</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart_stock">
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     </form>
@@ -61,6 +90,66 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
                     <button type="button" class="btn btn-primary add_variant" >أضافة</button>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <div class="modal fade" id="addToCartModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="cart_form" method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label" for="product_id">المنتج</label>
+                                <select id="product_id" class="form-select product_info" style="padding: 0.375rem 0.75rem;width:100%">
+                                    <option value="">اختار المنتج</option>
+                                    @foreach ($products as $id => $name)
+                                        <option value="{{$id}}">{{$name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-2" id="variants">
+                                <label class="form-label" for="variant_id">المتغيرات</label>
+                                <select name="variant_id" id="variant_id" class="form-select variant_info"
+                                    style="padding: 0.375rem 0.75rem;width:100%">
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-2" >
+                                <label class="form-label" for="warehouse_id">المخزن</label>
+                                <select name="warehouse_id" id="warehouse_id" class="form-select"
+                                    style="padding: 0.375rem 0.75rem;width:100%">
+                                    <option value="">اختار المخزن</option>
+                                    @foreach ($warehouses as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label class="form-label">الكمية</label>
+                                <input type="number" name="quantity" id="quantity" class="form-control">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <table class="table hover-table">
+                                    <thead>
+                                        <tr>
+                                            <th>اسم المخزن</th>
+                                            <th>الكمية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cart_stock">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn btn-primary add_to_cart_btn">أضافة</button>
                 </div>
             </div>
         </div>
@@ -193,12 +282,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                                {{-- @if (Session::has('cart'))
+                                    @foreach (Session::get('cart') as $item)
+                                        
+                                    @endforeach
+                                @endif --}}
                             </tbody>
                         </table>
                         
                         <div>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#ProductsModal" class="btn btn-primary">أضافة منتج الى الاوردر</a>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الاوردر</a>
                         </div>
                     </div>
                     
@@ -230,30 +323,21 @@
 
     <script>
 
-        var items = {!! json_encode(old('items')) !!}
+        
         
         $(document).ready(function() {
+            var items = {!! json_encode(Session::get('cart')) !!}
             $('select.product_info').select2({
-                dropdownParent: $('#ProductsModal')
+                dropdownParent: $('#addToCartModal')
             });
-
+            $('#warehouse_id').select2({
+                    dropdownParent: $('#addToCartModal')
+            });
             if(items){
-                Object.entries(items).forEach(element => {
-                    var variant_id = element[0];
-                    $.ajax({
-                        url:`/api/variants/${variant_id}`,
-                        method:"GET",
-                        dataType:"text",
-                    }).then(response =>{
-                        var data = JSON.parse(response);
-                        data['old_quantity'] = element[1]['quantity'];
-                        data['warehouse_id'] = element[1]['warehouse_id'];
-                        add_variant(data);
-                    })
-                });
+                add_cart_items(items);
             }
-
         })
+
         $("#phone_1").change(function() {
             var phone = $(this).val();
 
@@ -334,6 +418,7 @@
                 });
             })
         })
+
         $("#product_id").change(function () {
             product_id = $(this).val();
             $("#variant_id").html("");
@@ -348,67 +433,172 @@
                     $("#variant_id").append(`<option value="${element.id}">${element.name}</option>`)
                 })
                 $('#variant_id').select2({
-                    dropdownParent: $('#ProductsModal')
+                    dropdownParent: $('#addToCartModal')
                 });
                 $("#variants").fadeIn();
             })
         })
-        $(".add_variant").click(function () {
-            var variant_id = $('#variant_id').val();
-            var exists = $("tr#"+variant_id).length;
-            if(exists){
-                var quantity = $("tr#"+variant_id+" .quantity").val();
-                if(!quantity){
-                    quantity = 0;
+
+        function add_cart_items(items){
+            $("#variants_table tbody").html("");
+            var warehouse_select = $("#warehouse_select").html();
+            items.forEach(item => {
+                variant = item['variant'];
+                var template = `
+                    <tr id="${variant.id}">
+                        <td>${variant.product.name}</td>
+                        <td>${variant.name}</td>
+                        <td>${variant.price}</td>
+                        <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
+                        <td>
+                            <select class="warehouse form-select" data-id="${variant.id}" name="items[${variant.id}][warehouse_id]">
+                                ${warehouse_select}
+                            </select>
+                        </td>
+                        <td style="width:80px;">
+                            <input type="number" name="items[${variant.id}][quantity]" class="form-control quantity" data-price="${variant.price}" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
+                        </td>
+                        <td class="variant_total">${parseInt(variant.price) * parseInt(item.quantity)}</td>
+                        <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant.id}"><i class="bi bi-trash3"></a></td>
+                    </tr>
+                `
+                $("#variants_table tbody").append(template);
+                if(item.warehouse_id){
+                    $(`tr#${variant.id} .warehouse`).val(item.warehouse_id);
                 }
-                $("tr#"+variant_id+" .quantity").val(parseInt(quantity)+1).trigger('input');
-                $("#ProductsModal").modal("hide");
+            });
+        }
+
+        $('#variant_id').change(function () {
+            var variant_id = $(this).val();
+
+            $.ajax({
+                url: `/api/variants/${variant_id}/stock`,
+                method: "GET",
+                dataType: "text",
+            }).then(response => {
+                data = JSON.parse(response);
+                add_cart_stock(data);
+            })
+        })
+
+        function add_cart_stock(params) {
+            $("#cart_stock").html("");
+            data.forEach(element => {
+                if(element.sum != "0"){
+                    var template = `
+                    <tr>
+                        <td>${element.warehouse.name}</td>
+                        <td>${element.sum}</td>
+                    </tr>
+                    `;
+                    $("#cart_stock").append(template);
+                }
+            });
+        }
+
+        $(".add_to_cart_btn").click(function (e) {
+            e.preventDefault();
+            var variant_id = $('#variant_id').val();
+            var warehouse_id = $('#warehouse_id').val();
+            var quantity = $('#quantity').val();
+
+            if (!variant_id) {
+                alert('برجاء اختيار المتغير');
+                return;
+            }
+            if (!warehouse_id) {
+                alert('برجاء اختيار المخزن');
+                return;
+            }
+            if (!quantity) {
+                alert('برجاء اختيار الكمية');
                 return;
             }
 
+            const item = {
+                variant_id,
+                warehouse_id,
+                quantity
+            };
             $.ajax({
-                url:`/api/variants/${variant_id}`,
-                method:"GET",
-                dataType:"text",
-            }).then(response =>{
-                var data = JSON.parse(response);
-                add_variant(data);
-                $("#ProductsModal").modal("hide");
+                url:'/api/cart/add',
+                method:'POST',
+                data:item,
+                dataType:'json'
+            }).then(data =>{
+                if(data){
+                    $("#addToCartModal").modal('hide');
+                    show_success('تمت الاضافة بنجاح');
+                    $(window).scrollTop(0);
+                    add_cart_items(data);
+                }
             })
         });
-        function add_variant(data) {
-            var warehouse_select = $("#warehouse_select").html();
-            var template = `
-                <tr id="${data.id}">
-                    <td>${data.product.name}</td>
-                    <td>${data.name}</td>
-                    <td>${data.price}</td>
-                    <td><a data-id="${data.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${data.quantity}</a></td>
-                    <td>
-                        <select class="warehouse form-select" name="items[${data.id}][warehouse_id]">
-                            ${warehouse_select}
-                        </select>
-                    </td>
-                    <td style="width:80px;">
-                        <input type="number" name="items[${data.id}][quantity]" class="form-control quantity" data-price="${data.price}" value="${(data.old_quantity ? data.old_quantity : 1 )}" min="1" data-id="${data.id}" id="quantity-${data.id}" />
-                    </td>
-                    <td class="variant_total">${data.price}</td>
-                    <td class="fs-5 text-danger"><a class="remove_variant" data-id="${data.id}"><i class="bi bi-trash3"></a></td>
-                </tr>
-            `
-            $("#variants_table tbody").append(template);
 
-            if(data.warehouse_id){
-                $(`tr#${data.id} .warehouse`).val(data.warehouse_id);
-            }
-            $('.quantity').trigger('input');
+        function show_success(message) {
+            var template = `
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+            $('#message').append(template);
+            $('#message').fadeIn();
         }
-        $(document).on('click','.remove_variant',function (params) {
-            var id = $(this).attr('data-id');
-            
-            $(`tr#${id}`).fadeOut();
-            $(`tr#${id}`).remove();
+
+        $(document).on('input','.quantity',function (e) {
+           variant_id = $(this).attr('data-id');
+           quantity = parseInt($(this).val());
+           warehouse_id = $(`tr#${variant_id} .warehouse`).val();
+
+           price = parseFloat($(this).attr('data-price'));
+           
+           $(`tr#${variant_id} .variant_total`).html(quantity*price);
+
+           var item = {
+            variant_id,
+            quantity,
+            warehouse_id,
+           }
+
+           $.ajax({
+            url:'/api/cart/update',
+            method:'POST',
+            data:item,
+            dataType:'json'
+           }).then(data => {
+            if(!data){
+                alert('حدث خطاء أثناء التعديل');
+            }
+           })
+
+
         })
+
+        $(document).on('input','.warehouse',function (e) {
+           variant_id = $(this).attr('data-id');
+           quantity = $(`tr#${variant_id} .quantity`).val();
+           warehouse_id = $(this).val();
+
+           var item = {
+            variant_id,
+            quantity,
+            warehouse_id,
+           }
+
+           $.ajax({
+            url:'/api/cart/update',
+            method:'POST',
+            data:item,
+            dataType:'json'
+           }).then(data => {
+            if(!data){
+                alert('حدث خطاء أثناء التعديل');
+            }
+           })
+        })
+
         $("#quantities").on('show.bs.modal',function (e) {
             var id = $(e.relatedTarget).attr('data-id');
 
@@ -435,53 +625,64 @@
                 }
             });
         }
-        $(document).on('input','.quantity',function (e) {
-           value = parseInt($(this).val());
-           price = parseFloat($(this).attr('data-price'));
-           id = $(this).attr('data-id');
-           $(`tr#${id} .variant_total`).html(value*price);
-        })
-        $(".add_order_btn").click(function (e) {
-            e.preventDefault();
-            console.log("hi 1");
 
-            var warehouses = $("select.warehouse");
-            var quantites = $(".quantity");
+        $(document).on('click','.remove_variant',function (params) {
+            var variant_id = $(this).attr('data-id');
+            $.ajax({
+                url:`/api/cart/${variant_id}/delete`,
+                method:'POST',
+                dataType:'json'
+            }).then(data => {
+                if(data){
+                    $(`tr#${id}`).fadeOut();
+                    $(`tr#${id}`).remove();
+                }
+            })
+        })
+ 
+
+        
+        // $(".add_order_btn").click(function (e) {
+        //     e.preventDefault();
+        //     console.log("hi 1");
+
+        //     var warehouses = $("select.warehouse");
+        //     var quantites = $(".quantity");
             
-            var error = false;
+        //     var error = false;
 
-            for (let index = 0; index < warehouses.length; index++) {
-                const warehouse = warehouses[index];
-                warehouse_id = $(warehouse).val();
-                if(!warehouse_id){
-                    error=true;
-                    $(warehouse).addClass('is-invalid');
-                    $(warehouse).parent().find('.text-danger').remove();
-                    $(warehouse).parent().append(`<span class="text-danger">برجاء اختيار المخزن</span>`)
-                }else{
-                    $(warehouse).removeClass('is-invalid');
-                    $(warehouse).parent().find('.text-danger').remove();
-                }
-            }
+        //     for (let index = 0; index < warehouses.length; index++) {
+        //         const warehouse = warehouses[index];
+        //         warehouse_id = $(warehouse).val();
+        //         if(!warehouse_id){
+        //             error=true;
+        //             $(warehouse).addClass('is-invalid');
+        //             $(warehouse).parent().find('.text-danger').remove();
+        //             $(warehouse).parent().append(`<span class="text-danger">برجاء اختيار المخزن</span>`)
+        //         }else{
+        //             $(warehouse).removeClass('is-invalid');
+        //             $(warehouse).parent().find('.text-danger').remove();
+        //         }
+        //     }
 
-            for (let index = 0; index < quantites.length; index++) {
-                const quantity = quantites[index];
-                value = parseInt($(quantity).val());
-                if(!value){
-                    error=true;
-                    $(quantity).addClass('is-invalid');
-                    $(quantity).parent().find('.text-danger').remove();
-                    $(quantity).parent().append(`<span class="text-danger">برجاء ادخال كمية</span>`)
-                }else{
-                    $(quantity).removeClass('is-invalid');
-                    $(quantity).parent().find('.text-danger').remove();
-                }
-            }
-            if(error){
-                return;
-            }
-            $("#order_form").submit();
+        //     for (let index = 0; index < quantites.length; index++) {
+        //         const quantity = quantites[index];
+        //         value = parseInt($(quantity).val());
+        //         if(!value){
+        //             error=true;
+        //             $(quantity).addClass('is-invalid');
+        //             $(quantity).parent().find('.text-danger').remove();
+        //             $(quantity).parent().append(`<span class="text-danger">برجاء ادخال كمية</span>`)
+        //         }else{
+        //             $(quantity).removeClass('is-invalid');
+        //             $(quantity).parent().find('.text-danger').remove();
+        //         }
+        //     }
+        //     if(error){
+        //         return;
+        //     }
+        //     $("#order_form").submit();
 
-        })
+        // })
     </script>
 @endsection

@@ -17,6 +17,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/',function (){

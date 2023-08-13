@@ -79,10 +79,14 @@
                         
                         @canany(['view','add'],'App\Models\Order')
                             <li>
-                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                <a href="#" class="nav-link text-white position-relative" data-bs-toggle="collapse"
                                     data-bs-target="#orders-collapse" >
                                     <i class="bi bi-basket"></i>
                                     الاوردرات
+                                    @if (Session::has('cart'))
+                                    <span class="badge rounded-pill bg-primary position-absolute start-0">{{count(Session::get('cart'))}}</span>
+                                        
+                                    @endif
                                 </a>
                                 <div class="collapse" id="orders-collapse" style="">
                                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
@@ -93,7 +97,12 @@
 
                                         @can('add','App\Models\Order')
                                             <li class="rounded "><a href="{{ route('add_order') }}" class="text-white"><i
-                                                        class="bi bi-bag-plus"></i> أضافة اوردر جديد</a></li>
+                                                        class="bi bi-bag-plus"></i> أضافة اوردر جديد
+                                                        @if (Session::has('cart'))
+                                                        <span class="badge rounded-pill bg-primary">{{count(Session::get('cart'))}}</span>
+                                                            
+                                                        @endif
+                                                    </a></li>
                                         @endcan
                                     </ul>
                                 </div>
