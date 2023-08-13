@@ -634,8 +634,8 @@
                 dataType:'json'
             }).then(data => {
                 if(data){
-                    $(`tr#${id}`).fadeOut();
-                    $(`tr#${id}`).remove();
+                    $(`tr#${variant_id}`).fadeOut();
+                    $(`tr#${variant_id}`).remove();
                 }
             })
         })

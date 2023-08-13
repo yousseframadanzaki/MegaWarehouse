@@ -84,8 +84,9 @@
                                     <i class="bi bi-basket"></i>
                                     الاوردرات
                                     @if (Session::has('cart'))
-                                    <span class="badge rounded-pill bg-primary position-absolute start-0">{{count(Session::get('cart'))}}</span>
-                                        
+                                        @if (count(Session::get('cart')) > 0)
+                                            <span class="badge rounded-pill bg-primary position-absolute start-0">{{count(Session::get('cart'))}}</span>
+                                        @endif
                                     @endif
                                 </a>
                                 <div class="collapse" id="orders-collapse" style="">
@@ -99,8 +100,9 @@
                                             <li class="rounded "><a href="{{ route('add_order') }}" class="text-white"><i
                                                         class="bi bi-bag-plus"></i> أضافة اوردر جديد
                                                         @if (Session::has('cart'))
-                                                        <span class="badge rounded-pill bg-primary">{{count(Session::get('cart'))}}</span>
-                                                            
+                                                            @if (count(Session::get('cart')) > 0)
+                                                                <span class="badge rounded-pill bg-primary">{{count(Session::get('cart'))}}</span>
+                                                            @endif
                                                         @endif
                                                     </a></li>
                                         @endcan

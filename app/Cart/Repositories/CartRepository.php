@@ -40,14 +40,15 @@ class CartRepository implements CartRepositoryInterface{
         return true;
     }
 
-    public function delete_from_cart($item)
+    public function delete_from_cart($variant_id)
     {
         $cart = session('cart',array());
-        $index = $this->exists($item['variant_id'],$cart);
+        $index = $this->exists($variant_id,$cart);
 
         if($index != -1){
             unset($cart[$index]);
         }
+
         session(['cart' => $cart]);
         Session::save();
         return true;
