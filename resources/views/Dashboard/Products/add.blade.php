@@ -14,6 +14,9 @@
             width: 20px;
             height: 20px;
          }
+         .invalid-feedback{
+            display: block !important;
+         }
     </style>
 
     <div class="p-3">
@@ -24,7 +27,7 @@
                 <li>اضافة منتج جديد</li>
             </ul>
         </div>
-        <form class="row  needs-validation " enctype="multipart/form-data">
+        <form class="row  " enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
             @csrf
             <div class="card p-3 shadow-sm">
                 <h3 class="text-center">أضافة منتج جديد</h3>
@@ -33,20 +36,20 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control product_info @error('name') is-invalid @enderror"
-                                name="name" value="{{ old('name') }}">
-
-                            <div class="invalid-feedback name">
-
-                            </div>
-
+                            <input type="text" class="form-control product_info @error('product_info.name') is-invalid @enderror"
+                                name="product_info[name]" value="{{ old('product_info.name') }}">
+                            @error('product_info.name')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                            <select class="form-select product_info" aria-label="Default  select example" name="brand_id" style="padding: 0.375rem 0.75rem;">
+                            <select class="form-select product_info" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار الماركة</option>
                                 @foreach ($data['brands'] as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
+                                    <option @if ($id == old('product_info.brand_id')) selected @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
 
@@ -57,12 +60,14 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control product_info @error('price') is-invalid @enderror"
-                                name="price" value="{{ old('price') }}">
+                            <input type="number" class="form-control product_info @error('product_info.price') is-invalid @enderror"
+                                name="product_info[price]" value="{{ old('product_info.price') }}">
 
-                            <div class="invalid-feedback price">
-
-                            </div>
+                                @error('product_info.price')
+                                    <div class="invalid-feedback">
+                                        {{ __($message) }}
+                                    </div>
+                                @enderror
 
                         </div>
                     </div>
@@ -71,58 +76,64 @@
                         <div class="col-md-4">
                             <label class="form-label">السعر قبل الخصم</label>
                             <input type="number"
-                                class="form-control product_info @error('before_sale_price') is-invalid @enderror"
-                                name="before_sale_price" value="{{ old('before_sale_price') }}">
-                            <div class="invalid-feedback before_sale_price">
-
-                            </div>
+                                class="form-control product_info @error('product_info.before_sale_price') is-invalid @enderror"
+                                name="product_info[before_sale_price]" value="{{ old('product_info.before_sale_price') }}">
+                                @error('product_info.before_sale_price')
+                                    <div class="invalid-feedback">
+                                        {{ __($message) }}
+                                    </div>
+                                @enderror
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control product_info @error('cost') is-invalid @enderror"
-                                name="cost" value="{{ old('cost') }}">
+                            <input type="number" class="form-control product_info @error('product_info.cost') is-invalid @enderror"
+                                name="product_info[cost]" value="{{ old('product_info.cost') }}">
 
-                            <div class="invalid-feedback cost">
-
-                            </div>
+                                @error('product_info.cost')
+                                    <div class="invalid-feedback">
+                                        {{ __($message) }}
+                                    </div>
+                                @enderror
 
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">المورد <span class="text-danger">*</span></label>
-                            <select class="form-select product_info" aria-label="Default select example" name="supplier_id">
+                            <select class="form-select product_info  @error('product_info.supplier_id') is-inavlid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
                                 <option value="">اختار المورد</option>
                                 @foreach ($data['suppliers'] as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
+                                    <option @if ($id == old('product_info.supplier_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-
-                            <div class="invalid-feedback supplier_id">
-
-                            </div>
+                            @error('product_info.supplier_id')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">تصنيف<span class="text-danger">*</span></label>
-                            <select class="form-select product_info" aria-label="Default  select example" name="category_id"
-                                id="category_id">
+                            <select class="form-select product_info" aria-label="Default  select example" name="product_info[category_id]"
+                                id="product_info.category_id">
                                 <option value="">اختار تصنيف </option>
                                 @foreach ($data['categories'] as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
+                                    <option @if ($id == old('product_info.category_id'))@endif selected value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>
-
-                            <div class="invalid-feedback category_id">
-
-                            </div>
+                            @error('product_info.category_id')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="form-label">وصف المنتج</label>
-                            <textarea id="summernote" type="text" class="form-control product_info @error('description') is-invalid @enderror"
-                                name="description"></textarea>
-                            <div class="invalid-feedback description">
+                            <textarea id="summernote" type="text" class="form-control product_info "
+                                name="product_info[description]">{!! old('product_info.description') !!}</textarea>
+                            <div class="invalid-feedback">
 
                             </div>
                         </div>
@@ -180,7 +191,7 @@
                     </table>
                 </div>
 
-                <button id="add_product_btn" type="submit" class="btn btn-primary btn-lg">أضافة المنتج <i
+                <button type="submit" class="btn btn-primary btn-lg">أضافة المنتج <i
                         class="bi bi-plus-square"></i></button>
             </div>
             <datalist id="default_options">
@@ -202,7 +213,9 @@
         $('select.product_info').select2({
             padding: 'resolve',
         });
-        $('.input-images').imageUploader();
+        $('.input-images').imageUploader({
+            imagesInputName:'product_images'
+        });
     })
     form_options_array = [];
     form_options_values = new Object();

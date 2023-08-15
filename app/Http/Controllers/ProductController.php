@@ -67,7 +67,7 @@ class ProductController extends Controller
     
     public function store(CreateProductRequest $request) {
         $data = $request->all();
-        // dd($data);
+        
         $company_id = auth()->user()->company_id;
 
         $product = $this->ProductCrudService->AddProduct($company_id,$data);
@@ -78,7 +78,7 @@ class ProductController extends Controller
         }
 
         $request->session()->flash('success', 'New product added successfully.');
-        return response()->json($product);
+        return redirect()->route('show_product', ['product_id' => $product->id]);
     }
 
     public function edit($product_id) {

@@ -68,22 +68,11 @@ class ProductCrudService implements ProductCrudServiceInterface{
     }
 
     private function add_images($product_id,$company_id,$data) {     
-        
-
-        if(count($data["product_images"]) == 1 && $data["product_images"][0]->getClientOriginalName() == "blob"){
-            return;
-        }
-
-        if(isset($data['main_image'])){
-            $main_image = $this->FileUploadService->product_main($data["main_image"],$company_id,$product_id);
-            $this->MediaService->save($main_image);
-        }else{
+        if(isset($data["product_images"]) && count($data['product_images']) > 0){
             $main_image = $this->FileUploadService->product_main($data["product_images"][0],$company_id,$product_id);
             $this->MediaService->save($main_image);
-        }
-
-        foreach ($data["product_images"] as $image) {
-            if(!$this->files_equal($image,$data["main_image"])){
+            unset($data["product_images"][0]);
+            foreach ($data["product_images"] as $image) {
                 $file = $this->FileUploadService->product($image,$company_id,$product_id);
                 $this->MediaService->save($file);
             }
@@ -117,8 +106,4 @@ class ProductCrudService implements ProductCrudServiceInterface{
     public function GetVariantPrint($variant_id) {
         return $this->product_variants_repository->get_variant_by_id($variant_id);
     }
-
-
-
-
 }
