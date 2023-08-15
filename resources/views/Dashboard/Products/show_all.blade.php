@@ -348,8 +348,7 @@
                 
                     if(data){
                         $("#addToCartModal").modal('hide');
-                        show_success('تمت الاضافة بنجاح');
-                        $(window).scrollTop(0);
+                        window.location = '{!! route('add_order') !!}'
                     }
                 
             })
