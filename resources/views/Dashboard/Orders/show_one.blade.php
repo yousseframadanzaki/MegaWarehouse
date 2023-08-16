@@ -250,7 +250,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             $("#"+id).fadeOut();
             $("#"+id).remove();
         })
-
         $("#imageModal").on('show.bs.modal',function (e) {
             var id = $(e.relatedTarget).attr('data-id');
             $("#imageModal .modal-body").html("")
@@ -275,6 +274,5 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             })
         })
-
     </script>
 @endsection

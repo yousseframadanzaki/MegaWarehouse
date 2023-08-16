@@ -71,9 +71,21 @@ class OrderController extends Controller
         $data['company_id'] = auth()->user()->company_id;
 
         if($this->OrdersService->ChangeOrderStatus($order_id,$data)){
-            return redirect()->back()->with('succes','order_status_change_success');
+            return redirect()->back()->with('success','order_status_change_success');
         }
-        return redirect()->back()->with('succes','order_status_change_error');
+        return redirect()->back()->with('error','order_status_change_error');
+    }
+
+    public function change_status_bulk(Request $request)
+    {
+        $data = $request->except('_token');
+        $data['admin_id'] = auth()->user()->id;
+        $data['company_id'] = auth()->user()->company_id;
+
+        if($this->OrdersService->ChangeOrderStatusBulk($data)){
+            return redirect()->back()->with('success','order_status_change_bulk_success');
+        }
+        return redirect()->back()->with('error','order_status_change_bulk_error');
     }
 
 }

@@ -107,5 +107,6 @@
     "type":"نوع العملية",
     "supplier_id":"المورد",
     "category_id":"التصنيف",
-    "brand_id":"الماركة"
+    "brand_id":"الماركة",
+    "order_status_change_bulk_success":"تم تغيير حالة الاوردرات بنجاح"
 }

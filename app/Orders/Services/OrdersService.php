@@ -64,5 +64,18 @@ class OrdersService implements OrdersServiceInterface{
         }
         return $id;
     }
-
+    public function ChangeOrderStatusBulk($data)
+    {
+        $ids =  $this->orders_crud_repository->change_order_status_bulk($data);
+        if(isset($data['status_images'])){
+            foreach ($data['status_images'] as $image) {
+                $file = $this->FileUploadService->status($image,$data['company_id']);
+                foreach ($ids as $id) {
+                    $file->collection_id = $id;
+                    $this->MediaService->save($file);
+                }
+            }
+        }
+        return $ids;
+    }
 }

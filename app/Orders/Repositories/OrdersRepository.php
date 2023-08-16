@@ -73,4 +73,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
         return $id;
     }
 
+    public function change_order_status_bulk($data)
+    {
+        $ids = array();
+        foreach ($data['orders_ids'] as $id) {
+            $ids[] =  $this->change_order_status($id,$data);
+        }
+        return $ids;
+    }
+
 }
