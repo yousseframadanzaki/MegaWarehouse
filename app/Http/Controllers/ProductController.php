@@ -99,12 +99,12 @@ class ProductController extends Controller
         $data = $request->all();
         $product = $this->ProductCrudService->UpdateProduct($product_id,$data);
         if(!$product){
-            $request->session()->flash('erroe', 'error adding product');
-            return response()->json();
+            $request->session()->flash('erroe', 'product_updated_error');
+            return redirect()->back();
         }
 
-        $request->session()->flash('success', 'New product added successfully.');
-        return response()->json($product);
+        $request->session()->flash('success', 'product_updated_success');
+        return redirect()->back();
     }
 
     public function print($variant_id) {

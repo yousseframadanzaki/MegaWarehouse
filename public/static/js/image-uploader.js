@@ -168,23 +168,33 @@
 
             // Set delete action
             $button.on("click", function (e) {
-
+                
                 // Prevent browser default event and stop propagation
                 prevent(e);
 
                 // Get the parent element
                 let $parent = $container.parent();
 
-                // If is not a preloaded image
+                // If a preloaded image
                 if ($container.data('preloaded') === true) {
-
+                    
                     // Remove from preloaded array
                     plugin.settings.preloaded = plugin.settings.preloaded.filter(function (p) {
                         return p.id !== id;
                     });
+                    $.ajax({
+                        url:"/api/media/"+id,
+                        method:"DELETE",
+                        data:'json'
+                    }).then(response =>{
+                        console.log(response);
+                        if(response === 1){
+                            
+                        }
+                    })
 
                 } else {
-
+                    
                     // Get the image index
                     let index = parseInt($container.data('index'));
 

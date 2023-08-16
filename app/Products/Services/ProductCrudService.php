@@ -62,7 +62,7 @@ class ProductCrudService implements ProductCrudServiceInterface{
     public function UpdateProduct($product_id,array $details) {
         $product = $this->product_crud_repository->update_product_by_id($product_id,$details['product_info']);
         $product = $this->product_crud_repository->get_product_by_id($product_id);
-        $this->update_images($product_id,$product->company_id,$details);
+        $this->update_images($product,$details);
 
         return $product;
     }
@@ -79,28 +79,44 @@ class ProductCrudService implements ProductCrudServiceInterface{
         }
     }
 
-    private function update_images($product_id,$company_id,$data) {     
-        
+    private function update_images($product,$data) {
 
-        if(count($data["product_images"]) == 1 && $data["product_images"][0]->getClientOriginalName() == "blob"){
+
+
+        if(!isset($product->images) && !isset($product->main_image)){
+            $this->add_images($product->id,$product->company_id,$data);
+        }
+        if(isset($product->main_image)){
+            foreach ($data["product_images"] as $image) {
+                if($image){
+                    $file = $this->FileUploadService->product($image,$product->company_id,$product->id);
+                    $this->MediaService->save($file);
+                }
+            }
             return;
         }
+        if(isset($product->images)){
+            $image = $product->images[0];
+            if($image){
 
-        if(isset($data['main_image'])){
-            $old_main = $this->MediaService->GetMediaByCollection("product.main_image",$product_id);
-            if($old_main){
-                $this->MediaService->UpdateMediaCollection($old_main->id,$company_id,"product");
-            }
-            $main_image = $this->FileUploadService->product_main($data["main_image"],$company_id,$product_id);
-            $this->MediaService->save($main_image);
-        }
-
-        foreach ($data["product_images"] as $image) {
-            if(!isset($data["main_image"]) || !$this->files_equal($image,$company_id,$data["main_image"])){
-                $file = $this->FileUploadService->product($image,$company_id,$product_id);
-                $this->MediaService->save($file);
             }
         }
+
+
+
+
+        // if(!isset($product->main_image) && $data['product_images'][0] == NULL){
+        //     $this->add_images($product->id,$product->company_id,$data);
+        //     return;
+        // }
+        // if(isset($data["product_images"]) && count($data['product_images']) > 0){
+        //     foreach ($data["product_images"] as $image) {
+        //         if($image){
+        //             $file = $this->FileUploadService->product($image,$product->company_id,$product->id);
+        //             $this->MediaService->save($file);
+        //         }
+        //     }
+        // }
     }
 
     public function GetVariantPrint($variant_id) {

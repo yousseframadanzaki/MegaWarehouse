@@ -27,7 +27,7 @@
                 <li>اضافة منتج جديد</li>
             </ul>
         </div>
-        <form class="row  " enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
+        <form class="row  " id="product-form" enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
             @csrf
             <div class="card p-3 shadow-sm">
                 <h3 class="text-center">أضافة منتج جديد</h3>
@@ -118,7 +118,7 @@
                                 id="product_info.category_id">
                                 <option value="">اختار تصنيف </option>
                                 @foreach ($data['categories'] as $cat)
-                                    <option @if ($id == old('product_info.category_id'))@endif selected value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
+                                    <option @if ($id == old('product_info.category_id')) selected @endif  value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>
                             @error('product_info.category_id')
@@ -191,7 +191,7 @@
                     </table>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg">أضافة المنتج <i
+                <button class="btn btn-primary btn-lg add_product_btn">أضافة المنتج <i
                         class="bi bi-plus-square"></i></button>
             </div>
             <datalist id="default_options">
@@ -297,186 +297,205 @@
         }
     });
     $(document).on("keypress", ".option_name", function(e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-            }
-        })
+        if (e.keyCode == 13) {
+            e.preventDefault();
+        }
+    })
 
-        $(document).on("keypress", ".option_values", function(e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-                var value = $(this).val();
-                if (!value) {
-                    return false;
-                }
-                var option_id = $(this).attr('data-option-id');
-                if (form_options_values[option_id]) {
-                    form_options_values[option_id].push(value);
-                } else {
-                    form_options_values[option_id] = [value];
-                }
-                $(this).val("");
-                update_form_options();
+    $(document).on("keypress", ".option_values", function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            var value = $(this).val();
+            if (!value) {
+                return false;
             }
+            var option_id = $(this).attr('data-option-id');
+            if (form_options_values[option_id]) {
+                form_options_values[option_id].push(value);
+            } else {
+                form_options_values[option_id] = [value];
+            }
+            $(this).val("");
+            update_form_options();
+        }
+    });
+
+    function update_form_options() {
+        $('.option_values_div').html('')
+        Object.keys(form_options_values).forEach(key => {
+            form_options_values[key].forEach(value => {
+                var template = `
+            <div 
+                class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
+                style="margin-left:10px" 
+                data-value="${value}"
+                data-option-id="${key}"
+            >
+                ${value}
+                <i class="bi bi-trash"></i>
+            </div>`
+                $('#' + key + ' .option_values_div').append(template);
+            });
+        });
+    }
+
+    $(document).on("click", ".remove_option_value", function(e) {
+        var option_id = $(this).attr("data-option-id");
+        var value = $(this).attr("data-value");
+
+        const index = form_options_values[option_id].indexOf(value);
+        if (index > -1) {
+            form_options_values[option_id].splice(index, 1);
+        }
+        update_form_options();
+    })
+
+    $(document).on("click", "#save_options_btn", function(e) {
+        e.preventDefault();
+
+
+        if (!options_data_valid()) {
+            return;
+        }
+
+        form_options_array.forEach(option_id => {
+            var option_name = $('#' + option_id + ' .option_name').val();
+            options[option_id] = {
+                option_name: option_name,
+                option_values: form_options_values[option_id]
+            };
         });
 
-        function update_form_options() {
-            $('.option_values_div').html('')
-            Object.keys(form_options_values).forEach(key => {
-                form_options_values[key].forEach(value => {
-                    var template = `
-                <div 
-                    class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
-                    style="margin-left:10px" 
-                    data-value="${value}"
-                    data-option-id="${key}"
-                >
-                    ${value}
-                    <i class="bi bi-trash"></i>
-                </div>`
-                    $('#' + key + ' .option_values_div').append(template);
-                });
-            });
-        }
+        generate_variants();
 
-        $(document).on("click", ".remove_option_value", function(e) {
-            var option_id = $(this).attr("data-option-id");
-            var value = $(this).attr("data-value");
+        $(".option_value_div").fadeOut();
+        $(".remove_option").fadeOut();
+        $(".remove_option_value i").fadeOut();
+        $(".remove_option_value").removeClass('hover-danger');
+        $(".option_name").prop('readonly', true);
+        $(".remove_option_value").prop('disabled', true);
+        $("#add_option_btn").fadeOut();
+        $(".values_edit").fadeOut();
+        $(".values_display").fadeIn();
 
-            const index = form_options_values[option_id].indexOf(value);
-            if (index > -1) {
-                form_options_values[option_id].splice(index, 1);
+        $("#edit_options_btn").fadeIn();
+        $(this).fadeOut();
+
+    })
+
+    $(document).on("click", "#edit_options_btn", function(e) {
+        e.preventDefault();
+        $(".option_value_div").fadeIn();
+        $(".remove_option").fadeIn();
+        $(".remove_option_value i").fadeIn();
+        $(".remove_option_value").addClass('hover-danger');
+        $(".option_name").prop('readonly', false);
+        $(".remove_option_value").prop('disabled', false);
+        $("#add_option_btn").fadeIn();
+        $(".values_edit").fadeIn();
+        $(".values_display").fadeOut();
+        $("#save_options_btn").fadeIn();
+        $(this).fadeOut();
+        console.log(options);
+    })
+
+    function options_data_valid() {
+        var valid = true;
+        form_options_array.forEach(option_id => {
+            var option_name = $('#' + option_id + ' .option_name').val();
+            var option_values = form_options_values[option_id];
+
+            if (!option_name) {
+                valid = false;
+                $("#" + option_id + " .invalid-feedback").fadeIn();
+                $("#" + option_id + " .option_name").addClass("is-invalid");
+            } else {
+                $("#" + option_id + " .invalid-feedback").fadeOut();
+                $("#" + option_id + " .option_name").removeClass("is-invalid");
             }
-            update_form_options();
-        })
-
-        $(document).on("click", "#save_options_btn", function(e) {
-            e.preventDefault();
 
 
-            if (!options_data_valid()) {
-                return;
+            if (option_values === undefined || option_values.length == 0) {
+                valid = false;
+                $("#" + option_id + " #invalid-" + option_id).fadeIn();
+                $("#" + option_id + " .option_values").addClass("is-invalid");
+            } else {
+                $("#" + option_id + " #invalid-" + option_id).fadeOut();
+                $("#" + option_id + " .option_values").removeClass("is-invalid");
             }
 
-            form_options_array.forEach(option_id => {
-                var option_name = $('#' + option_id + ' .option_name').val();
-                options[option_id] = {
-                    option_name: option_name,
-                    option_values: form_options_values[option_id]
-                };
-            });
+        });
+        return valid;
+    }
 
-            generate_variants();
+    function generate_variants() {
+        var variants = [];
 
-            $(".option_value_div").fadeOut();
-            $(".remove_option").fadeOut();
-            $(".remove_option_value i").fadeOut();
-            $(".remove_option_value").removeClass('hover-danger');
-            $(".option_name").prop('readonly', true);
-            $(".remove_option_value").prop('disabled', true);
-            $("#add_option_btn").fadeOut();
-            $(".values_edit").fadeOut();
-            $(".values_display").fadeIn();
+        var attributes = {};
 
-            $("#edit_options_btn").fadeIn();
-            $(this).fadeOut();
+        Object.entries(options).forEach(element => {
+            attributes[element[1].option_name] = element[1].option_values;
+        });
 
-        })
+        for (const [attr, values] of Object.entries(attributes))
+            variants.push(values.map(v => ({
+                [attr]: v
+            })));
 
-        $(document).on("click", "#edit_options_btn", function(e) {
-            e.preventDefault();
-            $(".option_value_div").fadeIn();
-            $(".remove_option").fadeIn();
-            $(".remove_option_value i").fadeIn();
-            $(".remove_option_value").addClass('hover-danger');
-            $(".option_name").prop('readonly', false);
-            $(".remove_option_value").prop('disabled', false);
-            $("#add_option_btn").fadeIn();
-            $(".values_edit").fadeIn();
-            $(".values_display").fadeOut();
-            $("#save_options_btn").fadeIn();
-            $(this).fadeOut();
-            console.log(options);
-        })
+        variants = variants.reduce((a, b) => a.flatMap(d => b.map(e => ({
+            ...d,
+            ...e
+        }))));
 
-        function options_data_valid() {
-            var valid = true;
-            form_options_array.forEach(option_id => {
-                var option_name = $('#' + option_id + ' .option_name').val();
-                var option_values = form_options_values[option_id];
+        variants.forEach(variant => {
+            variant.name = Object.keys(variant).map(key => variant[key]).join('-');
+            // console.log(variant);
+        });
 
-                if (!option_name) {
-                    valid = false;
-                    $("#" + option_id + " .invalid-feedback").fadeIn();
-                    $("#" + option_id + " .option_name").addClass("is-invalid");
-                } else {
-                    $("#" + option_id + " .invalid-feedback").fadeOut();
-                    $("#" + option_id + " .option_name").removeClass("is-invalid");
+        add_variants_to_table(variants);
+
+    }
+
+    function add_variants_to_table(variants) {
+        $("#variants_table tbody").html("");
+        variants.forEach((element, index) => {
+            var template = `
+            <tr>
+            <td>` + element.name + `</td>
+            <td><input class=" product_variant form-control" name="product_variants[` + index + `][price]" type="number"/></td>
+            <td><input class="sku product_variant form-control" name="product_variants[` + index + `][sku]" type="text"/></td>
+            <input type="hidden" class="product_variant" name="product_variants[` + index +
+                `][name]" value="` + element.name + `"/>`
+            Object.entries(element).forEach(option_value => {
+                if (option_value[0] != 'name') {
+                    template += `<input type="hidden" class="product_variant" name="product_variants[` +
+                        index + `][options][` + option_value[0] + `]" value="` + option_value[1] + `"/>`
                 }
-
-
-                if (option_values === undefined || option_values.length == 0) {
-                    valid = false;
-                    $("#" + option_id + " #invalid-" + option_id).fadeIn();
-                    $("#" + option_id + " .option_values").addClass("is-invalid");
-                } else {
-                    $("#" + option_id + " #invalid-" + option_id).fadeOut();
-                    $("#" + option_id + " .option_values").removeClass("is-invalid");
-                }
-
             });
-            return valid;
-        }
+            template += `</tr>`;
+            $("#variants_table tbody").append(template);
+        });
+        $("#variants_table").fadeIn();
+    }
 
-        function generate_variants() {
-            var variants = [];
-
-            var attributes = {};
-
-            Object.entries(options).forEach(element => {
-                attributes[element[1].option_name] = element[1].option_values;
+    $('.add_product_btn').on('click',function (e) {
+        e.preventDefault();
+        Object.entries(options).forEach(element => {
+            var option = element[1];
+            option.option_values.forEach(value => {
+                var option_template = `<input type="hidden" name="product_attributes[` + option
+                    .option_name + `][]" value="` + value + `"/>`;
+                $("#product-form").append(option_template);
             });
+        });
 
-            for (const [attr, values] of Object.entries(attributes))
-                variants.push(values.map(v => ({
-                    [attr]: v
-                })));
-
-            variants = variants.reduce((a, b) => a.flatMap(d => b.map(e => ({
-                ...d,
-                ...e
-            }))));
-
-            variants.forEach(variant => {
-                variant.name = Object.keys(variant).map(key => variant[key]).join('-');
-                // console.log(variant);
-            });
-
-            add_variants_to_table(variants);
-
-        }
-
-        function add_variants_to_table(variants) {
-            $("#variants_table tbody").html("");
-            variants.forEach((element, index) => {
-                var template = `
-                <tr>
-                <td>` + element.name + `</td>
-                <td><input class=" product_variant form-control" name="product_variants[` + index + `][price]" type="number"/></td>
-                <td><input class="sku product_variant form-control" name="product_variants[` + index + `][sku]" type="text"/></td>
-                <input type="hidden" class="product_variant" name="product_variants[` + index +
-                    `][name]" value="` + element.name + `"/>`
-                Object.entries(element).forEach(option_value => {
-                    if (option_value[0] != 'name') {
-                        template += `<input type="hidden" class="product_variant" name="product_variants[` +
-                            index + `][options][` + option_value[0] + `]" value="` + option_value[1] + `"/>`
-                    }
-                });
-                template += `</tr>`;
-                $("#variants_table tbody").append(template);
-            });
-            $("#variants_table").fadeIn();
-        }
+        $(".product_variant").each(function() {
+            var template = `<input type="hidden" name="` + $(this).attr('name') + `" value="` + $(this).val() +
+                `" />`
+            $("#product-form").append(template);
+        });
+        $("#product-form").submit();
+    })
 </script>    
 {{-- <script>
         $(document).ready(function() {
