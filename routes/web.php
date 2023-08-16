@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ShippingCompanyController;
 
 
 Route::get('/',function (){
@@ -52,6 +53,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
+
+
+
+    Route::get('/shipping_companies/add', [ShippingCompanyController::class,'create'])
+    ->name('create_shipping_company');
+
+    Route::post('/shipping_companies/add', [ShippingCompanyController::class,'store'])
+    ->name('store_shipping_company');
 
 
 
