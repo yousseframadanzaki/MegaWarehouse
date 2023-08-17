@@ -63,6 +63,12 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/shipping_companies/add', [ShippingCompanyController::class,'store'])
     ->name('store_shipping_company');
     
+    Route::get('/shipping_companies/{shipping_company_id}', [ShippingCompanyController::class,'show'])
+    ->name('show_shipping_company');
+    
+    Route::get('/shipping_companies/{shipping_company_id}/sectors', [ShippingCompanyController::class,'show_sectors'])
+    ->name('show_shipping_company_sectors');
+    
     Route::get('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'edit'])
     ->name('edit_shipping_company');
     Route::post('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'update'])
@@ -81,7 +87,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('store_order')
     ->can('add','App\Models\Order');
 
-    Route::get('/orders/{order_id}', [OrderController::class,'show_one'])
+    Route::get('/orders/{order_id}', [OrderController::class,'show'])
     ->name('show_order')
     ->can('view_one',['App\Models\Order','order_id']);
 

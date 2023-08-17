@@ -41,7 +41,7 @@ class OrderController extends Controller
             ));
     }
 
-    public function show_one($order_id) {
+    public function show($order_id) {
         $order = $this->OrdersService->GetOrder($order_id);
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
         // dd($statuses);   

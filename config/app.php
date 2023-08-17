@@ -183,6 +183,8 @@ return [
         App\Providers\CartServiceProvider::class,
         App\Providers\ShippingCompanyServiceProvider::class,
         App\Providers\MegaApiServiceProvider::class,
+        App\Providers\ShippingStatusServiceProvider::class,
+        App\Providers\ShippingAreaServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

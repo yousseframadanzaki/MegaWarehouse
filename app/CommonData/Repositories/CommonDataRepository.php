@@ -91,7 +91,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return Variant::with('product')->where(['id'=>$variant_id])->first();
     }
 
-    public function get_company_statuses($company_id){
+    public function get_company_statuses(){
         return Status::all();
     }
     
