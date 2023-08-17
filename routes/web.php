@@ -54,16 +54,20 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
-
-
+    Route::get('/shipping_companies', [ShippingCompanyController::class,'all'])
+    ->name('all_shipping_companies');
 
     Route::get('/shipping_companies/add', [ShippingCompanyController::class,'create'])
     ->name('create_shipping_company');
-
+    
     Route::post('/shipping_companies/add', [ShippingCompanyController::class,'store'])
     ->name('store_shipping_company');
-
-
+    
+    Route::get('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'edit'])
+    ->name('edit_shipping_company');
+    Route::post('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'update'])
+    ->name('update_shipping_company');
+    
 
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders')

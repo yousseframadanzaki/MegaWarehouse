@@ -6,19 +6,19 @@
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_shipping_companies') }}">شركات الشحن</a></li>
-                <li>اضافة شركة شحن جديدة</li>
+                <li>تعديل شركة شحن </li>
             </ul>
         </div>
 
-        <form class="row  needs-validation" novalidate action="{{ route('store_shipping_company') }}" method="POST">
+        <form class="row  needs-validation" novalidate action="{{ route('update_shipping_company',$shipping_company->id) }}" method="POST">
             @csrf
             <div class="card p-5 shadow-sm">
-                <h1 class="text-center">اضافة شركة شحن جديدة</h1>
+                <h1 class="text-center">تعديل شركة شحن </h1>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">اسم الشركة</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror"
-                            name="name" value="{{ old('name') }}">
+                            name="name" value="{{ $shipping_company->name }}">
                         @error('name')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
@@ -28,7 +28,7 @@
                     <div class="col-md-6">
                         <label class="form-label">الايميل او رقم تليفون</label>
                         <input type="text" class="form-control @error('username') is-invalid @enderror"
-                            name="username" value="{{ old('username') }}">
+                            name="username" value="{{ $shipping_company->username }}">
                         @error('username')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <label class="form-label">كلمة السر</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"
-                            name="password" value="{{ old('password') }}">
+                            name="password" value="{{ $shipping_company->password }}">
                         @error('password')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
@@ -50,7 +50,7 @@
                     <div class="col-md-6">
                         <label class="form-label">لينك الشركة</label>
                         <input type="text" class="form-control @error('url') is-invalid @enderror"
-                            name="url" placeholder="ex: shipping-express.com" value="{{ old('url') }}">
+                            name="url" placeholder="ex: shipping-express.com" value="{{ $shipping_company->url }}">
                         @error('url')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-lg btn-primary mt-3 shadow-sm">أضافة شركة الشحن <i
+                <button class="btn btn-lg btn-primary mt-3 shadow-sm">تعديل شركة الشحن <i
                         class="bi bi-truck"></i></button>
             </div>
         </form>

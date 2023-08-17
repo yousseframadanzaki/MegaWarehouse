@@ -92,7 +92,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     }
 
     public function get_company_statuses($company_id){
-        return Status::where(['company_id'=>$company_id])->get();
+        return Status::all();
     }
     
 }

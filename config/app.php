@@ -182,6 +182,7 @@ return [
         App\Providers\BladeDirectivesServiceProvider::class,
         App\Providers\CartServiceProvider::class,
         App\Providers\ShippingCompanyServiceProvider::class,
+        App\Providers\MegaApiServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,

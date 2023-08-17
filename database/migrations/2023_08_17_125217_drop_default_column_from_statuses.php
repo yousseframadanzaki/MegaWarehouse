@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('permissions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->string('resource_name');
-            $table->timestamps();
+        Schema::table('statuses', function (Blueprint $table) {
+            $table->dropColumn('default');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('permissions');
+        Schema::table('statuses', function (Blueprint $table) {
+            //
+        });
     }
 };

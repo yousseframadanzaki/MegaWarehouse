@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingCompanies\Requests\CreateShippingCompanyRequest;
+use App\ShippingCompanies\Requests\UpdateShippingCompanyRequest;
 
 class ShippingCompanyController extends Controller
 {
     public function __construct(
        protected readonly ShippingCompanyServiceInterface $ShippingCompanyService
     ) {}
+
+    public function all()
+    {
+        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
+        return view('Dashboard.ShippingCompanies.show_all')->with(compact('shipping_companies'));
+    }
 
     public function create()
     {
@@ -24,6 +31,20 @@ class ShippingCompanyController extends Controller
             return redirect()->back()->with('error','create_shipping_company_error');
         }
         return redirect()->back()->with('success','create_shipping_company_success');
+    }
+
+    public function edit($shipping_company_id)
+    {
+        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($shipping_company_id);
+        return view('Dashboard.ShippingCompanies.edit')->with(compact('shipping_company'));
+    }
+
+    public function update(UpdateShippingCompanyRequest $request,$shipping_company_id)
+    {
+        if(!$this->ShippingCompanyService->UpdateShippingCompany($shipping_company_id,$request->except('_token'))){
+            return redirect()->back()->with('error','update_shipping_company_error');
+        }
+        return redirect()->back()->with('success','update_shipping_company_success');
     }
 
 }
