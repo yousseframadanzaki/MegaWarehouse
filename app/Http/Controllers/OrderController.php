@@ -43,9 +43,9 @@ class OrderController extends Controller
 
     public function show($order_id) {
         $order = $this->OrdersService->GetOrder($order_id);
-        $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
-        // dd($statuses);   
-        return view('Dashboard.Orders.show_one',compact('order','statuses'));
+        $statuses = $this->CommonDataService->GetCompanyStatuses();
+        $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
+        return view('Dashboard.Orders.show_one',compact('order','statuses','shipping_companies'));
     }
 
     public function create() {
@@ -69,7 +69,7 @@ class OrderController extends Controller
         $data = $request->all();
         $data['admin_id'] = auth()->user()->id;
         $data['company_id'] = auth()->user()->company_id;
-
+        // dd($data);
         if($this->OrdersService->ChangeOrderStatus($order_id,$data)){
             return redirect()->back()->with('success','order_status_change_success');
         }

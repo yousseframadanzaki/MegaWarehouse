@@ -50,5 +50,7 @@ class ShippingAreaService implements ShippingAreaServiceInterface{
     {
         return $this->shipping_area_repository->upsert_mapping($data);
     }
-
+    public function GetAreaSectorIdMapping($area_id,$shipping_company_id){
+        return $this->shipping_area_repository->get_area_sector_id($area_id,$shipping_company_id);
+    }
 }

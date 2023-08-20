@@ -36,7 +36,7 @@
             @foreach ($shipping_company_statuses as $shipping_statuses)
                 <div class="row mt-3 align-items-center">
                     <div class="col-md-4 fs-5">
-                        <label class="fw-bold">{{ $shipping_statuses['name_ar'] }}</label>
+                        <label class="fw-bold">{{$shipping_statuses['id']}} - {{ $shipping_statuses['name_ar'] }}</label>
                     </div>
                     <div class="col-md-4 fs-5">
                         <select class="status_select" style="width: 100%" data-shipping_status_id="{{ $shipping_statuses['id'] }}"
@@ -56,15 +56,15 @@
             @foreach ($shipping_company_areas as $shipping_area)
                 <div class="row mt-3 align-items-center">
                     <div class="col-md-4 fs-5">
-                        <label class="fw-bold">{{ $shipping_area['name'] }}</label>
+                        <label class="fw-bold">{{$shipping_area['id']}} - {{ $shipping_area['name'] }} - {{ $shipping_area['gov'] }}</label>
                     </div>
                     <div class="col-md-4 fs-5">
                         <select class="area_select" style="width: 100%" data-shipping_area_id="{{ $shipping_area['id'] }}"
                             data-area_mapping_id="{{ $shipping_area['area_mapping_id'] }}">
                             <option value="">اختار المنطقة</option>
-                            @foreach ($areas as $id=>$name)
-                                <option @if ($id == $shipping_area['area_id']) selected @endif value="{{ $id }}">
-                                    {{ $name }}</option>
+                            @foreach ($areas as $area)
+                                <option @if ($area->id == $shipping_area['area_id']) selected @endif value="{{ $area->id }}">
+                                    {{ $area->name }} - {{$area->city->name}}</option>
                             @endforeach
                         </select>
                     </div>

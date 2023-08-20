@@ -30,6 +30,7 @@ class Order extends Model
         'status_id',
         'admin_id',
         'order_code',
+        'waybill',
     ];
     public function items()
     {

@@ -16,7 +16,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['company_id'] = $data['company_id'];
         $order_data['admin_id'] = $data['admin_id'];
         $order_data['order_code'] = $data['order_code'];
-        $order_data['status_id'] = Status::where(['company_id'=>$data['company_id'],'default'=>true])->first()->id;
+        $order_data['status_id'] = '1';
         $order_data['total'] = $this->calculate_total($data['items']);
 
         $order = Order::create($order_data);
@@ -80,6 +80,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $ids[] =  $this->change_order_status($id,$data);
         }
         return $ids;
+    }
+
+    public function update_order($order_id,$data) {
+        return Order::where('id',$order_id)->update($data);
     }
 
 }

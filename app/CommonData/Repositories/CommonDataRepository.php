@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\Attribute;
 use App\Models\Status;
+use App\Models\ShippingCompany;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -58,9 +59,9 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
 
     public function get_areas($city_id=NULL){
         if($city_id==NULL){
-            return Area::all()->pluck('name','id');
+            return Area::with('city')->get();
         }
-        return Area::where(['city_id'=>$city_id])->pluck('name','id');
+        return Area::with('city')->where(['city_id'=>$city_id])->get();
     }
 
     public function get_company_warehouses($company_id){
@@ -93,6 +94,9 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
 
     public function get_company_statuses(){
         return Status::all();
+    }
+    public function get_company_shipping_companies($company_id){
+        return ShippingCompany::all();
     }
     
 }

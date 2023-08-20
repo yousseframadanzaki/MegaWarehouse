@@ -38,6 +38,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mt-2" style="display: none;" id="shipping_company_select">
+                            <div class="col-md-12">
+                                <label class="form-label">شركة الشحن</label>
+                                <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
+                                    <option value="">اختار شركة الشحن</option>
+                                    @foreach ($shipping_companies as $shipping_company)
+                                        <option  value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <label class="form-label">ملاحظة</label>
@@ -73,13 +84,6 @@
             <li><a href="{{ route('all_orders') }}">الاوردرات</a></li>
             <li><a class="link-dark" href="{{ route('show_order',$order->id) }}">{{$order->order_code}} </a></li>
         </ul>
-
-        @can('edit_change_status','App\\Models\Order')
-            <div class="card p-3 shadow-sm d-flex flex-row">
-                <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
-            </div>
-        @endcan
-
 
         <div class="card p-3 shadow-sm mt-3">
             <div class="row">
@@ -136,6 +140,10 @@
                     <label class="fw-bold"> حالة :</label>
                     <label>{{$order->status->name}}</label>
                 </div>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> رقم البوليصة :</label>
+                    <label>{{$order->waybill}}</label>
+                </div>
             </div>
             <div class="row mt-4">
                 <h3>المنتجات</h3>
@@ -168,7 +176,13 @@
             </div>
             
         </div>
-        
+        @can('edit_change_status','App\\Models\Order')
+        <div class="row mt-3">
+            <div class="card p-3 shadow-sm d-flex flex-row">
+                <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+            </div>
+        </div>
+        @endcan
         <div class="row mt-3">
             <div class="card p-3 shadow-sm">
                 <h3>الحالات</h3>
@@ -214,6 +228,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
             $('#status_id').select2({
+                dropdownParent: $('#statusModal')
+            });
+            $('#shipping_company_id').select2({
                 dropdownParent: $('#statusModal')
             });
         })
@@ -273,6 +290,12 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 }
 
             })
+        })
+        $('#status_id').change(function () {
+            var status_id = $(this).val();
+            if(status_id == '5'){
+                $("#shipping_company_select").fadeIn();
+            }
         })
     </script>
 @endsection

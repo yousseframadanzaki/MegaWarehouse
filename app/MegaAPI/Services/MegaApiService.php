@@ -20,4 +20,7 @@ class MegaApiService implements MegaApiServiceInterface{
     public function GetMegaCompanySectors($name,$password,$url,$mega_company_id){
         return $this->mega_api_repository->get_mega_company_sectors($name,$password,$url,$mega_company_id);
     }
+    public function CreateNewShipment($name,$password,$url,$shipment){
+        return $this->mega_api_repository->create_new_shipment($name,$password,$url,$shipment);
+    }
 }

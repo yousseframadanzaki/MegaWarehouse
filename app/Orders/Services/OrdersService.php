@@ -10,6 +10,9 @@ use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Stock\Interfaces\StockOperationServiceInterface;
 use App\Clients\Interfaces\ClientCrudServiceInterface;
 use App\Cart\Interfaces\CartServiceInterface;
+use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
+
+
 
 class OrdersService implements OrdersServiceInterface{
 
@@ -20,13 +23,13 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  CartServiceInterface $CartService,
         protected readonly  UploadServiceInterface $FileUploadService,
         protected readonly  MediaCrudServiceInterface $MediaService,
+        protected readonly  ShippingCompanyServiceInterface $ShippingCompanyService,
     ) {}
 
     public function AddOrder($user,array $order_details){
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
             return false;
         }
-
         if(!isset($order_details['client_id'])){
             $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);
             $order_details['client_id'] = $client->id;
@@ -55,6 +58,20 @@ class OrdersService implements OrdersServiceInterface{
     }
 
     public function ChangeOrderStatus($order_id,$data){
+
+        $order = $this->orders_crud_repository->get_order_by_id($order_id);
+
+        if($data['status_id'] == '5'){
+            $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+            
+            if(!$shipment){
+                return false;
+            }
+            $this->orders_crud_repository->update_order($order_id,
+                array('waybill'=>$shipment['waybill'])
+            );
+        }
+
         $id = $this->orders_crud_repository->change_order_status($order_id,$data);
         if(isset($data['status_images'])){
             foreach ($data['status_images'] as $image) {
@@ -64,6 +81,7 @@ class OrdersService implements OrdersServiceInterface{
         }
         return $id;
     }
+
     public function ChangeOrderStatusBulk($data)
     {
         $ids =  $this->orders_crud_repository->change_order_status_bulk($data);

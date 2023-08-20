@@ -23,5 +23,10 @@ class ShippingAreaRepository implements ShippingAreaRepositoryInterface{
             'shipping_company_id' => $data['shipping_company_id']
         ]);
     }
-
+    public function get_area_sector_id($area_id,$shipping_company_id){
+        return ShippingArea::where(
+            ['area_id'=>$area_id,
+            'shipping_company_id'=>$shipping_company_id
+        ])->first()->value('shipping_company_sector_id');
+    }
 }

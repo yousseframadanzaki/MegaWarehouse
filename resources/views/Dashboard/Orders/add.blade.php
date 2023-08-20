@@ -202,7 +202,7 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">عنوان <i class="bi bi-map-marker">
                                 </i></label>
                             <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address"
@@ -213,7 +213,23 @@
                                 </div>
                             @enderror
                         </div>
+                        <div class="col-md-4 mt-3">
+                            <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
+                            <input type="text" class="form-control" name="client[links][facebook]"
+                                value="{{ old('client.links.facebook') }}">
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <label class="form-label">لينك انستجرام <i class="bi bi-instagram"> </i></label>
+                            <input type="text" class="form-control" name="client[links][instagram]"
+                                value="{{ old('client.links.instagram') }}">
+                        </div>
                     </div>
+                    
+                    <div class="col-md-4 mt-3">
+                        <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
+                        <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
+                    </div>
+
                     <div class="row mt-3">
                         <div class="col-md-4">
                             <label class="form-label"> الدولة </label>
@@ -413,8 +429,9 @@
             }).then((response) => {
                 data = JSON.parse(response);
                 $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
+                console.log(data);
                 $.each(data, function(key, value) {
-                    $("#area-select").append('<option value="' + key + '">' + value + '</option>');
+                    $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
             })
         })
