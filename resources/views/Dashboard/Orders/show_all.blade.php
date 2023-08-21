@@ -129,6 +129,15 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-4">
+                            <label class="form-label">المسوق</label>
+                            <select class="form-select product_info" name="marketer_id">
+                                <option value="">اختار الحالة</option>
+                                @foreach ($marketers as $marketer)
+                                    <option  @if(Request::get('marketer_id') == $marketer->id) selected @endif value="{{ $marketer->id }}">{{ $marketer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
                             <label class="form-label">تاريخ من</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">

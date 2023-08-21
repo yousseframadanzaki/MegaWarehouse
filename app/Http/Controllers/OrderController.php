@@ -26,9 +26,8 @@ class OrderController extends Controller
         $clients = $this->CommonDataService->GetCompanyClients($this->company_id());
         $cities = $this->CommonDataService->GetCities();
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
-
+        $marketers = $this->CommonDataService->GetCompanyMarketers($this->company_id());
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
-
         $filters = $filters->get_values();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
         return view('Dashboard.Orders.show_all')->with(
@@ -37,6 +36,7 @@ class OrderController extends Controller
                 'clients',
                 'cities',
                 'statuses',
+                'marketers',
                 'shipping_companies',
                 'filters'
             ));

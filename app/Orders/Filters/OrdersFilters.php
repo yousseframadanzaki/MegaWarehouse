@@ -9,11 +9,13 @@ use App\Orders\Filters\CityFilter;
 use App\Orders\Filters\AreaFilter;
 use App\Orders\Filters\DateFromFilter;
 use App\Orders\Filters\DateToFilter;
+use App\Orders\Filters\MarketerFilter;
 
 use App\Models\Client;
 use App\Models\Status;
 use App\Models\City;
 use App\Models\Area;
+use App\Models\Marketer;
 
 class OrdersFilters
 {
@@ -26,6 +28,7 @@ class OrdersFilters
         'area_id'   => AreaFilter::class,
         'date_from' => DateFromFilter::class,
         'date_to'   => DateToFilter::class,
+        'marketer_id'   => MarketerFilter::class,
     ];
 
 
@@ -62,6 +65,10 @@ class OrdersFilters
             }
             if($key == 'area_id'){
                 $filters['area_id'] = Area::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'marketer_id'){
+                $filters['marketer_id'] = Marketer::findOrfail($value)->name;
                 continue;
             }
         }
