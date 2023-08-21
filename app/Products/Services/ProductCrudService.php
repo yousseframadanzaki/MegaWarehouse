@@ -81,29 +81,26 @@ class ProductCrudService implements ProductCrudServiceInterface{
 
     private function update_images($product,$data) {
 
-
-
-        if(!isset($product->images) && !isset($product->main_image)){
-            $this->add_images($product->id,$product->company_id,$data);
-        }
-        if(isset($product->main_image)){
-            foreach ($data["product_images"] as $image) {
-                if($image){
-                    $file = $this->FileUploadService->product($image,$product->company_id,$product->id);
-                    $this->MediaService->save($file);
-                }
-            }
-            return;
-        }
-        if(isset($product->images)){
-            $image = $product->images[0];
+if(isset($data["product_images"])){
+    if(!isset($product->images) && !isset($product->main_image)){
+        $this->add_images($product->id,$product->company_id,$data);
+    }
+    if(isset($product->main_image)){
+        foreach ($data["product_images"] as $image) {
             if($image){
-
+                $file = $this->FileUploadService->product($image,$product->company_id,$product->id);
+                $this->MediaService->save($file);
             }
         }
+        return;
+    }
+    if(isset($product->images)){
+        $image = $product->images[0];
+        if($image){
 
-
-
+        }
+    }
+}
 
         // if(!isset($product->main_image) && $data['product_images'][0] == NULL){
         //     $this->add_images($product->id,$product->company_id,$data);

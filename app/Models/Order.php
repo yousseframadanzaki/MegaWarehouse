@@ -12,6 +12,7 @@ use App\Models\Area;
 use App\Models\Client;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
+use App\Models\ShippingCompany;
 
 class Order extends Model
 {
@@ -31,6 +32,7 @@ class Order extends Model
         'admin_id',
         'order_code',
         'waybill',
+        'shipping_company_id',
     ];
     public function items()
     {
@@ -72,6 +74,11 @@ class Order extends Model
     public function area()
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function shipping_company()
+    {
+        return $this->belongsTo(ShippingCompany::class);
     }
 
     public function scopeFilter($query, $filters)

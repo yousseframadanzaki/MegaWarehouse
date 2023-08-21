@@ -85,7 +85,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         }
         $product_name = "";
         foreach ($order->items as $order_item) {
-           $product_name .= $order_item->product->name . "({{$order_item->pivot->quantity}}) - ";
+           $product_name .= $order_item->product->name . "({$order_item->pivot->quantity}) - ";
         }
         $phone_1 = $order->phone_1;
         $phone_2 = $order->phone_2;
@@ -101,7 +101,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
             'price' =>$price,
             'address' =>$address,
             'client_name' =>$client_name,
-            'order_id' =>$client_name
+            'order_id' =>$order_id
         );
         return $shipment;
     }

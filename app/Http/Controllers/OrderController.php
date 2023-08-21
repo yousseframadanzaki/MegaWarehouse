@@ -30,13 +30,14 @@ class OrderController extends Controller
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
 
         $filters = $filters->get_values();
-
+        $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
         return view('Dashboard.Orders.show_all')->with(
             compact(
                 'orders',
                 'clients',
                 'cities',
                 'statuses',
+                'shipping_companies',
                 'filters'
             ));
     }
@@ -86,6 +87,11 @@ class OrderController extends Controller
             return redirect()->back()->with('success','order_status_change_bulk_success');
         }
         return redirect()->back()->with('error','order_status_change_bulk_error');
+    }
+
+    public function status_callback(Request $request) {
+        $id = $this->OrdersService->ChangeOrderStatusCallback($request->all());
+        return response()->json($id, 200);
     }
 
 }

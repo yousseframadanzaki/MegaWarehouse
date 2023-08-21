@@ -10,6 +10,7 @@ use App\Http\Controllers\VariantController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
+use App\Http\Controllers\OrderController;
 
 /*
     |--------------------------------------------------------------------------
@@ -43,5 +44,6 @@ Route::post('/cart/update',[CartController::class,'update'])->name('update_cart'
 Route::post('/cart/{variant_id}/delete',[CartController::class,'destroy'])->name('delete_cart');
 
 Route::post('/shipping_status/map', [ShippingStatusController::class,'map'])->name('map_status');
+Route::post('/status_callback',[OrderController::class,'status_callback'])->name('status_callback');
 
 Route::post('/shipping_area/map', [ShippingAreaController::class,'map'])->name('map_area');

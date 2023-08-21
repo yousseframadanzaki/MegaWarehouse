@@ -376,8 +376,7 @@
 
                 await $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
                 await $.each(data.areas, function(key, value) {
-                    $("#area-select").append('<option value="' + key + '">' + value +
-                        '</option>');
+                    $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
 
                 await add_data(data);
@@ -429,7 +428,6 @@
             }).then((response) => {
                 data = JSON.parse(response);
                 $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
-                console.log(data);
                 $.each(data, function(key, value) {
                     $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });

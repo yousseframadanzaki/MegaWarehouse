@@ -53,7 +53,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'items',
             'client',
             'city',
-            'area'])->where('id',$order_id)->first();
+            'area',
+            'shipping_company'])->where('id',$order_id)->first();
     }
     public function change_order_status($order_id,$data){
         $order = Order::findOrfail($order_id);
@@ -65,7 +66,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
 
         $order->order_status()->attach([
         $data['status_id'] => [
-            'admin_id'=>$data['admin_id'],
+            'admin_id'=> (isset($data['admin_id']) ? $data['admin_id'] : NULL),
             'note'=> $note,
             'current'=> true,
         ]]);
@@ -84,6 +85,12 @@ class OrdersRepository implements OrdersRepositoryInterface{
 
     public function update_order($order_id,$data) {
         return Order::where('id',$order_id)->update($data);
+    }
+
+    
+    public function get_order_by_waybill($waybill)
+    {
+        return Order::where(['waybill'=>$waybill])->first();
     }
 
 }

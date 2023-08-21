@@ -145,6 +145,15 @@
                     <label>{{$order->waybill}}</label>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> شركة الشحن :</label>
+                    @isset($order->shipping_company->name)
+                    <label>{{$order->shipping_company->name}}</label>
+                    @endisset
+                </div>
+                
+            </div>
             <div class="row mt-4">
                 <h3>المنتجات</h3>
                 <table class="table table-hover" id="variants_table">
@@ -199,7 +208,11 @@
                     <tbody>
                         @foreach ($order->order_status as $status)
                             <tr class="@if($status->pivot->current) table-primary @endif">
-                                <td>{{$status->pivot->admin->name}}</td>
+                                @if(isset($status->pivot->admin->name))
+                                    <td>{{$status->pivot->admin->name}}</td>
+                                @else
+                                    <td>{{$order->shipping_company->name}}</td>
+                                @endif
                                 <td>{{$status->name}}</td>
                                 <td class="truncate">{{$status->pivot->note}}</td>
                                 <td>

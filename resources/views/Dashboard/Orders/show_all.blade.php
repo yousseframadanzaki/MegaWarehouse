@@ -19,6 +19,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mt-2" style="display: none;" id="shipping_company_select">
+                            <div class="col-md-12">
+                                <label class="form-label">شركة الشحن</label>
+                                <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
+                                    <option value="">اختار شركة الشحن</option>
+                                    @foreach ($shipping_companies as $shipping_company)
+                                        <option  value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="row mt-2">
                             <div class="col-md-12">
                                 <label class="form-label">ملاحظة</label>
@@ -208,7 +219,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             $('#status_id').select2({
                 dropdownParent: $('#statusModal')
             });
-
+            $('#shipping_company_id').select2({
+                dropdownParent: $('#statusModal')
+            });
             var city_id = "{!! Request::get('city_id') !!}"
             var area_id = "{!! Request::get('area_id') !!}"
             if(city_id){
@@ -320,6 +333,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             $("#change_status_form").submit();
         })
-
+        $('#status_id').change(function () {
+            var status_id = $(this).val();
+            if(status_id == '5'){
+                $("#shipping_company_select").fadeIn();
+            }
+        })
     </script>
 @endsection

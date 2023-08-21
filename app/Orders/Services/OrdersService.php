@@ -11,6 +11,7 @@ use App\Stock\Interfaces\StockOperationServiceInterface;
 use App\Clients\Interfaces\ClientCrudServiceInterface;
 use App\Cart\Interfaces\CartServiceInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
+use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 
 
 
@@ -24,6 +25,7 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  UploadServiceInterface $FileUploadService,
         protected readonly  MediaCrudServiceInterface $MediaService,
         protected readonly  ShippingCompanyServiceInterface $ShippingCompanyService,
+        protected readonly  ShippingStatusServiceInterface $ShippingStatusService,
     ) {}
 
     public function AddOrder($user,array $order_details){
@@ -68,7 +70,10 @@ class OrdersService implements OrdersServiceInterface{
                 return false;
             }
             $this->orders_crud_repository->update_order($order_id,
-                array('waybill'=>$shipment['waybill'])
+                array(
+                    'waybill'=>$shipment['waybill'],
+                    'shipping_company_id'=>$data['shipping_company_id'],
+                )
             );
         }
 
@@ -84,6 +89,23 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatusBulk($data)
     {
+        if($data['status_id'] == '5'){
+            foreach ($data['orders_ids'] as $order_id) {
+                $order = $this->orders_crud_repository->get_order_by_id($order_id);
+                $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+                
+                if(!$shipment){
+                    return false;
+                }
+                $this->orders_crud_repository->update_order($order_id,
+                    array(
+                        'waybill'=>$shipment['waybill'],
+                        'shipping_company_id'=>$data['shipping_company_id'],
+                    )
+                );
+            }
+        }
+
         $ids =  $this->orders_crud_repository->change_order_status_bulk($data);
         if(isset($data['status_images'])){
             foreach ($data['status_images'] as $image) {
@@ -95,5 +117,23 @@ class OrdersService implements OrdersServiceInterface{
             }
         }
         return $ids;
+    }
+
+    public function ChangeOrderStatusCallback($data){
+        
+        $order = $this->orders_crud_repository->get_order_by_waybill($data['waybill']);
+        $status_id = $this->ShippingStatusService->GetStatusMapping($data['status_id'],$order->shipping_company_id);
+        $note = $data['note'];
+        // dd($status_id);
+        if(empty($status_id) || empty($order->id)){
+            return false;
+        }
+
+        $status_data = array(
+            'status_id'=>$status_id,
+            'note'=>$note,
+        );
+        $id = $this->orders_crud_repository->change_order_status($order->id,$status_data);
+        return $id;
     }
 }

@@ -23,5 +23,11 @@ class ShippingStatusRepository implements ShippingStatusRepositoryInterface{
             'shipping_company_id' => $data['shipping_company_id']
         ]);
     }
+    public function get_status_mapping($shipping_status_id,$shipping_company_id){
+        return ShippingStatus::where([
+            'shipping_company_status_id'=>$shipping_status_id,
+            'shipping_company_id'=>$shipping_company_id,
+        ])->value('status_id');
+    }
 
 }

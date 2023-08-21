@@ -50,4 +50,8 @@ class ShippingStatusService implements ShippingStatusServiceInterface{
         return $this->shipping_status_repository->upsert_mapping($data);
     }
 
+    public function GetStatusMapping($shipping_status_id,$shipping_company_id){
+        return $this->shipping_status_repository->get_status_mapping($shipping_status_id,$shipping_company_id);
+    }
+
 }
