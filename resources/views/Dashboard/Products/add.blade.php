@@ -97,14 +97,9 @@
 
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">المورد <span class="text-danger">*</span></label>
-                            <select class="form-select product_info  @error('product_info.supplier_id') is-inavlid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
-                                <option value="">اختار المورد</option>
-                                @foreach ($data['suppliers'] as $id => $name)
-                                    <option @if ($id == old('product_info.supplier_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('product_info.supplier_id')
+                            <label class="form-label">عمولة المسوق</label>
+                            <input type="number" class="form-control @error('product_info.marketer_commission') is-invalid @enderror" name="product_info[marketer_commission]">
+                            @error('product_info.marketer_commission')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -122,6 +117,20 @@
                                 @endforeach
                             </select>
                             @error('product_info.category_id')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">المورد <span class="text-danger">*</span></label>
+                            <select class="form-select product_info  @error('product_info.supplier_id') is-inavlid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
+                                <option value="">اختار المورد</option>
+                                @foreach ($data['suppliers'] as $id => $name)
+                                    <option @if ($id == old('product_info.supplier_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            @error('product_info.supplier_id')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>

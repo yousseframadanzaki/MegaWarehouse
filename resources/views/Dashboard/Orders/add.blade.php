@@ -273,6 +273,23 @@
                         </div>
                     </div>
                     <div class="row mt-5">
+                        <h4>المسوق</h4>
+                        <div class="col-md-4">
+                            
+                            <select id="marketer-select" class="form-select @error('marketer_id') is-invalid @enderror" name="marketer_id">
+                                <option value="">اختار</option>
+                                @foreach ($marketers as $marketer)
+                                    <option value="{{ $marketer->id }}">{{ $marketer->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('marketer_id')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mt-5">
                         <h4>المنتجات</h4>
                         @error('items')
                         <div class="alert alert-danger" role="alert">
@@ -288,6 +305,7 @@
                             <thead>
                                 <tr>
                                     <th>اسم المنتج</th>
+                                    <th>عمولة المسوق</th>
                                     <th>اسم المتغير</th>
                                     <th>السعر</th>
                                     <th>الكمية المتوفرة</th>
@@ -349,6 +367,7 @@
             $('#warehouse_id').select2({
                     dropdownParent: $('#addToCartModal')
             });
+            $('#marketer-select').select2();
             if(items){
                 add_cart_items(items);
             }
@@ -462,6 +481,7 @@
                 var template = `
                     <tr id="${variant.id}">
                         <td>${variant.product.name}</td>
+                        <td>${variant.product.marketer_commission}</td>
                         <td>${variant.name}</td>
                         <td>${variant.price}</td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>

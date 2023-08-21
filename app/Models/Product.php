@@ -20,6 +20,7 @@ class Product extends Model
         'cost',
         'price',
         'before_sale_price',
+        'marketer_commission',
     ];
 
     public function supplier() {

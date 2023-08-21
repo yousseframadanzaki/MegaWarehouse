@@ -18,6 +18,7 @@ use App\Models\Client;
 use App\Models\Attribute;
 use App\Models\Status;
 use App\Models\ShippingCompany;
+use App\Models\Marketer;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
@@ -97,6 +98,10 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     }
     public function get_company_shipping_companies($company_id){
         return ShippingCompany::all();
+    }
+
+    public function get_company_marketers($company_id){
+        return Marketer::all();
     }
     
 }

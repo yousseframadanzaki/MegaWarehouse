@@ -28,6 +28,7 @@ class CreateProductRequest extends FormRequest
             'product_info.supplier_id'=>'required|numeric|exists:suppliers,id',
             'product_info.category_id'=>'required|numeric|exists:categories,id',
             'product_info.price'=>'required|numeric',
+            'product_info.marketer_commission'=>'nullable|numeric',
             'product_info.before_sale_price'=>'nullable|numeric|gt:product_info.price',
             'product_info.cost'=>'required|numeric',
         ];

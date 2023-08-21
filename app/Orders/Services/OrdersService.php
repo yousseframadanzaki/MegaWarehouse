@@ -39,6 +39,7 @@ class OrdersService implements OrdersServiceInterface{
         $order_details['admin_id'] = $user->id;
         $order_details['company_id'] = $user->company_id;
         $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
+        // dd($order_details);
         $order = $this->orders_crud_repository->create_order($order_details);
         $order_details['type'] = 'sell';
         $order_details['order_id'] = $order->id;

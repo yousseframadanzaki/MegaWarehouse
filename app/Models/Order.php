@@ -13,6 +13,7 @@ use App\Models\Client;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
 use App\Models\ShippingCompany;
+use App\Models\Marketer;
 
 class Order extends Model
 {
@@ -33,7 +34,10 @@ class Order extends Model
         'order_code',
         'waybill',
         'shipping_company_id',
+        'total_marketer_commission',
+        'marketer_id',
     ];
+
     public function items()
     {
         return $this->belongsToMany(Variant::class, 'orders_items','orders_id','variants_id')
@@ -54,6 +58,11 @@ class Order extends Model
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
+    }
+
+    public function marketer()
+    {
+        return $this->belongsTo(Marketer::class);
     }
 
     public function client()

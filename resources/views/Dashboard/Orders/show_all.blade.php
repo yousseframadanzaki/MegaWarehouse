@@ -171,6 +171,7 @@
                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
                         <th>رقم الاوردر</th>
                         <th>الادمن</th>
+                        <th>المسوق</th>
                         <th>الحالة</th>
                         <th>اسم العميل</th>
                         <th>رقم التليفون</th>
@@ -186,6 +187,11 @@
                             <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
                             <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
                             <td>{{$order->admin->name}}</td>
+                            <td>
+                                @isset($order->marketer->name)
+                                    {{$order->marketer->name}}
+                                @endisset
+                            </td>
                             <td>{{$order->status->name}}</td>
                             <td>{{$order->name}}</td>
                             <td>{{$order->phone_1}}</td>

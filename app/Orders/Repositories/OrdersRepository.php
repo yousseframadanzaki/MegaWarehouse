@@ -17,7 +17,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['admin_id'] = $data['admin_id'];
         $order_data['order_code'] = $data['order_code'];
         $order_data['status_id'] = '1';
-        $order_data['total'] = $this->calculate_total($data['items']);
+        $total_data = $this->calculate_total($data['items']);
+        $order_data['total'] = $total_data['total'];
+        $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
+        $order_data['marketer_id'] = $data['marketer_id'];
 
         $order = Order::create($order_data);
 
@@ -29,11 +32,20 @@ class OrdersRepository implements OrdersRepositoryInterface{
 
     function calculate_total($items) {
         $total = 0;
+        $total_marketer_commission = 0;
+
         foreach ($items as $id => $item) {
-            $price = Variant::find($id)->value('price');
+            $variant = Variant::with('product')->find($id);
+            $price = $variant->price;
+            $commission = $variant->product->marketer_commission;
+
             $total += $price * (int)$item['quantity'];
+            $total_marketer_commission += $commission * (int)$item['quantity'];
         }
-        return $total;
+
+        $data['total'] = $total;
+        $data['total_marketer_commission'] = $total_marketer_commission;
+        return $data;
     }
 
     public function get_company_orders($company_id,$filters){
@@ -54,7 +66,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'client',
             'city',
             'area',
-            'shipping_company'])->where('id',$order_id)->first();
+            'shipping_company',
+            'marketer'])->where('id',$order_id)->first();
     }
     public function change_order_status($order_id,$data){
         $order = Order::findOrfail($order_id);

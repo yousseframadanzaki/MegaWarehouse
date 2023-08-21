@@ -30,6 +30,7 @@ class CreateOrderRequest extends FormRequest
             'client.country_id'=>'required|exists:countries,id',
             'client.city_id'=>'required|exists:cities,id',
             'client.area_id'=>'required|exists:areas,id',
+            'marketer_id'=>'nullable|exists:marketers,id',
             'items'=>'required|array|min:1',
             'items.*.warehouse_id'=>'required|exists:warehouses,id',
             'items.*.quantity'=>'required|numeric|gt:0',

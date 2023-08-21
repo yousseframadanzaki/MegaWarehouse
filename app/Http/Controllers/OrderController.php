@@ -55,7 +55,8 @@ class OrderController extends Controller
         $countries = $this->CommonDataService->GetCountries();
         $products = $this->CommonDataService->GetCompanyProducts($company_id);
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
-        return view('Dashboard.Orders.add')->with(compact('clients','countries','products','warehouses'));
+        $marketers = $this->CommonDataService->GetCompanyMarketers($company_id);
+        return view('Dashboard.Orders.add')->with(compact('clients','countries','products','warehouses','marketers'));
     }
 
     public function store(CreateOrderRequest $request){
