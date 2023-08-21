@@ -10,12 +10,15 @@ use App\Orders\Filters\AreaFilter;
 use App\Orders\Filters\DateFromFilter;
 use App\Orders\Filters\DateToFilter;
 use App\Orders\Filters\MarketerFilter;
+use App\Orders\Filters\ShippingCompanyFilter;
+use App\Orders\Filters\WaybillFilter;
 
 use App\Models\Client;
 use App\Models\Status;
 use App\Models\City;
 use App\Models\Area;
 use App\Models\Marketer;
+use App\Models\ShippingCompany;
 
 class OrdersFilters
 {
@@ -29,6 +32,8 @@ class OrdersFilters
         'date_from' => DateFromFilter::class,
         'date_to'   => DateToFilter::class,
         'marketer_id'   => MarketerFilter::class,
+        'shipping_company_id'   => ShippingCompanyFilter::class,
+        'waybill'   => WaybillFilter::class,
     ];
 
 
@@ -69,6 +74,10 @@ class OrdersFilters
             }
             if($key == 'marketer_id'){
                 $filters['marketer_id'] = Marketer::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'shipping_company_id'){
+                $filters['shipping_company_id'] = ShippingCompany::findOrfail($value)->name;
                 continue;
             }
         }

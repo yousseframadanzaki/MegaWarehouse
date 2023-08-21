@@ -155,6 +155,21 @@
                 
             </div>
             <div class="row mt-4">
+                <h3>بيانات المسوق</h3>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> المسوق :</label>
+                    @isset($order->marketer->name)
+                        <label>{{$order->marketer->name}}</label>
+                    @endisset
+                </div>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> اجمالى عمولة المسوق :</label>
+                    @isset($order->marketer->name)
+                        <label>{{$order->total_marketer_commission}}</label>
+                    @endisset
+                </div>
+            </div>
+            <div class="row mt-4">
                 <h3>المنتجات</h3>
                 <table class="table table-hover" id="variants_table">
                     <thead>
@@ -163,6 +178,7 @@
                             <th>اسم المتغير</th>
                             <th>المخزن</th>
                             <th>السعر</th>
+                            <th>عمولة المسوق</th>
                             <th>الكمية</th>
                             <th>الاجمالى</th>
                         </tr>
@@ -174,6 +190,7 @@
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->pivot->warehouse->name}}</td>
                                 <td>{{$item->price}}</td>
+                                <td>{{$item->product->marketer_commission}}</td>
                                 <td>{{$item->pivot->quantity}}</td>
                                 <td>{{$item->pivot->quantity * $item->price}}</td>
                             </tr>

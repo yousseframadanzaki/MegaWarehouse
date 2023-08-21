@@ -148,6 +148,22 @@
                                 value="{{ Request::get('date_to') }}">
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label class="form-label">شركة الشحن</label>
+                            <select class="form-select product_info" name="shipping_company_id">
+                                <option value="">اختار شركة الشحن</option>
+                                @foreach ($shipping_companies as $shipping_company)
+                                    <option  @if(Request::get('shipping_company_id') == $shipping_company->id) selected @endif value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">رقم البوليصة</label>
+                            <input class="form-control" name="waybill" id=""
+                                value="{{ Request::get('waybill') }}">
+                        </div>
+                    </div>
                     <div class="d-flex mt-3 justify-content-end">
                         <button type="submit" class="btn btn-primary">
                             بحث
