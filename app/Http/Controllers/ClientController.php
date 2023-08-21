@@ -23,14 +23,14 @@ class ClientController extends Controller
 
     public function all()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $clients = $this->ClientCrudService->GetCompanyClients($company_id);
         return view('Dashboard.Clients.show_all')->with('clients',$clients);
     }
 
     public function create()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $client_groups = $this->CommonDataService->GetCompanyClientGroups($company_id);
         $countries = $this->CommonDataService->GetCountries();
         return view('Dashboard.Clients.add')->with(['client_groups' => $client_groups, 'countries' => $countries]);
@@ -38,7 +38,7 @@ class ClientController extends Controller
 
     public function store(CreateClientRequest $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $client = $this->ClientCrudService->CreateClient($company_id,$request->validated());
         if($client){
             return back()->with('success','client_created_success');
@@ -48,7 +48,7 @@ class ClientController extends Controller
 
     public function edit($client_id)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $client = $this->ClientCrudService->GetClient($client_id);
         $client_groups = $this->CommonDataService->GetCompanyClientGroups($company_id);
 

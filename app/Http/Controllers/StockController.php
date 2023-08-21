@@ -19,7 +19,7 @@ class StockController extends Controller
     ){}
 
     public function all(StockFilters $filters) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $stock = $this->StockOperationService->GetCompanyStock($company_id,$filters);
 
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
@@ -41,7 +41,7 @@ class StockController extends Controller
     }
 
     public function create() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         $products   = $this->CommonDataService->GetCompanyProducts($company_id);
         return view('Dashboard.Stock.add')->with(compact('warehouses','products'));

@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Marketers\Interfaces\MarketerCrudServiceInterface;
+use App\Marketers\Interfaces\MarketerCrudRepositoryInterface;
+use App\Marketers\Services\MarketerCrudService;
+use App\Marketers\Repositories\MarketerCrudRepository;
+
 class MarketerServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +16,8 @@ class MarketerServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(MarketerCrudRepositoryInterface::class,MarketerCrudRepository::class);
+        $this->app->bind(MarketerCrudServiceInterface::class,MarketerCrudService::class);
     }
 
     /**

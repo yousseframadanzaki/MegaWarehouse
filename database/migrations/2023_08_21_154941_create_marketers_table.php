@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('marketers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('page_name');
+            $table->string('phone_number');
+            $table->json('links');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->timestamps();
         });
     }

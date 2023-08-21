@@ -33,7 +33,7 @@ class ProductController extends Controller
     }
 
     public function all(ProductFilters $filters) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $products = $this->ProductCrudService->GetCompanyProducts($company_id,$filters);
 
         $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
@@ -53,7 +53,7 @@ class ProductController extends Controller
     }
 
     public function create() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
         $categories = $this->CommonDataService->GetCompanyCategories($company_id);
         $brands = $this->CommonDataService->GetCompanyBrands($company_id);
@@ -68,7 +68,7 @@ class ProductController extends Controller
     public function store(CreateProductRequest $request) {
         $data = $request->all();
         
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
 
         $product = $this->ProductCrudService->AddProduct($company_id,$data);
 
@@ -83,7 +83,7 @@ class ProductController extends Controller
 
     public function edit($product_id) {
         $product = $this->ProductCrudService->GetProduct($product_id);
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
         $categories = $this->CommonDataService->GetCompanyCategories($company_id);
         $brands = $this->CommonDataService->GetCompanyBrands($company_id);

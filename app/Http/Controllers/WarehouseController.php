@@ -21,7 +21,7 @@ class WarehouseController extends Controller
 
     public function all()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $warehouses = $this->WarehouseCrudService->GetCompanyWarehouses($company_id);
         return view('Dashboard.Warehouses.show_all')->with('warehouses',$warehouses);
     }
@@ -33,7 +33,7 @@ class WarehouseController extends Controller
 
     public function store(CreateWarehouseRequest $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $warehouse = $this->WarehouseCrudService->CreateWarehouse($company_id,$request->validated());
         if(!$warehouse){
             return back()->with('error','warehouse_created_error');

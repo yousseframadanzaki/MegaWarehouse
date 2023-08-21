@@ -30,7 +30,7 @@ class UsersController extends Controller
     }
 
     public function create() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $roles = $this->CommonDataService->GetCompanyRoles($company_id);
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         // dd($roles);
@@ -38,7 +38,7 @@ class UsersController extends Controller
     }
     
     public function store(CreateUserRequest $request) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $user = $this->UserCrudService->CreateUser($request->validated(),$company_id);
         if($user){
             return back()->with('success','user_created_success');
@@ -47,13 +47,13 @@ class UsersController extends Controller
     }
 
     public function all() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $users = $this->UserCrudService->GetAllUsers($company_id);
         return view('Dashboard.Users.show_all')->with('users',$users);
     }
 
     public function activate($user_id) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         if(!$this->UserActionsService->Activate($company_id,$user_id)){
             return back()->with('error','edit_userd_error');
         }
@@ -61,7 +61,7 @@ class UsersController extends Controller
     }
 
     public function deactivate($user_id) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         if(!$this->UserActionsService->Deactivate($company_id,$user_id)){
             return back()->with('error','user_deactivated_error');
         }
@@ -69,7 +69,7 @@ class UsersController extends Controller
     }
 
     public function edit($user_id) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $user = $this->UserCrudService->GetUser($company_id,$user_id);
         if(!$user){
             return view('404');

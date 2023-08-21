@@ -22,7 +22,7 @@ class ClientGroupController extends Controller
 
     public function all()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $client_groups = $this->ClientGroupCrudService->GetCompanyClientGroups($company_id);
         return view('Dashboard.ClientGroups.show_all')->with('client_groups',$client_groups);
     }
@@ -35,7 +35,7 @@ class ClientGroupController extends Controller
     
     public function store(CreateClientGroupRequest $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $client_group = $this->ClientGroupCrudService->CreateClientGroup($company_id,$request->validated());
         if($client_group){
             return back()->with('success','client_group_created_success');

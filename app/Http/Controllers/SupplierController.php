@@ -17,7 +17,7 @@ class SupplierController extends Controller
     }
 
     public function all() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $suppliers = $this->SupplierCrudService->GetCompanySuppliers($company_id);
         return view('Dashboard.Suppliers.show_all')->with('suppliers',$suppliers);
     }
@@ -27,7 +27,7 @@ class SupplierController extends Controller
     }
 
     public function store(CreateSupplierRequest $request) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $supplier = $this->SupplierCrudService->CreateSupplier($company_id,$request->validated());
         if(!$supplier){
             return back()->with('error','supplier_created_error');

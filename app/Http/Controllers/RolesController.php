@@ -18,7 +18,7 @@ class RolesController extends Controller
     }
 
     public function all() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $roles = $this->RoleCrudService->GetCompanyRoles($company_id);
         return view('Dashboard.Roles.show_all')->with('roles',$roles);
     }
@@ -29,7 +29,7 @@ class RolesController extends Controller
     }
 
     public function store(CreateRoleRequest $request) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $role = $this->RoleCrudService->CreateRole($company_id,$request->validated());
         if(!$role){
             return back()->with('error','role_created_error');

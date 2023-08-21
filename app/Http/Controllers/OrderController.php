@@ -69,7 +69,7 @@ class OrderController extends Controller
 
         $data = $request->all();
         $data['admin_id'] = auth()->user()->id;
-        $data['company_id'] = auth()->user()->company_id;
+        $data['company_id'] = $this->company_id();
         // dd($data);
         if($this->OrdersService->ChangeOrderStatus($order_id,$data)){
             return redirect()->back()->with('success','order_status_change_success');
@@ -81,7 +81,7 @@ class OrderController extends Controller
     {
         $data = $request->except('_token');
         $data['admin_id'] = auth()->user()->id;
-        $data['company_id'] = auth()->user()->company_id;
+        $data['company_id'] = $this->company_id();
 
         if($this->OrdersService->ChangeOrderStatusBulk($data)){
             return redirect()->back()->with('success','order_status_change_bulk_success');

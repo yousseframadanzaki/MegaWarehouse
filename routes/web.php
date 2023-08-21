@@ -19,6 +19,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingCompanyController;
+use App\Http\Controllers\MarketerController;
 
 
 Route::get('/',function (){
@@ -208,6 +209,22 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/client_groups/{client_group_id}/edit', [ClientGroupController::class,'update'])
     ->name('update_client_group')
     ->can('update_client_group',['App\Models\ClientGroup','client_group_id']);
+
+
+    Route::get('/marketers', [MarketerController::class,'all'])
+    ->name('all_marketers');
+
+    Route::get('/marketers/add', [MarketerController::class,'create'])
+    ->name('add_marketer');
+
+    Route::post('/marketers/add', [MarketerController::class,'store'])
+    ->name('store_marketer');
+
+    Route::get('/marketers/{maeketer_id}/edit', [MarketerController::class,'edit'])
+    ->name('edit_marketer');
+
+    Route::post('/marketers/{maeketer_id}/edit', [MarketerController::class,'update'])
+    ->name('update_marketer');
 
 
     Route::get('/clients', [ClientController::class,'all'])

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Marketer extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'page_name',
+        'phone_number',
+        'links',
+        'company_id',
+    ];
 }

@@ -18,7 +18,7 @@ class BrandController extends Controller
     }
 
     public function all() {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $brands = $this->BrandCrudService->GetCompanyBrands($company_id);
         return view('Dashboard.Brands.show_all')->with('brands',$brands);
     }
@@ -28,7 +28,7 @@ class BrandController extends Controller
     }
 
     public function store(CreateBrandRequest $request) {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $brand = $this->BrandCrudService->CreateBrand($company_id,$request->validated());
         if($brand){
             return back()->with('success','brand_created_success');

@@ -30,7 +30,7 @@ class CategoryController extends Controller
      */
     public function all()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $categories = $this->CategoryCrudService->GetCompanyCategories($company_id);
         return view('Dashboard.Categories.show_all')->with('categories',$categories);
     }
@@ -40,7 +40,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $categories = $this->CommonDataService->GetCompanyCategories($company_id);
         return view('Dashboard.Categories.add')->with('categories',$categories);
     }
@@ -50,7 +50,7 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $category = $this->CategoryCrudService->CreateCategory($company_id,$request->validated());
         if($category){
             return back()->with('success','category_created_success');
@@ -60,7 +60,7 @@ class CategoryController extends Controller
 
     public function edit($category_id)
     {
-        $company_id = auth()->user()->company_id;
+        $company_id = $this->company_id();
         $category = $this->CategoryCrudService->GetCategory($category_id);
         $categories = $this->CommonDataService->GetCompanyCategories($company_id);
         return view('Dashboard.Categories.edit')->with(['category'=>$category,'categories'=>$categories]);
