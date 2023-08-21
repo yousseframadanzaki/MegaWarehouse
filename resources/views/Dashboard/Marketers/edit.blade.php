@@ -5,31 +5,41 @@
         <div class="row">
                 <ul class="breadcrumb">
                     <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-                    <li><a href="{{ route('all_clients') }}">العملاء</a></li>
-                    <li><a class="link-dark" href="{{ route('edit_client',$client->id) }}">تعديل عميل </a></li>
+                    <li><a href="{{ route('all_marketers') }}">المسوقين</a></li>
+                    <li><a class="link-dark" href="{{ route('edit_marketer',$marketer->id) }}">تعديل مسوق </a></li>
                 </ul>
         </div>
 
-        <form class="row  needs-validation" novalidate action="{{ route('update_client',$client->id) }}" method="POST">
+        <form class="row  needs-validation" novalidate action="{{ route('update_marketer',$marketer->id) }}" method="POST">
             @csrf
             <div class="card p-5 shadow-sm">
-                <h1 class="text-center">تعديل عميل </h1>
+                <h1 class="text-center">تعديل مسوق </h1>
                 <div class="row mb-3 mt-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">الاسم <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                            value="{{ $client->name }}">
+                            value="{{ $marketer->name }}">
                         @error('name')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
                             </div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">رقم التليفون <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('phone_1') is-invalid @enderror" name="phone_1"
-                            value="{{ $client->phone_1 }}">
-                        @error('phone_1')
+                        <input type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number"
+                            value="{{ $marketer->phone_number }}">
+                        @error('phone_number')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"> اسم الصفحة<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('page_name') is-invalid @enderror" name="page_name"
+                            value="{{ $marketer->page_name }}">
+                        @error('page_name')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
                             </div>
@@ -37,106 +47,27 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">رقم التليفون 2 </label>
-                        <input type="text" class="form-control @error('phone_2') is-invalid @enderror" name="phone_2"
-                            value="{{ $client->phone_2 }}">
-                        @error('phone_2')
-                            <div class="invalid-feedback">
-                                {{ __($message) }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">عنوان <span class="text-danger">*</span><i class="bi bi-map-marker">
-                            </i></label>
-                        <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
-                            value="{{ $client->address }}">
-                        @error('address')
-                            <div class="invalid-feedback">
-                                {{ __($message) }}
-                            </div>
-                        @enderror
-                    </div>
+                    
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label class="form-label"> الدولة <span class="text-danger">*</span></label>
-                        <select id="country-select" class="form-select @error('country_id') is-invalid @enderror" aria-label="Default select example" name="country_id">
-                            <option value="">اختار</option>
-                            @foreach ($countries as $id => $name)
-                                <option @if($client->country_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                        @error('country_id')
-                            <div class="invalid-feedback">
-                                {{ __($message) }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">المدينة <span class="text-danger">*</span></label>
-                        <select id="city-select" class="form-select @error('city_id') is-invalid @enderror" aria-label="Default select example" name="city_id">
-                            
-                            @foreach ($cities as $id => $name)
-                                <option @if($client->city_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                        @error('city_id')
-                            <div class="invalid-feedback">
-                                {{ __($message) }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label ">المنطقة <span class="text-danger">*</span></label>
-                        <select id="area-select" class="form-select @error('area_id') is-invalid @enderror" aria-label="Default select example" name="area_id">
-                            @foreach ($areas as $id => $name)
-                                <option @if($client->area_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                        @error('area_id')
-                            <div class="invalid-feedback">
-                                {{ __($message) }}
-                            </div>
-                        @enderror
-                    </div>
-
-                </div>
+                
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                         <input type="text" class="form-control" name="links[facebook]"
-                            value="{{ json_decode($client->links)->facebook }}">
+                            value="{{ json_decode($marketer->links)->facebook }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">لينك انستجرام <i class="bi bi-instagram"> </i></label>
                         <input type="text" class="form-control" name="links[instagram]"
-                            value="{{ json_decode($client->links)->instagram }}">
+                            value="{{ json_decode($marketer->links)->instagram }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
-                        <input type="text" class="form-control" name="links[tiktok]" value="{{ json_decode($client->links)->tiktok }}">
+                        <input type="text" class="form-control" name="links[tiktok]" value="{{ json_decode($marketer->links)->tiktok }}">
                     </div>
                 </div>
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <label class="form-label">مجموعة العملاء</label>
-                        <select class="form-select" aria-label="Default select example" name="client_group_id">
-                            @foreach ($client_groups as $id => $name)
-                                <option @if($client->client_group_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                        @error('client_group_id')
-                            <div class="invalid-feedback">
-                                {{ __($message) }}
-                            </div>
-                        @enderror
-                    </div>
-                    <p class="mt-3"><span class="text-danger">*</span> حقل اجبارى</p>
-                </div>
-                <button class="btn btn-lg btn-primary mt-3 shadow-sm">تعديل عميل <i
+                
+                <button class="btn btn-lg btn-primary mt-3 shadow-sm">تعديل مسوق <i
                         class="bi bi-person-fill-add"></i></button>
             </div>
         </form>
