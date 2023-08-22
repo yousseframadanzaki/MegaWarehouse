@@ -380,10 +380,8 @@
                 url: `/api/clients/${phone}`,
                 method: "GET",
                 dataType: "text",
-                error: function() {
-                    remove_data();
-                },
             }).then(async function(response, textStatus, xhr) {
+                // console.log(xhr.status_code);
                 remove_data();
                 data = JSON.parse(response);
 
@@ -399,8 +397,14 @@
                 });
 
                 await add_data(data);
+            },
+            async function(response, textStatus, xhr) {
+                if(textStatus === "error"){
+                    $("#order_form #client_id").remove();
+                }
             })
         })
+
         function add_data(data) {
             $("#name").val(data.client.name);
             $("#phone_2").val(data.client.phone_2);

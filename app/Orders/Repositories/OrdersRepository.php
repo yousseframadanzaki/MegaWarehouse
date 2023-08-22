@@ -63,6 +63,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'order_status',
             'admin',
             'items',
+            'items.product',
             'client',
             'city',
             'area',

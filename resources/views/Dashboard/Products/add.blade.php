@@ -14,9 +14,7 @@
             width: 20px;
             height: 20px;
          }
-         .invalid-feedback{
-            display: block !important;
-         }
+        
     </style>
 
     <div class="p-3">
@@ -44,19 +42,21 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 @error('product_info.brand_id') has-error @enderror">
                             <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                            <select class="form-select product_info" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
+                            <select class="form-select product_info @error('product_info.brand_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار الماركة</option>
                                 @foreach ($data['brands'] as $id => $name)
                                     <option @if ($id == old('product_info.brand_id')) selected @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
 
-                            <div class="invalid-feedback brand_id">
-
-                            </div>
-
+                            @error('product_info.brand_id')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
+                            
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
@@ -107,13 +107,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-6 @error('product_info.category_id') has-error @enderror">
                             <label class="form-label">تصنيف<span class="text-danger">*</span></label>
-                            <select class="form-select product_info" aria-label="Default  select example" name="product_info[category_id]"
+                            <select class="form-select product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]"
                                 id="product_info.category_id">
                                 <option value="">اختار تصنيف </option>
                                 @foreach ($data['categories'] as $cat)
-                                    <option @if ($id == old('product_info.category_id')) selected @endif  value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
+                                    <option @if ($cat->id == old('product_info.category_id')) selected @endif  value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                                 @endforeach
                             </select>
                             @error('product_info.category_id')
@@ -122,12 +122,13 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-6">
+                        {{-- @dd(old('product_info.supplier_id')) --}}
+                        <div class="col-md-6 @error('product_info.supplier_id') has-error @enderror">
                             <label class="form-label">المورد <span class="text-danger">*</span></label>
-                            <select class="form-select product_info  @error('product_info.supplier_id') is-inavlid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
+                            <select class="form-select product_info  @error('product_info.supplier_id') is-invalid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
                                 <option value="">اختار المورد</option>
                                 @foreach ($data['suppliers'] as $id => $name)
-                                    <option @if ($id == old('product_info.supplier_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
+                                    <option @if ($id == old('product_info.supplier_id')) selected="selected"  @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                             @error('product_info.supplier_id')

@@ -180,6 +180,7 @@
                             <th>السعر</th>
                             <th>عمولة المسوق</th>
                             <th>الكمية</th>
+                            <th>اجمالى العمولة</th>
                             <th>الاجمالى</th>
                         </tr>
                     </thead>
@@ -192,6 +193,7 @@
                                 <td>{{$item->price}}</td>
                                 <td>{{$item->product->marketer_commission}}</td>
                                 <td>{{$item->pivot->quantity}}</td>
+                                <td>{{$item->pivot->quantity * $item->product->marketer_commission}}</td>
                                 <td>{{$item->pivot->quantity * $item->price}}</td>
                             </tr>
                         @endforeach

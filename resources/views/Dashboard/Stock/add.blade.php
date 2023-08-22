@@ -14,13 +14,13 @@
             <form action="{{route('store_stock')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 @error('warehouse_id') has-error @enderror">
                         <label class="form-label">المخزن<span class="text-danger">*</span></label>
                         <select class="form-select @error('warehouse_id') is-invalid @enderror product_info" aria-label="Default  select example" name="warehouse_id"
                             id="warehouse_id">
                             <option value="">اختار المخزن </option>
                             @foreach ($warehouses as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                                <option @if ($id == old('warehouse_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
                             @endforeach
                         </select>
                         @error('warehouse_id')
@@ -30,7 +30,7 @@
                         @enderror
                         
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 @error('product_variants') has-error @enderror">
                         <label class="form-label">المنتج<span class="text-danger">*</span></label>
                         <select class="form-select @error('product_variants') is-invalid @enderror product_info" aria-label="Default  select example"
                             id="product_id">
@@ -47,16 +47,13 @@
                         
                     </div>
                     
-                    <div class="col-md-4">
+                    <div class="col-md-4 @error('type') has-error @enderror">
                         <label class="form-label">نوع العملية<span class="text-danger">*</span></label>
                         <select class="form-select @error('type') is-invalid @enderror product_info" aria-label="Default  select example" name="type"
                             id="type_id">
                             <option value="">اختار نوع العملية </option>
-                                <option value="move">نقل لمخزن اخر</option>
-                                <option value="buy">شراء</option>
-                                {{-- <option value="sell">بيع</option>
-                                <option value="returned_orders">مرتجعات الاوردرات</option>
-                                <option value="returned_suppliers">مرتجعات للموردين</option> --}}
+                                <option value="move" @if ('move' == old('type')) selected  @endif>نقل لمخزن اخر</option>
+                                <option value="buy" @if ('buy' == old('type')) selected  @endif>شراء</option>
                         </select>
                         @error('type')
                         <div class="invalid-feedback ">
@@ -85,14 +82,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4" >
+                        <div class="col-md-4  @error('warehouse_to_id') has-error @enderror" >
                             <label class="form-label" id="warehouse_to_label" 
-                            @if (!$errors->has('warehouse_to_id'))
+                            @if (!$errors->has('warehouse_to_id') && 'move' !== old('type'))
                                 style="display:none"
                             @endif>الى مخزن<span class="text-danger">*</span></label>
                             <select   name="warehouse_to_id"
                                 id="warehouse_to_id" 
-                                @if ($errors->has('warehouse_to_id'))
+                                @if ($errors->has('warehouse_to_id') || 'move' === old('type'))
                                     
                                     class="form-select is-invalid product_info"
                                 @else
@@ -102,7 +99,7 @@
                                 >
                                 <option value="">اختار المخزن </option>
                                 @foreach ($warehouses as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
+                                    <option @if ($id == old('warehouse_to_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                             @error('warehouse_to_id')
