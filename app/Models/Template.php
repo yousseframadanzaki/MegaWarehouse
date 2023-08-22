@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
-class Status extends Model
+
+class Template extends Model
 {
     use HasFactory;
-    use EagerLoadPivotTrait;
 }

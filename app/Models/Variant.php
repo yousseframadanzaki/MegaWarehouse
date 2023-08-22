@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 class Variant extends Model
 {
     use HasFactory;
-
+    use EagerLoadPivotTrait;
     protected $fillable = [
         'name',
         'quantity',

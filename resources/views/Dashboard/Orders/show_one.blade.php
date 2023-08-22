@@ -94,11 +94,15 @@
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold">رقم التليفون :</label>
-                    <label>{{$order->phone_1}}</label>
+                    <label>{{$order->phone_1}} <i class="bi bi-whatsapp"></i></label>
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> رقم تليفون اخر :</label>
-                    <label>{{$order->phone_2}}</label>
+                    <label>
+                        @isset($order->phone_2)
+                            {{$order->phone_2}} <i class="bi bi-whatsapp"></i>
+                        @endisset
+                    </label>
                 </div>
             </div>
             <div class="row mt-2">
@@ -130,7 +134,6 @@
                     <label>{{$order->total}}</label>
                 </div>
             </div>
-
             <div class="row mt-2">
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> الادمن :</label>
@@ -201,15 +204,14 @@
                 </table>
                 
             </div>
-            </div>
-            
+            </div> 
         </div>
         @can('edit_change_status','App\\Models\Order')
-        <div class="row mt-3">
-            <div class="card p-3 shadow-sm d-flex flex-row">
-                <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+            <div class="row mt-3">
+                <div class="card p-3 shadow-sm d-flex flex-row">
+                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+                </div>
             </div>
-        </div>
         @endcan
         <div class="row mt-3">
             <div class="card p-3 shadow-sm">

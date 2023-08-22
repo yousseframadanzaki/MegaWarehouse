@@ -61,9 +61,12 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function get_order_by_id($order_id){
         return Order::with([
             'order_status',
+            'order_status.pivot.admin',
+            'order_status.pivot.images',
             'admin',
             'items',
             'items.product',
+            'items.pivot.warehouse',
             'client',
             'city',
             'area',
