@@ -56,24 +56,32 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
     Route::get('/shipping_companies', [ShippingCompanyController::class,'all'])
-    ->name('all_shipping_companies');
+    ->name('all_shipping_companies')
+    ->can('view','App\Models\ShippingCompany');
 
     Route::get('/shipping_companies/add', [ShippingCompanyController::class,'create'])
-    ->name('create_shipping_company');
+    ->name('add_shipping_company')
+    ->can('add','App\Models\ShippingCompany');
     
     Route::post('/shipping_companies/add', [ShippingCompanyController::class,'store'])
-    ->name('store_shipping_company');
-    
+    ->name('store_shipping_company')
+    ->can('add','App\Models\ShippingCompany');
+
     Route::get('/shipping_companies/{shipping_company_id}', [ShippingCompanyController::class,'show'])
-    ->name('show_shipping_company');
+    ->name('show_shipping_company')
+    ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
     
     Route::get('/shipping_companies/{shipping_company_id}/sectors', [ShippingCompanyController::class,'show_sectors'])
-    ->name('show_shipping_company_sectors');
+    ->name('show_shipping_company_sectors')
+    ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
     
     Route::get('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'edit'])
-    ->name('edit_shipping_company');
+    ->name('edit_shipping_company')
+    ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
+
     Route::post('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'update'])
-    ->name('update_shipping_company');
+    ->name('update_shipping_company')
+    ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
     
 
     Route::get('/orders', [OrderController::class,'all'])
@@ -212,19 +220,24 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
     Route::get('/marketers', [MarketerController::class,'all'])
-    ->name('all_marketers');
+    ->name('all_marketers')
+    ->can('view','App\Models\Marketer');
 
     Route::get('/marketers/add', [MarketerController::class,'create'])
-    ->name('add_marketer');
+    ->name('add_marketer')
+    ->can('add','App\Models\Marketer');
 
     Route::post('/marketers/add', [MarketerController::class,'store'])
-    ->name('store_marketer');
+    ->name('store_marketer')
+    ->can('add','App\Models\Marketer');
 
     Route::get('/marketers/{maeketer_id}/edit', [MarketerController::class,'edit'])
-    ->name('edit_marketer');
+    ->name('edit_marketer')
+    ->can('update_marketer',['App\Models\Marketer','maeketer_id']);
 
     Route::post('/marketers/{maeketer_id}/edit', [MarketerController::class,'update'])
-    ->name('update_marketer');
+    ->name('update_marketer')
+    ->can('update',['App\Models\Marketer','maeketer_id']);
 
 
     Route::get('/clients', [ClientController::class,'all'])

@@ -337,6 +337,50 @@
                             </li>
                         @endcanany
 
+                        @canany(['view', 'add'], 'App\Models\Marketer')
+                            <li>
+                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                    data-bs-target="#marketers-collapse">
+                                    <i class="bi bi-person-workspace"></i>
+                                    المسوقين
+                                </a>
+                                <div class="collapse" id="marketers-collapse" style="">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                        @can('view', 'App\Models\Marketer')
+                                            <li class="rounded"><a href="{{ route('all_marketers') }}" class="text-white">
+                                                    <i class="bi bi-people"></i> كل المسوقين </a></li>
+                                        @endcan
+
+                                        @can('add', 'App\Models\Marketer')
+                                            <li class="rounded "><a href="{{ route('add_marketer') }}" class="text-white"><i
+                                                        class="bi bi-person-plus"></i> أضافة مسوق جديد</a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
+                        @canany(['view', 'add'], 'App\Models\ShippingCompany')
+                            <li>
+                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                    data-bs-target="#shipping_companies-collapse">
+                                    <i class="bi bi-truck"></i>
+                                    شركات الشحن
+                                </a>
+                                <div class="collapse" id="shipping_companies-collapse" style="">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                        @can('view', 'App\Models\ShippingCompany')
+                                            <li class="rounded"><a href="{{ route('all_shipping_companies') }}" class="text-white">
+                                                    <i class="bi bi-truck"></i> كل شركات الشحن </a></li>
+                                        @endcan
+
+                                        @can('add', 'App\Models\ShippingCompany')
+                                            <li class="rounded "><a href="{{ route('add_shipping_company') }}" class="text-white"><i
+                                                        class="bi bi-plus"></i> أضافة شركة شحن</a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
 
                         @canany(['view', 'add'], 'App\Models\Warehouse')
                             <li>

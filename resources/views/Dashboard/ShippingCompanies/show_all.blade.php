@@ -17,9 +17,13 @@
             <tbody>
                 @foreach ($shipping_companies as $shipping_company)
                 <tr>
-                    <td>{{$shipping_company->name}}</td>
+                    <td><a @can('edit', $shipping_company) href="{{route('show_shipping_company',$shipping_company->id)}}" @endcan >{{$shipping_company->name}}</a></td>
                     <td>{{$shipping_company->url}}</td>
-                    <td><a href="{{route('edit_shipping_company',$shipping_company->id)}}"><i class="bi bi-pencil-square"></i></a></td>
+                    <td>
+                        @can('edit', $shipping_company)
+                            <a href="{{route('edit_shipping_company',$shipping_company->id)}}"><i class="bi bi-pencil-square"></i></a>
+                        @endcan
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

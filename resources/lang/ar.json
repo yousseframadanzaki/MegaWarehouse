@@ -44,6 +44,8 @@
     "Clients":"العملاء",
     "Orders":"الاوردرات",
     "Products":"المنتجات",
+    "ShippingCompanies":"شركات الشحن",
+    "Marketers":"المسوقين",
     "role_name_required":"برجاء ادخال اسم ادارة",
     "role_permissions_required":"برجاء اختيار الصلاحيات",
     "role_created_error":"حدث خطاء أثناء أضافة الادارة",
