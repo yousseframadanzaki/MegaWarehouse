@@ -28,5 +28,8 @@ class TemplateRepository implements TemplateRepositoryInterface{
     {
         return Template::where(['id'=>$template_id])->update($data);
     }
-
+    
+    public function get_templates_by_type($type,$company_id){
+        return Template::where(['company_id'=>$company_id,'type'=>$type])->get();
+    }
 }

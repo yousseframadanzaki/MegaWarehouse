@@ -10,4 +10,7 @@ interface TemplateServiceInterface{
     public function GetCompanyTemplates($company_id);
     
     public function UpdateTemplate($template_id,$data);
+
+    public function GetTextFromOrdersTemplates($order);
+
 }

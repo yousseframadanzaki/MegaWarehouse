@@ -131,3 +131,23 @@ ul.breadcrumb {
 .has-error .select2-selection {
   border-color: var(--bs-form-invalid-border-color) !important;
 }
+
+.template_card{
+  padding: 15px;
+  background-color: #d3e7ff;
+  color: black;
+  font-weight: bold;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.template_card span{
+  width: 80%;
+}
+.template_card i{
+  font-size: 30px;
+  color: #25D366;
+}

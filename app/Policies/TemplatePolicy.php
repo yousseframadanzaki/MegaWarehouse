@@ -45,4 +45,11 @@ class TemplatePolicy
         }
         return true;
     }
+    public function send_whatsapp(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','send_whatsapp')){
+            return false;
+        }
+        return true;
+    }
 }

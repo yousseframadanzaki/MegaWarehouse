@@ -2,7 +2,12 @@
 
 @section('content')
 
-
+<style>
+    tr.current_status{
+        background-color: var(--bs-primary) !important;
+        color: white !important;
+    }
+</style>
 
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -71,12 +76,28 @@
     </div>
 </div>
 
-<style>
-    tr.current_status{
-        background-color: var(--bs-primary) !important;
-        color: white !important;
-    }
-</style>
+<!-- Modal -->
+<div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    @foreach ($templates as $template)
+                        <div class="row">
+                            <div class="card template_card">
+                                <span>{{$template}}</span>
+                                <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?text=@urlencode($template)"><i class="bi bi-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="p-3">
     <div class="row">
         <ul class="breadcrumb">
@@ -94,13 +115,13 @@
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold">رقم التليفون :</label>
-                    <label>{{$order->phone_1}} <i class="bi bi-whatsapp"></i></label>
+                    <label>{{$order->phone_1}} @can('send_whatsapp','App\Models\Template') <i data-phone="{{$order->phone_1}}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp"></i> @endcan</label>
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> رقم تليفون اخر :</label>
                     <label>
                         @isset($order->phone_2)
-                            {{$order->phone_2}} <i class="bi bi-whatsapp"></i>
+                            {{$order->phone_2}}@can('send_whatsapp','App\Models\Template') <i data-phone="{{$order->phone_2}}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp">@endcan</i>
                         @endisset
                     </label>
                 </div>
@@ -331,5 +352,18 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $("#shipping_company_select").fadeIn();
             }
         })
+
+        var whatsappModal = document.getElementById('whatsappModal');
+
+        whatsappModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var phone = '2'+button.getAttribute('data-phone');
+            $('.whatsapp_anchor').each(function(i, obj) {
+                var href = new URL($(obj).attr('href'));
+                href.searchParams.set('phone',phone);
+                $(obj).attr('href',href.toString());
+            });
+        });
+
     </script>
 @endsection

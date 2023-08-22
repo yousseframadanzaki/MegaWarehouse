@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
+use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
 use App\Orders\Filters\OrdersFilters;
 
@@ -13,13 +14,16 @@ class OrderController extends Controller
 {
     private CommonDataServiceInterface $CommonDataService;
     private OrdersServiceInterface $OrdersService;
+    private TemplateServiceInterface $TemplateService;
     public function __construct(
         CommonDataServiceInterface $CommonDataService,
-        OrdersServiceInterface $OrdersService
+        OrdersServiceInterface $OrdersService,
+        TemplateServiceInterface $TemplateService,
     )
     {
         $this->CommonDataService = $CommonDataService;
         $this->OrdersService = $OrdersService;
+        $this->TemplateService = $TemplateService;
     }
 
     public function all(OrdersFilters $filters) {
@@ -44,9 +48,10 @@ class OrderController extends Controller
 
     public function show($order_id) {
         $order = $this->OrdersService->GetOrder($order_id);
+        $templates = $this->TemplateService->GetTextFromOrdersTemplates($order);
         $statuses = $this->CommonDataService->GetCompanyStatuses();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
-        return view('Dashboard.Orders.show_one',compact('order','statuses','shipping_companies'));
+        return view('Dashboard.Orders.show_one',compact('order','statuses','shipping_companies','templates'));
     }
 
     public function create() {

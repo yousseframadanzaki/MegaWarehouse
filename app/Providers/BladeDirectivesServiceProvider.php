@@ -24,5 +24,8 @@ class BladeDirectivesServiceProvider extends ServiceProvider
         Blade::directive('date_format', function ($date) {
             return "<?php echo ($date)->format('d-m-Y').'  '.($date)->format('g:i A'); ?>";
         });
+        Blade::directive('urlencode', function ($text) {
+            return "<?php echo urlencode($text); ?>";
+        });
     }
 }

@@ -33,5 +33,39 @@ class TemplateService implements TemplateServiceInterface{
         return $this->template_repository->update_template_by_id($template_id,$data);
     }
     
+    public function GetTextFromOrdersTemplates($order){
+        $templates = $this->template_repository->get_templates_by_type('orders',$order->company_id);
+        $find = [
+            '#order_id',
+            '#waybill',
+            '#client_name',
+            '#client_phone_1',
+            '#client_phone_2',
+            '#address',
+            '#city',
+            '#area',
+            '#total',
+            '#status',
+        ];
+
+        $replace = [
+            $order->order_code,
+            $order->waybill,
+            $order->name,
+            $order->phone_1,
+            $order->phone_2,
+            $order->address,
+            $order->city->name,
+            $order->area->name,
+            $order->total,
+            $order->status->name
+        ];
+        $texts = array();
+
+        foreach ($templates as $template) {
+            $texts[] = str_replace($find,$replace,$template->text);
+        }
+        return $texts;
+    }
 
 }
