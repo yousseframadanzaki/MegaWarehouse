@@ -19,6 +19,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingCompanyController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
 
 
@@ -54,6 +55,30 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
+
+
+    Route::get('/templates', [TemplateController::class,'all'])
+    ->name('all_templates')
+    ->can('view','App\Models\Template');
+
+    Route::get('/templates/add', [TemplateController::class,'create'])
+    ->name('add_template')
+    ->can('add','App\Models\Template');
+
+    Route::post('/templates/add', [TemplateController::class,'store'])
+    ->name('store_template')
+    ->can('add','App\Models\Template');
+
+    Route::get('/templates/{template_id}/edit', [TemplateController::class,'edit'])
+    ->name('edit_template')
+    ->can('update',['App\Models\Template','template_id']);
+
+    Route::post('/templates/{template_id}/edit', [TemplateController::class,'update'])
+    ->name('edit_template')
+    ->can('update',['App\Models\Template','template_id']);
+
+
+
 
     Route::get('/shipping_companies', [ShippingCompanyController::class,'all'])
     ->name('all_shipping_companies')

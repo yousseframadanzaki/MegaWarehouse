@@ -277,6 +277,29 @@
                                 </div>
                             </li>
                         @endcanany
+                        @canany(['view', 'add'], 'App\Models\Template')
+                            <li>
+                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                    data-bs-target="#templates-collapse">
+                                    <i class="bi bi-chat-square-text"></i>
+                                    نصوص الرسائل
+                                </a>
+                                <div class="collapse" id="templates-collapse" style="">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+
+                                        @can('view', 'App\Models\Category')
+                                            <li class="rounded"><a href="{{ route('all_templates') }}" class="text-white">
+                                                    <i class="bi bi-chat-square-text"></i> كل نصوص الرسائل </a></li>
+                                        @endcan
+
+                                        @can('add', 'App\Models\Category')
+                                            <li class="rounded "><a href="{{ route('add_template') }}" class="text-white"><i
+                                                        class="bi bi-body-text"></i> أضافة نص جديد</a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
 
                         @canany(['view_clients', 'view_client_group', 'add_client', 'add_client_group'],
                             'App\models\client')

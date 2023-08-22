@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Template extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'company_id',
+        'text',
+        'type',
+    ];
 }
