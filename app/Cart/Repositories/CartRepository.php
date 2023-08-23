@@ -19,7 +19,7 @@ class CartRepository implements CartRepositoryInterface{
         }
 
         session(['cart' => $cart]);
-        Session::save();
+        // Session::save();
         return session('cart',array());
     }
 
@@ -36,7 +36,7 @@ class CartRepository implements CartRepositoryInterface{
         }
 
         session(['cart' => $cart]);
-        Session::save();
+        // Session::save();
         return true;
     }
 
