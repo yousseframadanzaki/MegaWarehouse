@@ -106,4 +106,20 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         return $shipment;
     }
 
+    
+    public function Activate($shipping_company_id) {
+        return $this->shipping_company_repository->update_shipping_company_by_id(
+            ['id'=> $shipping_company_id ],
+            ['active' => true]
+        );
+    }
+
+    public function Deactivate($shipping_company_id) {
+        return $this->shipping_company_repository->update_shipping_company_by_id(
+            ['id'=> $shipping_company_id ],
+            ['active' => false]
+        );
+    }
+
+
 }

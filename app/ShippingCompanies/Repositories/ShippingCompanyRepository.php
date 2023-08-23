@@ -20,4 +20,7 @@ class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
     public function update_shipping_company_by_id($id,$data){
         return ShippingCompany::where(['id'=>$id])->update($data);
     }
+
+    
+
 }

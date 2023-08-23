@@ -97,7 +97,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return Status::all();
     }
     public function get_company_shipping_companies($company_id){
-        return ShippingCompany::all();
+        return ShippingCompany::where(['active'=>true])->get();
     }
 
     public function get_company_marketers($company_id){

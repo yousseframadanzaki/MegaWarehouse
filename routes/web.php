@@ -103,9 +103,16 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'edit'])
     ->name('edit_shipping_company')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
-
     Route::post('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'update'])
     ->name('update_shipping_company')
+    ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
+
+    Route::get('/shipping_companies/{shipping_company_id}/activate', [ShippingCompanyController::class,'activate'])
+    ->name('activate_shipping_company')
+    ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
+
+    Route::get('/shipping_companies/{shipping_company_id}/deactivate', [ShippingCompanyController::class,'deactivate'])
+    ->name('deactivate_shipping_company')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
     
 

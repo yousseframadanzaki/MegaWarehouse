@@ -68,4 +68,19 @@ class ShippingCompanyController extends Controller
         return redirect()->back()->with('success','update_shipping_company_success');
     }
 
+    public function activate($shipping_company_id){
+        if($this->ShippingCompanyService->Activate($shipping_company_id)){
+            return redirect()->back()->with('success','activate_shipping_company_success');
+        }
+        return redirect()->back()->with('error','activate_shipping_company_error');
+    }
+
+    public function deactivate($shipping_company_id){
+        if($this->ShippingCompanyService->Deactivate($shipping_company_id)){
+            return redirect()->back()->with('success','deactivate_shipping_company_success');
+        }
+        return redirect()->back()->with('error','deactivate_shipping_company_error');
+    }
+
+
 }
