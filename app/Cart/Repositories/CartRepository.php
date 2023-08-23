@@ -50,14 +50,14 @@ class CartRepository implements CartRepositoryInterface{
         }
 
         session(['cart' => $cart]);
-        Session::save();
+        // Session::save();
         return true;
     }
 
     public function empty_cart()
     {
         session(['cart' => []]);
-        Session::save();
+        // Session::save();
         return true;
     }
 

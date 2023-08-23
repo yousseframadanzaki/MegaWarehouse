@@ -5,7 +5,7 @@
 </div>
 @endif
 
-@if ($message = Session::get('success'))
+@if ($message = session('success'))
 <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
     <strong>{{__($message)}}</strong>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

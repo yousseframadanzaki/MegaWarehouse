@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Variant;
 use App\Models\Status;
 use App\Models\Company;
+use App\Models\Client;
 
 class OrdersRepository implements OrdersRepositoryInterface{
     
@@ -17,7 +18,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['admin_id'] = $data['admin_id'];
         $order_data['order_code'] = $data['order_code'];
         $order_data['status_id'] = '1';
-        $total_data = $this->calculate_total($data['items']);
+        $total_data = $this->calculate_total($data['items'],$order_data['client_id']);
         $order_data['total'] = $total_data['total'];
         $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
         $order_data['marketer_id'] = $data['marketer_id'];
@@ -30,10 +31,11 @@ class OrdersRepository implements OrdersRepositoryInterface{
         return  $order;
     }
 
-    function calculate_total($items) {
+    function calculate_total($items,$client_id) {
         $total = 0;
         $total_marketer_commission = 0;
-
+        // $client = Client::with('client_group')->where('id',$client_id)->first();
+        // $discount = $client->client_group->discount;
         foreach ($items as $id => $item) {
             $variant = Variant::with('product')->find($id);
             $price = $variant->price;
@@ -42,7 +44,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $total += $price * (int)$item['quantity'];
             $total_marketer_commission += $commission * (int)$item['quantity'];
         }
-
+        // echo $total;
+        // $total = $total - ($total*$discount*0.01);
+        // dd($total);
         $data['total'] = $total;
         $data['total_marketer_commission'] = $total_marketer_commission;
         return $data;

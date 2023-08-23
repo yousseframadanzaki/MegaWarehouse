@@ -91,8 +91,8 @@
                     <div class="col-md-4">
                         <label class="form-label ">المنطقة <span class="text-danger">*</span></label>
                         <select id="area-select" class="form-select @error('area_id') is-invalid @enderror" aria-label="Default select example" name="area_id">
-                            @foreach ($areas as $id => $name)
-                                <option @if($client->area_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
+                            @foreach ($areas as $area)
+                                <option @if($client->area_id == $area->id) selected @endif value="{{ $area->id }}">{{ $area->name }}</option>
                             @endforeach
                         </select>
                         @error('area_id')
@@ -124,6 +124,7 @@
                     <div class="col-md-6">
                         <label class="form-label">مجموعة العملاء</label>
                         <select class="form-select" aria-label="Default select example" name="client_group_id">
+                            <option value="">اختار مجموعة عملاء</option>
                             @foreach ($client_groups as $id => $name)
                                 <option @if($client->client_group_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
                             @endforeach
@@ -169,7 +170,7 @@
                 data = JSON.parse(response);
                 $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
                 $.each(data, function (key, value) {
-                    $("#area-select").append('<option value="' + key + '">' + value + '</option>');
+                    $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
             })
         })

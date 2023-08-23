@@ -120,6 +120,7 @@
                     <div class="col-md-6">
                         <label class="form-label">مجموعة العملاء</label>
                         <select class="form-select" aria-label="Default select example" name="client_group_id">
+                            <option value="">اختار مجموعة عملاء</option>
                             @foreach ($client_groups as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
@@ -167,7 +168,7 @@
                 data = JSON.parse(response);
                 $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
                 $.each(data, function (key, value) {
-                    $("#area-select").append('<option value="' + key + '">' + value + '</option>');
+                    $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
             })
         })

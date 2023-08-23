@@ -66,7 +66,7 @@ class ClientController extends Controller
 
     public function update(UpdateClientRequest $request, $client_id)
     {
-        if(!$this->ClientCrudService->UpdateClient($client_id,$request->validated())){
+        if(!$this->ClientCrudService->UpdateClient($client_id,$request->except('_token'))){
             return back()->with('error','client_updated_error');
         }
         return back()->with('success','client_updated_success');

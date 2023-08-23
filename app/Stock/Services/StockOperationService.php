@@ -151,7 +151,7 @@ class StockOperationService implements StockOperationServiceInterface{
     public function CheckItemsAvailable($items) {
         foreach ($items as $variant_id => $item) {
             $stock = (int)$this->stock_operation_repository->get_variant_stock_by_warehouse_id($variant_id,$item['warehouse_id']);
-            if($stock <= (int)$item['quantity']){
+            if($stock < (int)$item['quantity']){
                 return false;
             }
         }

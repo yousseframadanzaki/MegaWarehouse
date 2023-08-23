@@ -23,6 +23,11 @@ class Category extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    public function parents()
+    {
+        return $this->parent()->with('parent');
+    }
+
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id');
@@ -35,7 +40,7 @@ class Category extends Model
 
     public function getParentsNamesAttribute() {
         $parents_names = "";
-        $parent = $this->parent;
+        $parent = $this->parents;
         while(!is_null($parent)) {
             $parents_names .=  $parent->name . " - " ;
             $parent = $parent->parent;

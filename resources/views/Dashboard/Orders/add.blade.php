@@ -167,6 +167,9 @@
         <div class="card p-3">
             <form id="order_form" method="POST" action="{{route('store_order')}}">
                 @csrf
+                @if (old('client_id'))
+                    <input id="client_id" type="hidden" name="client_id" value="{{old('client_id')}}" />
+                @endif
                 <div class="row">
                     <h1 class="text-center">أضافة اوردر جديد</h1>
                     <div class="row">
@@ -223,12 +226,13 @@
                             <input type="text" class="form-control" name="client[links][instagram]"
                                 value="{{ old('client.links.instagram') }}">
                         </div>
+                        <div class="col-md-4 mt-3">
+                            <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
+                            <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
+                        </div>
                     </div>
                     
-                    <div class="col-md-4 mt-3">
-                        <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
-                        <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
-                    </div>
+                    
 
                     <div class="row mt-3">
                         <div class="col-md-4">
