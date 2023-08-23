@@ -49,4 +49,8 @@ class CompanyCrudService implements CompanyCrudServiceInterface{
         return $this->company_crud_repository->update_company_by_id($company_id,$comapny_details);
     }
 
+    public function GetCompanyUsers($company_id){
+        return $this->company_crud_repository->get_company_users($company_id);
+    }
+    
 }

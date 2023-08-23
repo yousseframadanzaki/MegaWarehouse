@@ -7,4 +7,5 @@ interface CompanyCrudServiceInterface{
     public function GetAllCompanies();
     public function GetCompany($company_id);
     public function UpdateCompany($company_id,array $comapny_details);
+    public function GetCompanyUsers($company_id);
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\CompnayController;
 
 /*
     |--------------------------------------------------------------------------
@@ -47,3 +48,5 @@ Route::post('/shipping_status/map', [ShippingStatusController::class,'map'])->na
 Route::post('/status_callback',[OrderController::class,'status_callback'])->name('status_callback');
 
 Route::post('/shipping_area/map', [ShippingAreaController::class,'map'])->name('map_area');
+
+Route::get('/company/{company_id}/users',[CompnayController::class,'get_company_users'])->name('company_users');

@@ -70,4 +70,10 @@ class CompnayController extends Controller
         return back()->with('error','company_deactivated_error');
     }
 
+    public function get_company_users($company_id)
+    {
+        $users = $this->CompanyCrudService->GetCompanyUsers($company_id);
+        return response()->json($users, 200);
+    }
+
 }

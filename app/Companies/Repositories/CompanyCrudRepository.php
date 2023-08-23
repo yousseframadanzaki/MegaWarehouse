@@ -3,6 +3,7 @@
 namespace App\Companies\Repositories;
 
 use App\Models\Company;
+use App\Models\User;
 use App\Companies\Interfaces\CompanyCrudRepositoryInterface;
 
 class CompanyCrudRepository implements CompanyCrudRepositoryInterface{
@@ -29,4 +30,7 @@ class CompanyCrudRepository implements CompanyCrudRepositoryInterface{
         return Company::where('id',$company_id)->update($company_details);
     }
     
+    public function get_company_users($company_id){
+        return User::with('role')->where(['company_id'=>$company_id])->get();
+    }
 }
