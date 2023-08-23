@@ -34,7 +34,7 @@
                         <tr class="">
                             {{-- <td><div class="brand-logo" style="background-image: url('{{asset($brand->logo->path ?? '')}}')"></div></td> --}}
                             <td><img src="{{asset($brand->logo->path ?? '')}}" style="object-fit: contain;height: 3vw;width:3vw" onerror="this.src = 'https://placehold.co/400?text=no+image'" /></td>
-                            <td><a href="{{ route('show_brand',$brand->id) }}">{{ $brand->name }}</a></td>
+                            <td><a href="{{ route('all_products',['brand_id'=>$brand->id]) }}">{{ $brand->name }}</a></td>
                             @can('edit','App\Models\Brand')
                                 <td>
                                     <a  href="{{route('edit_brand',$brand->id)}}" class="link-primary"

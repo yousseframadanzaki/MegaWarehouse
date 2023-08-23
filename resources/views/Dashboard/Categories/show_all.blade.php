@@ -19,7 +19,7 @@
                 <tbody>
                     @forelse ($categories as $category)
                         <tr class="">
-                            <td><a  href="{{route('show_category',$category->id)}}" class="link-primary"
+                            <td><a  href="{{ route('all_products',['category_id'=>$category->id])}}" class="link-primary"
                                 title="مشاهدة منتجات التصنيف">{{ $category->name }}</a></td>
                             <td><a href="{{route('show_category',$category->parent->id ?? '')}}">{{ $category->parent->name ?? '' }}</td>
                             <td>
