@@ -60,6 +60,7 @@
             <div class="col-md-6">
                <label  class="form-label">الادارة</label>
                <select class="form-select" aria-label="Default select example" name="role_id">
+                  <option value="">أختار الاداره</option>
                   @foreach ($roles as $id => $name)
                      <option value="{{$id}}">{{$name}}</option>
                   @endforeach
