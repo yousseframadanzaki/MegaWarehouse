@@ -201,6 +201,7 @@
                             <th>اسم المنتج</th>
                             <th>اسم المتغير</th>
                             <th>المخزن</th>
+                            <th>المورد</th>
                             <th>السعر</th>
                             <th>عمولة المسوق</th>
                             <th>الكمية</th>
@@ -214,6 +215,7 @@
                                 <td>{{$item->product->name}}</td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->pivot->warehouse->name}}</td>
+                                <td>{{$item->product->supplier->name}}</td>
                                 <td>{{$item->price}}</td>
                                 <td>{{$item->product->marketer_commission}}</td>
                                 <td>{{$item->pivot->quantity}}</td>

@@ -19,7 +19,7 @@
                 <tbody>
                     @forelse ($warehouses as $warehouse)
                         <tr class="">
-                            <td>{{ $warehouse->name }}</td>
+                            <td><a href="{{route('all_stocks' , ['warehouse_id'=>$warehouse->id] )}}">{{ $warehouse->name }}</a></td>
                             <td>{{ $warehouse->users_count }}</td>
                             <td>
                                 @can('edit','App\Models\Warehouse')

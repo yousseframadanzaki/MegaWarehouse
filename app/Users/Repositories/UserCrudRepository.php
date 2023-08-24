@@ -16,7 +16,7 @@ class UserCrudRepository implements UserCrudRepositoryInterface{
     }
 
     public function get_all_users_by_company_id($company_id){
-        return User::with('avatar')->where('company_id',$company_id)->paginate(10);
+        return User::with(['avatar','role','warehouse'])->where('company_id',$company_id)->paginate(10);
     }
     
     public function get_user_by_id($company_id,$user_id){

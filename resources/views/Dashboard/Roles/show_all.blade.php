@@ -21,7 +21,7 @@
                     @forelse ($roles as $role)
                         <tr class="">
                             <td>{{ $role->name }}</td>
-                            <td>{{ $role->users()->count() }}</td>
+                            <td>{{ $role->users_count }}</td>
                             <td><a href="{{route('edit_role',$role->id)}}"><i class="bi bi-pencil-square"></i></a></td>
                         </tr>
                     @empty

@@ -57,8 +57,16 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         return Variant::with('product','attributes')->where('id',$variant_id)->first();
     }
 
+    public function get_variant_by_id_no_relations($variant_id){
+        return Variant::where('id',$variant_id)->first();
+    }
+
     public function update_variant_by_id($variant_id,$data){
         return Variant::where('id',$variant_id)->update($data);
+    }
+
+    public function add_variant_stock_by_id($variant_id,$quantity){
+        return Variant::where('id',$variant_id)->increment('quantity',$quantity);
     }
 
 }

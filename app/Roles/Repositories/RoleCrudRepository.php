@@ -14,7 +14,7 @@ class RoleCrudRepository implements RoleCrudRepositoryInterface{
     }
 
     public function get_roles_by_company_id($company_id){
-        return Role::where('company_id',$company_id)->get();
+        return Role::withCount('users')->where('company_id',$company_id)->get();
     }
 
     public function update_role_by_id($role_id,$role_details){
