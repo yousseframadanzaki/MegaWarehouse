@@ -133,85 +133,14 @@
                     </div>
                 </div>
 
-                {{-- <div class="row mb-3">
-                    <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
-                    <div class="col-md-12">
-                        <div class="d-flex">
-                            @if ($data['product']->main_image)
-                                <div class="mx-2" id="{{$data['product']->main_image->id}}">
-                                    <div >
-                                        <img src="{{asset($data['product']->main_image->path ?? '')}}" style="object-fit: contain;height: 15vw;width:15vw;" />
-                                    </div>
-                                    <div class="d-flex justify-content-center my-2">
-                                        <a data-id="{{$data['product']->main_image->id ?? ''}}" class="btn btn-danger remove_image">حذف الصورة</a>
-                                    </div>
-                                </div>
-                            @endif
-                            @foreach ($data['product']->images as $image)
-                                <div class="mx-2" id="{{$image->id}}">
-                                    <div >
-                                        <img src="{{asset($image->path)}}" style="object-fit: contain;height: 15vw;" />
-                                    </div>
-                                    <div class="d-flex justify-content-center my-2">
-                                        <a data-id="{{$image->id}}" class="btn btn-danger remove_image">حذف الصورة</a>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <form class="dropzone" id="product-form" action="{{ route('update_product',$data['product']->id) }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <div class="dropzone-previews">
-                            </div>
-                            <div class="dz-message" data-dz-message><span>قم بالضغط لرفع الصور</span></div>
-                        </form>
-                    </div>
-                </div> --}}
-
                 <div class="row mb-3">
                     <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
                     <div class="input-images"></div>
                 </div>
 
-                <div class="row mb-3 mt-2">
-                    {{-- <h3>اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
-                    <div class="options">
-                    </div> --}}
-                    {{-- <div class="row">
-                        <div class="col-md-6">
-                            <button class="btn btn-primary mt-3" id="add_option_btn">أضافة اختيار</button>
-                            <button class="btn btn-success mt-3" id="save_options_btn" style="display: none">حفظ
-                                الاختيارات</button>
-                            <button class="btn btn-dark mt-3" id="edit_options_btn" style="display: none">تعديل
-                                الاختيارات</button>
-                        </div>
-                    </div> --}}
-
-                </div>
-
-                <div class="row mb-3">
-                    <table class="table table-hover fs-4" id="variants_table" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th scope="col">اسم</th>
-                                <th scope="col">سعر</th>
-                                <th scope="col">sku</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
-
                 <button id="edit_product_btn" type="submit" class="btn btn-primary btn-lg">تعديل المنتج <i
                         class="bi bi-plus-square"></i></button>
             </div>
-            <datalist id="default_options">
-                <option value="المقاس">
-                <option value="اللون">
-                <option value="الخامة">
-            </datalist>
         </form>
         <meta name="_token" content="{{ csrf_token() }}">
     @endsection
@@ -246,6 +175,7 @@
                 });
                 $('.input-images').imageUploader({
                     imagesInputName: 'product_images',
+                    preloadedInputName:'preloaded_images',
                     preloaded: preloaded
                 });
             })

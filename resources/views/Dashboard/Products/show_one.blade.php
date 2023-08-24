@@ -2,15 +2,11 @@
 @section('content')
 
 <style>
-    .main_image{
-        width: 35vw;
-        height: 35vh;
-        background-clip:padding-box;
-        background-repeat: no-repeat;
-        background-position: center right;
-        background-size: contain;
+    /* .main_image{
+        object-fit: contain;
+        height: 15vw;
         padding: 0;
-    }
+    } */
     .small-image{
         width: 50px;
         height:50px;
@@ -64,15 +60,22 @@
 <div class="row card p-2 shadow-sm">
     <div class="row">
         <div class="images-container col-md-3">
-            <div>
-                <div class="main_image" style="background-image:url('{{asset($product->main_image->path ?? "")}}')"> </div>
-            </div>
-            <div class="row ">
-                <div class="small-image col-md-4" style="background-image:url('{{asset($product->main_image->path ?? "")}}')"> </div>
-                @foreach ($product->images as $image)
-                    <div style="background-image:url({{asset($image->path ?? "")}})" class="small-image col-md-4"> </div>
-                @endforeach
-            </div>
+            @isset($product->images)
+                <div>
+                    <img src="{{ asset($product->images[0]->path ?? '') }}" class="card-img-top main_image"
+                                            style="object-fit: contain;height:50vh;"
+                                            onerror="this.src = 'https://placehold.co/400?text=no+image'" />
+                    {{-- <div class="main_image" style="background-image:url('{{asset($product->images[0]->path ?? "")}}')"> </div> --}}
+                </div>
+                <div class="row ">
+                    @foreach ($product->images as $image)
+                            <img src="{{ asset($image->path ?? '') }}" class="card-img-top small-image"
+                                style="object-fit: contain;"
+                                onerror="this.src = 'https://placehold.co/400?text=no+image'" />
+                        {{-- <div style="background-image:url({{asset($image->path ?? "")}})" class="small-image col-md-4"> </div> --}}
+                    @endforeach
+                </div>
+            @endisset
         </div>
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center">
@@ -143,8 +146,8 @@
 <script>
 
 $(".small-image").hover(function () {
-    var url = $(this).css('background-image');
-    $(".main_image").css('background-image',url);
+    var url = $(this).attr('src');
+    $(".main_image").attr('src',url);
 })
 
 $("#quantities").on('show.bs.modal',function (e) {

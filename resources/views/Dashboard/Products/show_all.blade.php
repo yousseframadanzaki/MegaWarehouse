@@ -165,16 +165,15 @@
                 <div class="row row-cols-5">
                     @foreach ($products as $product)
                         <div class="mt-3 col">
-                            <div class="card border-0 shadow card-hover @isset($product->images[0]) has-second @endisset text-black"
+                            <div class="card border-0 shadow card-hover @isset($product->images[1]) has-second @endisset text-black"
                                 style="transition:all 0.3s ease-in-out">
                                 <a href="{{ route('show_product', $product->id) }}">
-                                    <img src="{{ asset($product->main_image->path ?? '') }}" class="card-img-top"
+                                    <img src="{{ asset($product->images[0]->path ?? '') }}" class="card-img-top"
                                         style="object-fit: contain;height: 15vw;"
-                                        onerror="this.src = 'https://placehold.co/400?text=no+image'"
-                                        @isset($product->images[0]) onerror="this.src = '{{ asset($product->images[0] ?? '') }}'" @endisset />
+                                        @isset($product->images[1]) onerror="this.src = '{{ asset($product->images[1]->path ?? '') }}'" @endisset />
 
-                                    @isset($product->images[0])
-                                        <img src="{{ asset($product->images[0]->path ?? '') }}" class="card-img-top"
+                                    @isset($product->images[1])
+                                        <img src="{{ asset($product->images[1]->path ?? '') }}" class="card-img-top"
                                             style="object-fit: contain;height: 15vw;display:none;"
                                             onerror="this.src = 'https://placehold.co/400?text=no+image'" />
                                     @endisset
