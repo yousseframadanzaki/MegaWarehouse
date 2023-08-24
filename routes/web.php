@@ -49,7 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function 
     Route::get('/companies/{company_id}/deactivate', [CompnayController::class,'deactivate'])->name('deactivate_company');
     Route::get('/companies/{company_id}/edit', [CompnayController::class,'edit'])->name('edit_company');
     Route::post('/companies/{company_id}/edit', [CompnayController::class,'update'])->name('update_company');
-    
+    Route::post('/login_as_user',[AdminController::class,'login_as_user'])->name('login_as_user');
 });
 
 Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],function () {

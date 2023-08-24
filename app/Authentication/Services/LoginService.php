@@ -26,4 +26,12 @@ class LoginService implements LoginServiceInterface{
         $this->repository->Logout($request);
     }
 
+    public function LoginUserById($user_id)
+    {
+        if($this->repository->login_user_by_id($user_id)){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -2,36 +2,34 @@
 
 @section('content')
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg" data-company_id="5" data-bs-toggle="modal" data-bs-target="#loginModal">
-  Launch
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                 <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitleId">تسجيل دخول للشركة</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="mb-3">
-                        <label for="" class="form-label">المستخدم</label>
-                        <select class="form-select form-select" name="user_id" id="user_id">
-                            
-                        </select>
-                    </div>
+                    <h5 class="modal-title" id="modalTitleId">تسجيل دخول للشركة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">أغلاق</button>
-                <button type="button" class="btn btn-primary">تسجيل دخول</button>
+                <form action="{{route('login_as_user')}}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="mb-3">
+                                <label for="" class="form-label">المستخدم</label>
+                                <select class="form-select form-select" name="user_id" id="user_id">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">أغلاق</button>
+                        <button type="submit" class="btn btn-primary">تسجيل دخول</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
 
 
 
@@ -89,8 +87,8 @@
                                     title="تعديل بيانات الشركة">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <a class="link-dark"
-                                    title="تسجيل الدخول">
+                                <a class="link-dark" title="تسجيل الدخول" data-company_id="{{$company->id}}" data-bs-toggle="modal"
+                                data-bs-target="#loginModal">
                                     <i class="bi bi-box-arrow-in-right"></i>
                                 </a>
                             </td>
@@ -104,36 +102,36 @@
     </div>
 @endsection
 @section('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
         integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    $(document).ready(function() {
-        
-        var loginModal = document.getElementById('loginModal');
+    <script>
+        $(document).ready(function() {
 
-        loginModal.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            var button = event.relatedTarget;
-            // Extract info from data-bs-* attributes
-            var company_id = button.getAttribute('data-company_id');
-            console.log('hi');
-            $('#user_id').html('');
-            $.ajax({
-                url:`/api/company/${company_id}/users`,
-                method:'GET',
-                dataType:'json'
-            }).then(response =>{
-                $('#user_id').html('<option value="">-- اختار المستخدم --</option>');
-                $.each(response, function (key, value) {
-                    $("#user_id").append('<option value="' + value.id + '">' + value.name + ' - ' + value.role.name + '</option>');
-                });
-                $('#user_id').select2({
-                    dropdownParent: $('#loginModal')
-                });
-            })
-        });
-    })
-    
-</script>
+            var loginModal = document.getElementById('loginModal');
+
+            loginModal.addEventListener('show.bs.modal', function(event) {
+                // Button that triggered the modal
+                var button = event.relatedTarget;
+                // Extract info from data-bs-* attributes
+                var company_id = button.getAttribute('data-company_id');
+                console.log('hi');
+                $('#user_id').html('');
+                $.ajax({
+                    url: `/api/company/${company_id}/users`,
+                    method: 'GET',
+                    dataType: 'json'
+                }).then(response => {
+                    $('#user_id').html('<option value="">-- اختار المستخدم --</option>');
+                    $.each(response, function(key, value) {
+                        $("#user_id").append('<option value="' + value.id + '">' + value
+                            .name + ' - ' + value.role.name + '</option>');
+                    });
+                    $('#user_id').select2({
+                        dropdownParent: $('#loginModal')
+                    });
+                })
+            });
+        })
+    </script>
 @endsection
