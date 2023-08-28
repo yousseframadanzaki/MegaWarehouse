@@ -5,6 +5,7 @@ namespace App\Stock\Services;
 use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Stock\Interfaces\StockOperationServiceInterface;
 use App\Products\Interfaces\VariantStockServiceInterface;
+use App\Invoices\Interfaces\InvoiceServiceInterface;
 
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
@@ -15,6 +16,7 @@ class StockOperationService implements StockOperationServiceInterface{
     public function __construct(
         protected readonly StockOperationRepositoryInterface $stock_operation_repository,
         protected readonly VariantStockServiceInterface $VariantStockService,
+        protected readonly InvoiceServiceInterface $InvoiceService,
         protected readonly  UploadServiceInterface $FileUploadService,
         protected readonly  MediaCrudServiceInterface $MediaService,
     ){}
@@ -107,7 +109,12 @@ class StockOperationService implements StockOperationServiceInterface{
                 $this->MediaService->save($file);
             }
         }
-        
+
+        //supplier_id company_id total_cost
+        $invoice_info = $this->VariantStockService->GetInvoiceInfo($details['product_variants']);
+        $invoice_id = $this->InvoiceService->AddInvoice($invoice_info);
+        $this->stock_operation_repository->update_invoice_id($ids,$invoice_id);
+
         return $ids;
     }
 

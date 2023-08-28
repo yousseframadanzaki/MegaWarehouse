@@ -17,6 +17,7 @@ class Stock extends Model
         'note',
         'type',
         'quantity',
+        'invoice_id',
     ];
 
     function company()

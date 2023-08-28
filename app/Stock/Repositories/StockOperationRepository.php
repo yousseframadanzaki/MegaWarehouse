@@ -54,5 +54,11 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         ->selectRaw('sum(quantity) as sum')
         ->value('sum');
     }
+
+    public function update_invoice_id($ids,$invoice_id) {
+        return Stock::whereIn('id',$ids)->update(['invoice_id'=>$invoice_id]);
+    }
+
+
     
 }

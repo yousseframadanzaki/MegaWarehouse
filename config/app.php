@@ -187,6 +187,7 @@ return [
         App\Providers\ShippingAreaServiceProvider::class,
         App\Providers\MarketerServiceProvider::class,
         App\Providers\TemplateServiceProvider::class,
+        App\Providers\InvoiceServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
