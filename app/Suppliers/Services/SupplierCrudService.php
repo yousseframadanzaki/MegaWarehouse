@@ -4,20 +4,34 @@ namespace App\Suppliers\Services;
 
 use App\Suppliers\Interfaces\SupplierCrudRepositoryInterface;
 use App\Suppliers\Interfaces\SupplierCrudServiceInterface;
+use App\Users\Interfaces\UserCrudServiceInterface;
 
 class SupplierCrudService implements SupplierCrudServiceInterface{
 
-    protected SupplierCrudRepositoryInterface $supplier_crud_repository;
+    
 
     public function __construct(
-        SupplierCrudRepositoryInterface $supplier_crud_repository
-    ) {
-        $this->supplier_crud_repository = $supplier_crud_repository;
-    }
+        protected readonly SupplierCrudRepositoryInterface $supplier_crud_repository,
+        protected readonly UserCrudServiceInterface $UserCrudService
+    ) {}
 
     public function CreateSupplier($company_id,array $details){
-        $details['company_id'] = $company_id;
-        $supplier = $this->supplier_crud_repository->add_supplier($details);
+        $user_details = array(
+            'name'=>$details['name'],
+            'email'=>$details['email'],
+            'password'=>$details['password'],
+            'phone_1'=>$details['phone'],
+            'role_id'=>$details['role_id'],
+        );
+        $user = $this->UserCrudService->CreateUser($user_details,$company_id);
+        $supplier_details = array(
+            'name'=>$details['name'],
+            'phone'=>$details['phone'],
+            'address'=>$details['address'],
+            'user_id'=>$user->id,
+            'company_id'=>$company_id,
+        );
+        $supplier = $this->supplier_crud_repository->add_supplier($supplier_details);
         return $supplier;
     }
 

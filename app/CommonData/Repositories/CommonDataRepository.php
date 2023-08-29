@@ -27,6 +27,10 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return Role::where('company_id',$company_id)->pluck('name','id');
     }
     
+    public function get_roles_by_type($company_id,$type){
+        return Role::where(['company_id'=>$company_id,'type'=>$type])->pluck('name','id');
+    }
+
     public function get_categories_by_company_id($company_id){
         return Category::with('parents')->where('company_id',$company_id)->get();
     }

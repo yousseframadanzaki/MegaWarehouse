@@ -97,6 +97,7 @@
     "stock_add_error":"الكمية غير كافية للنقل",
     "order_created_success":"تم أضافة الاوردر بنجاح",
     "order_created_error":"الكمية غير كافية",
+    "The selected type is invalid.":"برجاء اختيار نوع الادارة",
     "client_id":"العميل",
     "city_id":"المدينة",
     "area_id":"المنطقة",

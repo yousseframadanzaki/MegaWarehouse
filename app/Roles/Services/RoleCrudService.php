@@ -44,7 +44,8 @@ class RoleCrudService implements RoleCrudServiceInterface{
     public function CreateOwnerRole($company_id) {
         $role_details = array(
             'company_id' => $company_id,
-            'name' => 'owner'
+            'name' => 'owner',
+            'type'=>'manager'
         );
         $permissions_ids = $this->role_crud_repository->get_permissions_ids();
         return $this->role_crud_repository->create_role_with_permissions($role_details,$permissions_ids);

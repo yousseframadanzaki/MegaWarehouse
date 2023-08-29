@@ -42,7 +42,7 @@
                             <td><div class="user-header-avatar" style="background-image: url('{{asset($user->avatar->path ?? '')}}')"></div></td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->role->name }}</td>
-                            <td>{{ $user->warehouse->name }}</td>
+                            <td>{{ $user->warehouse->name ?? "" }}</td>
                             <td>@date_format($user->created_at)</td>
                             <td>
                                 @if ($user->active)

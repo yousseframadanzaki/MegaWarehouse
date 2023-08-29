@@ -38,8 +38,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">عنوان <span class="text-danger">*</span><i class="bi bi-map-marker">
-                            </i></label>
+                        <label class="form-label">عنوان <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
                             value="{{ old('address') }}">
                         @error('address')
@@ -48,6 +47,42 @@
                             </div>
                         @enderror
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label">الايميل <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
+                            value="{{ old('email') }}">
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">كلمة السر <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
+                            value="{{ old('password') }}">
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label  class="form-label">الادارة</label>
+                        <select class="form-select" aria-label="Default select example" name="role_id">
+                           <option value="">أختار الاداره</option>
+                           @foreach ($roles as $id => $name)
+                              <option value="{{$id}}">{{$name}}</option>
+                           @endforeach
+                        </select>
+                        @error('role')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                     </div>
                 </div>
                 <button class="btn btn-lg btn-primary mt-3 shadow-sm">أضافة مورد <i
                         class="bi bi-person-fill-add"></i></button>

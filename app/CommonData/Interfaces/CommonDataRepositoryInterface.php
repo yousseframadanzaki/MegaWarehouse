@@ -4,6 +4,7 @@ namespace App\CommonData\Interfaces;
 
 interface CommonDataRepositoryInterface{
     public function get_roles_by_company_id($company_id);
+    public function get_roles_by_type($company_id,$type);
     public function get_categories_by_company_id($company_id);
     public function get_suppliers_by_company_id($company_id);
     public function get_brands_by_company_id($company_id);

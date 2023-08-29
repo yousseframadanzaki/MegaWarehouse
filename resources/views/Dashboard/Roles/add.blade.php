@@ -24,6 +24,21 @@
                             </div>
                         @enderror
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label">نوع الادارة</label>
+                        <select class="form-select form-select @error('type')is-invalid @enderror" name="type" id="">
+                            <option selected>اختار نوع</option>
+                            <option @if(old('type') == 'manager') selected @endif value="manager">أعضاء ادارة</option>
+                            <option @if(old('type') == 'supplier') selected @endif value="supplier">موردين</option>
+                            <option @if(old('type') == 'marketer') selected @endif value="marketer">مسوقين</option>
+                            <option @if(old('type') == 'shipping_company') selected @endif value="shipping_company">شركة شحن</option>
+                        </select>
+                        @error('type')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
                 @error('permissions')
                     <p class="text-danger">

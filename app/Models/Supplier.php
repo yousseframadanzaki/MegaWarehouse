@@ -16,6 +16,7 @@ class Supplier extends Model
         'payment_methods',
         'contacts',
         'company_id',
+        'user_id',
     ];
 
     public function products() {

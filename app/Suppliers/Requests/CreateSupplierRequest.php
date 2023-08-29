@@ -32,6 +32,9 @@ class CreateSupplierRequest extends FormRequest
             'phone' => 'required|min:11',    
             'payment_methods' => 'nullable',    
             'contacts' => 'nullable',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }
 
@@ -45,6 +48,12 @@ class CreateSupplierRequest extends FormRequest
             'address.min' => 'address_min',    
             'phone.required' => 'phone_required',    
             'phone.min' => 'phone_min',    
+            'email.required' => 'user_email_required',
+            'email.email' => 'user_email_email',
+            'email.unique' => 'user_email_unique',
+            'password.required' => 'password_required',
+            'password.min' => 'password_min',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }
 

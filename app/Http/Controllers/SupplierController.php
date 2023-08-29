@@ -8,13 +8,15 @@ use App\Suppliers\Interfaces\SupplierCrudServiceInterface;
 use App\Suppliers\Requests\CreateSupplierRequest;
 use App\Suppliers\Requests\UpdateSupplierRequest;
 
+use App\CommonData\Interfaces\CommonDataServiceInterface;
+
 class SupplierController extends Controller
 {
-    private SupplierCrudServiceInterface $SupplierCrudService;
 
-    public function __construct(SupplierCrudServiceInterface $SupplierCrudService){
-        $this->SupplierCrudService = $SupplierCrudService;
-    }
+    public function __construct(
+      protected readonly SupplierCrudServiceInterface $SupplierCrudService,
+      protected readonly CommonDataServiceInterface $CommonDataService
+    ){}
 
     public function all() {
         $company_id = $this->company_id();
@@ -23,7 +25,9 @@ class SupplierController extends Controller
     }
 
     public function create() {
-        return view('Dashboard.Suppliers.add');
+        $company_id = $this->company_id();
+        $roles = $this->CommonDataService->GetRolesByType($company_id,'supplier');
+        return view('Dashboard.Suppliers.add')->with('roles',$roles);
     }
 
     public function store(CreateSupplierRequest $request) {
