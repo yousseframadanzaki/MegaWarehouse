@@ -10,6 +10,7 @@ use App\Stock\Filters\DateToFilter;
 use App\Stock\Filters\TypeFilter;
 use App\Stock\Filters\VariantFilter;
 use App\Stock\Filters\SupplierFilter;
+use App\Stock\Filters\InvoiceFilter;
 
 use App\Models\Warehouse;
 use App\Models\User;
@@ -29,6 +30,7 @@ class StockFilters
         'date_to' => DateToFilter::class,
         'type' => TypeFilter::class,
         'supplier_id' => SupplierFilter::class,
+        'invoice_id' => InvoiceFilter::class,
     ];
 
     public function apply($query)

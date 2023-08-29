@@ -145,6 +145,16 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-4">
+                        <label class="form-label">رقم الفاتورة</label>
+                        <input class="form-control" name="invoice_id" id=""
+                            value="{{ Request::get('invoice_id') }}">
+
+                        <div class="invalid-feedback name">
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label">تاريخ من</label>
                         <input class="form-control datetimeplugin" name="date_from" id=""
                             value="{{ Request::get('date_from') }}">
@@ -207,6 +217,7 @@
                         <th scope="col">المتغير</th>
                         <th scope="col">المورد</th>
                         <th scope="col">الكمية</th>
+                        <th scope="col">الفاتورة</th>
                         <th scope="col">الاوردر</th>
                         <th scope="col">ملاحظة</th>
                         <th scope="col">صورة</th>
@@ -230,6 +241,7 @@
                                     <span class="text-success fw-bolder">{{ $operation->quantity }}</span>
                                 @endif
                             </td>
+                            <td><a >{{ $operation->invoice_id}}</a></td>
                             <td><a href="{{route('show_order',$operation->order_id ?? '')}}">{{ $operation->order->order_code ?? ''}}</a></td>
                             <td>{{ $operation->note }}</td>
                             <td>

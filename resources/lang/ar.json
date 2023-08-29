@@ -108,6 +108,7 @@
     "admin_id":"الادمن",
     "product_id":"المنتج",
     "variant_id":"المتغير",
+    "invoice_id":"رقم الفاتورة",
     "type":"نوع العملية",
     "supplier_id":"المورد",
     "category_id":"التصنيف",

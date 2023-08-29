@@ -50,6 +50,11 @@ class Stock extends Model
         return $this->belongsTo(Order::class);
     }
 
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
+
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
