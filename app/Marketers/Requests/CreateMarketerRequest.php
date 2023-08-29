@@ -26,6 +26,9 @@ class CreateMarketerRequest extends FormRequest
             'page_name'=>'required|min:3',
             'phone_number'=>'required|min:11',
             'links'=>'nullable',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }
 
@@ -37,7 +40,13 @@ class CreateMarketerRequest extends FormRequest
             'page_name.required'=>'page_name_required',
             'page_name.min'=>'page_name_required',
             'phone_number.required'=>'phone_number_required',
-            'phone_number.min'=>'phone_number_min'
+            'phone_number.min'=>'phone_number_min',
+            'email.required' => 'user_email_required',
+            'email.email' => 'user_email_email',
+            'email.unique' => 'user_email_unique',
+            'password.required' => 'password_required',
+            'password.min' => 'password_min',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }   
 }

@@ -14,5 +14,6 @@ class Marketer extends Model
         'phone_number',
         'links',
         'company_id',
+        'user_id',
     ];
 }

@@ -14,7 +14,8 @@ class MarketerController extends Controller
 {
 
     public function __construct(
-        protected readonly MarketerCrudServiceInterface $MarketerCrudService
+        protected readonly MarketerCrudServiceInterface $MarketerCrudService,
+        protected readonly CommonDataServiceInterface $CommonDataService,
     ){}
 
     public function all()
@@ -26,7 +27,9 @@ class MarketerController extends Controller
 
     public function create()
     {
-        return view('Dashboard.Marketers.add');
+        $company_id = $this->company_id();
+        $roles = $this->CommonDataService->GetRolesByType($company_id,'marketer');
+        return view('Dashboard.Marketers.add')->with('roles',$roles);
     }
 
     public function store(CreateMarketerRequest $request)

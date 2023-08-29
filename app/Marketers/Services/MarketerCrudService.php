@@ -4,23 +4,39 @@ namespace App\Marketers\Services;
 
 use App\Marketers\Interfaces\MarketerCrudRepositoryInterface;
 use App\Marketers\Interfaces\MarketerCrudServiceInterface;
+use App\Users\Interfaces\UserCrudServiceInterface;
 
 class MarketerCrudService implements MarketerCrudServiceInterface{
 
-    protected MarketerCrudRepositoryInterface $marketer_crud_repository;
-
     public function __construct(
-        MarketerCrudRepositoryInterface $marketer_crud_repository
-    ) {
-        $this->marketer_crud_repository = $marketer_crud_repository;
-    }
+        protected readonly MarketerCrudRepositoryInterface $marketer_crud_repository,
+        protected readonly UserCrudServiceInterface $UserCrudService
+    ) {}
 
     public function CreateMarketer($company_id,array $details){
-        $details['company_id'] = $company_id;
         if(isset($details['links'])){
             $details['links'] = json_encode($details['links'],true);
         }
-        $marketer = $this->marketer_crud_repository->create_marketer($details);
+        $user_details = array(
+            'name'=>$details['name'],
+            'email'=>$details['email'],
+            'password'=>$details['password'],
+            'phone_1'=>$details['phone_number'],
+            'role_id'=>$details['role_id'],
+        );
+        $user = $this->UserCrudService->CreateUser($user_details,$company_id);
+
+        $marketer_details = array(
+            'name'=>$details['name'],
+            'phone_number'=>$details['phone_number'],
+            'page_name'=>$details['page_name'],
+            'links'=>$details['links'],
+            'company_id'=>$company_id,
+            'user_id'=>$user->id,
+            'company_id'=>$company_id,
+        );
+
+        $marketer = $this->marketer_crud_repository->create_marketer($marketer_details);
         return $marketer;
     }
 
