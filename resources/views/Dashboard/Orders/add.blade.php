@@ -484,7 +484,7 @@
         function add_cart_items(items){
             $("#variants_table tbody").html("");
             var warehouse_select = $("#warehouse_select").html();
-            items.forEach(item => {
+            items.forEach(function (item,i) {
                 variant = item['variant'];
                 var template = `
                     <tr id="${variant.id}">
@@ -494,16 +494,17 @@
                         <td>${variant.price}</td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
                         <td>
-                            <select class="warehouse form-select" data-id="${variant.id}" name="items[${variant.id}][warehouse_id]">
+                            <select class="warehouse form-select" data-id="${variant.id}" name="items[${i}][warehouse_id]">
                                 ${warehouse_select}
                             </select>
                         </td>
                         <td style="width:80px;">
-                            <input type="number" name="items[${variant.id}][quantity]" class="form-control quantity" data-price="${variant.price}" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
+                            <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price}" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
                         </td>
                         <td class="variant_total">${parseInt(variant.price) * parseInt(item.quantity)}</td>
                         <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant.id}"><i class="bi bi-trash3"></a></td>
                     </tr>
+                    <input type="hidden" name="items[${i}][id]" value="${variant.id}" />
                 `
                 $("#variants_table tbody").append(template);
                 if(item.warehouse_id){

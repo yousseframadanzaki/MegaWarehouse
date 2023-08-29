@@ -18,14 +18,17 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['admin_id'] = $data['admin_id'];
         $order_data['order_code'] = $data['order_code'];
         $order_data['status_id'] = '1';
+
         $total_data = $this->calculate_total($data['items'],$order_data['client_id']);
+
         $order_data['total'] = $total_data['total'];
         $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
         $order_data['marketer_id'] = $data['marketer_id'];
 
+
         $order = Order::create($order_data);
 
-        $order->items()->sync($data['items']);
+        // $order->items()->sync($data['items']);
         $order->order_status()->sync([$order_data['status_id'] => ['admin_id' => $order_data['admin_id'],'note'=>'','current'=>true]]);
 
         return  $order;
@@ -36,8 +39,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $total_marketer_commission = 0;
         // $client = Client::with('client_group')->where('id',$client_id)->first();
         // $discount = $client->client_group->discount;
-        foreach ($items as $id => $item) {
-            $variant = Variant::with('product')->find($id);
+        foreach ($items as $item) {
+            $variant = Variant::with('product')->find($item['id']);
             $price = $variant->price;
             $commission = $variant->product->marketer_commission;
 
@@ -68,9 +71,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'order_status.pivot.admin',
             'order_status.pivot.images',
             'admin',
-            'items',
-            'items.product',
-            'items.pivot.warehouse',
+            'stocks',
+            'stocks.variant',
+            'stocks.variant.product',
+            'stocks.warehouse',
             'client',
             'city',
             'area',

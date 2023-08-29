@@ -128,13 +128,27 @@ class StockOperationService implements StockOperationServiceInterface{
         $operation['company_id'] = $user->company_id;
         $operation['type'] = $details['type'];
         $operation['order_id'] = $details['order_id'];
+
+        $keys = array_column($details['items'],'id');
+        $warehouses = array_column($details['items'],'warehouse_id');
+        $map = array_combine($keys,$warehouses);
+
+
+        $items = $this->GetVariantsUnitValues($details['items']);
+
+        
+
         $ids = [];
-        foreach ($details['items'] as $id => $item) {
-            $operation['variant_id'] = $id;
-            $operation['warehouse_id'] = $item['warehouse_id'];
+        foreach ($items as $item) {
+            $operation['variant_id'] = $item['id'];
+            $operation['warehouse_id'] = $map[$item['id']];
             $operation['quantity'] = $item['quantity'] * -1;
+            $operation['unit_price'] = $item['unit_price'] ;
+            $operation['unit_cost'] = $item['unit_cost'];
+            $operation['unit_commission'] = $item['unit_commission'];
+
             $ids[]   = $this->stock_operation_repository->create($operation);
-            $this->VariantStockService->UpdateStock($id,$operation['quantity']);
+            $this->VariantStockService->UpdateStock($item['id'],$operation['quantity']);
         }
         return $ids;
     }
@@ -160,8 +174,8 @@ class StockOperationService implements StockOperationServiceInterface{
     }
 
     public function CheckItemsAvailable($items) {
-        foreach ($items as $variant_id => $item) {
-            $stock = (int)$this->stock_operation_repository->get_variant_stock_by_warehouse_id($variant_id,$item['warehouse_id']);
+        foreach ($items as $item) {
+            $stock = (int)$this->stock_operation_repository->get_variant_stock_by_warehouse_id($item['id'],$item['warehouse_id']);
             if($stock < (int)$item['quantity']){
                 return false;
             }

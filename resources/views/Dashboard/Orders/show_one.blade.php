@@ -210,17 +210,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($order->items as $item)
+                        @foreach ($order->stocks as $item)
                             <tr>
-                                <td>{{$item->product->name}}</td>
-                                <td>{{$item->name}}</td>
-                                <td>{{$item->pivot->warehouse->name}}</td>
-                                <td>{{$item->product->supplier->name}}</td>
-                                <td>{{$item->price}}</td>
-                                <td>{{$item->product->marketer_commission}}</td>
-                                <td>{{$item->pivot->quantity}}</td>
-                                <td>{{$item->pivot->quantity * $item->product->marketer_commission}}</td>
-                                <td>{{$item->pivot->quantity * $item->price}}</td>
+                                <td>{{$item->variant->product->name}}</td>
+                                <td>{{$item->variant->name}}</td>
+                                <td>{{$item->warehouse->name}}</td>
+                                <td>{{$item->variant->product->supplier->name}}</td>
+                                <td>{{$item->unit_price}}</td>
+                                <td>{{$item->unit_commission}}</td>
+                                <td>{{abs($item->quantity)}}</td>
+                                <td>{{abs($item->quantity) * $item->unit_commission}}</td>
+                                <td>{{abs($item->quantity) * $item->unit_price}}</td>
                             </tr>
                         @endforeach
                     </tbody>

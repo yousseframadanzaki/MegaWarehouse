@@ -45,6 +45,12 @@ class Order extends Model
         ->withPivot('warehouse_id', 'quantity');
     }
 
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
+    
+
     public function order_status()
     {
         return $this->belongsToMany(Status::class)
