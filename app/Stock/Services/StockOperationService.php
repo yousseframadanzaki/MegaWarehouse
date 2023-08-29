@@ -93,10 +93,15 @@ class StockOperationService implements StockOperationServiceInterface{
 
         $ids = array();
 
-        foreach ($details['product_variants'] as $variant) {
+        $variants = $this->GetVariantsUnitValues($details['product_variants']);
+
+        foreach ($variants as $variant) {
             if($variant['quantity']){
                 $operation['variant_id'] = $variant['id'];
                 $operation['quantity'] = $variant['quantity'];
+                $operation['unit_price'] = $variant['unit_price'];
+                $operation['unit_cost'] = $variant['unit_cost'];
+                $operation['unit_commission'] = $variant['unit_commission'];
                 $ids[]   = $this->stock_operation_repository->create($operation);
                 $this->VariantStockService->UpdateStock($variant['id'],$variant['quantity']);
             }
@@ -110,7 +115,6 @@ class StockOperationService implements StockOperationServiceInterface{
             }
         }
 
-        //supplier_id company_id total_cost
         $invoice_info = $this->VariantStockService->GetInvoiceInfo($details['product_variants']);
         $invoice_id = $this->InvoiceService->AddInvoice($invoice_info);
         $this->stock_operation_repository->update_invoice_id($ids,$invoice_id);
@@ -163,6 +167,30 @@ class StockOperationService implements StockOperationServiceInterface{
             }
         }
         return true;
+    }
+
+    private function GetVariantsUnitValues($items)
+    {
+        foreach ($items as $key => $item) {
+            if(!$item['quantity']){
+                unset($items[$key]);
+            }
+        }
+        $ids = array_column($items,"id");
+        $qtys = array_column($items,"quantity");
+        $map = array_combine($ids,$qtys);
+        $values = $this->VariantStockService->GetUnitValues($ids);
+        $variants = array();
+        $i=0;
+        foreach ($values as $variant) {
+            $variants[$i]['id'] = $variant->id;
+            $variants[$i]['quantity'] = $map[$variant->id];
+            $variants[$i]['unit_price'] = $variant->price;
+            $variants[$i]['unit_cost'] = $variant->product->cost;
+            $variants[$i]['unit_commission'] = $variant->product->marketer_commission;
+            $i++;
+        }
+        return $variants;
     }
 
 }

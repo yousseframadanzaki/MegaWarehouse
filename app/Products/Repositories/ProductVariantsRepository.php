@@ -72,4 +72,13 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         return Variant::with('product')->whereIn('id',$variants_ids)->get();
     }
 
+    public function get_variants_unit_values($variants_ids){
+        return Variant::with(['product' => function ($query) {
+            $query->select('id', 'cost','marketer_commission');
+        }])
+        ->whereIn('id',$variants_ids)
+        ->get();
+        
+    }
+
 }

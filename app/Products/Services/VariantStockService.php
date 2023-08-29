@@ -33,6 +33,10 @@ class VariantStockService implements VariantStockServiceInterface{
         return $data;
 
     }
+    public function GetUnitValues($variants){
+        $variants = $this->product_variants_repository->get_variants_unit_values($variants);
+        return $variants;
+    }
 
     private function calculate_total_cost($variants,$variants_data)
     {

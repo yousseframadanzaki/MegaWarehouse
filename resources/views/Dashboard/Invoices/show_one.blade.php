@@ -98,8 +98,8 @@
                                 <td>{{$stock->variant->product->name}}</td>
                                 <td>{{$stock->variant->name}}</td>
                                 <td>{{$stock->quantity}}</td>
-                                <td>{{$stock->variant->product->cost}}</td>
-                                <td>{{$stock->variant->product->cost * $stock->quantity}}</td>
+                                <td>{{$stock->unit_cost}}</td>
+                                <td>{{$stock->unit_cost * $stock->quantity}}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -18,6 +18,9 @@ class Stock extends Model
         'type',
         'quantity',
         'invoice_id',
+        'unit_price',
+        'unit_cost',
+        'unit_commission',
     ];
 
     function company()
