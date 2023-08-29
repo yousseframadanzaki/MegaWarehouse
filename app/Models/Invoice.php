@@ -13,4 +13,21 @@ class Invoice extends Model
         'supplier_id',
         'company_id',
     ];
+
+    
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
 }

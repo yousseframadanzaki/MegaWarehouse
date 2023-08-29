@@ -21,7 +21,10 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
             'image',
             'variant.product',
             'variant.product.supplier',
-            ])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
+        ])->where(['company_id'=>$company_id])
+        ->filter($filters)
+        ->orderBy('created_at','DESC')
+        ->paginate(20);
     }
 
     public function get_variant_stock_in_warehouse($variant_id,$warehouse_id){

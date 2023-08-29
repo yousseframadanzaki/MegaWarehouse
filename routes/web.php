@@ -21,6 +21,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingCompanyController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
+use App\Http\Controllers\InvoiceController;
 
 
 Route::get('/',function (){
@@ -56,6 +57,10 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
+    Route::get('/invoices', [InvoiceController::class,'all'])
+    ->name('all_invoices');
+    Route::get('/invoices/{invoice_id}', [InvoiceController::class,'show'])
+    ->name('show_invoices');
 
     Route::get('/templates', [TemplateController::class,'all'])
     ->name('all_templates')
