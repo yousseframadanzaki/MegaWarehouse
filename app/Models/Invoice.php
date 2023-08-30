@@ -20,6 +20,11 @@ class Invoice extends Model
         return $this->hasMany(Stock::class);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class)->orderBy('created_at','DESC');
+    }
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);

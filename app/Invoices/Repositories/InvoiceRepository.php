@@ -29,6 +29,15 @@ class InvoiceRepository implements InvoiceRepositoryInterface{
             'stocks.variant',
             'stocks.variant.product',
             'supplier',
-        ])->where(['id'=>$invoice_id])->first();
+            'transactions',
+            'transactions.to_user',
+            'transactions.from_user',
+        ])
+        ->withSum('transactions as paid_amount','value')
+        ->where(['id'=>$invoice_id])->first();
+    }
+    public function get_invoice_no_relations($invoice_id)
+    {
+        return Invoice::findOrFail($invoice_id);
     }
 }

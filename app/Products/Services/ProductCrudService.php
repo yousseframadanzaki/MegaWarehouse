@@ -32,7 +32,7 @@ class ProductCrudService implements ProductCrudServiceInterface{
             $variants = $this->product_variants_repository->add_default_variant($product);
         }
 
-        $this->add_images($product,$details);
+        $this->add_images($product,$details['product_images']);
 
         return $product;
     }
@@ -59,15 +59,6 @@ class ProductCrudService implements ProductCrudServiceInterface{
             $file = $this->FileUploadService->product($image,$product->company_id,$product->id);
             $this->MediaService->save($file);
         }
-        // if(isset($data["product_images"]) && count($data['product_images']) > 0){
-        //     // $main_image = $this->FileUploadService->product_main($data["product_images"][0],$company_id,$product_id);
-        //     // $this->MediaService->save($main_image);
-        //     // unset($data["product_images"][0]);
-        //     foreach ($data["product_images"] as $image) {
-        //         $file = $this->FileUploadService->product($image,$company_id,$product_id);
-        //         $this->MediaService->save($file);
-        //     }
-        // }
     }
 
     public function GetVariantPrint($variant_id) {

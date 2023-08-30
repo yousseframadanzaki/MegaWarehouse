@@ -8,6 +8,7 @@ use App\CommonData\Interfaces\CommonDataServiceInterface;
 
 use App\Invoices\Interfaces\InvoiceServiceInterface;
 use App\Invoices\Filters\InvoiceFilters;
+use App\Invoices\Requests\PayInvoiceRequest;
 
 class InvoiceController extends Controller
 {
@@ -37,8 +38,17 @@ class InvoiceController extends Controller
     public function show($invoice_id)
     {
         $invoice = $this->InvoiceService->GetInvoice($invoice_id);
-        // dd($invoice);
-        return view('Dashboard.Invoices.show_one')->with(['invoice'=>$invoice]);
+        
+        $users = $this->CommonDataService->GetUsersByRoleType($this->company_id(),'manager');
+        return view('Dashboard.Invoices.show_one')->with(['invoice'=>$invoice,'users'=>$users]);
+    }
+
+    public function pay(PayInvoiceRequest $request,$invoice_id)
+    {
+       if($this->InvoiceService->PayInvoice($invoice_id,$request->validated())){
+            return redirect()->back()->with('success','pay_invoice_success');
+       } 
+       return redirect()->back()->with('error','pay_invoice_error');
     }
 
 }

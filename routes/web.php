@@ -61,6 +61,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_invoices');
     Route::get('/invoices/{invoice_id}', [InvoiceController::class,'show'])
     ->name('show_invoices');
+    Route::post('/invoices/{invoice_id}/pay', [InvoiceController::class,'pay'])
+    ->name('pay_invoice');
 
     Route::get('/templates', [TemplateController::class,'all'])
     ->name('all_templates')

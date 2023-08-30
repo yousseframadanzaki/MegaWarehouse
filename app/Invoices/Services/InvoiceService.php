@@ -4,11 +4,13 @@ namespace App\Invoices\Services;
 
 use App\Invoices\Interfaces\InvoiceRepositoryInterface;
 use App\Invoices\Interfaces\InvoiceServiceInterface;
+use App\Accounting\Interfaces\TransactionServiceInterface;
 
 class InvoiceService implements InvoiceServiceInterface{
 
     public function __construct(
-       protected readonly InvoiceRepositoryInterface $invoice_repository
+       protected readonly InvoiceRepositoryInterface $invoice_repository,
+       protected readonly TransactionServiceInterface $TransactionService,
     ) {}
 
     public function AddInvoice($invoice_info){
@@ -22,5 +24,17 @@ class InvoiceService implements InvoiceServiceInterface{
     public function GetInvoice($invoice_id){
         return $this->invoice_repository->get_invoice_by_id($invoice_id);
     }
- 
+
+    public function PayInvoice($invoice_id,$data){
+        $invoice = $this->invoice_repository->get_invoice_no_relations($invoice_id);
+        $transaction_data = array(
+            'from'=>$data['from'],
+            'to'=>$invoice->supplier->user_id,
+            'value'=>$data['value'],
+            'note'=>$data['note'],
+            'invoice_id'=>$invoice->id,
+            'company_id'=>$invoice->company_id
+        );
+        return $this->TransactionService->AddInvoiceTransaction($transaction_data);
+    }
 }

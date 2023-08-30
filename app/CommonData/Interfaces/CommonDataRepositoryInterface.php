@@ -19,4 +19,5 @@ interface CommonDataRepositoryInterface{
     public function get_company_clients($company_id);
     public function get_company_shipping_companies($company_id);
     public function get_company_marketers($company_id);
+    public function get_users_by_role_type($company_id,$role_type);
 }

@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Transaction extends Model
+{
+    use HasFactory;
+    protected $fillable=[
+        'company_id',
+        'from',
+        'to',
+        'order_id',
+        'invoice_id',
+        'commission',
+        'note',
+        'value',
+        'delivery_cost',
+        'payment_type_id',
+    ];
+
+    /**
+     * Get the from that owns the Transaction
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function from_user()
+    {
+        return $this->belongsTo(User::class, 'from');
+    }
+    public function to_user()
+    {
+        return $this->belongsTo(User::class, 'to');
+    }
+
+}

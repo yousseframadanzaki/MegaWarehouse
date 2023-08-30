@@ -84,4 +84,7 @@ class CommonDataService implements CommonDataServiceInterface{
     public function GetCompanyMarketers($company_id){
         return $this->common_data_repository->get_company_marketers($company_id);
     }
+    public function GetUsersByRoleType($company_id,$role_type){
+        return $this->common_data_repository->get_users_by_role_type($company_id,$role_type);
+    }
 }
