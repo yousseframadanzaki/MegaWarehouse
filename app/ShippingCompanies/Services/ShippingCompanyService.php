@@ -5,6 +5,7 @@ namespace App\ShippingCompanies\Services;
 use App\ShippingCompanies\Interfaces\ShippingCompanyRepositoryInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
+use App\Users\Interfaces\UserCrudServiceInterface;
 
 use App\MegaAPI\Interfaces\MegaApiServiceInterface;
 
@@ -14,10 +15,12 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     public function __construct(
         protected readonly ShippingCompanyRepositoryInterface $shipping_company_repository,
         protected readonly ShippingAreaServiceInterface $ShippingAreaService,
-        protected readonly MegaApiServiceInterface $MegaApiService
+        protected readonly MegaApiServiceInterface $MegaApiService,
+        protected readonly UserCrudServiceInterface $UserCrudService
     ) {}
 
     public function AddShippingCompany($company_id,$data){
+
         $data['mega_company_id'] = $this->MegaApiService
             ->GetMegaCompanyId(
                 $data['username'],
@@ -28,8 +31,25 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         if(empty($data['mega_company_id'])){
             return false;
         }
-        $data['company_id'] = $company_id;
-        return $this->shipping_company_repository->create_shipping_company($data);
+
+        $user_data = array(
+            'name'=>$data['name'],
+            'password'=>$data['password_warehouse'],
+            'email'=>$data['email'],
+            'phone_1'=>$data['phone'],
+            'role_id'=>$data['role_id'],
+        );
+        $user = $this->UserCrudService->CreateUser($user_data,$company_id);
+        $shipping_company_data = array(
+            'name'=>$data['name'],
+            'username'=>$data['username'],
+            'password'=>$data['password'],
+            'url'=>$data['url'],
+            'mega_company_id'=>$data['mega_company_id'],
+            'company_id'=>$company_id,
+            'user_id'=>$user->id,
+        );
+        return $this->shipping_company_repository->create_shipping_company($shipping_company_data);
     }
 
     public function GetCompanyShippingCompanies($company_id){

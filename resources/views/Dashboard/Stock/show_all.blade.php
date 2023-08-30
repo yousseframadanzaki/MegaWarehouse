@@ -241,7 +241,7 @@
                                     <span class="text-success fw-bolder">{{ $operation->quantity }}</span>
                                 @endif
                             </td>
-                            <td><a >{{ $operation->invoice_id}}</a></td>
+                            <td><a href="{{route('show_invoice',$operation->invoice_id ?? '') }}">{{ $operation->invoice_id}}</a></td>
                             <td><a href="{{route('show_order',$operation->order_id ?? '')}}">{{ $operation->order->order_code ?? ''}}</a></td>
                             <td>{{ $operation->note }}</td>
                             <td>

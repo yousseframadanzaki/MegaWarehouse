@@ -57,9 +57,12 @@
                             </div>
                         @enderror
                     </div>
+                    
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">كود الشركة</label>
-                        <input type="number" class="form-control @error('company.code') is-invalid @enderror"
+                        <input type="text" class="form-control @error('company.code') is-invalid @enderror"
                             name="company[code]" value="{{ old('company.code') }}">
                         @error('company.code')
                             <div class="invalid-feedback">
@@ -67,8 +70,6 @@
                             </div>
                         @enderror
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <label class="form-label">اسم المخزن الرئيسى</label>
                         <input type="text" class="form-control @error('warehouse.name') is-invalid @enderror"

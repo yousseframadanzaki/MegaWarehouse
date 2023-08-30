@@ -16,11 +16,13 @@ class InvoiceRepository implements InvoiceRepositoryInterface{
     public function get_invoices_by_company_id($company_id,$filters){
         return Invoice::with([
             'supplier',
-        ])->where(['company_id'=>$company_id])
+        ])->withSum('transactions as paid_amount','value')
+        ->where(['company_id'=>$company_id])
         ->filter($filters)
         ->orderBy('created_at','DESC')
         ->paginate(20);
     }
+
     public function get_invoice_by_id($invoice_id){
         return Invoice::with([
             'stocks',

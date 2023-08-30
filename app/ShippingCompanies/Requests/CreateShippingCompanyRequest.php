@@ -26,6 +26,10 @@ class CreateShippingCompanyRequest extends FormRequest
             'username' => 'required|min:3',
             'password' => 'required|min:3',
             'url' => 'required|min:8',
+            'email' => 'required|min:8',
+            'password_warehouse' => 'required|min:6',
+            'role_id' => 'required|exists:roles,id',
+            'phone'=>'required|min:8'
         ];
     }
 

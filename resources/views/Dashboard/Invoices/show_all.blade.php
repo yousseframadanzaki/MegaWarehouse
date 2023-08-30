@@ -117,15 +117,17 @@
                         <th scope="col">رقم الفاتورة</th>
                         <th scope="col">المورد</th>
                         <th scope="col">قيمة الفاتورة</th>
+                        <th scope="col">باقى لم يسدد</th>
                         <th scope="col">تاريخ الاضافة</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($invoices as $invoice)
                         <tr>
-                           <td>{{$invoice->id}}</td>
+                           <td><a href="{{route('show_invoice',$invoice->id)}}">{{$invoice->id}}</a></td>
                            <td>{{$invoice->supplier->name}}</td>
                            <td>{{$invoice->total_cost}}</td>
+                           <td>{{$invoice->total_cost - $invoice->paid_amount}}</td>
                            <td >@date_format($invoice->created_at)</td>
                         </tr>
                     @endforeach

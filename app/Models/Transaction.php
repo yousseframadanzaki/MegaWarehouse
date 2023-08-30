@@ -35,4 +35,15 @@ class Transaction extends Model
         return $this->belongsTo(User::class, 'to');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+    
+    public function payment_type()
+    {
+        return $this->belongsTo(PaymentType::class);
+    }
+
+
 }

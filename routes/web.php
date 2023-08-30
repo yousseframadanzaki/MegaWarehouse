@@ -22,6 +22,7 @@ use App\Http\Controllers\ShippingCompanyController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\AccountingController;
 
 
 Route::get('/',function (){
@@ -57,10 +58,14 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
+    
+    Route::get('/transactions', [AccountingController::class,'all'])
+    ->name('all_transactions');
+
     Route::get('/invoices', [InvoiceController::class,'all'])
     ->name('all_invoices');
     Route::get('/invoices/{invoice_id}', [InvoiceController::class,'show'])
-    ->name('show_invoices');
+    ->name('show_invoice');
     Route::post('/invoices/{invoice_id}/pay', [InvoiceController::class,'pay'])
     ->name('pay_invoice');
 
@@ -81,7 +86,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->can('update',['App\Models\Template','template_id']);
 
     Route::post('/templates/{template_id}/edit', [TemplateController::class,'update'])
-    ->name('edit_template')
+    ->name('update_template')
     ->can('update',['App\Models\Template','template_id']);
 
 

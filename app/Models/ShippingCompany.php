@@ -15,5 +15,6 @@ class ShippingCompany extends Model
         'url',
         'mega_company_id',
         'company_id',
+        'user_id',
     ];
 }

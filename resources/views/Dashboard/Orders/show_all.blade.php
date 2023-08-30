@@ -263,8 +263,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 }).then((response)=>{
                     data = JSON.parse(response);
                     $('#area_id').html('<option value="">-- اختار المنطقة --</option>');
-                    $.each(data, function (key, value) {
-                        $("#area_id").append('<option value="' + key + '">' + value + '</option>');
+                    $.each(data, function (key,value) {
+                        $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                     if(area_id){
                         $("#area_id").val(area_id);
@@ -283,7 +283,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 data = JSON.parse(response);
                 $('#area_id').html('<option value="">-- اختار المنطقة --</option>');
                 $.each(data, function (key, value) {
-                    $("#area_id").append('<option value="' + key + '">' + value + '</option>');
+                    $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
             })
         })
