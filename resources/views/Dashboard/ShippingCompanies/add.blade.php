@@ -26,7 +26,7 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">الايميل او رقم تليفون</label>
+                        <label class="form-label"> الايميل او رقم تليفون (سيستم شركة الشحن)</label>
                         <input type="text" class="form-control @error('username') is-invalid @enderror"
                             name="username" value="{{ old('username') }}">
                         @error('username')
@@ -38,7 +38,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label class="form-label">كلمة السر</label>
+                        <label class="form-label"> كلمة السر (سيستم شركة الشحن)</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                             name="password" value="{{ old('password') }}">
                         @error('password')
@@ -58,7 +58,44 @@
                         @enderror
                     </div>
                 </div>
-                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">الايميل (سيستم التخزين)</label>
+                        <input type="text" class="form-control @error('username') is-invalid @enderror"
+                            name="username" value="{{ old('email') }}">
+                        @error('username')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"> كلمة السر (سيستم التخزين)</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                            name="password" value="{{ old('password_warehouse') }}">
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label  class="form-label">الادارة</label>
+                        <select class="form-select" aria-label="Default select example" name="role_id">
+                           <option value="">أختار الاداره</option>
+                           @foreach ($roles as $id => $name)
+                              <option value="{{$id}}">{{$name}}</option>
+                           @endforeach
+                        </select>
+                        @error('role')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                    </div>
+                </div>
                 <button class="btn btn-lg btn-primary mt-3 shadow-sm">أضافة شركة الشحن <i
                         class="bi bi-truck"></i></button>
             </div>

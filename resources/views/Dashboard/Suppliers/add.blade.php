@@ -82,7 +82,7 @@
                                  {{__($message)}}
                            </div>
                         @enderror
-                     </div>
+                    </div>
                 </div>
                 <button class="btn btn-lg btn-primary mt-3 shadow-sm">أضافة مورد <i
                         class="bi bi-person-fill-add"></i></button>
