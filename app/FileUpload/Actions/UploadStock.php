@@ -11,7 +11,7 @@ class UploadStock implements UploadStockInterface
     {
         $name = $file->hashName();
  
-        $upload = Storage::put("public\\stock\\{$name}", $file);
+        $upload = Storage::put("public/stock/{$name}", $file);
 
         return new File(
             name: "{$name}",
@@ -22,7 +22,7 @@ class UploadStock implements UploadStockInterface
             hash: hash_file(
                 'md5',
                 storage_path(
-                    path: "app\\$upload",
+                    path: "app/$upload",
                 ),
             ),
             company_id :$company_id,

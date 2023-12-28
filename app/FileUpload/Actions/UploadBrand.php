@@ -11,7 +11,7 @@ class UploadBrand implements UploadBrandInterface
     {
         $name = $file->hashName();
  
-        $upload = Storage::put("public\\brand\\{$name}", $file);
+        $upload = Storage::put("public/brand/{$name}", $file);
 
         return new File(
             name: "{$name}",
@@ -22,7 +22,7 @@ class UploadBrand implements UploadBrandInterface
             hash: hash_file(
                 'md5',
                 storage_path(
-                    path: "app\\$upload",
+                    path: "app/$upload",
                 ),
             ),
             company_id :$company_id,

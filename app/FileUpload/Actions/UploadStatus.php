@@ -11,7 +11,7 @@ class UploadStatus implements UploadStatusInterface
     {
         $name = $file->hashName();
  
-        $upload = Storage::put("public\\status\\{$name}", $file);
+        $upload = Storage::put("public/status/{$name}", $file);
 
         return new File(
             name: "{$name}",
@@ -22,7 +22,7 @@ class UploadStatus implements UploadStatusInterface
             hash: hash_file(
                 'md5',
                 storage_path(
-                    path: "app\\$upload",
+                    path: "app/$upload",
                 ),
             ),
             company_id :$company_id,

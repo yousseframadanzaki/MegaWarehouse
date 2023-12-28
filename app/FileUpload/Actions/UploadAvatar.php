@@ -11,7 +11,7 @@ class UploadAvatar implements UploadAvatarInterface
     {
         $name = $file->hashName();
  
-        $upload = Storage::put("public\\avatar\\{$name}", $file);
+        $upload = Storage::put("public/avatar/{$name}", $file);
 
         // dd($name);
 
@@ -24,7 +24,7 @@ class UploadAvatar implements UploadAvatarInterface
             hash: hash_file(
                 'md5',
                 storage_path(
-                    path: "app\\$upload",
+                    path: "app/$upload",
                 ),
             ),
             company_id:$company_id,
