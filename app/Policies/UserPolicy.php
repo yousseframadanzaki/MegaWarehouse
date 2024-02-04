@@ -15,6 +15,17 @@ class UserPolicy
 
         return true;
     }
+    public function view_one(User $user,$user_id): bool
+    {
+        if(!$user->role->permissions->contains('slug','view_users')){
+            return false;
+        }
+        $viewUser = User::findOrFail($user_id);
+        if($user->company_id != $viewUser->company_id){
+            return false;
+        }
+        return true;
+    }
 
     public function add(User $user): bool
     {
@@ -33,13 +44,21 @@ class UserPolicy
         return true;
     }
 
+    public function edit_roles(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','edit_users_roles')){
+            return false;
+        }
+        return true;
+    }
+
     public function update(User $user, $user_id): bool
     {
         if(!$user->role->permissions->contains('slug','edit_users')){
             return false;
         }
-        $user = User::findOrFail($user_id);
-        if($user->company_id != $user->company_id){
+        $updateUser = User::findOrFail($user_id);
+        if($user->company_id != $updateUser->company_id){
             return false;
         }
         return true;

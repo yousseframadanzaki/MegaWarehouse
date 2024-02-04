@@ -56,19 +56,21 @@
             </div>
          </div>
          <div class="row mb-3">
-            <div class="col-md-6">
-               <label  class="form-label">الادارة</label>
-               <select class="form-select" aria-label="Default select example" name="role_id">
-                  @foreach ($roles as $id => $name)
-                     <option @if($user->role_id === $id) selected @endif value="{{$id}}">{{$name}}</option>
-                  @endforeach
-               </select>
-               @error('role')
-                  <div class="invalid-feedback">
-                        {{__($message)}}
-                  </div>
-               @enderror
-            </div>
+            @can('edit_roles','App/Models/User')
+               <div class="col-md-6">
+                  <label  class="form-label">الادارة</label>
+                  <select class="form-select" aria-label="Default select example" name="role_id">
+                     @foreach ($roles as $id => $name)
+                        <option @if($user->role_id === $id) selected @endif value="{{$id}}">{{$name}}</option>
+                     @endforeach
+                  </select>
+                  @error('role')
+                     <div class="invalid-feedback">
+                           {{__($message)}}
+                     </div>
+                  @enderror
+               </div>
+            @endcan
             <div class="col-md-6">
                <label  class="form-label">المخزن</label>
                <select class="form-select" aria-label="Default select example" name="warehouse_id">
@@ -96,7 +98,7 @@
                 </div>
             </div>
          </div>
-      <button class="btn btn-lg btn-primary mt-3 shadow-sm">تعديل عضو <i class="bi bi-person-fill-add"></i></button>
+         <button class="btn btn-lg btn-primary mt-3 shadow-sm" @cannot('edit','App/Models/User') disabled @endcannot>تعديل عضو <i class="bi bi-person-fill-add"></i></button>
       </div>
    </form>
 </div>

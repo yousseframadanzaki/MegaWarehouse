@@ -397,7 +397,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/users/{user_id}/edit', [UsersController::class,'edit'])
     ->name('edit_user')
-    ->can('update',['App\Models\User','user_id']);
+    ->can('view_one',['App\Models\User','user_id']);
 
     Route::post('/users/{user_id}/edit', [UsersController::class,'update'])
     ->name('update_user')

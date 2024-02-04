@@ -10,7 +10,7 @@ use App\Users\Interfaces\UserCrudServiceInterface;
 use App\Users\Interfaces\UserActionsServiceInterface;
 use App\Users\Requests\CreateUserRequest;
 use App\Users\Requests\UpdateUserRequest;
-
+use App\Users\Filters\UserFilters;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 
 class UsersController extends Controller
@@ -46,10 +46,18 @@ class UsersController extends Controller
         return back()->with('error','user_created_error');
     }
 
-    public function all() {
+    public function all(UserFilters $filter) {
         $company_id = $this->company_id();
-        $users = $this->UserCrudService->GetAllUsers($company_id);
-        return view('Dashboard.Users.show_all')->with('users',$users);
+        $users = $this->UserCrudService->GetAllUsers($company_id,$filter);
+
+        $roles = $this->CommonDataService->GetCompanyRoles($company_id);
+        $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
+        $data = array(
+            "warehouses"=>$warehouses,
+            "roles"=>$roles,
+        );
+
+        return view('Dashboard.Users.show_all')->with(['users'=>$users,'data'=>$data]);
     }
 
     public function activate($user_id) {

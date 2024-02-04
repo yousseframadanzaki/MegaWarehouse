@@ -73,4 +73,9 @@ class User extends Authenticatable
         return $this->hasOne(Media::class,'collection_id')->where('collection','avatars')->latestOfMany();
     }
 
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
 }

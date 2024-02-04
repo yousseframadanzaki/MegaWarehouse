@@ -45,8 +45,8 @@ class UserCrudService implements UserCrudServiceInterface{
         return $user;
     }
 
-    public function GetAllUsers($company_id){
-        return $this->user_crud_repository->get_all_users_by_company_id($company_id);
+    public function GetAllUsers($company_id,$filters){
+        return $this->user_crud_repository->get_all_users_by_company_id($company_id,$filters);
     }
 
     public function GetUser($company_id,$user_id) {
