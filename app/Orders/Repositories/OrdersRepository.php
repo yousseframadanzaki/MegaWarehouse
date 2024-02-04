@@ -111,7 +111,16 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function update_order($order_id,$data) {
         return Order::where('id',$order_id)->update($data);
     }
-
+    public function check_max_orders($company_id)
+    {
+        $company = Company::find($company_id);
+        $max_orders = $company->max_orders;
+        $current_orders = Order::where(['company_id'=>$company_id])->count();
+        if($current_orders + 1 > $max_orders){
+            return false;
+        }
+        return true;
+    }
     
     public function get_order_by_waybill($waybill)
     {

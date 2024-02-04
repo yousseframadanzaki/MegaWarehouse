@@ -29,6 +29,11 @@ class OrdersService implements OrdersServiceInterface{
     ) {}
 
     public function AddOrder($user,array $order_details){
+
+        if(!$this->checkMaxOrders($user->company_id)){
+            return false;
+        }
+
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
             return false;
         }
@@ -136,5 +141,9 @@ class OrdersService implements OrdersServiceInterface{
         );
         $id = $this->orders_crud_repository->change_order_status($order->id,$status_data);
         return $id;
+    }
+    public function checkMaxOrders($company_id)
+    {
+        return $this->orders_crud_repository->check_max_orders($company_id);
     }
 }

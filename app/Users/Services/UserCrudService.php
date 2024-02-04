@@ -6,6 +6,7 @@ use App\Users\Interfaces\UserCrudServiceInterface;
 use App\Users\Interfaces\UserCrudRepositoryInterface;
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
+use App\Models\User;
 
 
 class UserCrudService implements UserCrudServiceInterface{
@@ -25,6 +26,12 @@ class UserCrudService implements UserCrudServiceInterface{
     }
 
     public function CreateUser(array $user_details,$company_id){
+
+        $user = User::find($company_id);
+        if (!$this->checkMaxUsers($user->company_id)) {
+            return false;
+        }
+
         $user_details['company_id'] = $company_id;
         if(!isset($user_details['image'])){
             $user = $this->user_crud_repository->add_user($user_details);
@@ -60,6 +67,11 @@ class UserCrudService implements UserCrudServiceInterface{
             ['id'=> $user_id ],
             $user_details
         );
+    }
+    public function checkMaxUsers($company_id)
+    {
+        return $this->user_crud_repository->check_max_users($company_id);
+        
     }
 
 }
