@@ -5,8 +5,9 @@ namespace App\Orders\Filters;
 
 class StatusFilter
 {
-    function __invoke($query, $status_id)
+    function __invoke($query, $status_ids)
     {
-        return $query->where('status_id',$status_id);
+        $status_ids = explode(",",$status_ids);
+        return $query->whereIn('status_id',$status_ids);
     }
 }

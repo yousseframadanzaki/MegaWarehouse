@@ -61,7 +61,13 @@ class OrdersFilters
                 continue;
             }
             if($key == 'status_id'){
-                $filters['status_id'] = Status::findOrfail($value)->name;
+                $status_ids = explode(",",$filters['status_id']);
+                $filters['status_id'] = '';
+                foreach ($status_ids as $status_id) {
+                    $filters['status_id'] .= Status::findOrfail($status_id)->name . ' , ';
+                }
+                $filters['status_id'] = rtrim($filters['status_id'],' , ');
+                // $filters['status_id'] = Status::findOrfail($value)->name;
                 continue;
             }
             if($key == 'city_id'){
