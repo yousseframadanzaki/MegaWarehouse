@@ -60,14 +60,14 @@ class OrdersFilters
                 $filters['client_id'] = Client::findOrfail($value)->name;
                 continue;
             }
-            if($key == 'status_id'){
-                $status_ids = explode(",",$filters['status_id']);
-                $filters['status_id'] = '';
+            if($key == 'status_id') {
+                $status_ids = explode(",", $value);
+                $status_names = [];
                 foreach ($status_ids as $status_id) {
-                    $filters['status_id'] .= Status::findOrfail($status_id)->name . ' , ';
+                    $status = Status::findOrFail($status_id);
+                    $status_names[] = $status->name;
                 }
-                $filters['status_id'] = rtrim($filters['status_id'],' , ');
-                // $filters['status_id'] = Status::findOrfail($value)->name;
+                $filters['status_id'] = implode(', ', $status_names);
                 continue;
             }
             if($key == 'city_id'){

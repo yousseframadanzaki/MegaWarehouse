@@ -71,7 +71,7 @@ class OrdersService implements OrdersServiceInterface{
 
         if($data['status_id'] == '5'){
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
-            
+
             if(!$shipment){
                 return false;
             }
@@ -99,7 +99,7 @@ class OrdersService implements OrdersServiceInterface{
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
                 $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
-                
+
                 if(!$shipment){
                     return false;
                 }
@@ -126,7 +126,7 @@ class OrdersService implements OrdersServiceInterface{
     }
 
     public function ChangeOrderStatusCallback($data){
-        
+
         $order = $this->orders_crud_repository->get_order_by_waybill($data['waybill']);
         $status_id = $this->ShippingStatusService->GetStatusMapping($data['status_id'],$order->shipping_company_id);
         $note = $data['note'];
@@ -145,5 +145,9 @@ class OrdersService implements OrdersServiceInterface{
     public function checkMaxOrders($company_id)
     {
         return $this->orders_crud_repository->check_max_orders($company_id);
+    }
+    public function GetOrdersPrint($data)
+    {
+        return $this->orders_crud_repository->get_bulk_orders_print($data);
     }
 }

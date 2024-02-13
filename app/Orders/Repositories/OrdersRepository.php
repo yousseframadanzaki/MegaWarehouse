@@ -10,7 +10,7 @@ use App\Models\Company;
 use App\Models\Client;
 
 class OrdersRepository implements OrdersRepositoryInterface{
-    
+
     public function create_order(array $data){
         $order_data = $data['client'];
         $order_data['client_id'] = $data['client_id'];
@@ -121,10 +121,21 @@ class OrdersRepository implements OrdersRepositoryInterface{
         }
         return true;
     }
-    
+
     public function get_order_by_waybill($waybill)
     {
         return Order::where(['waybill'=>$waybill])->first();
+    }
+    public function get_bulk_orders_print($data) {
+        $orders = [];
+        foreach ($data['orders_ids'] as $order_id) {
+            $order = Order::find($order_id);
+
+            if ($order) {
+                $orders[] = $order;
+            }
+        }
+        return $orders;
     }
 
 }

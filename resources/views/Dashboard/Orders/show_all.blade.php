@@ -51,6 +51,30 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="PrintModal" tabindex="-1" aria-labelledby="PrintModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="{{route('print_orders')}}" method="POST" enctype="multipart/form-data" id="print_form">
+                @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">طباعة بوليصة</label>
+                                <select id="print_id" name="print_id" style="width: 100%">
+                                    <option selected> --اختار-- </option>
+                                    <option value="1"> 1 بوليصة فى الصفحة </option>
+                                    <option value="2"> 5 بوليصة فى الصفحة </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary print">طباعة</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
 
     <div class="p-3">
         <div class="row">
@@ -94,7 +118,7 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-4">
@@ -115,10 +139,10 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">الحالة</label>
-                            <select class="form-select product_info" name="status_id">
+                            <select class="form-select product_info js-example-basic-multiple" name="status_id" multiple="multiple">
                                 <option value="">اختار الحالة</option>
                                 @foreach ($statuses as $status)
-                                    <option  @if(Request::get('status_id') == $status->id) selected @endif value="{{ $status->id }}">{{ $status->name }}</option>
+                                    <option @if(in_array($status->id, explode(',', Request::get('status_id', '')))) selected @endif value="{{ $status->id }}">{{ $status->name }}</option>
                                 @endforeach
                             </select>
 
@@ -184,11 +208,16 @@
                 </div>
             @endif
 
-            @can('edit_change_status','App\\Models\Order')
                 <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row">
-                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+                    @can('edit_change_status','App\\Models\Order')
+                    <div class="btn-group me-2">
+                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+                    </div>
+                    @endcan
+                    <div class="btn-group me-2">
+                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
+                    </div>
                 </div>
-            @endcan
 
             <table class="mt-3 table table-hover">
                 <thead>
@@ -241,6 +270,9 @@
 integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2();
+        });
         $(document).ready(function() {
             $('select.product_info').select2({
                 padding: 'resolve',
@@ -317,9 +349,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         $(document).on('change',".image_file",function (e) {
             const [file] = e.target.files;
             if(file){
-                var template = `<img 
-                src='${URL.createObjectURL(file)}' 
-                class='image_preview' 
+                var template = `<img
+                src='${URL.createObjectURL(file)}'
+                class='image_preview'
                 style="width: 100px;height:100px;object-fit:contain;"
                 />`
                 var id= $(this).attr('data-id');
@@ -363,6 +395,22 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             });
 
             $("#change_status_form").submit();
+        })
+        $('.print').click(function (e) {
+            e.preventDefault();
+            var ids = get_checked_orders();
+            var selectedValue = $('#print_id').val();
+
+            if(ids.length < 1){
+                alert('برجاء اختيار شحنة واحدة على الاقل');
+                return;
+            }
+
+            ids.forEach(id => {
+                $("#print_form").append(`<input type="hidden" name="orders_ids[]" value="${id}" />`);
+                $("#print_form").append(`<input type="hidden" name="selected_option" value="${selectedValue}" />`);
+            });
+            $("#print_form").submit();
         })
         $('#status_id').change(function () {
             var status_id = $(this).val();

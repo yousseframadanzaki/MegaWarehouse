@@ -10,6 +10,8 @@ use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
 use App\Orders\Filters\OrdersFilters;
 
+use function Ramsey\Uuid\v1;
+
 class OrderController extends Controller
 {
     private CommonDataServiceInterface $CommonDataService;
@@ -99,6 +101,11 @@ class OrderController extends Controller
     public function status_callback(Request $request) {
         $id = $this->OrdersService->ChangeOrderStatusCallback($request->all());
         return response()->json($id, 200);
+    }
+    public function print_orders(Request $request){
+        $selected_option = $request->get('selected_option');
+        $data = $this->OrdersService->GetOrdersPrint($request->all());
+        return view('Dashboard.Orders.print')->with(compact('data','selected_option'));
     }
 
 }

@@ -58,7 +58,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/', [DashboardController::class,'index'])->name('dashboard');
 
-    
+
     Route::get('/transactions', [AccountingController::class,'all'])
     ->name('all_transactions');
 
@@ -99,7 +99,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/shipping_companies/add', [ShippingCompanyController::class,'create'])
     ->name('add_shipping_company')
     ->can('add','App\Models\ShippingCompany');
-    
+
     Route::post('/shipping_companies/add', [ShippingCompanyController::class,'store'])
     ->name('store_shipping_company')
     ->can('add','App\Models\ShippingCompany');
@@ -107,11 +107,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/shipping_companies/{shipping_company_id}', [ShippingCompanyController::class,'show'])
     ->name('show_shipping_company')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
-    
+
     Route::get('/shipping_companies/{shipping_company_id}/sectors', [ShippingCompanyController::class,'show_sectors'])
     ->name('show_shipping_company_sectors')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
-    
+
     Route::get('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'edit'])
     ->name('edit_shipping_company')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
@@ -126,7 +126,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/shipping_companies/{shipping_company_id}/deactivate', [ShippingCompanyController::class,'deactivate'])
     ->name('deactivate_shipping_company')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
-    
+
 
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders')
@@ -151,6 +151,10 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/orders/{order_id}/status', [OrderController::class,'change_status'])
     ->name('change_order_status')
     ->can('change_status',['App\Models\Order','order_id']);
+
+    Route::post('/orders/bulk/print', [OrderController::class,'print_orders'])
+    ->name('print_orders')
+    ->can('print_orders',['App\Models\Order']);
 
     Route::get('/stock', [StockController::class,'all'])
     ->name('all_stocks')
@@ -231,7 +235,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/suppliers/{supplier_id}', [SupplierController::class,'show'])
     ->name('show_supplier');
 
-    
+
 
     Route::get('/suppliers/{supplier_id}/edit', [SupplierController::class,'edit'])
     ->name('edit_supplier')
@@ -309,18 +313,18 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_categories')
     ->can('view','App\Models\Category');
 
-    
+
     Route::get('/categories/add', [CategoryController::class,'create'])
     ->name('add_category')
     ->can('add','App\Models\Category');
-    
+
     Route::post('/categories/add', [CategoryController::class,'store'])
     ->name('store_category')
     ->can('add','App\Models\Category');
-    
+
     Route::get('/categories/{category_id}', [CategoryController::class,'show'])
     ->name('show_category');
-    
+
     Route::get('/categories/{category_id}/edit', [CategoryController::class,'edit'])
     ->name('edit_category')
     ->can('update',['App\Models\Category','category_id']);
@@ -329,7 +333,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('update_category')
     ->can('update',['App\Models\Category','category_id']);
 
- 
+
     Route::get('/brands', [BrandController::class,'all'])
     ->name('all_brands')
     ->can('view','App\Models\Brand');
