@@ -62,7 +62,7 @@
     "client_group_updated_success":"تم تعديل بيانات مجموعة العملاء بنجاح",
     "role_updated_success":"تم تعديل الادارة بنجاح",
     "category_updated_success":"تم تعديل بيانات التصنيف بنجاح",
-    
+
     "product_info_name_required":"برجاء ادخال اسم المنتج",
     "product_info_name_min":"اسم المنتج على الاقل ثلاثة احرف",
 
@@ -73,7 +73,7 @@
     "product_info_supplier_id_required":"برجاء اختيار مورد",
     "product_info_supplier_id_numeric":"برجاء اختيار مورد",
     "product_info_supplier_id_exists":"برجاء اختيار مورد",
-    
+
     "product_info_category_id_required":"برجاء اختيار تصنيف",
     "product_info_category_id_numeric":"برجاء اختيار تصنيف",
     "product_info_category_id_exists":"برجاء اختيار تصنيف",
@@ -83,7 +83,7 @@
 
     "product_info_sale_price_numeric":"برجاء ادخال السعر قبل الخصم بشكل صحيح",
     "product_info_before_sale_price_gt":"برجاء ادخال السعر قبل الخصم اعلى من السعر",
-    
+
     "product_info_cost_required":"برجاء ادخال تكلفة المنتج",
     "product_info_cost_numeric":"برجاء ادخال تكلفة المنتج بشكل صحيح",
     "product_info_cost_lt":"برجاء ادخال تكلفة المنتج اقل من السعر",
@@ -94,6 +94,7 @@
     "sell":"بيع",
     "move":"نقل",
     "warehouse_to_id_different":"برجاء اختيار مخزن مختلف",
+    "stock_add_success":"تمت الاضافة بنجاح",
     "stock_add_error":"الكمية غير كافية للنقل",
     "order_created_success":"تم أضافة الاوردر بنجاح",
     "order_created_error":"الكمية غير كافية",

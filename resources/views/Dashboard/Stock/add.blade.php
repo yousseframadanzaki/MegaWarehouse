@@ -52,7 +52,7 @@
                         <select class="form-select @error('type') is-invalid @enderror product_info" aria-label="Default  select example" name="type"
                             id="type_id">
                             <option value="">اختار نوع العملية </option>
-                                <option value="move" @if ('move' == old('type')) selected  @endif>نقل لمخزن اخر</option>
+                                <option value="move" @if ('move' == old('type')) selected  @endif> نقل من مخزن اخر </option>
                                 <option value="buy" @if ('buy' == old('type')) selected  @endif>شراء</option>
                         </select>
                         @error('type')
