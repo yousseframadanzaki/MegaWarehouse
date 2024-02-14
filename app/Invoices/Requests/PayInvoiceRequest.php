@@ -24,7 +24,8 @@ class PayInvoiceRequest extends FormRequest
         return [
             'from'=>'required|exists:users,id',
             'value'=>'required|gt:0',
-            'note'=>'nullable'
+            'note'=>'nullable',
+            // 'image'=>'file|max:10240|mimes:jpg,bmp,png'
         ];
     }
 
@@ -35,5 +36,5 @@ class PayInvoiceRequest extends FormRequest
             'value.required'=>'transaction_value_required',
             'value.gt'=>'transaction_value_gt_0',
         ];
-    }   
+    }
 }

@@ -5,12 +5,17 @@ namespace App\Invoices\Services;
 use App\Invoices\Interfaces\InvoiceRepositoryInterface;
 use App\Invoices\Interfaces\InvoiceServiceInterface;
 use App\Accounting\Interfaces\TransactionServiceInterface;
+use App\FileUpload\Interfaces\UploadServiceInterface;
+use App\Media\Interfaces\MediaCrudServiceInterface;
 
 class InvoiceService implements InvoiceServiceInterface{
 
     public function __construct(
        protected readonly InvoiceRepositoryInterface $invoice_repository,
        protected readonly TransactionServiceInterface $TransactionService,
+       protected readonly UploadServiceInterface $FileUploadService,
+       protected readonly MediaCrudServiceInterface $MediaCrudService,
+
     ) {}
 
     public function AddInvoice($invoice_info){
@@ -35,6 +40,11 @@ class InvoiceService implements InvoiceServiceInterface{
             'invoice_id'=>$invoice->id,
             'company_id'=>$invoice->company_id
         );
+        $image_file = $data['image'];
+        unset($data['image']);
+        $image = $this->FileUploadService->transaction($image_file,$invoice->company_id,$invoice->id);
+        $this->MediaCrudService->save($image);
+
         return $this->TransactionService->AddInvoiceTransaction($transaction_data);
     }
 }

@@ -117,5 +117,6 @@
     "marketer_id":"المسوق",
     "brand_id":"الماركة",
     "shipping_company_id":"شركة الشحن",
-    "order_status_change_bulk_success":"تم تغيير حالة الاوردرات بنجاح"
+    "order_status_change_bulk_success":"تم تغيير حالة الاوردرات بنجاح",
+    "pay_invoice_success":"تم الدفع بنجاح"
 }

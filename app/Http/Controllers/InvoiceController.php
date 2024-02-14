@@ -38,16 +38,20 @@ class InvoiceController extends Controller
     public function show($invoice_id)
     {
         $invoice = $this->InvoiceService->GetInvoice($invoice_id);
-        
+
         $users = $this->CommonDataService->GetUsersByRoleType($this->company_id(),'manager');
         return view('Dashboard.Invoices.show_one')->with(['invoice'=>$invoice,'users'=>$users]);
     }
 
     public function pay(PayInvoiceRequest $request,$invoice_id)
     {
-       if($this->InvoiceService->PayInvoice($invoice_id,$request->validated())){
+        $invoice_data =$request->validated();
+        // dd($request->all());
+        $invoice_data['image'] =$request->file('image');
+
+       if($this->InvoiceService->PayInvoice($invoice_id,$invoice_data)){
             return redirect()->back()->with('success','pay_invoice_success');
-       } 
+       }
        return redirect()->back()->with('error','pay_invoice_error');
     }
 

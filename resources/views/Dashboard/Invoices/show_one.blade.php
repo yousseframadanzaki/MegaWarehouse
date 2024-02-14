@@ -27,12 +27,12 @@
             </div>
         </div>
     </div>
-        
+
 
     <!-- Modal -->
     <div class="modal fade"  id="payModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('pay_invoice', $invoice->id) }}" method="POST">
+            <form action="{{ route('pay_invoice', $invoice->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
 
@@ -64,6 +64,18 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                   <label for="" class="form-label"> صورة</label>
+                                   <input class="form-control @error('image') is-invalid @enderror" type="file"
+                                   id="image_file" name="image">
+                                   @error('image')
+                                      <div class="invalid-feedback">
+                                            {{__($message)}}
+                                      </div>
+                                   @enderror
+                                 </div>
+                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">ملاحظة</label>
                                 <textarea class="form-control" name="note" id="" rows="3"></textarea>
