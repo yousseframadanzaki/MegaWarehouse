@@ -160,6 +160,10 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('print_orders')
     ->can('print_orders',['App\Models\Order']);
 
+    Route::post('/orders/bulk/print_labels', [OrderController::class,'print_labels'])
+    ->name('print_labels')
+    ->can('print_labels',['App\Models\Order']);
+
     Route::get('/stock', [StockController::class,'all'])
     ->name('all_stocks')
     ->can('view','App\\Models\Stock');

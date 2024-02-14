@@ -217,6 +217,12 @@
                     <div class="btn-group me-2">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
                     </div>
+                    <div class="btn-group me-2">
+                        <form method="POST" action="{{route('print_labels')}}" id="print_label">
+                            @csrf
+                        <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
+                        </form>
+                    </div>
                 </div>
 
             <table class="mt-3 table table-hover">
@@ -412,6 +418,30 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             });
             $("#print_form").submit();
         })
+        $('.print_label').click(function(e){
+            e.preventDefault();
+            var ids = get_checked_orders();
+            var selectedValue = '1';
+            var OneValue = '2';
+
+            if(ids.length < 1){
+                alert('برجاء اختيار شحنة واحدة على الاقل');
+                return;
+            }
+            if(ids.length == 1) {
+                ids.forEach(id => {
+                    $("#print_label").append(`<input type="hidden" name="orders_labels_ids[]" value="${id}" />`);
+                });
+                $("#print_label").append(`<input type="hidden" name="selected_option" value="${selectedValue}" />`);
+            }
+            if(ids.length > 1) {
+                ids.forEach(id => {
+                    $("#print_label").append(`<input type="hidden" name="orders_labels_ids[]" value="${id}" />`);
+                });
+                $("#print_label").append(`<input type="hidden" name="selected_option" value="${OneValue}" />`);
+            }
+            $("#print_label").submit();
+        });
         $('#status_id').change(function () {
             var status_id = $(this).val();
             if(status_id == '5'){
