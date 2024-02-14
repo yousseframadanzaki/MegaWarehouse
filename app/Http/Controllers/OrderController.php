@@ -113,6 +113,12 @@ class OrderController extends Controller
         $data = $this->OrdersService->GetOrdersPrint($request->all());
         return view('Dashboard.Orders.print')->with(compact('data','selected_option'));
     }
+    public function print_label(Request $request ,$order_id){
+        $selected_option = 1;
+        $data = $request->all();
+        $data = $this->OrdersService->GetLabelPrint($data ,$order_id);
+        return view('Dashboard.Orders.print_label')->with(compact('data','selected_option'));
+    }
     public function print_labels(Request $request){
         $selected_option = $request->get('selected_option');
         $data = $this->OrdersService->GetLabelsPrint($request->all());

@@ -143,6 +143,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
         }
         return $orders;
     }
+    public function get_order_print_label($data ,$order_id)
+    {
+        $orders = [];
+        $order = Order::find($order_id);
+        $orders[] = $order;
+        return $orders;
+    }
     public function get_bulk_labels_print($data) {
         //var_dump($data);die;
         $orders = [];

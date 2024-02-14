@@ -154,6 +154,10 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->orders_crud_repository->get_bulk_orders_print($data);
     }
+    public function GetLabelPrint($order_id ,$data)
+    {
+        return $this->orders_crud_repository->get_order_print_label($order_id ,$data);
+    }
     public function GetLabelsPrint($data)
     {
         return $this->orders_crud_repository->get_bulk_labels_print($data);

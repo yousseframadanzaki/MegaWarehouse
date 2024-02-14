@@ -242,6 +242,12 @@
                     <div class="btn btn-warning print_order"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
                     </form>
                 </div>
+                <div class="btn-group me-2">
+                    <form id="print_label_form" action="{{ route('print_label',$order->id)}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                    <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
+                    </form>
+                </div>
             </div>
 
         <div class="row mt-3">
@@ -293,6 +299,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $('.print_order').click(function(){
             $("#print_order_form").submit();
+        });
+        $('.print_label').click(function(){
+            $("#print_label_form").submit();
         });
         $(document).ready(function() {
             $('#status_id').select2({

@@ -76,6 +76,9 @@ class OrderPolicy
     public function print_orders(User $user){
         return true;
     }
+    public function print_label(User $user){
+        return true;
+    }
     public function print_labels(User $user){
         return true;
     }
