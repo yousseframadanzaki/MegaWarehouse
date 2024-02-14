@@ -146,6 +146,10 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->orders_crud_repository->check_max_orders($company_id);
     }
+    public function GetOrderPrint($order_id ,$data)
+    {
+        return $this->orders_crud_repository->get_order_print($order_id ,$data);
+    }
     public function GetOrdersPrint($data)
     {
         return $this->orders_crud_repository->get_bulk_orders_print($data);

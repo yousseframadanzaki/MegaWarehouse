@@ -68,6 +68,10 @@ class OrderPolicy
             return false;
         }
         return true;
+
+    }
+    public function print_order(User $user){
+        return true;
     }
     public function print_orders(User $user){
         return true;

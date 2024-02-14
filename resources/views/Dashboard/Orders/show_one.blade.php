@@ -14,7 +14,7 @@
         <div class="modal-content">
 
             <div class="modal-body">
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
@@ -176,7 +176,7 @@
                     <label>{{$order->shipping_company->name}}</label>
                     @endisset
                 </div>
-                
+
             </div>
             <div class="row mt-4">
                 <h3>بيانات المسوق</h3>
@@ -225,17 +225,25 @@
                         @endforeach
                     </tbody>
                 </table>
-                
+
             </div>
-            </div> 
+            </div>
         </div>
-        @can('edit_change_status','App\\Models\Order')
-            <div class="row mt-3">
-                <div class="card p-3 shadow-sm d-flex flex-row">
+
+            <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row">
+                @can('edit_change_status','App\\Models\Order')
+                <div class="btn-group me-2">
                     <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
                 </div>
+                @endcan
+                <div class="btn-group me-2">
+                    <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                    <div class="btn btn-warning print_order"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
+                    </form>
+                </div>
             </div>
-        @endcan
+
         <div class="row mt-3">
             <div class="card p-3 shadow-sm">
                 <h3>الحالات</h3>
@@ -283,6 +291,9 @@
 integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        $('.print_order').click(function(){
+            $("#print_order_form").submit();
+        });
         $(document).ready(function() {
             $('#status_id').select2({
                 dropdownParent: $('#statusModal')
@@ -310,9 +321,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         $(document).on('change',".image_file",function (e) {
             const [file] = e.target.files;
             if(file){
-                var template = `<img 
-                src='${URL.createObjectURL(file)}' 
-                class='image_preview' 
+                var template = `<img
+                src='${URL.createObjectURL(file)}'
+                class='image_preview'
                 style="width: 100px;height:100px;object-fit:contain;"
                 />`
                 var id= $(this).attr('data-id');
@@ -337,7 +348,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     data.forEach(image => {
                         var template = `
                             <div class="d-flex justify-content-center mt-1">
-                                <a href="/storage/${image.path}" target="_blank"><img src='/storage/${image.path}'  
+                                <a href="/storage/${image.path}" target="_blank"><img src='/storage/${image.path}'
                                     style="width: 250px;height:250px;object-fit:contain;"
                                 ></a>
                             </div>

@@ -102,6 +102,12 @@ class OrderController extends Controller
         $id = $this->OrdersService->ChangeOrderStatusCallback($request->all());
         return response()->json($id, 200);
     }
+    public function print_order(Request $request ,$order_id){
+        $data = $request->all();
+        $selected_option = 1;
+        $data = $this->OrdersService->GetOrderPrint($data ,$order_id);
+        return view('Dashboard.Orders.print')->with(compact('data' ,'selected_option'));
+    }
     public function print_orders(Request $request){
         $selected_option = $request->get('selected_option');
         $data = $this->OrdersService->GetOrdersPrint($request->all());

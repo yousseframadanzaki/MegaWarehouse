@@ -152,6 +152,10 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('change_order_status')
     ->can('change_status',['App\Models\Order','order_id']);
 
+    Route::post('/orders/{order_id}/print_order', [OrderController::class,'print_order'])
+    ->name('print_order')
+    ->can('print_order',['App\Models\Order','order_id']);
+
     Route::post('/orders/bulk/print', [OrderController::class,'print_orders'])
     ->name('print_orders')
     ->can('print_orders',['App\Models\Order']);
