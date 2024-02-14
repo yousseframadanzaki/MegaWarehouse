@@ -84,11 +84,11 @@
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                 id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                
+
                 <strong>{{auth()->user()->name}}</strong>
             </a>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                
+
                 <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Logout
                 </a></li>
@@ -163,7 +163,7 @@
                                     data-bs-target="#orders-collapse">
                                     <i class="bi bi-basket"></i>
                                     الاوردرات
-                                    
+
                                 </a>
                                 <div class="collapse" id="orders-collapse" style="">
                                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
@@ -432,7 +432,7 @@
                                         @endcan
                                         @can('add', 'App\Models\Stock')
                                             <li class="rounded "><a href="{{ route('add_stock') }}" class="text-white"><i
-                                                        class="bi bi-plus "></i> أضافة عملية</a></li>
+                                                        class="bi bi-plus "></i> أضافة مخورن</a></li>
                                         @endcan
                                     </ul>
                                 </div>

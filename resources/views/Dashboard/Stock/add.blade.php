@@ -7,7 +7,7 @@
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_warehouses') }}">المخازن</a></li>
                 <li><a href="{{ route('all_stocks') }}">عمليات الخصم والاضافة</a></li>
-                <li><a class="link-dark">اضافة عملية</a></li>
+                <li><a class="link-dark">أضافة مخورن</a></li>
             </ul>
         </div>
         <div class="card shadow-sm p-3">
@@ -28,7 +28,7 @@
                                 {{__($message)}}
                             </div>
                         @enderror
-                        
+
                     </div>
                     <div class="col-md-4 @error('product_variants') has-error @enderror">
                         <label class="form-label">المنتج<span class="text-danger">*</span></label>
@@ -44,9 +44,9 @@
                                 {{__($message)}}
                             </div>
                         @enderror
-                        
+
                     </div>
-                    
+
                     <div class="col-md-4 @error('type') has-error @enderror">
                         <label class="form-label">نوع العملية<span class="text-danger">*</span></label>
                         <select class="form-select @error('type') is-invalid @enderror product_info" aria-label="Default  select example" name="type"
@@ -61,20 +61,20 @@
                         </div>
                         @enderror
                     </div>
-                    
+
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-4">
                             <label class="form-label">صورة</label>
-                            
+
                             <input type="file" name="image" id="image" class="form-control">
                             <div class="invalid-feedback product_id">
-    
+
                             </div>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label">ملاحظة</label>
-                            
+
                             <textarea rows="2" name="note" id="" class="form-control"></textarea>
                             <div class="invalid-feedback product_id">
 
@@ -83,14 +83,14 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4  @error('warehouse_to_id') has-error @enderror" >
-                            <label class="form-label" id="warehouse_to_label" 
+                            <label class="form-label" id="warehouse_to_label"
                             @if (!$errors->has('warehouse_to_id') && 'move' !== old('type'))
                                 style="display:none"
                             @endif>الى مخزن<span class="text-danger">*</span></label>
                             <select   name="warehouse_to_id"
-                                id="warehouse_to_id" 
+                                id="warehouse_to_id"
                                 @if ($errors->has('warehouse_to_id') || 'move' === old('type'))
-                                    
+
                                     class="form-select is-invalid product_info"
                                 @else
                                     class="form-select"
@@ -119,7 +119,7 @@
 
                         </div>
                     </div>
-                        <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة العملية <i
+                        <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة مخورن <i
                             class="bi bi-plus"></i></button>
             </form>
         </div>
@@ -146,7 +146,7 @@ $('#product_id').change(function () {
         dataType: "text",
     }).then((response)=>{
         data = JSON.parse(response);
-        
+
         console.log(data);
 
         $.each(data, function (index,item) {
@@ -169,7 +169,7 @@ $('#product_id').change(function () {
 })
 
 $('#type_id').change(function () {
-    var type = $(this).val();   
+    var type = $(this).val();
    if(type == 'move'){
         $("#warehouse_to_id").fadeIn()
         $("#warehouse_to_label").fadeIn()
