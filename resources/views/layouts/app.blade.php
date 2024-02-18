@@ -206,6 +206,24 @@
                             </li>
                         @endcanany
 
+                        @canany(['view_invoice'], 'App\Models\Invoice')
+                            <li>
+                                <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                    data-bs-target="#invoices-collapse">
+                                    <i class="bi bi-cash"></i>
+                                    الحسابات
+                                </a>
+                                <div class="collapse" id="invoices-collapse" style="">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                        @can('view_invoice', 'App\Models\Invoice')
+                                            <li class="rounded"><a href="{{ route('all_invoices') }}" class="text-white">
+                                                <i class="bi bi-cash-coin"></i> الفواتير </a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
+
                         @canany(['view', 'add'], 'App\Models\Role')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
