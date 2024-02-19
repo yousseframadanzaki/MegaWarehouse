@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Stock\Interfaces\StockOperationServiceInterface;
+use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Stock\Filters\StockFilters;
 
 use App\Stock\Requests\CreateStockRequest;
@@ -16,6 +17,7 @@ class StockController extends Controller
     public function __construct(
        private readonly CommonDataServiceInterface $CommonDataService,
        private readonly StockOperationServiceInterface $StockOperationService,
+       private readonly ProductVariantsRepositoryInterface $ProductVariantsRepository,
     ){}
 
     public function all(StockFilters $filters) {
@@ -64,6 +66,10 @@ class StockController extends Controller
 
     public function variants_stock($variant_id) {
         $data = $this->StockOperationService->GetVarintsStock($variant_id);
+        return response()->json($data);
+    }
+    public function scan(Request $request){
+        $data = $this->ProductVariantsRepository->get_scan_stock($request->input('id'));
         return response()->json($data);
     }
 

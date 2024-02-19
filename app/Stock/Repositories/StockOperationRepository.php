@@ -4,6 +4,7 @@ namespace App\Stock\Repositories;
 
 use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Models\Stock;
+use App\Models\Variant;
 
 class StockOperationRepository implements StockOperationRepositoryInterface{
 
@@ -11,7 +12,7 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         $stock = Stock::create($operation);
         return $stock->id;
     }
-    
+
     public function get_operations_by_company_id($company_id,$filters) {
         return Stock::with([
             'order',
@@ -61,7 +62,6 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
     public function update_invoice_id($ids,$invoice_id) {
         return Stock::whereIn('id',$ids)->update(['invoice_id'=>$invoice_id]);
     }
-
-
     
+
 }

@@ -122,6 +122,36 @@
                         <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة مخورن <i
                             class="bi bi-plus"></i></button>
             </form>
+                        <button class="btn col-md-12 btn-lg btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scan">
+                            فحص <i class="bi bi-upc-scan"></i></button>
+        </div>
+    </div>
+    <div class="modal fade" id="scan" tabindex="-1" aria-labelledby="scanModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <textarea name="scan_ids" id="scan_ids" cols="30" rows="5" style="width: 75%; height: 100%;"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table hover-table" style="width: 350px;margin-right: -65px;">
+                                    <thead>
+                                        <tr>
+                                            <th>اسم المنتج</th>
+                                            <th>sku</th>
+                                            <th>الاسم</th>
+                                            <th>الكمية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="scan-stock">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 @endsection
@@ -189,6 +219,39 @@ $("input#image").change(function (e) {
     }
 })
 
+$(document).ready(function() {
+    var scanned_ids = []
+    $("#scan_ids").on('keypress',function(e) {
+        var input = $("#scan_ids").val();
+        input = input.replace(/\[/g, '').replace(/\]/g, '').replace(/\t/g, '');
+        var ids = input.split('\n');
+        var newId = ids.filter(function(id) {
+            return !scanned_ids.includes(id);
+        });
+        let id = newId.toString();
+        scanned_ids.push(...newId);
+        console.log(id);
+        if(e.which == 13) {
+            $.ajax({
+                url:`/api/stock/scan/`,
+                method:'POST',
+                data:{ id},
+                }).then(data => {
+                    if(data){
+                        $.each(data, function (index,item) {
+                        var template =
+                        `<tr>
+                            <td>${item.product.name}</td>
+                            <td>${item.sku}</td>
+                            <td>${item.name}</td>
+                            <td>${item.quantity}</td>
+                        </tr>`;
+                        $("#scan-stock").append(template);
+                    })
+                }
+                })
+        }
+    });
+});
 </script>
-
 @endsection

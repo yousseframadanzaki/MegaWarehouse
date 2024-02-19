@@ -60,6 +60,9 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
     public function get_variant_by_id_no_relations($variant_id){
         return Variant::where('id',$variant_id)->first();
     }
+    public function get_scan_stock($id){
+        return Variant::with('product')->where('sku',$id)->get();
+    }
 
     public function update_variant_by_id($variant_id,$data){
         return Variant::where('id',$variant_id)->update($data);
@@ -78,7 +81,7 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         }])
         ->whereIn('id',$variants_ids)
         ->get();
-        
+
     }
 
 }

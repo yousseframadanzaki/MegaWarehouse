@@ -50,3 +50,4 @@ Route::post('/status_callback',[OrderController::class,'status_callback'])->name
 Route::post('/shipping_area/map', [ShippingAreaController::class,'map'])->name('map_area');
 
 Route::get('/company/{company_id}/users',[CompnayController::class,'get_company_users'])->name('company_users');
+Route::post('/stock/scan', [StockController::class,'scan'])->name('scan_stock');

@@ -28,7 +28,7 @@ class StockOperationService implements StockOperationServiceInterface{
     public function GetCompanyStock($company_id,$filters) {
         return $this->stock_operation_repository->get_operations_by_company_id($company_id,$filters);
     }
-    
+
     function move($user,$details) {
         foreach ($details['product_variants'] as $variant) {
             $current_stock = $this->stock_operation_repository->get_variant_stock_in_warehouse($variant['id'],$details['warehouse_id']);
@@ -80,7 +80,7 @@ class StockOperationService implements StockOperationServiceInterface{
                 $this->MediaService->save($file);
             }
         }
-        
+
         return $ids;
     }
 
@@ -136,7 +136,7 @@ class StockOperationService implements StockOperationServiceInterface{
 
         $items = $this->GetVariantsUnitValues($details['items']);
 
-        
+
 
         $ids = [];
         foreach ($items as $item) {
@@ -153,7 +153,7 @@ class StockOperationService implements StockOperationServiceInterface{
         return $ids;
     }
 
-    function returned_orders($details) { 
+    function returned_orders($details) {
 
     }
 
@@ -205,6 +205,10 @@ class StockOperationService implements StockOperationServiceInterface{
             $i++;
         }
         return $variants;
+    }
+    public function ScanStock($data)
+    {
+        return $this->stock_operation_repository->get_scan_stock($data);
     }
 
 }
