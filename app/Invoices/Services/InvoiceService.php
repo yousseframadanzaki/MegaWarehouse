@@ -40,11 +40,12 @@ class InvoiceService implements InvoiceServiceInterface{
             'invoice_id'=>$invoice->id,
             'company_id'=>$invoice->company_id
         );
-        $image_file = $data['image'];
-        unset($data['image']);
-        $image = $this->FileUploadService->transaction($image_file,$invoice->company_id,$invoice->id);
-        $this->MediaCrudService->save($image);
-
+        if(isset($data['image']) && !emoty($data['image'])){
+            $image_file = $data['image'];
+            unset($data['image']);
+            $image = $this->FileUploadService->transaction($image_file,$invoice->company_id,$invoice->id);
+            $this->MediaCrudService->save($image);
+        }
         return $this->TransactionService->AddInvoiceTransaction($transaction_data);
     }
 }

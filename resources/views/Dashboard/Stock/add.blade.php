@@ -129,6 +129,9 @@
     <div class="modal fade" id="scan" tabindex="-1" aria-labelledby="scanModalLabel" aria-hidden="true">
         <div class="modal-dialog  modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header" style="display: block;text-align: center;">
+                       <h5 class="modal-title"> فحص <i class="bi bi-upc-scan"></i></h5>
+                    </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -145,15 +148,17 @@
                                         </tr>
                                     </thead>
                                     <tbody id="scan-stock">
-
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                </div>
+                <div class="modal-footer">
+            <button type="button" data-bs-dismiss="modal" class="save_stock btn btn-primary"> حفظ </button>
         </div>
     </div>
+  </div>
+</div>
 @endsection
 
 @section('script')
@@ -176,8 +181,6 @@ $('#product_id').change(function () {
         dataType: "text",
     }).then((response)=>{
         data = JSON.parse(response);
-
-        console.log(data);
 
         $.each(data, function (index,item) {
             var template = `
@@ -220,6 +223,20 @@ $("input#image").change(function (e) {
 })
 
 $(document).ready(function() {
+$(".save_stock").click(function (){
+        rows = $(".variant_row")
+        console.log(rows);
+        $.each(rows, function (index,item) {
+            variant = {};
+            variant.id = $(item).attr("data-id");
+            variant.product_name = $(item).find(".variant_row_pname").first().html()
+            variant.name = $(item).find(".variant_row_name").first().html()
+            variant.sku = $(item).find(".variant_row_sku").first().html()
+            save_stock(variant);
+        });
+        $("#scan_ids").val('');
+            $("#scan-stock").html('');
+    });
     var scanned_ids = []
     $("#scan_ids").on('keypress',function(e) {
         var input = $("#scan_ids").val();
@@ -230,7 +247,7 @@ $(document).ready(function() {
         });
         let id = newId.toString();
         scanned_ids.push(...newId);
-        console.log(id);
+
         if(e.which == 13) {
             $.ajax({
                 url:`/api/stock/scan/`,
@@ -240,18 +257,39 @@ $(document).ready(function() {
                     if(data){
                         $.each(data, function (index,item) {
                         var template =
-                        `<tr>
-                            <td>${item.product.name}</td>
-                            <td>${item.sku}</td>
-                            <td>${item.name}</td>
+                        `<tr class="variant_row" data-id="${item.id}">
+                            <td class="variant_row_pname">${item.product.name}</td>
+                            <td class="variant_row_sku">${item.sku}</td>
+                            <td class="variant_row_name">${item.name}</td>
                             <td>${item.quantity}</td>
                         </tr>`;
                         $("#scan-stock").append(template);
+
                     })
                 }
                 })
         }
     });
 });
+function save_stock(item){
+        var index = $('#variants').children().length;
+
+            var template = `
+                <div class="row mt-3">
+                    <input type="hidden" name="product_variants[${index}][id]" value="${item.id}"/>
+                    <div class="col-md-4">
+                        <input type="text" tabindex="-1" class="form-control " readonly value="${item.product_name}" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="product_variants[${index}][quantity]" class="form-control" placeholder="الكمية"/>
+                    </div>
+                </div>
+            `;
+
+            $("#variants").append(template);
+}
 </script>
 @endsection
