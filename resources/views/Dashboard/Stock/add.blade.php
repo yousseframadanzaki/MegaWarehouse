@@ -7,7 +7,7 @@
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_warehouses') }}">المخازن</a></li>
                 <li><a href="{{ route('all_stocks') }}">عمليات الخصم والاضافة</a></li>
-                <li><a class="link-dark">أضافة مخورن</a></li>
+                <li><a class="link-dark">أضافة مخزون</a></li>
             </ul>
         </div>
         <div class="card shadow-sm p-3">
@@ -119,7 +119,7 @@
 
                         </div>
                     </div>
-                        <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة مخورن <i
+                        <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة مخزون <i
                             class="bi bi-plus"></i></button>
             </form>
                         <button class="btn col-md-12 btn-lg btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scan">

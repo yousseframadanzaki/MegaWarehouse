@@ -11,7 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\Admin\CompnayController;
+use App\Http\Controllers\admin\CompnayController;
 
 /*
     |--------------------------------------------------------------------------

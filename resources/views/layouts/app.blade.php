@@ -450,7 +450,7 @@
                                         @endcan
                                         @can('add', 'App\Models\Stock')
                                             <li class="rounded "><a href="{{ route('add_stock') }}" class="text-white"><i
-                                                        class="bi bi-plus "></i> أضافة مخورن</a></li>
+                                                        class="bi bi-plus "></i> أضافة مخزون</a></li>
                                         @endcan
                                     </ul>
                                 </div>
