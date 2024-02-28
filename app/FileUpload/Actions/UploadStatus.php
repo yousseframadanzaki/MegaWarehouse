@@ -17,7 +17,7 @@ class UploadStatus implements UploadStatusInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "status/$name/$name",
+            path: "storage/status/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',

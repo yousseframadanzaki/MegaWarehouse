@@ -17,7 +17,7 @@ class UploadTransaction implements UploadTransactionInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "transaction/$name/$name",
+            path: "storage/transaction/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',

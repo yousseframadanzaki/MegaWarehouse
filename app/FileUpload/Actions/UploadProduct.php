@@ -17,7 +17,7 @@ class UploadProduct implements UploadProductInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "product/$name/$name",
+            path: "storage/product/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',

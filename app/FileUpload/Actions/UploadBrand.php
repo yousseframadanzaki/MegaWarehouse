@@ -17,7 +17,7 @@ class UploadBrand implements UploadBrandInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "brand/$name/$name",
+            path: "storage/brand/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',

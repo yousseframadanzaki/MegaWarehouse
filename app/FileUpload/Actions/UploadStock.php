@@ -17,7 +17,7 @@ class UploadStock implements UploadStockInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "stock/$name/$name",
+            path: "storage/stock/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',

@@ -19,7 +19,7 @@ class UploadAvatar implements UploadAvatarInterface
             name: "{$name}",
             file_name: $file->getClientOriginalName(),
             mime: $file->getClientMimeType(),
-            path: "avatar/$name/$name",
+            path: "storage/avatar/$name/$name",
             disk: 'local',
             hash: hash_file(
                 'md5',
