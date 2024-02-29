@@ -48,5 +48,13 @@ class stockPolicy
 
         return true;
     }
+    public function move(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','move_stock')){
+            return false;
+        }
+
+        return true;
+    }
 
 }

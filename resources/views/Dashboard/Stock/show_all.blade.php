@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -30,7 +30,7 @@
                         <a data-bs-dismiss="modal" class="delete_btn btn btn-secondary">لا</a>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -130,7 +130,7 @@
 
                     </div>
 
-                    
+
                     <div class="col-md-4">
                         <label class="form-label">الموردين</label>
                         <select class="form-select product_info" aria-label="Default  select example" name="supplier_id"
@@ -169,7 +169,7 @@
                         <input class="form-control datetimeplugin" name="date_to" id=""
                             value="{{ Request::get('date_to') }}">
                     </div>
-                    
+
                 </div>
 
                 <div class="d-flex mt-3 justify-content-end">
@@ -195,7 +195,10 @@
         @canany(['add', 'delete'], 'App\\Models\Stock')
         <div class="card shadow-sm mt-3 p-3 d-flex flex-row">
             @can('add','App\\Models\Stock')
-                <div class="fs-2"  title="أضافة عملية "><a href="{{route('add_stock')}}"><i class="text-primary bi bi-plus-square-fill"></i></a></div>
+                <div class="fs-2"  title="أضافة مخزون "><a href="{{route('add_stock')}}"><i class="text-primary bi bi-plus-square-fill"></i></a></div>
+            @endcan
+            @can('move','App\\Models\Stock')
+                <div class="fs-2" style="margin-right:20px" title="نقل مخزون "><a href="{{route('move_stock')}}"><i class="text-primary bi bi bi-shift"></i></a></div>
             @endcan
             @can('delete','App\\Models\Stock')
                 <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
@@ -278,7 +281,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
-            
+
             $('select.product_info').select2({
                 padding: 'resolve',
             });

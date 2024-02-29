@@ -7,14 +7,14 @@
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_warehouses') }}">المخازن</a></li>
                 <li><a href="{{ route('all_stocks') }}">عمليات الخصم والاضافة</a></li>
-                <li><a class="link-dark">أضافة مخزون</a></li>
+                <li><a class="link-dark">نقل مخزون </a></li>
             </ul>
         </div>
         <div class="card shadow-sm p-3">
             <form action="{{route('store_stock')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-                    <input hidden value="buy" name="type">
+                    <input hidden value="move" name="type">
                     <div class="col-md-4 @error('warehouse_id') has-error @enderror">
                         <label class="form-label">المخزن<span class="text-danger">*</span></label>
                         <select class="form-select @error('warehouse_id') is-invalid @enderror product_info" aria-label="Default  select example" name="warehouse_id"
@@ -47,20 +47,36 @@
                         @enderror
 
                     </div>
-                    <div class="col-md-4">
-                        <label class="form-label">صورة</label>
 
-                        <input type="file" name="image" id="image" class="form-control">
-                        <div class="invalid-feedback product_id">
-
-                        </div>
+                    <div class="col-md-4  @error('warehouse_to_id') has-error @enderror" >
+                        <label class="form-label" id="warehouse_to_label">
+                            الى مخزن<span class="text-danger">*</span></label>
+                        <select   name="warehouse_to_id" id="warehouse_to_id" class="form-select is-invalid product_info">
+                            <option value="">اختار المخزن </option>
+                            @foreach ($warehouses as $id => $name)
+                                <option @if ($id == old('warehouse_to_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                        @error('warehouse_to_id')
+                            <div class="invalid-feedback">
+                                {{__($message)}}
+                            </div>
+                        @enderror
                     </div>
+
 
 
 
                     </div>
                     <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label class="form-label">صورة</label>
 
+                            <input type="file" name="image" id="image" class="form-control">
+                            <div class="invalid-feedback product_id">
+
+                            </div>
+                        </div>
                         <div class="col-md-8">
                             <label class="form-label">ملاحظة</label>
 
@@ -70,34 +86,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="row">
-                        <div class="col-md-4  @error('warehouse_to_id') has-error @enderror" >
-                            <label class="form-label" id="warehouse_to_label"
-                            @if (!$errors->has('warehouse_to_id') && 'move' !== old('type'))
-                                style="display:none"
-                            @endif>الى مخزن<span class="text-danger">*</span></label>
-                            <select   name="warehouse_to_id"
-                                id="warehouse_to_id"
-                                @if ($errors->has('warehouse_to_id') || 'move' === old('type'))
-
-                                    class="form-select is-invalid product_info"
-                                @else
-                                    class="form-select"
-                                    style="display:none"
-                                @endif
-                                >
-                                <option value="">اختار المخزن </option>
-                                @foreach ($warehouses as $id => $name)
-                                    <option @if ($id == old('warehouse_to_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('warehouse_to_id')
-                                <div class="invalid-feedback">
-                                    {{__($message)}}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>-->
                     <div class="row mt-3">
                         <div id="preview" style="display: none">
                             <img id="preview_img" style="width: 200px;height:200px;object-fit:contain"/>
@@ -108,7 +96,7 @@
 
                         </div>
                     </div>
-                        <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة مخزون <i
+                        <button class="btn col-md-12 btn-lg btn-primary mt-3">نقل مخزون <i
                             class="bi bi-plus"></i></button>
             </form>
                         <button class="btn col-md-12 btn-lg btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scan">
@@ -188,19 +176,6 @@ $('#product_id').change(function () {
 
         });
     })
-})
-
-$('#type_id').change(function () {
-    var type = $(this).val();
-   if(type == 'move'){
-        $("#warehouse_to_id").fadeIn()
-        $("#warehouse_to_label").fadeIn()
-        $("#warehouse_to_id").select2()
-   }else{
-        $("#warehouse_to_id").next(".select2-container").hide();
-        $("#warehouse_to_id").val("");
-        $("#warehouse_to_label").fadeOut()
-   }
 })
 
 $("input#image").change(function (e) {

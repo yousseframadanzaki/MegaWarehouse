@@ -180,6 +180,14 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('store_stock')
     ->can('add','App\\Models\Stock');
 
+    Route::get('/stock/move', [StockController::class,'move'])
+    ->name('move_stock')
+    ->can('move','App\\Models\Stock');
+
+    Route::post('/stock/move', [StockController::class,'store'])
+    ->name('move_stock')
+    ->can('move','App\\Models\Stock');
+
     Route::post('/stock/delete', [StockController::class,'delete'])
     ->name('delete_stock');
 
