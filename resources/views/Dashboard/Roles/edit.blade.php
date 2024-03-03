@@ -12,7 +12,7 @@
         <form class="row  needs-validation" novalidate action="{{ route('update_role',$data['role']->id) }}" method="POST">
             @csrf
             <div class="card p-5 shadow-sm">
-                <h1 class="text-center">تعديل ادارة</h1>
+                <h2 class="text-center">تعديل ادارة</h2>
                 <div class="row mb-3 mt-3">
                     <div class="col-md-6">
                         <label class="form-label">اسم الادارة</label>
@@ -47,7 +47,7 @@
                 @enderror
                 @foreach ($data['permission_classes'] as $permission_class)
                     <div class="row mt-5">
-                        <h1>{{ __($permission_class[0]->resource_name) }}</h1>
+                        <h3>{{ __($permission_class[0]->resource_name) }}</h3>
                         @foreach ($permission_class as $permission)
                             <div class="form-check col-md-4" style="direction: rtl">
                                 <input name="permissions[]" class="form-check-input fs-3" style="float: right;"

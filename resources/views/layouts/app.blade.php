@@ -54,7 +54,7 @@
                             </i>
                         </a>
                     </li>
-                    <li class="nav-item dropdown" style="font-size: 16px">
+                    <li class="nav-item dropdown" style="font-size: 15px">
                         <a href="#" class="nav-link dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <strong>{{ auth()->user()->name }}</strong>
@@ -103,7 +103,7 @@
         <div class="row">
 
             <div class="d-flex sidebar sidebar-bg flex-column flex-shrink-0 p-3 text-white sticky-top"
-                style="height:100vh;width:20%">
+                style="height:100vh;width:16.8%">
                 {{-- <a href="/" class="d-flex  align-items-center mb-3 mb-md-0 text-white  text-decoration-none">
                     <span class="fs-3 ">Mega Warehouse</span>
                 </a>

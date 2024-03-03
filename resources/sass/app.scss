@@ -7,3 +7,25 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+.fs-5 {
+    font-size: 15px !important;
+}
+.p-3 {
+    padding: 8px !important;
+}
+.p-5 {
+    padding: 12px !important;
+}
+.mt-3 {
+    margin-top: 8px !important;
+}
+@media (min-width: 1200px) {
+.fs-3 {
+    font-size: 17px !important;
+}
+}
+@media (min-width: 1200px){
+h1, .h1 {
+    font-size: 22px;
+}
+}
