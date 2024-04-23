@@ -24,15 +24,15 @@ class ProductCrudService implements ProductCrudServiceInterface{
     public function AddProduct($company_id,array $details){
         $details['product_info']['company_id'] = $company_id;
         $product = $this->product_crud_repository->add_product($details['product_info']);
-        
         if(isset($details['product_attributes']) && count($details['product_attributes']) > 0 ){
             $attributes = $this->product_attributes_repository->add_attributes($product->id,$details['product_attributes']);
             $variants = $this->product_variants_repository->add_variants($product,$attributes,$details['product_variants']);
         }else{
             $variants = $this->product_variants_repository->add_default_variant($product);
         }
-
-        $this->add_images($product,$details['product_images']);
+        if(!empty ($details['product_image'])){
+            $this->add_images($product,$details['product_image']);
+        }
 
         return $product;
     }

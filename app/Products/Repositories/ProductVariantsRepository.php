@@ -4,9 +4,14 @@ namespace App\Products\Repositories;
 
 use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Models\Variant;
-
+use App\FileUpload\Interfaces\UploadServiceInterface;
+use App\Media\Interfaces\MediaCrudServiceInterface;
 class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
 
+    public function __construct(
+        protected readonly  UploadServiceInterface $FileUploadService,
+        protected readonly  MediaCrudServiceInterface $MediaService,
+    ) {}
     public function add_default_variant($product){
         $variant = new Variant();
         $variant->name = $product->name;
@@ -27,6 +32,10 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
             $variant_info['price'] = $product->price;
         }
         $created_variant = Variant::create($variant_info);
+        if(!empty($variant_info['photo'])){
+            $file = $this->FileUploadService->varient($variant_info['photo'],$created_variant->product->company_id,$created_variant->id);
+            $this->MediaService->save($file);
+        }
         if(empty($variant_info['sku'])){
             $variant_info['sku'] = implode("-",array_values($attributes));
             $variant_info['sku'] = $product->id .'-'. $created_variant->id ."-" . $variant_info['sku'];

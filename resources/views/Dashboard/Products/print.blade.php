@@ -23,7 +23,7 @@
 <body>
     <div class="container">
         <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
-            {!! DNS1D::getBarcodeHTML($variant->sku, 'CODABAR') !!}
+            {{-- {!! DNS1D::getBarcodeHTML($variant->sku, 'CODABAR') !!} --}}
             <div>
             {{$variant->sku}}
         </div>
@@ -38,7 +38,6 @@
             <span style="font-weight: bold">السعر</span>
             <span>{{$variant->price}}</span>
         </div>
-        
     </div>
 </body>
 </html>

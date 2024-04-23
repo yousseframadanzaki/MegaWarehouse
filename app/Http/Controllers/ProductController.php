@@ -64,10 +64,9 @@ class ProductController extends Controller
         );
         return view('Dashboard.Products.add')->with('data',$data);
     }
-    
+
     public function store(CreateProductRequest $request) {
         $data = $request->all();
-        
         $company_id = $this->company_id();
 
         $product = $this->ProductCrudService->AddProduct($company_id,$data);

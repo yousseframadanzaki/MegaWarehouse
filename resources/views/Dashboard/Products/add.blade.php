@@ -14,7 +14,7 @@
             width: 20px;
             height: 20px;
          }
-        
+
     </style>
 
     <div class="p-3">
@@ -56,7 +56,7 @@
                                     {{ __($message) }}
                                 </div>
                             @enderror
-                            
+
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
@@ -193,6 +193,7 @@
                                 <th scope="col">اسم</th>
                                 <th scope="col">سعر</th>
                                 <th scope="col">sku</th>
+                                <th scope="col">اضافة صورة</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -255,10 +256,10 @@
                 </div>
             </div>
             <div class="col-md-5 values_display" style="display:none;">
-                <label class="form-label">قيم الاختيار:-</label> 
+                <label class="form-label">قيم الاختيار:-</label>
                 <div class="option_values_div">
 
-                </div> 
+                </div>
             </div>
             <div class="col-md-5 option_value_div">
                 <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
@@ -271,10 +272,10 @@
                 <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
             </div>
             <div class="row mt-3 values_edit">
-                <label class="form-label">قيم الاختيار:-</label> 
+                <label class="form-label">قيم الاختيار:-</label>
                 <div class="option_values_div">
 
-                </div> 
+                </div>
             </div>
         </div>
         `;
@@ -335,9 +336,9 @@
         Object.keys(form_options_values).forEach(key => {
             form_options_values[key].forEach(value => {
                 var template = `
-            <div 
-                class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
-                style="margin-left:10px" 
+            <div
+                class="remove_option_value hover-danger btn btn-success option_value_` + key + `"
+                style="margin-left:10px"
                 data-value="${value}"
                 data-option-id="${key}"
             >
@@ -482,7 +483,10 @@
                         index + `][options][` + option_value[0] + `]" value="` + option_value[1] + `"/>`
                 }
             });
-            template += `</tr>`;
+            //template += `</tr>`;
+            template += `<td>` +
+            `<input class="form-control form-control-sm" id="formFileSm" name="product_variants[` + index + `][photo]" type="file"/></td>` +
+            `</tr>`;
             $("#variants_table tbody").append(template);
         });
         $("#variants_table").fadeIn();
@@ -506,7 +510,7 @@
         });
         $("#product-form").submit();
     })
-</script>    
+</script>
 {{-- <script>
         $(document).ready(function() {
             $('#summernote').summernote({
@@ -546,10 +550,10 @@
                     </div>
                 </div>
                 <div class="col-md-5 values_display" style="display:none;">
-                    <label class="form-label">قيم الاختيار:-</label> 
+                    <label class="form-label">قيم الاختيار:-</label>
                     <div class="option_values_div">
 
-                    </div> 
+                    </div>
                 </div>
                 <div class="col-md-5 option_value_div">
                     <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
@@ -562,10 +566,10 @@
                     <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
                 </div>
                 <div class="row mt-3 values_edit">
-                    <label class="form-label">قيم الاختيار:-</label> 
+                    <label class="form-label">قيم الاختيار:-</label>
                     <div class="option_values_div">
 
-                    </div> 
+                    </div>
                 </div>
             </div>
             `;
@@ -629,9 +633,9 @@
             Object.keys(form_options_values).forEach(key => {
                 form_options_values[key].forEach(value => {
                     var template = `
-                <div 
-                    class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
-                    style="margin-left:10px" 
+                <div
+                    class="remove_option_value hover-danger btn btn-success option_value_` + key + `"
+                    style="margin-left:10px"
                     data-value="${value}"
                     data-option-id="${key}"
                 >
@@ -801,7 +805,7 @@
 
                 this.on("thumbnail", function(file) {
                     $(file.previewElement).append("<input type='checkbox'  class='form-check-input checkbox' id='"+file.upload.uuid+"' />");
-                    
+
                     $("#"+file.upload.uuid).click(function () {
                         if (file.is_main) {
                             file.is_main = false;
@@ -816,10 +820,10 @@
                         }
                         console.log(file);
                     })
-                    
+
 
                     file.previewElement.addEventListener("click", function() {
-                        
+
                     });
                 });
 
@@ -904,6 +908,6 @@
 
     </script> --}}
     <script>
-        
+
     </script>
 @endsection
