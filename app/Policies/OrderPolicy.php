@@ -45,6 +45,13 @@ class OrderPolicy
         }
         return true;
     }
+    public function edit_order(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','edit_order')){
+            return false;
+        }
+        return true;
+    }
 
     // public function update(User $user, $order_id): bool
     // {

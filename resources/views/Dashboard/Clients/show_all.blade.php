@@ -30,7 +30,7 @@
                             <td>{{ $client->address }}</td>
                             <td>
                                 @isset($client->links)
-                                    @foreach (json_decode($client->links) as $name => $value)
+                                    @foreach ($client->links as $name => $value)
                                         <a class="bi bi-{{$name}}" href="{{$value}}"></a>
                                     @endforeach
                                 @endisset

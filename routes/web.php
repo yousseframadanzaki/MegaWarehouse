@@ -144,6 +144,14 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('show_order')
     ->can('view_one',['App\Models\Order','order_id']);
 
+    Route::get('/orders/{order_id}/edit', [OrderController::class,'edit'])
+    ->name('edit_order')
+    ->can('edit_order',['App\Models\Order','order_id']);
+
+    Route::post('/orders/{order_id}/edit', [OrderController::class,'update_order'])
+    ->name('update_order')
+    ->can('edit_order','App\Models\Order','order_id');
+
     Route::post('/orders/bulk/status', [OrderController::class,'change_status_bulk'])
     ->name('change_order_status_bulk')
     ->can('edit_change_status','App\Models\Order');

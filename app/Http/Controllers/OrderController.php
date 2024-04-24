@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Models\Client;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
@@ -72,6 +75,44 @@ class OrderController extends Controller
             return redirect()->back();
         }
         return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')])->withInput();
+    }
+    public function edit($order_id){
+        $company_id = $this->company_id();
+        $order = $this->OrdersService->GetOrder($order_id);
+        $clients = $this->CommonDataService->GetCompanyClients($company_id);
+        $countries = $this->CommonDataService->GetCountries();
+        $areas = $this->CommonDataService->GetAreas();
+        $cities = $this->CommonDataService->GetCities();
+        $products = $this->CommonDataService->GetCompanyProducts($company_id);
+        $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
+        $marketers = $this->CommonDataService->GetCompanyMarketers($company_id);
+        return view('Dashboard.Orders.edit')->with(compact('clients','countries', 'areas', 'cities','products','warehouses','marketers','order'));
+    }
+
+    public function update_order($order_id, Request $request){
+        $data = $request->all();
+        $client = $data['client'];
+        $links = json_encode($client['links']);
+
+
+        $order = Order::findOrFail($order_id);
+        $order->name = $client['name'];
+        $order->phone_1 = $client['phone_1'];
+        $order->phone_2 = $client['phone_2'];
+        $order->address = $client['address'];
+        $order->country_id = $client['country_id'];
+        $order->city_id = $client['city_id'];
+        $order->area_id = $client['area_id'];
+        $order->save();
+
+        $linksUpdaded = Client::findOrFail($order['client_id']);
+        $linksUpdaded->links = $links;
+        $linksUpdaded->save();
+
+        if($order || $linksUpdaded){
+            $request->session()->flash('success', 'order_edited_success');
+            return redirect()->back();
+        }
     }
 
     public function change_status(Request $request,$order_id) {

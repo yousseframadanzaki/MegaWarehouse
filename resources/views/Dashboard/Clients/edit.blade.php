@@ -77,7 +77,7 @@
                     <div class="col-md-4">
                         <label class="form-label">المدينة <span class="text-danger">*</span></label>
                         <select id="city-select" class="form-select @error('city_id') is-invalid @enderror" aria-label="Default select example" name="city_id">
-                            
+
                             @foreach ($cities as $id => $name)
                                 <option @if($client->city_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
                             @endforeach
@@ -107,16 +107,16 @@
                     <div class="col-md-4">
                         <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                         <input type="text" class="form-control" name="links[facebook]"
-                            value="{{ json_decode($client->links)->facebook }}">
+                            value="{{ $client->links->facebook }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">لينك انستجرام <i class="bi bi-instagram"> </i></label>
                         <input type="text" class="form-control" name="links[instagram]"
-                            value="{{ json_decode($client->links)->instagram }}">
+                            value="{{ $client->links->instagram }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
-                        <input type="text" class="form-control" name="links[tiktok]" value="{{ json_decode($client->links)->tiktok }}">
+                        <input type="text" class="form-control" name="links[tiktok]" value="{{ $client->links->tiktok }}">
                     </div>
                 </div>
                 <div class="row">
@@ -156,7 +156,7 @@
                 $.each(data, function (key, value) {
                     $("#city-select").append('<option value="' + key + '">' + value + '</option>');
                 });
-                
+
             })
         })
         $("#city-select").change(function () {

@@ -22,6 +22,12 @@ class Client extends Model
         'company_id',
     ];
 
+    public function getLinksAttribute($links)
+    {
+        return json_decode($links);
+    }
+
+
     public function client_group() {
         return $this->belongsTo(ClientGroup::class);
     }

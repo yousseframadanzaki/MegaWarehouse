@@ -236,6 +236,11 @@
                     <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
                 </div>
                 @endcan
+                @can('edit_order', 'App\Models\Order')
+                    <div class="btn-group me-2">
+                        <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning print_label"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
+                    </div>
+                @endcan
                 <div class="btn-group me-2">
                     <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf

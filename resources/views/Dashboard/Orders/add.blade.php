@@ -29,7 +29,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -53,8 +53,6 @@
                         <div class="col-md-12 mt-2" id="variants">
                             <label class="form-label" for="variant_id">المتغيرات</label>
                             <select name="variant_id" id="variant_id" class="form-select variant_info" style="padding: 0.375rem 0.75rem;width:100%">
-                            
-                                
                             </select>
                         </div>
                         <div class="col-md-12 mt-2" >
@@ -231,8 +229,8 @@
                             <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
                         </div>
                     </div>
-                    
-                    
+
+
 
                     <div class="row mt-3">
                         <div class="col-md-4">
@@ -279,7 +277,7 @@
                     <div class="row mt-5">
                         <h4>المسوق</h4>
                         <div class="col-md-4">
-                            
+
                             <select id="marketer-select" class="form-select @error('marketer_id') is-invalid @enderror" name="marketer_id">
                                 <option value="">اختار</option>
                                 @foreach ($marketers as $marketer)
@@ -322,17 +320,17 @@
                             <tbody>
                                 {{-- @if (Session::has('cart'))
                                     @foreach (Session::get('cart') as $item)
-                                        
+
                                     @endforeach
                                 @endif --}}
                             </tbody>
                         </table>
-                        
+
                         <div>
                             <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الاوردر</a>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="row p-3">
                     <button type="submit" class="btn btn-primary btn-lg mt-3 add_order_btn">أضافة الاوردر <i class="bi bi-plus"></i></button>
@@ -361,8 +359,8 @@
 
     <script>
 
-        
-        
+
+
         $(document).ready(function() {
             var items = {!! json_encode(Session::get('cart')) !!}
             $('select.product_info').select2({
@@ -597,7 +595,7 @@
            warehouse_id = $(`tr#${variant_id} .warehouse`).val();
 
            price = parseFloat($(this).attr('data-price'));
-           
+
            $(`tr#${variant_id} .variant_total`).html(quantity*price);
 
            var item = {
@@ -683,16 +681,13 @@
                 }
             })
         })
- 
-
-        
         // $(".add_order_btn").click(function (e) {
         //     e.preventDefault();
         //     console.log("hi 1");
 
         //     var warehouses = $("select.warehouse");
         //     var quantites = $(".quantity");
-            
+
         //     var error = false;
 
         //     for (let index = 0; index < warehouses.length; index++) {
