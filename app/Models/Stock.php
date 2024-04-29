@@ -19,6 +19,7 @@ class Stock extends Model
         'quantity',
         'invoice_id',
         'unit_price',
+        'unit_price_after_sale',
         'unit_cost',
         'unit_commission',
     ];

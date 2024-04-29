@@ -20,8 +20,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['status_id'] = '1';
 
         $total_data = $this->calculate_total($data['items'],$order_data['client_id']);
+        $total_after_sale = $this->calculate_total_after_sale($data['items']);
 
         $order_data['total'] = $total_data['total'];
+        $order_data['total_after_sale'] = $total_after_sale;
         $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
         $order_data['marketer_id'] = $data['marketer_id'];
 
@@ -33,7 +35,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
 
         return  $order;
     }
-
+    function calculate_total_after_sale($items){
+        $total = 0;
+        foreach ($items as $item) {
+            $total += intval($item['unit_sale']) * intval($item['quantity']);
+        }
+        return $total;
+    }
     function calculate_total($items,$client_id) {
         $total = 0;
         $total_marketer_commission = 0;

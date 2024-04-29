@@ -144,6 +144,10 @@ class StockOperationService implements StockOperationServiceInterface{
             $operation['warehouse_id'] = $map[$item['id']];
             $operation['quantity'] = $item['quantity'] * -1;
             $operation['unit_price'] = $item['unit_price'] ;
+            foreach ($details['items'] as $key => $keys) {
+                $unitSale = $keys['unit_sale'];
+                $operation['unit_price_after_sale'] = $unitSale;
+            }
             $operation['unit_cost'] = $item['unit_cost'];
             $operation['unit_commission'] = $item['unit_commission'];
 

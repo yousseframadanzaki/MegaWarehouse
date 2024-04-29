@@ -310,10 +310,12 @@
                                     <th>عمولة المسوق</th>
                                     <th>اسم المتغير</th>
                                     <th>السعر</th>
+                                    <th>السعر بعد الخصم</th>
                                     <th>الكمية المتوفرة</th>
                                     <th>المخزن</th>
                                     <th>الكمية</th>
                                     <th>الاجمالى</th>
+                                    <th>الاجمالى بعد الخصم</th>
                                     <th>حذف</th>
                                 </tr>
                             </thead>
@@ -325,7 +327,8 @@
                                 @endif --}}
                             </tbody>
                         </table>
-
+                        <div class="total_total" style="direction: ltr;">الاجمالى :<span id="total_total_1"></span></div>
+                        <div class="total_after_sale" style="direction: ltr;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
                         <div>
                             <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الاوردر</a>
                         </div>
@@ -356,11 +359,7 @@
 
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script>
-
-
-
         $(document).ready(function() {
             var items = {!! json_encode(Session::get('cart')) !!}
             $('select.product_info').select2({
@@ -490,6 +489,9 @@
                         <td>${variant.product.marketer_commission}</td>
                         <td>${variant.name}</td>
                         <td>${variant.price}</td>
+                        <td style="width:80px;">
+                            <input style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${variant.price}" data-id="${variant.id}" id="unit_sale-${variant.id}" />
+                        </td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
                         <td>
                             <select class="warehouse form-select" data-id="${variant.id}" name="items[${i}][warehouse_id]">
@@ -500,6 +502,7 @@
                             <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price}" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
                         </td>
                         <td class="variant_total">${parseInt(variant.price) * parseInt(item.quantity)}</td>
+                        <td class="variant_total_after_sale" id="variant_total_after_sale-${variant.id}"></td>
                         <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant.id}"><i class="bi bi-trash3"></a></td>
                     </tr>
                     <input type="hidden" name="items[${i}][id]" value="${variant.id}" />
@@ -508,8 +511,42 @@
                 if(item.warehouse_id){
                     $(`tr#${variant.id} .warehouse`).val(item.warehouse_id);
                 }
+                $(`#unit_sale-${variant.id}`).on('input', function() {
+                    var price_after_sale = $(this).val();
+                    var quantity = $(`#quantity-${variant.id}`).val();
+                    var totalAfterSale = price_after_sale * quantity;
+                    $(this).closest('tr').find('.variant_total_after_sale').text(totalAfterSale);
+                });
+                var price_after_sale = $(`#unit_sale-${variant.id}`).val();
+                var quantity = $(`#quantity-${variant.id}`).val();
+                var totalAfterSale = price_after_sale * quantity;
+                $(`#variant_total_after_sale-${variant.id}`).text(totalAfterSale);
+
             });
         }
+
+        function UpdateOrderTotal(){
+            var total = 0;
+            var totalAfterSale = 0;
+
+            $('tr').each(function() {
+                var variantTotal = parseInt($(this).find('.variant_total').text().trim());
+                var variantTotalAfterSale = parseInt($(this).find('.variant_total_after_sale').text().trim());
+
+                if (!isNaN(variantTotal)) {
+                    total += variantTotal;
+                }
+                if (!isNaN(variantTotalAfterSale)) {
+                    totalAfterSale += variantTotalAfterSale;
+                }
+            });
+
+            var formattedTotal = total.toLocaleString();
+            var formattedTotalAfterSale = totalAfterSale.toLocaleString();
+            $('#total_total_1').text(formattedTotal);
+            $('#total_after_sale_1').text(formattedTotalAfterSale);
+
+            }
 
         $('#variant_id').change(function () {
             var variant_id = $(this).val();
@@ -588,12 +625,12 @@
             $('#message').append(template);
             $('#message').fadeIn();
         }
-
         $(document).on('input','.quantity',function (e) {
            variant_id = $(this).attr('data-id');
            quantity = parseInt($(this).val());
            warehouse_id = $(`tr#${variant_id} .warehouse`).val();
-
+           price_after_sale = $(`tr#${variant_id} .unit_sale`).val();
+           $(`tr#${variant_id} .variant_total_after_sale`).html(quantity*price_after_sale);
            price = parseFloat($(this).attr('data-price'));
 
            $(`tr#${variant_id} .variant_total`).html(quantity*price);
@@ -613,6 +650,7 @@
             if(!data){
                 alert('حدث خطاء أثناء التعديل');
             }
+            UpdateOrderTotal();
            })
 
 

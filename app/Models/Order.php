@@ -27,6 +27,7 @@ class Order extends Model
         'city_id',
         'area_id',
         'total',
+        'total_after_sale',
         'client_id',
         'company_id',
         'status_id',
@@ -49,7 +50,7 @@ class Order extends Model
     {
         return $this->hasMany(Stock::class);
     }
-    
+
 
     public function order_status()
     {
@@ -60,7 +61,7 @@ class Order extends Model
         ->orderByPivot('created_at','desc');
     }
 
-    
+
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
@@ -100,5 +101,5 @@ class Order extends Model
     {
         return $filters->apply($query);
     }
-    
+
 }
