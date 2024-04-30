@@ -12,6 +12,7 @@ use App\Clients\Interfaces\ClientCrudServiceInterface;
 use App\Cart\Interfaces\CartServiceInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
+use App\Products\Interfaces\VariantStockServiceInterface;
 
 
 
@@ -26,6 +27,7 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  MediaCrudServiceInterface $MediaService,
         protected readonly  ShippingCompanyServiceInterface $ShippingCompanyService,
         protected readonly  ShippingStatusServiceInterface $ShippingStatusService,
+        protected readonly VariantStockServiceInterface $VariantStockService,
     ) {}
 
     public function AddOrder($user,array $order_details){
@@ -162,4 +164,40 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->orders_crud_repository->get_bulk_labels_print($data);
     }
-}
+    public function UpdateOrder($order_id ,$data)
+    {
+        return $this->orders_crud_repository->update_order($order_id ,$data);
+    }
+    public function UpdateStock($order_id, $data)
+    {
+        return $this->StockService->UpdateStock($order_id, $data);
+    }
+    public function AddStock($user, $order_id, $new_items)
+    {
+        if(!$this->checkMaxOrders($user->company_id)){
+            return false;
+        }
+
+        if(!$this->StockService->CheckItemsAvailable($new_items)){
+            return false;
+        }
+
+        foreach ($new_items as &$item) {
+            $item['admin_id'] = $user->id;
+            $item['company_id'] = $user->company_id;
+            $item['type'] = 'sell';
+            $item['order_id'] = $order_id;
+            $variants = $this->VariantStockService->GetUnitValues([$item['id']]);
+            foreach ($variants as $variant) {
+                $item['unit_commission'] = $variant->product->marketer_commission;
+                $item['unit_cost'] = $variant->product->cost;
+            }
+        }
+        return $this->StockService->AddStock($new_items);
+    }
+    public function DeleteOrder($variant_id)
+    {
+        return $this->orders_crud_repository->DeleteOrder($variant_id);
+    }
+    }
+

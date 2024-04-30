@@ -51,3 +51,4 @@ Route::post('/shipping_area/map', [ShippingAreaController::class,'map'])->name('
 
 Route::get('/company/{company_id}/users',[CompnayController::class,'get_company_users'])->name('company_users');
 Route::post('/stock/scan', [StockController::class,'scan'])->name('scan_stock');
+Route::post('/stock/{id}/remove', [StockController::class,'remove_stock'])->name('remove_stock');

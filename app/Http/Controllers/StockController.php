@@ -78,5 +78,9 @@ class StockController extends Controller
         $data = $this->ProductVariantsRepository->get_scan_stock($request->input('id'));
         return response()->json($data);
     }
+    public function remove_stock($id){
+        $data = $this->StockOperationService->DeleteStock($id);
+        return response()->json($data);
+    }
 
 }

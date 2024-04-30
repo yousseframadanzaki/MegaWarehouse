@@ -62,6 +62,32 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
     public function update_invoice_id($ids,$invoice_id) {
         return Stock::whereIn('id',$ids)->update(['invoice_id'=>$invoice_id]);
     }
-    
+    public function update_stock($order_id ,$data){
+        foreach ($data as $index => $stockData) {
+            Stock::where('order_id', $order_id)
+                 ->where('variant_id', $stockData['id'])
+                 ->update([
+                     'unit_price_after_sale' => $stockData['unit_sale'],
+                     'warehouse_id' => $stockData['warehouse_id'],
+                     'quantity' => $stockData['quantity'],
+                     'updated_at' => now()
+                 ]);
+        }
+        return true;
+    }
+    public function AddStock($new_items){
+        $new_stocks = [];
+        foreach ($new_items as $item) {
+            $item['variant_id'] = $item['id'];
+            unset($item['id']);
+            $new_stock = Stock::create($item);
+            $new_stocks[] = $new_stock;
+        }
+        return $new_stocks;
+    }
+    public function DeleteStock($variant_id){
+        return Stock::where('variant_id', $variant_id)->delete();
+        return true;
+    }
 
 }
