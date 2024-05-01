@@ -92,24 +92,14 @@ class OrderController extends Controller
     public function update_order($order_id, Request $request){
         $data = $request->all();
         $client = $data['client'];
-        $links = json_encode($client['links']);
+        $old_items = $data['old_items'];
+        $new_items = $data['items'];
+        //dd($new_items);
+        $order = $this->OrdersService->UpdateOrder($order_id, $client);
+        $old_stock = $this->OrdersService->UpdateStock($order_id, $old_items);
+        $new_stock = $this->OrdersService->AddStock(auth()->user() ,$order_id, $new_items);
 
-
-        $order = Order::findOrFail($order_id);
-        $order->name = $client['name'];
-        $order->phone_1 = $client['phone_1'];
-        $order->phone_2 = $client['phone_2'];
-        $order->address = $client['address'];
-        $order->country_id = $client['country_id'];
-        $order->city_id = $client['city_id'];
-        $order->area_id = $client['area_id'];
-        $order->save();
-
-        $linksUpdaded = Client::findOrFail($order['client_id']);
-        $linksUpdaded->links = $links;
-        $linksUpdaded->save();
-
-        if($order || $linksUpdaded){
+        if($order || $old_stock || $new_stock){
             $request->session()->flash('success', 'order_edited_success');
             return redirect()->back();
         }

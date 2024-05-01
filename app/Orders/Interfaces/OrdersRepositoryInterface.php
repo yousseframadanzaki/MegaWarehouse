@@ -10,4 +10,5 @@ interface OrdersRepositoryInterface{
     public function change_order_status($order_id,$data);
     public function get_order_by_waybill($waybill);
     public function check_max_orders($company_id);
+    public function update_order($order_id,$data);
 }

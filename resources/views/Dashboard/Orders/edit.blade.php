@@ -60,7 +60,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                <button type="button" class="btn btn-primary add_to_cart_btn" onclick="add_cart_items()">أضافة</button>
+                <button type="button" class="btn btn-primary add_to_cart_btn" data-bs-dismiss="modal" onclick="add_cart_items()">أضافة</button>
             </div>
         </div>
     </div>
@@ -145,21 +145,6 @@
                         </div>
                     @enderror
                 </div>
-                <div class="col-md-4 mt-3">
-                    <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
-                    <input type="text" class="form-control" name="client[links][facebook]"
-                        value="{{ $order->client->links->facebook }}">
-                </div>
-                <div class="col-md-4 mt-3">
-                    <label class="form-label">لينك انستجرام <i class="bi bi-instagram"> </i></label>
-                    <input type="text" class="form-control" name="client[links][instagram]"
-                        value="{{ $order->client->links->instagram }}">
-                </div>
-                <div class="col-md-4 mt-3">
-                    <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
-                    <input type="text" class="form-control" name="client[links][tiktok]"
-                    value="{{ $order->client->links->tiktok }}">
-                </div>
             </div>
 
             <div class="row mt-3">
@@ -227,32 +212,41 @@
                             <tr>
                                 <th>اسم المنتج</th>
                                 <th>اسم المتغير</th>
+                                <th>السعر</th>
+                                <th>السعر بعد الخصم</th>
                                 <th>الكمية المتوفرة</th>
                                 <th>المخزن</th>
                                 <th>الكمية</th>
                                 <th>الاجمالى</th>
+                                <th>الاجمالى بعد الخصم</th>
                                 <th>حذف</th>
                             </tr>
                         </thead>
                         <tbody id="items">
                             @foreach ($order->stocks as $item)
-                                <tr>
+                                <tr id="{{ $loop->index }}" data-id={{ $item->variant->id }}>
                                     <td>{{$item->variant->product->name}}</td>
                                     <td>{{$item->variant->name}}</td>
+                                    <td>{{$item->unit_price}}</td>
+                                    <td style="width:80px;">
+                                        <input style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" />
+                                    </td>
                                     <td><a data-id="{{ $item->variant->id }}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">{{abs($item->variant->quantity)}}</a></td>
                                     <td>
-                                        <select class="warehouse form-select" data-id="{{ $item->variant->id }}" name="items[{{ $item->variant->id }}][warehouse_id]">
+                                        <select class="warehouse form-select" data-id="{{ $item->variant->id }}" name="old_items[{{ $loop->index }}][warehouse_id]">
                                             @foreach ($warehouses as $id => $name)
                                                 <option @if($item->warehouse->id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td style="width:80px;">
-                                        <input type="number" name="items[{{ $item->variant->id }}][quantity]" class="form-control quantity" data-price="{{$item->variant->price}}" value="{{abs($item->quantity)}}" min="1" data-id="{{ $item->variant->id }}" id="quantity-{{ $item->variant->id }}" />
+                                        <input type="number" name="old_items[{{ $loop->index }}][quantity]" class="form-control quantity" data-price="{{$item->variant->price}}" value="{{abs($item->quantity)}}" min="1" data-id="{{ $item->variant->id }}" id="quantity-{{ $item->variant->id }}" />
                                     </td>
                                     <td class="total_price">{{abs($item->quantity) * $item->unit_price}}</td>
-                                    <td><input type="hidden" name="items[{{ $item->variant->id }}][id]" value="{{ $item->variant->id }}" /></td>
+                                    <td class="total_price_after_sale">{{abs($item->quantity) * $item->unit_price_after_sale}}</td>
+                                    <td class="fs-5 text-danger"><a data-id="{{ $item->variant->id }}" onclick="remove_variant({{ $item->variant->id }})" style="cursor: pointer;"><i class="bi bi-trash3"></i></a></td>
                                 </tr>
+                                <input type="hidden" name="old_items[{{ $loop->index }}][id]" value="{{ $item->variant->id }}"/>
                             @endforeach
                         </tbody>
                     </table>
@@ -280,11 +274,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
+        $('.unit_sale').change(function() {
+            var quantity = parseInt($(this).closest('tr').find('.quantity').val());
+            var unitSale = parseFloat($(this).val());
+            var totalPriceAfterSale = quantity * unitSale;
+
+            $(this).closest('tr').find('.total_price_after_sale').text(totalPriceAfterSale);
+        });
+    });
+    $(document).ready(function() {
         $(document).on('change', '.quantity',function() {
             var quantity = $(this).val();
             var price = $(this).data('price');
             var total = quantity * price;
-
+            price_after_sale = $(this).closest('tr').find('.unit_sale').val();
+            var total_after_sale = quantity * price_after_sale;
+            $(this).closest('tr').find('.total_price_after_sale').text(total_after_sale);
             $(this).closest('tr').find('.total_price').text(total);
         });
     });
@@ -347,7 +352,29 @@
                 $("#variants").fadeIn();
             })
         })
-
+        function remove_variant($id){
+            id = $id;
+            if(confirm("هل تريد حذف المنتج؟")) {
+            $.ajax({
+                url:`/api/stock/${id}/remove`,
+                method:`POST`,
+                dataType:'text'
+            }).then(response =>{
+                data = JSON.parse(response);
+                $('tr[data-id="' + $id + '"]').remove();
+            });
+            } else {
+                return false;
+            }
+        }
+        $(document).on('input', '.unit_sale', function(e) {
+            var price_after_sale = $(this).val();
+            var variant_id = $(this).data('id');
+            var quantity = $(`#quantity-${variant_id}`).val();
+            var totalAfterSale = price_after_sale * quantity;
+            $(this).closest('tr').find('.total_price_after_sale').text(totalAfterSale);
+            $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale); // Update the variant total after sale
+        });
         function add_cart_items(){
             var product_id = $("#product_id").val();
             var variant_id = $("#variant_id").val();
@@ -362,11 +389,15 @@
                 var variantName = $("#variant_id option:selected").text();
                 var warehouseName = $("#warehouse_id option:selected").text();
                 var total = variant_price * quantity;
-                let index = 2;
+                var index = $('#items tr').length;;
                 var template = `
                     <tr id="${variant_id}">
                         <td>${productName}</td>
                         <td>${variantName}</td>
+                        <td>${variant_price}</td>
+                        <td style="width:80px;">
+                            <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" />
+                        </td>
                         <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
                         <td>
                             <select class="warehouse form-select" data-id="${variant_id}" name="items[${index}][warehouse_id]">
@@ -377,9 +408,11 @@
                             <input type="number" name="items[${index}][quantity]" class="form-control quantity" data-price="${variant_price}" value="${quantity}" min="1" data-id="${variant_id}" id="quantity-${variant_id}" />
                         </td>
                         <td class="total_price">${total}</td>
+                        <td class="total_price_after_sale">${total}</td>
                         <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
                     </tr>
-                    <input type="hidden" name="items[${index}][id]" value="${variant_id}" />
+                    <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
+                    <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
                 `;
                 index++;
 
@@ -387,7 +420,10 @@
                 if(warehouse_id){
                     $(`tr#${variant_id} .warehouse`).val(warehouse_id);
                 }
-                // Clear modal fields after adding to cart
+                var price_after_sale = $(`#unit_sale-${variant_id}`).val();
+                var totalAfterSale = price_after_sale * quantity;
+                $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
+
                 $("#product_id").val('');
                 $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
                 $("#warehouse_id").val('');
@@ -462,11 +498,13 @@
             $('#message').append(template);
             $('#message').fadeIn();
         }
-        $(document).on('click','.remove_variant',function () {
+        $(document).on('click', '.remove_variant', function () {
             var variant_id = $(this).attr('data-id');
-            $(`tr#${variant_id}`).fadeOut();
-            $(`tr#${variant_id}`).remove();
-
-        })
+            $(`tr#${variant_id}`).fadeOut(300, function () {
+                var indexToRemove = $(this).index() - 1; // Subtract 1 to get the correct index
+                $(this).remove();
+                $(`input[name^="items[${indexToRemove}]"]`).remove(); // Remove hidden inputs with the same index
+            });
+        });
 </script>
 @endsection
