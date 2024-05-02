@@ -92,5 +92,9 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         ->get();
 
     }
+    public function get_scan_items($ids){
+        $sku = explode(",", $ids);
+        return Variant::with('product')->whereIn('sku',$sku)->get();
+    }
 
 }

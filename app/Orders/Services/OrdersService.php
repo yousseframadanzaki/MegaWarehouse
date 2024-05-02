@@ -199,5 +199,9 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->orders_crud_repository->DeleteOrder($variant_id);
     }
+    public function get_scan_items($ids)
+    {
+        return $this->VariantStockService->get_scan_items($ids);
+    }
     }
 

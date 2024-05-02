@@ -104,6 +104,10 @@ class OrderController extends Controller
             return redirect()->back();
         }
     }
+    public function scan_order($order_id){
+        $order = $this->OrdersService->GetOrder($order_id);
+        return view('Dashboard.Orders.scan_order')->with(compact('order'));
+    }
 
     public function change_status(Request $request,$order_id) {
 
@@ -154,6 +158,35 @@ class OrderController extends Controller
         $selected_option = $request->get('selected_option');
         $data = $this->OrdersService->GetLabelsPrint($request->all());
         return view('Dashboard.Orders.print_label')->with(compact('data','selected_option'));
+    }
+    public function scan_items(Request $request){
+        $data = $this->OrdersService->get_scan_items($request->input('id'));
+        return response()->json($data);
+    }
+    public function confirm_order(Request $request){
+        $data = $request->all();
+        $order_id = $data['id'];
+        $order = $this->OrdersService->GetOrder($order_id);
+        foreach ($order->stocks as $item) {
+            $itemKeys = array_keys($data['items']);
+            if (in_array($item->variant_id, $itemKeys)) {
+                $quantity = $data['items'][$item->variant_id]['quantity'];
+                if (abs($item->quantity) == $quantity) {
+                    $res['admin_id'] = auth()->user()->id;
+                    $res['company_id'] = $this->company_id();
+                    $res['status_id'] = '3';
+                    if($this->OrdersService->ChangeOrderStatus($order_id,$res)){
+                        return redirect()->route('show_order', [$order_id])->with('success','confirm_order_success');
+                    }
+                } else {
+                    return redirect()->back()->with('error','confirm_order_error');
+                }
+
+            } else {
+                return redirect()->back()->with('error','confirm_order_error');
+            }
+            dd($item->quantity);
+        }
     }
 
 }

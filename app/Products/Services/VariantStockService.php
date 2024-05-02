@@ -52,5 +52,10 @@ class VariantStockService implements VariantStockServiceInterface{
 
         return $total_cost;
     }
+    public function get_scan_items($ids)
+    {
+        $items = $this->product_variants_repository->get_scan_items($ids);
+        return $items;
+    }
 
 }

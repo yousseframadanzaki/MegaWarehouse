@@ -91,7 +91,7 @@
         <ul class="breadcrumb">
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
             <li><a href="{{ route('all_orders') }}">الاوردرات</a></li>
-            <li><a class="link-dark" href="{{ route('edit_order',$order->id) }}">تعديل بيانات أوردر {{$order->id}}</a></li>
+            <li><a class="link-dark" href="{{ route('edit_order',$order->id) }}">تعديل بيانات أوردر {{$order->order_code}}</a></li>
         </ul>
     </div>
 <div class="card p-3">

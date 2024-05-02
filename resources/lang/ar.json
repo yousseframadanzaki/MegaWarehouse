@@ -120,5 +120,7 @@
     "shipping_company_id":"شركة الشحن",
     "order_status_change_bulk_success":"تم تغيير حالة الاوردرات بنجاح",
     "pay_invoice_success":"تم الدفع بنجاح",
-    "Accounting":"الحسابات"
+    "Accounting":"الحسابات",
+    "confirm_order_error":"مراجعة الأوردر غير صحيحة",
+    "confirm_order_success":"تم تأكيد الأوردر بنجاح"
 }
