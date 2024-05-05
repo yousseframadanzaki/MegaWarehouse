@@ -92,8 +92,8 @@ class OrderController extends Controller
     public function update_order($order_id, Request $request){
         $data = $request->all();
         $client = $data['client'];
-        $old_items = $data['old_items'];
-        $new_items = $data['items'];
+        $old_items = isset($data['old_items']) ? $data['old_items'] : array() ;
+        $new_items = isset($data['items']) ? $data['items'] : array();
         //dd($new_items);
         $order = $this->OrdersService->UpdateOrder($order_id, $client);
         $old_stock = $this->OrdersService->UpdateStock($order_id, $old_items);
