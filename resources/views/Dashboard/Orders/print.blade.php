@@ -242,7 +242,6 @@
         color: black;
     }
 </style>
-
 <button class="no-print" onclick="window.print()"> طباعة </button>
     @foreach ($data as $order)
     <div class="parent" style="@if ($selected_option == '1' && $order->iteration % 1 == 0) page-break-after: always; @elseif ($selected_option == '2' ) @endif">
@@ -258,10 +257,8 @@
                     </div>
                     <div class="row">
                         <div style="display: flex;justify-content:center">
-                                <div style="border:2px solid #000;padding:7px;font-weight:600;border-radius:5px;margin-left:15px">{{$order->status->name}}</div>
-
+                                <div data-status="{{$order->status->id}}" style="border:2px solid #000;padding:7px;font-weight:600;border-radius:5px;margin-left:15px">{{$order->status->name}}</div>
                                 <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">{{$order->total}}</div>
-
                         </div>
                     </div>
 
@@ -322,3 +319,15 @@
         </div>
     </div>
     @endforeach
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("div[data-status]").each(function() {
+                var status = $(this).data("status");
+                console.log(status);
+                if (status == 18) {
+                    $(this).css({"background-color": "#bb4141","color": "white"});
+                }
+            });
+        });
+    </script>

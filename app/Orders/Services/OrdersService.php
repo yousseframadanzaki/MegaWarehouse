@@ -35,9 +35,11 @@ class OrdersService implements OrdersServiceInterface{
         if(!$this->checkMaxOrders($user->company_id)){
             return false;
         }
-
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
-            return false;
+            //return false;
+            $order_details['status_id'] = '18';
+        }else{
+            $order_details['status_id'] = '1';
         }
         if(!isset($order_details['client_id'])){
             $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);

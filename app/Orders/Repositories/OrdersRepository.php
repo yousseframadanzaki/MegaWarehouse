@@ -17,7 +17,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['company_id'] = $data['company_id'];
         $order_data['admin_id'] = $data['admin_id'];
         $order_data['order_code'] = $data['order_code'];
-        $order_data['status_id'] = '1';
+        $order_data['status_id'] = $data['status_id'];
 
         $total_data = $this->calculate_total($data['items'],$order_data['client_id']);
         $total_after_sale = $this->calculate_total_after_sale($data['items']);

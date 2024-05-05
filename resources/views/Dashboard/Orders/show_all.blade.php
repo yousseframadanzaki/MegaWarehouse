@@ -252,7 +252,7 @@
                                     {{$order->marketer->name}}
                                 @endisset
                             </td>
-                            <td>{{$order->status->name}}</td>
+                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
                             <td>{{$order->name}}</td>
                             <td>{{$order->phone_1}}</td>
                             <td>{{$order->address}}</td>
@@ -276,6 +276,14 @@
 integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        $(document).ready(function() {
+            $("td[data-status]").each(function() {
+                var status = $(this).data("status");
+                if (status == 18) {
+                    $(this).css({"background-color": "#bb4141","color": "white"});
+                }
+            });
+        });
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
         });
