@@ -378,7 +378,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         })
         $('#status_id').change(function () {
             var status_id = $(this).val();
-            if(status_id == '5'){
+            if(status_id == '30'){
                 $("#shipping_company_select").fadeIn();
             }
         })

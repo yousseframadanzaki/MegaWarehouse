@@ -279,7 +279,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         $(document).ready(function() {
             $("td[data-status]").each(function() {
                 var status = $(this).data("status");
-                if (status == 18) {
+                if (status == 5) {
                     $(this).css({"background-color": "#bb4141","color": "white"});
                 }
             });
@@ -452,7 +452,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         });
         $('#status_id').change(function () {
             var status_id = $(this).val();
-            if(status_id == '5'){
+            if(status_id == '30'){
                 $("#shipping_company_select").fadeIn();
             }
         })

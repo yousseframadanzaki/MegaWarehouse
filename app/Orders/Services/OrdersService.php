@@ -36,7 +36,7 @@ class OrdersService implements OrdersServiceInterface{
             return false;
         }
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
-            $order_details['status_id'] = '18';
+            $order_details['status_id'] = '5';
         }else{
             $order_details['status_id'] = '1';
         }
@@ -72,7 +72,7 @@ class OrdersService implements OrdersServiceInterface{
 
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
 
-        if($data['status_id'] == '5'){
+        if($data['status_id'] == '30'){
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
 
             if(!$shipment){
@@ -98,7 +98,7 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatusBulk($data)
     {
-        if($data['status_id'] == '5'){
+        if($data['status_id'] == '30'){
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
                 $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);

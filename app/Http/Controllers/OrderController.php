@@ -174,7 +174,7 @@ class OrderController extends Controller
                 if (abs($item->quantity) == $quantity) {
                     $res['admin_id'] = auth()->user()->id;
                     $res['company_id'] = $this->company_id();
-                    $res['status_id'] = '3';
+                    $res['status_id'] = '15';
                     if($this->OrdersService->ChangeOrderStatus($order_id,$res)){
                         return redirect()->route('show_order', [$order_id])->with('success','confirm_order_success');
                     }
