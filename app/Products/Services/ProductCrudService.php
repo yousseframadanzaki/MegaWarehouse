@@ -23,6 +23,20 @@ class ProductCrudService implements ProductCrudServiceInterface{
 
     public function AddProduct($company_id,array $details){
         $details['product_info']['company_id'] = $company_id;
+        if(!empty($details['product_info']['show_quantity'])){
+            if($details['product_info']['show_quantity'] == 'on'){
+                $details['product_info']['show_quantity'] = '1';
+            }
+        } else {
+            $details['product_info']['show_quantity'] = '0';
+        }
+        if(!empty($details['product_info']['confirm_order'])){
+            if($details['product_info']['confirm_order'] == 'on'){
+                $details['product_info']['confirm_order'] = '1';
+            }
+        } else {
+            $details['product_info']['confirm_order'] = '0';
+        }
         $product = $this->product_crud_repository->add_product($details['product_info']);
         if(isset($details['product_attributes']) && count($details['product_attributes']) > 0 ){
             $attributes = $this->product_attributes_repository->add_attributes($product->id,$details['product_attributes']);

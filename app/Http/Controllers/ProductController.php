@@ -76,7 +76,7 @@ class ProductController extends Controller
             return response()->json();
         }
 
-        $request->session()->flash('success', 'New product added successfully.');
+        $request->session()->flash('success', 'new_product_added_successfully');
         return redirect()->route('show_product', ['product_id' => $product->id]);
     }
 
@@ -96,6 +96,23 @@ class ProductController extends Controller
     }
     public function update(CreateProductRequest $request,$product_id){
         $data = $request->all();
+
+        if (array_key_exists('show_quantity', $data['product_info'])) {
+            if($data['product_info']['show_quantity'] == 'on'){
+                $data['product_info']['show_quantity'] = '1';
+            }
+        } else {
+            $data['product_info']['show_quantity'] = '0';
+        }
+
+        if (array_key_exists('confirm_order', $data['product_info'])) {
+            if($data['product_info']['confirm_order'] == 'on'){
+                $data['product_info']['confirm_order'] = '1';
+            }
+        } else {
+            $data['product_info']['confirm_order'] = '0';
+        }
+
         $product = $this->ProductCrudService->UpdateProduct($product_id,$data);
         if(!$product){
             $request->session()->flash('erroe', 'product_updated_error');

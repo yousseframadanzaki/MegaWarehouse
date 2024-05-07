@@ -122,6 +122,18 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <div class="form-check form-switch" style="width: auto;">
+                            <input class="form-check-input" type="checkbox" name="product_info[show_quantity]" {{ $data['product']->show_quantity == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-check form-switch" style="width: auto;">
+                            <input class="form-check-input" type="checkbox" name="product_info[confirm_order]" {{ $data['product']->confirm_order == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="form-label">وصف المنتج</label>
                             <textarea id="summernote" type="text" class="form-control product_info @error('description') is-invalid @enderror"
@@ -216,10 +228,10 @@
     //             </div>
     //         </div>
     //         <div class="col-md-5 values_display" style="display:none;">
-    //             <label class="form-label">قيم الاختيار:-</label> 
+    //             <label class="form-label">قيم الاختيار:-</label>
     //             <div class="option_values_div">
 
-    //             </div> 
+    //             </div>
     //         </div>
     //         <div class="col-md-5 option_value_div">
     //             <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
@@ -232,10 +244,10 @@
     //             <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
     //         </div>
     //         <div class="row mt-3 values_edit">
-    //             <label class="form-label">قيم الاختيار:-</label> 
+    //             <label class="form-label">قيم الاختيار:-</label>
     //             <div class="option_values_div">
 
-    //             </div> 
+    //             </div>
     //         </div>
     //     </div>
     //     `;
@@ -299,9 +311,9 @@
             //     Object.keys(form_options_values).forEach(key => {
             //         form_options_values[key].forEach(value => {
             //             var template = `
-    //         <div 
-    //             class="remove_option_value hover-danger btn btn-success option_value_` + key + `" 
-    //             style="margin-left:10px" 
+    //         <div
+    //             class="remove_option_value hover-danger btn btn-success option_value_` + key + `"
+    //             style="margin-left:10px"
     //             data-value="${value}"
     //             data-option-id="${key}"
     //         >

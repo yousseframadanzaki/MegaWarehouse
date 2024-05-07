@@ -139,6 +139,18 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <div class="form-check form-switch" style="width: auto;">
+                            <input class="form-check-input" type="checkbox" name="product_info[show_quantity]">
+                            <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-check form-switch" style="width: auto;">
+                            <input class="form-check-input" type="checkbox" name="product_info[confirm_order]">
+                            <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <div class="col-md-12">
                             <label class="form-label">وصف المنتج</label>
                             <textarea id="summernote" type="text" class="form-control product_info "

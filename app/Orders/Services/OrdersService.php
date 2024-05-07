@@ -36,7 +36,6 @@ class OrdersService implements OrdersServiceInterface{
             return false;
         }
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
-            //return false;
             $order_details['status_id'] = '18';
         }else{
             $order_details['status_id'] = '1';

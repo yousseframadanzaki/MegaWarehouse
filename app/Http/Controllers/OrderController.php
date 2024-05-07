@@ -74,7 +74,7 @@ class OrderController extends Controller
             $request->session()->flash('success', 'order_created_success');
             return redirect()->back();
         }
-        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')])->withInput();
+        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>($request->except('token'))])->withInput();
     }
     public function edit($order_id){
         $company_id = $this->company_id();

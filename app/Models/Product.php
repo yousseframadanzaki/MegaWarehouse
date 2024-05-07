@@ -17,6 +17,8 @@ class Product extends Model
         'supplier_id',
         'brand_id',
         'category_id',
+        'show_quantity',
+        'confirm_order',
         'cost',
         'price',
         'before_sale_price',
