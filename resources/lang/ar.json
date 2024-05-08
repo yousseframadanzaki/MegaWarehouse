@@ -121,8 +121,7 @@
     "order_status_change_bulk_success":"تم تغيير حالة الاوردرات بنجاح",
     "pay_invoice_success":"تم الدفع بنجاح",
     "Accounting":"الحسابات",
-    "confirm_order_error":"مراجعة الأوردر غير صحيحة",
-    "confirm_order_success":"تم تأكيد الأوردر بنجاح",
+    "confirm_order_success":"تم تحضير الأوردر بنجاح",
     "new_product_added_successfully":"تمت اضافة المنتج بنجاح",
     "product_updated_success":"تم تعديل بيانات المنتج بنجاح"
 }
