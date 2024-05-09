@@ -423,6 +423,23 @@
                             </li>
                         @endcanany
 
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#area-collapse">
+                                <i class="bi bi-map-fill"></i>
+                                مناطق الشحن
+                            </a>
+                            <div class="collapse" id="area-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+
+                                        <li class="rounded"><a href="{{ route('all_sectors') }}" class="text-white">
+                                                <i class="bi bi-map"></i> كل مناطق الشحن </a></li>
+
+                                </ul>
+                            </div>
+                        </li>
+
+
                         @canany(['view', 'add'], 'App\Models\Warehouse')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"

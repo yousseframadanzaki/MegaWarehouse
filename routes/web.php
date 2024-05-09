@@ -23,6 +23,7 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\AreaController;
 
 
 Route::get('/',function (){
@@ -443,5 +444,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('update_user')
     ->can('update',['App\Models\User','user_id']);
 
-
+    Route::get('/sectors',[AreaController::class,'all_sectors'])
+    ->name('all_sectors');
+    //->can('view',['App\Models\City']);
 });

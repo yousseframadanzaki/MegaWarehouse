@@ -249,10 +249,13 @@
             <div class="column" style="align-content: flex-start;">
                 <div>
                     <div style="text-align: center;">
+                        <svg id="waybill"></svg>
                         <h2>
+                        <div id="way-bill" style="font-weight: bold;display: none;">
                         @isset($order->waybill)
                          {{$order->waybill}}
                          @endisset
+                    </div>
                         </h2>
                     </div>
                     <div class="row">
@@ -265,7 +268,12 @@
                 </div>
             </div>
             <div class="column">
-                <h2> {{$order->order_code}} </h2>
+                <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+                    <svg id="order_code"></svg>
+                    <div id="code" style="font-weight: bold;display: none;">
+                    {{$order->order_code}}
+                    </div>
+                </div>
                 <p style="font-size: 12px;"> @date_format($order->created_at)</p>
                 <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
             </div>
@@ -320,14 +328,25 @@
     </div>
     @endforeach
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <script>
         $(document).ready(function() {
             $("div[data-status]").each(function() {
                 var status = $(this).data("status");
-                console.log(status);
-                if (status == 18) {
+                if (status == 5) {
                     $(this).css({"background-color": "#bb4141","color": "white"});
                 }
             });
         });
+            var waybill = $("#way-bill").text().trim();
+            var order_code = $("#code").text().trim();
+
+            JsBarcode("#waybill", waybill, {
+                format: "CODE128",
+                displayValue: true
+            });
+            JsBarcode("#order_code", order_code, {
+                format: "CODE128",
+                displayValue: true
+            });
     </script>
