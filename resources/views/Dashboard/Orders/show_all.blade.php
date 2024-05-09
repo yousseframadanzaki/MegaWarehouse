@@ -63,7 +63,7 @@
                                 <select id="print_id" name="print_id" style="width: 100%">
                                     <option selected> --اختار-- </option>
                                     <option value="1"> 1 بوليصة فى الصفحة </option>
-                                    <option value="2"> 5 بوليصة فى الصفحة </option>
+                                    <option value="2"> 2 بوليصة فى الصفحة </option>
                                 </select>
                             </div>
                         </div>

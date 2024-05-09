@@ -136,14 +136,14 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
     public function get_order_print($data ,$order_id) {
         $orders = [];
-        $order = Order::find($order_id);
+        $order = Order::with(['stocks','stocks.variant','stocks.variant.product'])->find($order_id);
         $orders[] = $order;
         return $orders;
     }
     public function get_bulk_orders_print($data) {
         $orders = [];
         foreach ($data['orders_ids'] as $order_id) {
-            $order = Order::find($order_id);
+            $order = Order::with(['stocks','stocks.variant','stocks.variant.product'])->find($order_id);
 
             if ($order) {
                 $orders[] = $order;

@@ -49,7 +49,6 @@
         border: 0;
     }
     div {
-        overflow: hidden;
         line-height: 1.2;
     }
     .parent {
@@ -57,6 +56,7 @@
         border: 2px solid #000;
         border-radius: 15px;
         width: 900px;
+        height: 565px;
         margin: auto;
         margin-bottom: 40px;
         margin-top: 10px;
@@ -183,21 +183,7 @@
         /* border-top: 2px solid #000; */
         margin-top: 5px;
         font-size: 12px;
-        /* padding-top: 5px; */
-    }
-
-    .footer .column {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-    }
-
-    .footer .column:first-child>span {
-        margin-left: auto;
-    }
-
-    .footer .column:last-child>span {
-        margin-right: auto;
+        padding-top: 5px;
     }
 
     .no-print {
@@ -247,106 +233,101 @@
     <div class="parent" style="@if ($selected_option == '1' && $order->iteration % 1 == 0) page-break-after: always; @elseif ($selected_option == '2' ) @endif">
         <div class="header">
             <div class="column" style="align-content: flex-start;">
-                <div>
-                    <div style="text-align: center;">
-                        <svg id="waybill"></svg>
-                        <h2>
-                        <div id="way-bill" style="font-weight: bold;display: none;">
-                        @isset($order->waybill)
-                         {{$order->waybill}}
-                         @endisset
+                <table style="width: 300px;height: 170px;margin-top:10px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="3" style="font-size: 18px;padding: 5px;"><span>العميل: </span> <b>{{$order->name}}<b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="font-size: 18px;">
+                                <div class="double-line"><span style="font-size: 15px;padding: 5px;">العنوان: {{$order->address}}</span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="font-size: 18px;padding: 5px;"><span>رقم العميل:
+                                    </span> @if($order->phone_1 && $order->phone_2)
+                                        <b>{{ $order->phone_1 }} - {{ $order->phone_2 }}</b>
+                                        @elseif($order->phone_1)
+                                            <b>{{ $order->phone_1 }}</b>
+                                        @elseif($order->phone_2)
+                                            <b>{{ $order->phone_2 }}</b>
+                                        @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="column">
+                <div style="text-align: center;">
+                    <svg id="{{$order->waybill}}"></svg>
+                    <h2>
+                    <div class="way-bill" style="font-weight: bold;display: none;">
+                    @isset($order->waybill)
+                     {{$order->waybill}}
+                     @endisset
                     </div>
-                        </h2>
+                    </h2>
+                    <div style="display: flex;justify-content:center">
+                        <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">{{$order->total}} جنيه</div>
                     </div>
-                    <div class="row">
-                        <div style="display: flex;justify-content:center">
-                                <div data-status="{{$order->status->id}}" style="border:2px solid #000;padding:7px;font-weight:600;border-radius:5px;margin-left:15px">{{$order->status->name}}</div>
-                                <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">{{$order->total}}</div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <div class="column">
-                <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
-                    <svg id="order_code"></svg>
-                    <div id="code" style="font-weight: bold;display: none;">
+                <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;margin-left: -85px;">
+                    <svg id="{{$order->order_code}}"></svg>
+                    <div class="code" style="font-weight: bold;display: none;">
                     {{$order->order_code}}
                     </div>
+                    <p style="font-size: 14px;"> @date_format($order->created_at)</p>
+                    <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
                 </div>
-                <p style="font-size: 12px;"> @date_format($order->created_at)</p>
-                <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
             </div>
         </div>
-
-        <div class="body">
+        <h2 style="margin-top: 60px;margin-right: 160px;">المنتجات</h2>
+        @foreach ($order->stocks as $item)
+        <div class="body" style="align-items: center;width: 65%;margin-right: 160px;">
             <table style="width: 50%;margin-left:5px;">
                 <tbody>
                     <tr>
-                        <td colspan="3" style="font-size: 18px;"><span>العميل: </span> <b>{{$order->name}}<b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="double-line"><span style="font-size: 15px;">العنوان: {{$order->address}}</span></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="double-line"><span style="font-size: 15px;">رقم الاوردر: {{$order->id}}</span></div>
-                        </td>
+                        <td colspan="3" style="font-size: 18px;">{{$item->variant->product->name}}</td>
                     </tr>
                 </tbody>
             </table>
             <table style="width: 50%;margin-left:5px;">
                 <tbody>
                     <tr colspan="2" style="height: 30px;">
-                        <td style="font-size: 18px;"><span style="margin-right: 108px;">{{$order->phone_1}} - <span>{{$order->phone_2}}</b></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                                <span style="font-size: 17px;"> اسم المسوق: @isset($order->marketer->name)
-                                {{$order->marketer->name}}
-                                @endisset
-                                </span>
-                                    <br>
-                                <span style="font-size: 17px;"> اجمالى عمولة المسوق: @isset($order->total_marketer_commission)
-                                {{$order->total_marketer_commission}} EGP
-                                @endisset
-                                </span>
-
-                        </td>
+                        <td style="font-size: 18px;"><span style="margin-right: 108px;">{{$item->variant->name}}</b></td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        @endforeach
 
-        <div class="footer">
-            <div class="column"><span></span></div>
-            <div class="column"><span>تاريخ الاوردر : @date_format($order->created_at)</span></div>
-            <div class="column"><span></span></div>
-        </div>
+        <!--<div class="footer" style="margin-bottom: 1px">
+            تاريخ الاوردر : @date_format($order->created_at)
+        </div>-->
     </div>
     @endforeach
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("div[data-status]").each(function() {
-                var status = $(this).data("status");
-                if (status == 5) {
-                    $(this).css({"background-color": "#bb4141","color": "white"});
-                }
+        $('.way-bill').each(function() {
+            var waybill = $(this).text().trim();
+            if(waybill != ""){
+            JsBarcode("#" + waybill, waybill, {
+                format: "CODE128",
+                displayValue: true,
+                fontSize: 18
             });
+        }
         });
-            var waybill = $("#way-bill").text().trim();
-            var order_code = $("#code").text().trim();
-
-            JsBarcode("#waybill", waybill, {
-                format: "CODE128",
-                displayValue: true
-            });
-            JsBarcode("#order_code", order_code, {
-                format: "CODE128",
-                displayValue: true
-            });
+        $('.code').each(function() {
+            var order_code = $(this).text().trim();
+            if(order_code != ""){
+                JsBarcode("#" + order_code, order_code, {
+                    format: "CODE128",
+                    displayValue: true
+                });
+            }
+        });
     </script>
