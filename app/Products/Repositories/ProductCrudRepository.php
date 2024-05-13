@@ -11,7 +11,11 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
         return Product::create($product_details);
     }
     public function get_products_by_company_id($company_id,$filters){
-        return Product::with(['main_image','category','brand','supplier'])->where('company_id',$company_id)->filter($filters)->paginate(10);
+        return Product::with(['main_image','category','brand','supplier'])
+        ->where('company_id',$company_id)
+        ->orderBy('id', 'desc')
+        ->filter($filters)
+        ->paginate(10);
     }
 
     public function get_product_by_id($product_id){
@@ -34,7 +38,7 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
     //     return Product::findOrFail($product_id);
     // }
 
-    
+
     public function update_product_by_id($product_id,array $product_details){
         return Product::where(['id'=>$product_id])->update($product_details);
     }
