@@ -18,4 +18,13 @@ class AreaService implements AreaServiceInterface{
     public function EditArea($area_id, $price){
         return $this->area_crud_repository->edit_area($area_id, $price);
     }
+    public function EditCity($area_id, $city_id){
+        return $this->area_crud_repository->edit_city($area_id, $city_id);
+    }
+    public function EditShippingCompany($area_id, $shipping_company_id){
+        return $this->area_crud_repository->edit_shipping_company($area_id, $shipping_company_id);
+    }
+    public function CreateSector($data){
+        return $this->area_crud_repository->create_sector($data);
+    }
 }

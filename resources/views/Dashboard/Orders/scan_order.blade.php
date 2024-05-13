@@ -72,6 +72,7 @@
         </button>
 </div>
 </form>
+<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 @endsection
 @section('script')
 <script>
@@ -87,10 +88,11 @@
         scanned_ids.push(...newId);
 
         if(e.which == 13) {
+            var token = $('#token').val();
             $.ajax({
                 url:`/api/order/scan_items/`,
                 method:'POST',
-                data:{ id},
+                data:{ id,token},
                 }).then(data => {
                     if (data) {
                         for (var i = 0; i < data.length; i++) {

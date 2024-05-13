@@ -55,3 +55,5 @@ Route::post('/stock/scan', [StockController::class,'scan'])->name('scan_stock');
 Route::post('/stock/{id}/remove', [StockController::class,'remove_stock'])->name('remove_stock');
 Route::post('/order/scan_items', [OrderController::class,'scan_items'])->name('scan_items');
 Route::post('/sectors/{id}/edit', [AreaController::class,'edit_area'])->name('edit_area');
+Route::post('/sectors/{id}/edit_city', [AreaController::class,'edit_city'])->name('edit_city');
+Route::post('/sectors/{id}/edit_shipping_company', [AreaController::class,'edit_shipping_company'])->name('edit_shipping_company');

@@ -447,4 +447,12 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/sectors',[AreaController::class,'all_sectors'])
     ->name('all_sectors');
     //->can('view',['App\Models\City']);
+
+    Route::get('sectors/add', [AreaController::class,'add_sector'])
+    ->name('add_sector');
+    //->can('add',['App\Models\City']);
+
+    Route::post('sectors/store', [AreaController::class,'store_sector'])
+    ->name('store_sector');
+    //->can('store',['App\Models\City']);
 });
