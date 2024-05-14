@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
+use App\Models\Order;
 
 class Company extends Model
 {
@@ -31,6 +32,7 @@ class Company extends Model
     public function roles(): HasMany
     {
         return $this->hasMany(Role::class, 'company_id');
+        return $this->hasMany(Order::class, 'company_id');
     }
 
 }

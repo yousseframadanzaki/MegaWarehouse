@@ -232,68 +232,68 @@
     @foreach ($data as $order)
     <div class="parent" style="@if ($selected_option == '1' && $order->iteration % 1 == 0) page-break-after: always; @elseif ($selected_option == '2' ) @endif">
         <div class="header">
-            <div class="column" style="align-content: flex-start;">
-                <table style="width: 300px;height: 170px;margin-top:10px;">
-                    <tbody>
-                        <tr>
-                            <td colspan="3" style="font-size: 18px;padding: 5px;"><span>العميل: </span> <b>{{$order->name}}<b></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="font-size: 18px;">
-                                <div class="double-line"><span style="font-size: 15px;padding: 5px;">العنوان: {{$order->address}}</span></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" style="font-size: 18px;padding: 5px;"><span>رقم العميل:
-                                    </span> @if($order->phone_1 && $order->phone_2)
-                                        <b>{{ $order->phone_1 }} - {{ $order->phone_2 }}</b>
-                                        @elseif($order->phone_1)
-                                            <b>{{ $order->phone_1 }}</b>
-                                        @elseif($order->phone_2)
-                                            <b>{{ $order->phone_2 }}</b>
-                                        @endif
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="column">
+            <div class="column" style="margin-right: 20px;margin-top: 20px;">
                 <div style="text-align: center;">
-                    <svg id="{{$order->waybill}}"></svg>
-                    <h2>
-                    <div class="way-bill" style="font-weight: bold;display: none;">
                     @isset($order->waybill)
-                     {{$order->waybill}}
-                     @endisset
+                    {!! DNS1D::getBarcodeHTML($order->waybill, 'C128',2,40) !!}
+                    @endisset
+                    <h3>
+                    <div style="font-weight: bold;">
+                        @isset($order->waybill)
+                        {{$order->waybill}}
+                        @endisset
                     </div>
-                    </h2>
-                    <div style="display: flex;justify-content:center">
-                        <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">{{$order->total}} جنيه</div>
-                    </div>
+                    </h3>
                 </div>
             </div>
             <div class="column">
-                <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;margin-left: -85px;">
-                    <svg id="{{$order->order_code}}"></svg>
-                    <div class="code" style="font-weight: bold;display: none;">
+                <div><img src="{{asset('/logo_here.png')}}" alt="Logo here" width="75" height="75"></div>
+                <div style="margin-top: 10px">
+                    <h3>{{ $order->companies->name }}</h3>
+                </div>
+                <div style="display: flex;justify-content:center;margin-top: 10px">
+                    <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">{{$order->total}} جنيه</div>
+                </div>
+            </div>
+            <div class="column">
+                <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;margin-left: -85px;margin-top: 20px;">
+                    {!! DNS1D::getBarcodeHTML($order->order_code, 'C128',1.5,30) !!}
+                    <div style="font-weight: bold;">
                     {{$order->order_code}}
                     </div>
-                    <p style="font-size: 14px;"> @date_format($order->created_at)</p>
                     <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
+                    <p style="font-size: 14px;"> @date_format($order->created_at)</p>
                 </div>
             </div>
         </div>
-        <h2 style="margin-top: 60px;margin-right: 160px;">المنتجات</h2>
+        <table style="width: 900px;margin-top:25px;">
+            <tbody>
+                <tr>
+                    <td colspan="3" style="font-size: 16px;padding: 5px;"><span>العميل: </span> <b>{{$order->name}}<b> -
+                        <span style="padding: 5px;">العنوان: {{$order->address}}</span> -
+                        <span>رقم العميل: </span> @if($order->phone_1 && $order->phone_2)
+                            <b>{{ $order->phone_1 }} - {{ $order->phone_2 }}</b>
+                            @elseif($order->phone_1)
+                                <b>{{ $order->phone_1 }}</b>
+                            @elseif($order->phone_2)
+                                <b>{{ $order->phone_2 }}</b>
+                            @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        @if (count($order->stocks) == 8)
+        <h2 style="margin-top: 20px;margin-right: 190px;">المنتجات</h2>
         @foreach ($order->stocks as $item)
-        <div class="body" style="align-items: center;width: 65%;margin-right: 160px;">
-            <table style="width: 50%;margin-left:5px;">
+        <div class="body" style="align-items: center;width: 65%;margin-right: 190px;">
+            <table style="width: 45%;margin-left:5px;">
                 <tbody>
-                    <tr>
+                    <tr style="height: 30px;">
                         <td colspan="3" style="font-size: 18px;">{{$item->variant->product->name}}</td>
                     </tr>
                 </tbody>
             </table>
-            <table style="width: 50%;margin-left:5px;">
+            <table style="width: 45%;margin-left:5px;">
                 <tbody>
                     <tr colspan="2" style="height: 30px;">
                         <td style="font-size: 18px;"><span style="margin-right: 108px;">{{$item->variant->name}}</b></td>
@@ -302,32 +302,42 @@
             </table>
         </div>
         @endforeach
+        @endif
+        @if (count($order->stocks) > 8)
+            <h2 style="margin-top: 20px;margin-right:15px;">المنتجات</h2>
+            <div class="body" style="align-items: center;width: 100%;">
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="width: 100%;">
+                        @foreach ($order->stocks->take(8) as $item)
+                        <table style="margin-right:30px;">
+                            <tbody>
+                                <tr style="height: 30px;width: 100px;">
+                                    <td colspan="3" style="font-size: 18px;width: 200px;">{{$item->variant->product->name}}</td>
+                                    <td colspan="3" style="font-size: 18px;width: 200px;"><center>{{$item->variant->name}}</b></center></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @endforeach
+                    </div>
+                    <div style="width: 100%;">
+                        @foreach ($order->stocks->slice(8) as $item)
+                        <table>
+                            <tbody>
+                                <tr style="height: 30px;width: 100px;">
+                                    <td colspan="3" style="font-size: 18px;width: 200px;">{{$item->variant->product->name}}</td>
+                                    <td colspan="3" style="font-size: 18px;width: 200px;"><center>{{$item->variant->name}}</b></center></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+
 
         <!--<div class="footer" style="margin-bottom: 1px">
             تاريخ الاوردر : @date_format($order->created_at)
         </div>-->
     </div>
     @endforeach
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-    <script>
-        $('.way-bill').each(function() {
-            var waybill = $(this).text().trim();
-            if(waybill != ""){
-            JsBarcode("#" + waybill, waybill, {
-                format: "CODE128",
-                displayValue: true,
-                fontSize: 18
-            });
-        }
-        });
-        $('.code').each(function() {
-            var order_code = $(this).text().trim();
-            if(order_code != ""){
-                JsBarcode("#" + order_code, order_code, {
-                    format: "CODE128",
-                    displayValue: true
-                });
-            }
-        });
-    </script>

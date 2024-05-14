@@ -136,7 +136,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
     public function get_order_print($data ,$order_id) {
         $orders = [];
-        $order = Order::with(['stocks','stocks.variant','stocks.variant.product'])->find($order_id);
+        $order = Order::with(['stocks','stocks.variant','stocks.variant.product','companies'])->find($order_id);
         $orders[] = $order;
         return $orders;
     }

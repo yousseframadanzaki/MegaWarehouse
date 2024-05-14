@@ -14,6 +14,7 @@ use App\Models\OrderItem;
 use App\Models\OrderStatus;
 use App\Models\ShippingCompany;
 use App\Models\Marketer;
+use App\Models\Company;
 
 class Order extends Model
 {
@@ -95,6 +96,10 @@ class Order extends Model
     public function shipping_company()
     {
         return $this->belongsTo(ShippingCompany::class);
+    }
+    public function companies()
+    {
+        return $this->belongsTo(Company::class ,'company_id');
     }
 
     public function scopeFilter($query, $filters)
