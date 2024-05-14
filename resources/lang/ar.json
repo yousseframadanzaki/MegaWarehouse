@@ -127,5 +127,6 @@
     "arae_name_required":"الرجاء كتابة اسم المنطقة",
     "arae_price_required":"الرجاء كتابة سعر شحن للمنطقة",
     "city_id_name_required":"الرجاء اختيار المدينة",
-    "create_area_success":"تم اضافت المنطقة الجديدة بنجاح"
+    "create_area_success":"تم اضافت المنطقة الجديدة بنجاح",
+    "Area":"مناطق الشحن"
 }

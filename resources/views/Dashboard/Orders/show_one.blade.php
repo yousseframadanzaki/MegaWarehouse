@@ -241,9 +241,11 @@
                         <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
                     </div>
                 @endcan
+                @can('scan_orders', 'App\Models\Order')
                 <div class="btn-group me-2">
                     <a href="{{ route('scan_order',$order->id) }}" target="_blank" class="btn btn-warning"> مراجعة الأوردر <i class="bi bi-upc-scan"></i></a>
                 </div>
+                @endcan
                 <div class="btn-group me-2">
                     <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf

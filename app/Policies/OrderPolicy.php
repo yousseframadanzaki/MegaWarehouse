@@ -52,6 +52,13 @@ class OrderPolicy
         }
         return true;
     }
+    public function scan_orders(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','scan_orders')){
+            return false;
+        }
+        return true;
+    }
 
     // public function update(User $user, $order_id): bool
     // {

@@ -6,9 +6,11 @@
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
             <li><a class="link-dark" href="{{ route('all_sectors') }}">مناطق الشحن</a></li>
         </ul>
+        @can('add', 'App\Models\Area')
         <div class="mt-2">
             <a href="{{ route('add_sector') }}"><button class="btn btn-primary">أضافة منطقة <i class="bi bi-map"></i></button></a>
         </div>
+        @endcan
     </div>
     <div id="message" style="display: none"></div>
     <table class="table table-hover">
@@ -22,11 +24,11 @@
             @foreach ($sectors as $sector)
             <tr>
                 <td>{{ $sector->name }}</td>
-                <td><input style="width: inherit;" class="form-control area_price" id="price_{{ $sector->id }}"
+                <td><input @cannot('edit_area', 'App\Models\Area') disabled @endcannot style="width: inherit;" class="form-control area_price" id="price_{{ $sector->id }}"
                     data-id="{{ $sector->id }}" type="number" name="price"
                     value="{{ $sector->price }}"/></td>
                 <td>
-                    <select class="form-select @error('city_id') is-invalid @enderror area_city" data-id="{{ $sector->id }}" id="city_{{ $sector->id }}"
+                    <select @cannot('edit_area', 'App\Models\Area') disabled @endcannot class="form-select @error('city_id') is-invalid @enderror area_city" data-id="{{ $sector->id }}" id="city_{{ $sector->id }}"
                         aria-label="Default select example" name="city_id">
                         <option value="">اختار</option>
                         @foreach ($cities as $id => $name)
@@ -42,7 +44,7 @@
                     @enderror
                 </td>
                 <td>
-                    <select class="form-select @error('shipping_company_id') is-invalid @enderror area_shipping_company" data-id="{{ $sector->id }}" id="shipping_company_{{ $sector->id }}"
+                    <select @cannot('edit_area', 'App\Models\Area') disabled @endcannot class="form-select @error('shipping_company_id') is-invalid @enderror area_shipping_company" data-id="{{ $sector->id }}" id="shipping_company_{{ $sector->id }}"
                         aria-label="Default select example" name="shipping_company_id">
                         <option value="">اختار</option>
                         @foreach ($shipping_companies as $shipping)

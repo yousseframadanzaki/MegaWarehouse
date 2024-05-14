@@ -445,14 +445,13 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->can('update',['App\Models\User','user_id']);
 
     Route::get('/sectors',[AreaController::class,'all_sectors'])
-    ->name('all_sectors');
-    //->can('view',['App\Models\City']);
+    ->name('all_sectors')
+    ->can('view',['App\Models\Area']);
 
     Route::get('sectors/add', [AreaController::class,'add_sector'])
-    ->name('add_sector');
-    //->can('add',['App\Models\City']);
+    ->name('add_sector')
+    ->can('add',['App\Models\Area']);
 
     Route::post('sectors/store', [AreaController::class,'store_sector'])
     ->name('store_sector');
-    //->can('store',['App\Models\City']);
 });
