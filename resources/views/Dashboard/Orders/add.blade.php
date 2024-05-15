@@ -215,6 +215,12 @@
                             @enderror
                         </div>
                         <div class="col-md-4 mt-3">
+                            <label class="form-label">ملاحظة <i class="bi bi-map-marker">
+                                </i></label>
+                            <input type="text" class="form-control @error('clientnote') is-invalid @enderror" id="note"
+                                name="client[note]" value="{{ old('client.note') }}">
+                        </div>
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                             <input type="text" class="form-control" name="client[links][facebook]"
                                 value="{{ old('client.links.facebook') }}">

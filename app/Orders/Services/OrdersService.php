@@ -13,7 +13,7 @@ use App\Cart\Interfaces\CartServiceInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\Products\Interfaces\VariantStockServiceInterface;
-
+use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
 
 
 class OrdersService implements OrdersServiceInterface{
@@ -28,6 +28,7 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  ShippingCompanyServiceInterface $ShippingCompanyService,
         protected readonly  ShippingStatusServiceInterface $ShippingStatusService,
         protected readonly VariantStockServiceInterface $VariantStockService,
+        protected readonly OrderNotesServiceInterface $OrderNotesService,
     ) {}
 
     public function AddOrder($user,array $order_details){
@@ -47,8 +48,10 @@ class OrdersService implements OrdersServiceInterface{
         $order_details['admin_id'] = $user->id;
         $order_details['company_id'] = $user->company_id;
         $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
-        // dd($order_details);
+        $note = $order_details['client']['note'];
+        unset($order_details['client']['note']);
         $order = $this->orders_crud_repository->create_order($order_details);
+        $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
         $order_details['type'] = 'sell';
         $order_details['order_id'] = $order->id;
 

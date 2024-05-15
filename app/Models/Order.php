@@ -15,6 +15,7 @@ use App\Models\OrderStatus;
 use App\Models\ShippingCompany;
 use App\Models\Marketer;
 use App\Models\Company;
+use App\Models\OrderNotes;
 
 class Order extends Model
 {
@@ -105,6 +106,10 @@ class Order extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+    public function order_notes()
+    {
+        return $this->belongsTo(OrderNotes::class ,'order_id');
     }
 
 }

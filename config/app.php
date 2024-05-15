@@ -185,6 +185,8 @@ return [
         App\Providers\MegaApiServiceProvider::class,
         App\Providers\ShippingStatusServiceProvider::class,
         App\Providers\ShippingAreaServiceProvider::class,
+        App\Providers\OrderNotesProvider::class,
+        App\Providers\AreaServiceProvider::class,
         App\Providers\MarketerServiceProvider::class,
         App\Providers\TemplateServiceProvider::class,
         App\Providers\InvoiceServiceProvider::class,

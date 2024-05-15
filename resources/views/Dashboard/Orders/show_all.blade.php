@@ -242,6 +242,7 @@
                         <th>المنطقة</th>
                         <th>الاجمالى</th>
                         <th>تاريخ الاضافة</th>
+                        <!--<th>ملاحظات الطلب</th>-->
                     </tr>
                 </thead>
                 <tbody>
@@ -262,6 +263,9 @@
                             <td>{{$order->city->name}} - {{$order->area->name}}</td>
                             <td>{{$order->total}}</td>
                             <td>@date_format($order->created_at)</td>
+                            <!--<td class="hidden-print task_notes_modal" data-id="{{$order->id}}">
+                                <span class="btn btn-primary" style="border-radius: 5px"></span>
+                            </td>-->
                         </tr>
                     @endforeach
                 </tbody>
