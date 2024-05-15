@@ -50,7 +50,11 @@ class OrdersFilters
 
     public function receivedFilters()
     {
-        return request()->only(array_keys($this->filters));
+        $filters = request()->only(array_keys($this->filters));
+        $filtered = array_filter($filters, function($value) {
+            return !is_null($value);
+        });
+        return $filtered;
     }
 
     public function get_values() {
