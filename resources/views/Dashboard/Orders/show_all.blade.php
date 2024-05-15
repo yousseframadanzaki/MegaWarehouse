@@ -223,9 +223,12 @@
                         <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                         </form>
                     </div>
+                    <div class="btn-group me-2" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
+                        <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
+                    </div>
                 </div>
 
-            <table class="mt-3 table table-hover">
+            <table class="mt-3 table table-hover" id="orders">
                 <thead>
                     <tr>
                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
@@ -275,6 +278,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
 integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         $(document).ready(function() {
             $("td[data-status]").each(function() {
@@ -455,6 +459,26 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             if(status_id == '30'){
                 $("#shipping_company_select").fadeIn();
             }
-        })
+        });
+        function exportTableToExcel(orders, filename = '') {
+            var table = document.getElementById(orders);
+            var wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"});
+            var wbout = XLSX.write(wb, {bookType: 'xlsx', type: 'binary'});
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            var blob = new Blob([s2ab(wbout)], {type: "application/octet-stream"});
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename ? filename + '.xlsx' : 'export.xlsx';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 @endsection
