@@ -12,6 +12,7 @@ use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
 use App\Orders\Filters\OrdersFilters;
+use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
 
 use function Ramsey\Uuid\v1;
 
@@ -20,15 +21,18 @@ class OrderController extends Controller
     private CommonDataServiceInterface $CommonDataService;
     private OrdersServiceInterface $OrdersService;
     private TemplateServiceInterface $TemplateService;
+    private OrderNotesServiceInterface $OrderNotesService;
     public function __construct(
         CommonDataServiceInterface $CommonDataService,
         OrdersServiceInterface $OrdersService,
         TemplateServiceInterface $TemplateService,
+        OrderNotesServiceInterface $OrderNotesService,
     )
     {
         $this->CommonDataService = $CommonDataService;
         $this->OrdersService = $OrdersService;
         $this->TemplateService = $TemplateService;
+        $this->OrderNotesService = $OrderNotesService;
     }
 
     public function all(OrdersFilters $filters) {
@@ -98,6 +102,8 @@ class OrderController extends Controller
         $order = $this->OrdersService->UpdateOrder($order_id, $client);
         $old_stock = $this->OrdersService->UpdateStock($order_id, $old_items);
         $new_stock = $this->OrdersService->AddStock(auth()->user() ,$order_id, $new_items);
+        $note = 'تم تعديل بيانات الأوردر';
+        $order_note = $this->OrderNotesService->AddOrderNote($order_id,$note,auth()->user()->id,$this->company_id());
 
         if($order || $old_stock || $new_stock){
             $request->session()->flash('success', 'order_edited_success');

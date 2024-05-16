@@ -12,6 +12,7 @@ use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\OrderNotesController;
 use App\Http\Controllers\admin\CompnayController;
 
 /*
@@ -57,3 +58,5 @@ Route::post('/order/scan_items', [OrderController::class,'scan_items'])->name('s
 Route::post('/sectors/{id}/edit', [AreaController::class,'edit_area'])->name('edit_area');
 Route::post('/sectors/{id}/edit_city', [AreaController::class,'edit_city'])->name('edit_city');
 Route::post('/sectors/{id}/edit_shipping_company', [AreaController::class,'edit_shipping_company'])->name('edit_shipping_company');
+Route::get('/order/{order_id}/notes', [OrderNotesController::class,'notes'])->name('notes');
+Route::POST('/order/{id}/add_note', [OrderNotesController::class,'create_note'])->name('create_note');

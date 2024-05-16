@@ -109,7 +109,7 @@ class Order extends Model
     }
     public function order_notes()
     {
-        return $this->belongsTo(OrderNotes::class ,'order_id');
+        return $this->hasMany(OrderNotes::class, 'order_id');
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Order;
+use App\Models\User;
 
 class OrderNotes extends Model
 {
@@ -12,6 +13,10 @@ class OrderNotes extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'order_id');
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

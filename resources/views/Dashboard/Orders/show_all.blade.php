@@ -1,7 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-
+<style>
+#loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgb(0, 0, 0);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+</style>
 <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -74,6 +91,47 @@
             </form>
         </div>
     </div>
+</div>
+<div class="modal fade" id="content-note" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%;">
+            <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
+                <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true"></button>
+                    <h3 class="modal-title">ملاحظات الطلب</h3>
+                </div>
+                <div class="modal-body" style="min-height:150px ; overflow: auto;font-size:14px">
+                    <div class="comment-main-level clearfix" style="margin-bottom:10px">
+                        <div class="">
+                            <div class="comment-box"
+                                style="-webkit-box-shadow: none;-moz-box-shadow: none; box-shadow: none;">
+                                <div class="comment-head"
+                                style="border:none;background: none;padding: 0px;">
+                                <textarea class=" col-md-12 form-control input-circle recordNots"
+                                            placeholder="اضافة ملاحظة ..."
+                                                rows="4"></textarea>
+                                        <div class="col-md-6 " style="margin-top:25px">
+                                        <div class="add_notes_btn" style="">
+                                    </div>
+                                    </div>
+                                <div id="mess" style="display:none"> </div>
+                            </div>
+                    </div>
+                </div>
+                </div>
+                    <div class="row">
+                        <div style="border: 1px solid #ddd">
+                            <h4 style="padding: 15px 10px;background: #eee;margin: 0">
+                                الملاحظات السابقة</h4>
+                        <div class="notes-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
 </div>
 
     <div class="p-3">
@@ -242,7 +300,7 @@
                         <th>المنطقة</th>
                         <th>الاجمالى</th>
                         <th>تاريخ الاضافة</th>
-                        <!--<th>ملاحظات الطلب</th>-->
+                        <th>ملاحظات الطلب</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -263,9 +321,9 @@
                             <td>{{$order->city->name}} - {{$order->area->name}}</td>
                             <td>{{$order->total}}</td>
                             <td>@date_format($order->created_at)</td>
-                            <!--<td class="hidden-print task_notes_modal" data-id="{{$order->id}}">
-                                <span class="btn btn-primary" style="border-radius: 5px"></span>
-                            </td>-->
+                            <td class="order_notes" data-id="{{$order->id}}">
+                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -275,7 +333,7 @@
             </div>
         </div>
     </div>
-
+<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 @endsection
 
 @section('script')
@@ -483,6 +541,70 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+        $(".order_notes").click(function () {
+            var order_id = $(this).attr('data-id');
+            $("#content-note").modal("show");
+			$(".notes-list").html("<div id='loading'></div>");
+			var btn_template = `
+			<div class="pull-left" style="margin-top:3px;">
+				<button type="button" class="btn btn-warning"
+					style="margin-top:16px"
+					onclick="recordYourNotes(${order_id});">
+					 إضافة ملاحظة<i class="bi bi-plus-circle"></i>
+                </button>
+			</div>
+			`
+			$(".add_notes_btn").html(btn_template);
+            $.ajax({
+                type:'GET',
+                url:`/api/order/${order_id}/notes`,
+                dataType: "text",
+            }).then((response)=>{
+                data = JSON.parse(response);
+                $(".notes-list").html("");
+                data.forEach(note => {
+                        var template = `
+                            <div>
+                                <div class="btn-group me-2" style="">${note.admin.name} : ${note.note}</div>
+                                <div class="col-md-12" style="margin: 5px;"><span>${note.formatted_created_at}</span></div>
+                                <hr class="col-md-12" style="margin: 10px; border-color: #ddd">
+                            </div>
+                        `;
+                        $(".notes-list").append(template);
+                });
+            });
+        });
+        function recordYourNotes($id){
+            id = $id;
+            note = $(".recordNots").val();
+            token = $("#token").val();
+            $.ajax({
+                type:'POST',
+                url:`/api/order/${id}/add_note`,
+                dataType: "text",
+                data: {
+                    order_id: id,
+                    note: note,
+                    token: token
+                }
+            }).then((response)=>{
+                data = JSON.parse(response);
+                if (data) {
+                    $(".recordNots").html('');
+                    show_success('تمت اضافة الملاحظة بنجاح');
+                }
+            });
+            function show_success(message) {
+                var template = `
+                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                    <strong>${message}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `;
+                $('#mess').append(template);
+                $('#mess').fadeIn();
+            }
         }
     </script>
 @endsection
