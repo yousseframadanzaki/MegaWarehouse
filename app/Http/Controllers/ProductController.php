@@ -29,7 +29,22 @@ class ProductController extends Controller
 
     public function show($product_id) {
         $product = $this->ProductCrudService->GetProduct($product_id);
-        return view("Dashboard.Products.show_one")->with('product',$product);
+        $attributes = $product['attributes'];
+        $attributes = [];
+
+        foreach ($product['attributes'] as $attribute) {
+            $name = $attribute['name'];
+            $values = json_decode($attribute['values'], true);
+            if (!isset($attributes[$name])) {
+                $attributes[$name] = [];
+            }
+            if (isset($attributes[$name]['values'])) {
+                $attributes[$name]['values'] = array_merge($attributes[$name]['values'], $values);
+            } else {
+                $attributes[$name]['values'] = $values;
+            }
+        }
+        return view("Dashboard.Products.show_one")->with(['product'=>$product,'attributes'=>$attributes]);
     }
 
     public function all(ProductFilters $filters) {

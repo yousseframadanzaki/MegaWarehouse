@@ -21,7 +21,7 @@
     .small-image:hover{
         border: solid 2px var(--bs-primary);
     }
-    
+
 </style>
 
 
@@ -42,7 +42,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -94,13 +94,15 @@
                 <div class="col-md-12 fs-5"><span style="font-weight: 600;">التصنيف : </span><span><a href="{{ route('show_category',$product->category_id) }}">{{$product->category->parents_names}}</a></span></div>
             </div>
             <div class="row mt-2">
-                @foreach ($product->attributes as $attribute)
+                @foreach ($attributes as $name => $attribute)
                     <div class="col-md-4">
-                        <span style="font-weight: 600;">{{$attribute->name}}</span>
+                        <span style="font-weight: 600;">{{$name}}</span>
                         <br>
-                        @foreach (json_decode($attribute->values) as $value)
-                            <div class="badge p-2 bg-success">{{$value}}</div>
-                        @endforeach
+                                @foreach ($attribute['values'] as $value)
+                                <div class="badge p-2 bg-success">
+                                    {{ $value }}
+                                </div>
+                                @endforeach
                     </div>
                 @endforeach
             </div>

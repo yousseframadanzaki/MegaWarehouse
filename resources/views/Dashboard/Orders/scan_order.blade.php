@@ -91,8 +91,8 @@
             var token = $('#token').val();
             $.ajax({
                 url:`/api/order/scan_items/`,
-                method:'POST',
-                data:{ id,token},
+                method:'GET',
+                data:{ id },
                 }).then(data => {
                     if (data) {
                         for (var i = 0; i < data.length; i++) {
