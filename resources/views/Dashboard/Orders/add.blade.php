@@ -153,7 +153,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4 mt-3">
+                        <div class="col-md-4">
                             <label class="form-label">عنوان <i class="bi bi-map-marker">
                                 </i></label>
                             <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address"
@@ -165,7 +165,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم التليفون 2 </label>
                             <input type="text" class="form-control @error('client.phone_2') is-invalid @enderror" name="client[phone_2]"
                                 id="phone_2" value="{{ old('client.phone_2') }}">

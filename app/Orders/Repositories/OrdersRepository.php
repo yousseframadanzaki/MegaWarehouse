@@ -6,6 +6,7 @@ use App\Orders\Interfaces\OrdersRepositoryInterface;
 use App\Models\Order;
 use App\Models\Variant;
 use App\Models\Company;
+use App\Models\OrderNotes;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -20,12 +21,15 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $total_data = $this->calculate_total($data['items'],$order_data['client_id']);
         $total_after_sale = $this->calculate_total_after_sale($data['items']);
 
-        $order_data['total'] = $total_data['total'];
-        $order_data['total_after_sale'] = $total_after_sale;
+        $order_data['total'] = ($total_data['total'] + $order_data['delivery_cost']);
+        $order_data['total_after_sale'] = ($total_after_sale + $order_data['delivery_cost']);
         $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
         $order_data['marketer_id'] = $data['marketer_id'];
-
+        $sale_note = $order_data['total'] - $order_data['total_after_sale'];
         $order = Order::create($order_data);
+
+        $note = 'تم اضافة خصم على الأوردر (اجمالى الخصم ' . $sale_note . ')';
+        $order_note = $this->add_order_note($order->id,$note,$data['admin_id'],$data['company_id']);
 
         // $order->items()->sync($data['items']);
         $order->order_status()->sync([$order_data['status_id'] => ['admin_id' => $order_data['admin_id'],'note'=>'','current'=>true]]);
@@ -42,8 +46,6 @@ class OrdersRepository implements OrdersRepositoryInterface{
     function calculate_total($items,$client_id) {
         $total = 0;
         $total_marketer_commission = 0;
-        // $client = Client::with('client_group')->where('id',$client_id)->first();
-        // $discount = $client->client_group->discount;
         foreach ($items as $item) {
             $variant = Variant::with('product')->find($item['id']);
             $price = $variant->price;
@@ -52,9 +54,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $total += $price * (int)$item['quantity'];
             $total_marketer_commission += $commission * (int)$item['quantity'];
         }
-        // echo $total;
-        // $total = $total - ($total*$discount*0.01);
-        // dd($total);
+
         $data['total'] = $total;
         $data['total_marketer_commission'] = $total_marketer_commission;
         return $data;
@@ -166,5 +166,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
             }
         }
         return $orders;
+    }
+    public function add_order_note($order_id,$note,$admin_id,$company_id){
+        $order_note = new OrderNotes;
+        $order_note->order_id = $order_id;
+        $order_note->note = $note;
+        $order_note->admin_id = $admin_id;
+        $order_note->company_id = $company_id;
+        return $order_note->save();
     }
 }

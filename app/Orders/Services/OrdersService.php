@@ -51,7 +51,9 @@ class OrdersService implements OrdersServiceInterface{
         $note = $order_details['client']['note'];
         unset($order_details['client']['note']);
         $order = $this->orders_crud_repository->create_order($order_details);
-        $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
+        if (!empty($note)) {
+            $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
+        }
         $order_details['type'] = 'sell';
         $order_details['order_id'] = $order->id;
 
