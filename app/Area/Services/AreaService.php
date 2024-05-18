@@ -27,4 +27,7 @@ class AreaService implements AreaServiceInterface{
     public function CreateSector($data){
         return $this->area_crud_repository->create_sector($data);
     }
+    public function GetPrice($id){
+        return $this->area_crud_repository->get_price($id);
+    }
 }

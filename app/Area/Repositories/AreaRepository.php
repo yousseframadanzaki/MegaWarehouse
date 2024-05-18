@@ -31,4 +31,7 @@ class AreaRepository implements AreaRepositoryInterface{
     public function create_sector($data){
         return Area::create($data);
     }
+    public function get_price($id){
+        return Area::find($id)->price;
+    }
 }

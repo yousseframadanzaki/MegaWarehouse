@@ -5,9 +5,7 @@ namespace App\Orders\Repositories;
 use App\Orders\Interfaces\OrdersRepositoryInterface;
 use App\Models\Order;
 use App\Models\Variant;
-use App\Models\Status;
 use App\Models\Company;
-use App\Models\Client;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -26,7 +24,6 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_data['total_after_sale'] = $total_after_sale;
         $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
         $order_data['marketer_id'] = $data['marketer_id'];
-
 
         $order = Order::create($order_data);
 

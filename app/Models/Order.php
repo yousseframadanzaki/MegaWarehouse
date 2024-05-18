@@ -28,6 +28,7 @@ class Order extends Model
         'country_id',
         'city_id',
         'area_id',
+        'delivery_cost',
         'total',
         'total_after_sale',
         'client_id',

@@ -63,4 +63,8 @@ class AreaController extends Controller
             return redirect()->route('all_sectors')->with('success','create_area_success');
         }
     }
+    public function get_price($id){
+        $price = $this->AreaService->GetPrice($id);
+        return response()->json($price);
+    }
 }

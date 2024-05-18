@@ -60,3 +60,4 @@ Route::post('/sectors/{id}/edit_city', [AreaController::class,'edit_city'])->nam
 Route::post('/sectors/{id}/edit_shipping_company', [AreaController::class,'edit_shipping_company'])->name('edit_shipping_company');
 Route::get('/order/{order_id}/notes', [OrderNotesController::class,'notes'])->name('notes');
 Route::POST('/order/{id}/add_note', [OrderNotesController::class,'create_note'])->name('create_note');
+Route::GET('/area/{id}/get_price', [AreaController::class,'get_price'])->name('create_note');

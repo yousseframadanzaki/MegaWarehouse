@@ -8,4 +8,5 @@ public function EditArea($area_id, $price);
 public function EditCity($area_id, $city_id);
 public function EditShippingCompany($area_id, $shipping_company_id);
 public function CreateSector($data);
+public function GetPrice($id);
 }

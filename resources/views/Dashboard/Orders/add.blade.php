@@ -1,16 +1,35 @@
 @extends('layouts.app')
-
 @section('content')
-
-    <style>
+<style>
         .remove_variant{
             cursor: pointer;
             color:red;
         }
-    </style>
-
+        .loader {
+        width: 45px;
+        aspect-ratio: 1;
+        display: flex;
+        margin-right: 95%;
+        color: #582b8c;
+        border: 4px solid;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle 5px, currentColor 95%,#0000),
+            linear-gradient(currentColor 50%,#0000 0) 50%/4px 60% no-repeat;
+        animation: l1 2s infinite linear;
+        }
+        .loader:before {
+        content: "";
+        flex: 1;
+        background:linear-gradient(currentColor 50%,#0000 0) 50%/4px 80% no-repeat;
+        animation: inherit;
+        }
+        @keyframes l1 {
+        100% {transform: rotate(1turn)}
+        }
+</style>
     <div id="message" style="display: none">
-
     </div>
     <div class="modal fade" id="quantities" tabindex="-1" aria-labelledby="quantitiesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -33,66 +52,6 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="modal fade" id="ProductsModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form action="{{route('store_cart')}}" method="POST" id="cart_form">
-                        @csrf
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="form-label" for="product_id">المنتج</label>
-                            <select id="product_id" class="form-select product_info" style="padding: 0.375rem 0.75rem;width:100%">
-                                <option value="">اختار المنتج</option>
-                                @foreach ($products as $id => $name)
-                                    <option value="{{$id}}">{{$name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-12 mt-2" id="variants">
-                            <label class="form-label" for="variant_id">المتغيرات</label>
-                            <select name="variant_id" id="variant_id" class="form-select variant_info" style="padding: 0.375rem 0.75rem;width:100%">
-                            </select>
-                        </div>
-                        <div class="col-md-12 mt-2" >
-                            <label class="form-label" for="warehouse_id">المخزن</label>
-                            <select name="warehouse_id" id="warehouse_id" class="form-select"
-                                style="padding: 0.375rem 0.75rem;width:100%">
-                                <option value="">اختار المخزن</option>
-                                @foreach ($warehouses as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-12 mt-2">
-                            <label class="form-label">الكمية</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control">
-                        </div>
-                        <div class="col-md-12 mt-2">
-                            <table class="table hover-table">
-                                <thead>
-                                    <tr>
-                                        <th>اسم المخزن</th>
-                                        <th>الكمية</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cart_stock">
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary add_variant" >أضافة</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     <div class="modal fade" id="addToCartModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -173,6 +132,17 @@
                     <div class="row">
                         <h4>بيانات العميل</h4>
                         <div class="col-md-4">
+                            <label class="form-label">رقم التليفون</label>
+                            <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('client.phone_1') is-invalid @enderror form-control"
+                                autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
+                            @error('client.phone_1')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="col-md-4">
                             <label class="form-label">الاسم </label>
                             <input type="text" class="form-control @error('client.name') is-invalid @enderror" name="client[name]"
                                 id="name" value="{{ old('client.name') }}">
@@ -182,11 +152,13 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">رقم التليفون</label>
-                            <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('client.phone_1') is-invalid @enderror form-control"
-                                autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
-                            @error('client.phone_1')
+
+                        <div class="col-md-4 mt-3">
+                            <label class="form-label">عنوان <i class="bi bi-map-marker">
+                                </i></label>
+                            <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address"
+                                name="client[address]" value="{{ old('client.address') }}">
+                            @error('client.address')
                                 <div class="invalid-feedback">
                                     {{ __($message) }}
                                 </div>
@@ -203,17 +175,7 @@
                                 </div>
                             @enderror
                         </div>
-                        <div class="col-md-4 mt-3">
-                            <label class="form-label">عنوان <i class="bi bi-map-marker">
-                                </i></label>
-                            <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address"
-                                name="client[address]" value="{{ old('client.address') }}">
-                            @error('client.address')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
-                        </div>
+
                         <div class="col-md-4 mt-3">
                             <label class="form-label">ملاحظة <i class="bi bi-map-marker">
                                 </i></label>
@@ -235,8 +197,6 @@
                             <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
                         </div>
                     </div>
-
-
 
                     <div class="row mt-3">
                         <div class="col-md-4">
@@ -279,6 +239,11 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label class="form-label">سعر الشحن</label>
+                        <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
+                            name="client[delivery_cost]" value="{{ old('client.delivery_cost') }}">
                     </div>
                     <div class="row mt-5">
                         <h4>المسوق</h4>
@@ -326,17 +291,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @if (Session::has('cart'))
-                                    @foreach (Session::get('cart') as $item)
 
-                                    @endforeach
-                                @endif --}}
                             </tbody>
                         </table>
-                        <div class="total_total" style="direction: ltr;">الاجمالى :<span id="total_total_1"></span></div>
-                        <div class="total_after_sale" style="direction: ltr;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
+                        <div class="loader" style="display: none;direction: ltr;"></div>
+                        <div class="total_total" style="direction: ltr;display: none;">الاجمالى :<span id="total_total_1"></span></div>
+                        <div class="total_after_sale" style="direction: ltr;display: none;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
                         <div>
                             <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الاوردر</a>
+                            <button type="button" class="btn btn-primary total_order">عرض اجمالى الأوردر</button>
                         </div>
                     </div>
 
@@ -388,7 +351,6 @@
                 method: "GET",
                 dataType: "text",
             }).then(async function(response, textStatus, xhr) {
-                // console.log(xhr.status_code);
                 remove_data();
                 data = JSON.parse(response);
 
@@ -401,6 +363,7 @@
                 await $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
                 await $.each(data.areas, function(key, value) {
                     $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    $("#delivery_cost").val(value.price);
                 });
 
                 await add_data(data);
@@ -463,6 +426,17 @@
                 });
             })
         })
+        $("#area-select").change(function() {
+           var id = this.value;
+            $.ajax({
+                type: 'GET',
+                url: `/api/area/${id}/get_price`,
+                dataType: "text",
+            }).then((response) => {
+                data = JSON.parse(response);
+                $("#delivery_cost").val(data);
+            });
+        });
 
         $("#product_id").change(function () {
             product_id = $(this).val();
@@ -530,10 +504,10 @@
 
             });
         }
-
-        function UpdateOrderTotal(){
+        $(".total_order").click(function (e) {
             var total = 0;
             var totalAfterSale = 0;
+            $(".loader").show();
 
             $('tr').each(function() {
                 var variantTotal = parseInt($(this).find('.variant_total').text().trim());
@@ -549,10 +523,14 @@
 
             var formattedTotal = total.toLocaleString();
             var formattedTotalAfterSale = totalAfterSale.toLocaleString();
-            $('#total_total_1').text(formattedTotal);
-            $('#total_after_sale_1').text(formattedTotalAfterSale);
-
-            }
+            setTimeout(function() {
+                $(".total_total").show();
+                $(".total_after_sale").show();
+                $('#total_total_1').text(formattedTotal);
+                $('#total_after_sale_1').text(formattedTotalAfterSale);
+                $(".loader").hide();
+            }, 1500);
+        });
 
         $('#variant_id').change(function () {
             var variant_id = $(this).val();
@@ -677,6 +655,7 @@
             $('#message').fadeIn();
 
         }
+
         $(document).on('input','.quantity',function (e) {
            variant_id = $(this).attr('data-id');
            quantity = parseInt($(this).val());
@@ -702,7 +681,6 @@
             if(!data){
                 alert('حدث خطاء أثناء التعديل');
             }
-            UpdateOrderTotal();
            })
 
 
@@ -771,47 +749,6 @@
                 }
             })
         })
-        // $(".add_order_btn").click(function (e) {
-        //     e.preventDefault();
-        //     console.log("hi 1");
 
-        //     var warehouses = $("select.warehouse");
-        //     var quantites = $(".quantity");
-
-        //     var error = false;
-
-        //     for (let index = 0; index < warehouses.length; index++) {
-        //         const warehouse = warehouses[index];
-        //         warehouse_id = $(warehouse).val();
-        //         if(!warehouse_id){
-        //             error=true;
-        //             $(warehouse).addClass('is-invalid');
-        //             $(warehouse).parent().find('.text-danger').remove();
-        //             $(warehouse).parent().append(`<span class="text-danger">برجاء اختيار المخزن</span>`)
-        //         }else{
-        //             $(warehouse).removeClass('is-invalid');
-        //             $(warehouse).parent().find('.text-danger').remove();
-        //         }
-        //     }
-
-        //     for (let index = 0; index < quantites.length; index++) {
-        //         const quantity = quantites[index];
-        //         value = parseInt($(quantity).val());
-        //         if(!value){
-        //             error=true;
-        //             $(quantity).addClass('is-invalid');
-        //             $(quantity).parent().find('.text-danger').remove();
-        //             $(quantity).parent().append(`<span class="text-danger">برجاء ادخال كمية</span>`)
-        //         }else{
-        //             $(quantity).removeClass('is-invalid');
-        //             $(quantity).parent().find('.text-danger').remove();
-        //         }
-        //     }
-        //     if(error){
-        //         return;
-        //     }
-        //     $("#order_form").submit();
-
-        // })
     </script>
 @endsection
