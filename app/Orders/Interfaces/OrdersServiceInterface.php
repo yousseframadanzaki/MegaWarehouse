@@ -11,4 +11,5 @@ interface OrdersServiceInterface{
     public function UpdateOrder($order_id,$data);
     public function AddStock($user ,$order_id ,$new_items);
     public function get_scan_items($ids);
+    public function UpdateAfterSaleOrder($id,$company_id,$data);
 }

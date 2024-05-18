@@ -175,4 +175,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order_note->company_id = $company_id;
         return $order_note->save();
     }
+    public function update_after_sale($id,$company_id,$data){
+        $order = Order::where('id', $id)->where('company_id', $company_id)->first();
+        $order->update($data);
+    }
 }

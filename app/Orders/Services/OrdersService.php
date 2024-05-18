@@ -209,5 +209,8 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->VariantStockService->get_scan_items($ids);
     }
+    public function UpdateAfterSaleOrder($id,$company_id,$data){
+        return $this->orders_crud_repository->update_after_sale($id,$company_id,$data);
     }
+}
 

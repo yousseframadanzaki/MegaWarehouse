@@ -96,6 +96,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="after_sale" tabindex="-1" aria-labelledby="after_sale" aria-hidden="true" style="margin-top: -100px;">
+    <div class="modal-dialog modal-dialog-centered" style="width: 300px;">
+        <div class="modal-content">
+            <form action="{{route('change_after_sale',$order->id)}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">اجمالى الأوردر بعد الخصم</label>
+                                <input type="number" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
+                                    name="total_after_sale" value="{{ $order->total_after_sale }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">تعديل</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="p-3">
@@ -140,6 +163,12 @@
                     <label>{{$order->area->name}}</label>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold">سعر الشحن :</label>
+                    <label>{{$order->area->price}}</label>
+                </div>
+            </div>
             <div class="row mt-4">
                 <h3>بيانات الاوردر</h3>
                 <div class="col-md-4 fs-5">
@@ -161,6 +190,16 @@
                     <label>{{$order->admin->name}}</label>
                 </div>
                 <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> الخصم :</label>
+                    <label>{{$order->total - $order->total_after_sale}}</label>
+                </div>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> اجمالى بعد الخصم :</label>
+                    <label>{{$order->total_after_sale}}</label>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4 fs-5">
                     <label class="fw-bold"> حالة :</label>
                     <label>{{$order->status->name}}</label>
                 </div>
@@ -168,15 +207,12 @@
                     <label class="fw-bold"> رقم البوليصة :</label>
                     <label>{{$order->waybill}}</label>
                 </div>
-            </div>
-            <div class="row mt-2">
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> شركة الشحن :</label>
                     @isset($order->shipping_company->name)
                     <label>{{$order->shipping_company->name}}</label>
                     @endisset
                 </div>
-
             </div>
             <div class="row mt-4">
                 <h3>بيانات المسوق</h3>
@@ -257,6 +293,9 @@
                         @csrf
                     <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                     </form>
+                </div>
+                <div class="btn-group me-2">
+                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
                 </div>
             </div>
 

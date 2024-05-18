@@ -180,5 +180,15 @@ class OrderController extends Controller
                 return redirect()->route('show_order', [$order_id])->with('success','confirm_order_success');
             }
     }
+    public function change_after_sale($order_id, Request $request){
+        $data = $request->all();
+        unset($data['_token']);
+        $total_after_sale = $data['total_after_sale'];
+        $order = $this->OrdersService->GetOrder($order_id);
+        $note = 'تم تغيير اجمالى بعد الخصم من '.$order['total_after_sale'].' الى '.$total_after_sale.'';
+        $order_note = $this->OrderNotesService->AddOrderNote($order_id,$note,auth()->user()->id,$this->company_id());
+        $after_sale_order = $this->OrdersService->UpdateAfterSaleOrder($order_id,$this->company_id(),$data);
+        return redirect()->route('show_order',$order_id)->with('success','change_after_sale_success');
+    }
 
 }

@@ -454,4 +454,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::post('sectors/store', [AreaController::class,'store_sector'])
     ->name('store_sector');
+
+    Route::post('orders/{order_id}/change_after_sale', [OrderController::class,'change_after_sale'])
+    ->name('change_after_sale');
 });
