@@ -282,21 +282,30 @@
                 </tr>
             </tbody>
         </table>
-        @if (count($order->stocks) == 8)
+        @if (count($order->stocks) < 8)
         <h2 style="margin-top: 20px;margin-right: 190px;">المنتجات</h2>
         @foreach ($order->stocks as $item)
         <div class="body" style="align-items: center;width: 65%;margin-right: 190px;">
-            <table style="width: 45%;margin-left:5px;">
+            <table style="width: 40%;margin-left:5px;">
                 <tbody>
                     <tr style="height: 30px;">
-                        <td colspan="3" style="font-size: 18px;">{{$item->variant->product->name}}</td>
+                        <center>
+                        <td colspan="3" style="font-size: 18px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
+                        </center>
                     </tr>
                 </tbody>
             </table>
-            <table style="width: 45%;margin-left:5px;">
+            <table style="width: 18%;margin-left:5px;">
                 <tbody>
                     <tr colspan="2" style="height: 30px;">
-                        <td style="font-size: 18px;"><span style="margin-right: 108px;">{{$item->variant->name}}</b></td>
+                        <td style="font-size: 16px;"><span style="margin-right: 28px;">{{abs($item->quantity)}} قطع</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 25%;margin-left:5px;">
+                <tbody>
+                    <tr colspan="2" style="height: 30px;">
+                        <td style="font-size: 16px;"><span style="margin-right: 33px;">{{abs($item->unit_price)}} جنيه</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -309,23 +318,25 @@
                 <div style="display: flex; justify-content: space-between;">
                     <div style="width: 100%;">
                         @foreach ($order->stocks->take(8) as $item)
-                        <table style="margin-right:30px;">
+                        <table style="margin-right:20px;">
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="font-size: 18px;width: 200px;">{{$item->variant->product->name}}</td>
-                                    <td colspan="3" style="font-size: 18px;width: 200px;"><center>{{$item->variant->name}}</b></center></td>
+                                    <td colspan="3" style="font-size: 18px;width: 250px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
+                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->quantity)}} قطع</b></center></td>
+                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->unit_price)}} جنيه</b></center></td>
                                 </tr>
                             </tbody>
                         </table>
                         @endforeach
                     </div>
-                    <div style="width: 100%;">
+                    <div style="width: 100%;margin-left: 20px;">
                         @foreach ($order->stocks->slice(8) as $item)
                         <table>
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="font-size: 18px;width: 200px;">{{$item->variant->product->name}}</td>
-                                    <td colspan="3" style="font-size: 18px;width: 200px;"><center>{{$item->variant->name}}</b></center></td>
+                                    <td colspan="3" style="font-size: 18px;width: 250px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
+                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->quantity)}} قطع</b></center></td>
+                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->unit_price)}} جنيه</b></center></td>
                                 </tr>
                             </tbody>
                         </table>
