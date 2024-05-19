@@ -193,7 +193,9 @@
                     <select id="city-select" class="form-select @error('client.city_id') is-invalid @enderror"
                         aria-label="Default select example" name="client[city_id]">
                         @foreach ($cities as $id => $name)
-                            <option @if($order->client->city_id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
+                            <option @if($order->city_id == $id)
+                                selected
+                            @endif value="{{ $id }}">{{ $name }}</option>
                         @endforeach
 
                     </select>
@@ -207,8 +209,10 @@
                     <label class="form-label ">المنطقة </label>
                     <select id="area-select" class="form-select @error('client.area_id') is-invalid @enderror"
                         aria-label="Default select example" name="client[area_id]">
-                            @foreach ($areas as $area)
-                                <option @if($order->client->area_id == $area->id) selected @endif value="{{ $area->id }}">{{ $area->name }}</option>
+                        @foreach ($areas as $area)
+                                <option @if($order->area_id == $area->id)
+                                    selected
+                                @endif value="{{ $area->id }}">{{ $area->name }}</option>
                             @endforeach
                     </select>
                     @error('client.area_id')
@@ -216,6 +220,11 @@
                             {{ __($message) }}
                         </div>
                     @enderror
+                </div>
+                <div class="col-md-4 mt-3">
+                    <label class="form-label">سعر الشحن</label>
+                    <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
+                        name="client[delivery_cost]" value="{{ $order->delivery_cost }}">
                 </div>
             </div>
                 <div class="row mt-5">
@@ -275,7 +284,9 @@
                     </table>
                         <div class="loader" style="display: none;"></div>
                         <div class="total_total" style="direction: ltr;display: none;">الاجمالى :<span id="total_total_1"></span></div>
+                        <input hidden name="client[total]" class="total_input" value="">
                         <div class="total_after_sale" style="direction: ltr;display: none;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
+                        <input hidden name="client[total_after_sale]" class="total_after_sale_input" value="">
                     <div>
                         <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الأوردر</a>
                         <button type="button" class="btn btn-primary total_order">عرض اجمالى الأوردر</button>
@@ -284,7 +295,7 @@
 
             </div>
             <div class="row p-3">
-                <button type="submit" class="btn btn-primary btn-lg mt-3 add_order_btn">تعديل الأوردر <i class="bi bi-pencil-fill"></i></button>
+                <button type="button" class="btn btn-primary btn-lg mt-3 add_order_btn">تعديل الأوردر <i class="bi bi-pencil-fill"></i></button>
             </div>
         </div>
     </form>
@@ -540,9 +551,7 @@
 
             $('tr').each(function() {
                 var variantTotal = parseInt($(this).find('.total_price').text().trim());
-                console.log(variantTotal);
                 var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
-                console.log(variantTotalAfterSale);
 
                 if (!isNaN(variantTotal)) {
                     total += variantTotal;
@@ -561,6 +570,30 @@
                 $('#total_after_sale_1').text(formattedTotalAfterSale);
                 $(".loader").hide();
             }, 1500);
+        });
+        $(document).on('click','.add_order_btn',function(e){
+            var total = 0;
+            var totalAfterSale = 0;
+
+            $('tr').each(function() {
+                var variantTotal = parseInt($(this).find('.total_price').text().trim());
+                var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
+
+                if (!isNaN(variantTotal)) {
+                    total += variantTotal;
+                }
+                if (!isNaN(variantTotalAfterSale)) {
+                    totalAfterSale += variantTotalAfterSale;
+                }
+            });
+
+            var formattedTotal = total.toLocaleString();
+            var formattedTotalAfterSale = totalAfterSale.toLocaleString();
+            setTimeout(function() {
+                $('.total_input').val(formattedTotal);
+                $('.total_after_sale_input').val(formattedTotalAfterSale);
+                $("#order_form").submit();
+            }, 500);
         });
 </script>
 @endsection

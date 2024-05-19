@@ -98,7 +98,6 @@ class OrderController extends Controller
         $client = $data['client'];
         $old_items = isset($data['old_items']) ? $data['old_items'] : array() ;
         $new_items = isset($data['items']) ? $data['items'] : array();
-        //dd($new_items);
         $order = $this->OrdersService->UpdateOrder($order_id, $client);
         $old_stock = $this->OrdersService->UpdateStock($order_id, $old_items);
         $new_stock = $this->OrdersService->AddStock(auth()->user() ,$order_id, $new_items);
@@ -106,8 +105,7 @@ class OrderController extends Controller
         $order_note = $this->OrderNotesService->AddOrderNote($order_id,$note,auth()->user()->id,$this->company_id());
 
         if($order || $old_stock || $new_stock){
-            $request->session()->flash('success', 'order_edited_success');
-            return redirect()->back();
+            return redirect()->route('show_order', [$order_id])->with('success','order_edited_success');
         }
     }
     public function scan_order($order_id){

@@ -181,7 +181,7 @@
             <div class="row mt-2">
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold">سعر الشحن :</label>
-                    <label>{{$order->area->price}}</label>
+                    <label>{{$order->delivery_cost}}</label>
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> الاجمالى :</label>
