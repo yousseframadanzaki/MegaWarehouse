@@ -1,11 +1,34 @@
 @extends('layouts.app')
-<style>
-.remove_variant{
-    cursor: pointer;
-    color:red;
-}
-</style>
 @section('content')
+<style>
+    .remove_variant{
+        cursor: pointer;
+        color:red;
+    }
+    .loader {
+        width: 45px;
+        aspect-ratio: 1;
+        display: flex;
+        margin-right: 95%;
+        color: #582b8c;
+        border: 4px solid;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle 5px, currentColor 95%,#0000),
+            linear-gradient(currentColor 50%,#0000 0) 50%/4px 60% no-repeat;
+        animation: l1 2s infinite linear;
+    }
+    .loader:before {
+        content: "";
+        flex: 1;
+        background:linear-gradient(currentColor 50%,#0000 0) 50%/4px 80% no-repeat;
+        animation: inherit;
+    }
+    @keyframes l1 {
+        100% {transform: rotate(1turn)}
+    }
+    </style>
 <div class="modal fade" id="addToCartModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -250,8 +273,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                        <div class="loader" style="display: none;"></div>
+                        <div class="total_total" style="direction: ltr;display: none;">الاجمالى :<span id="total_total_1"></span></div>
+                        <div class="total_after_sale" style="direction: ltr;display: none;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
                     <div>
                         <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الأوردر</a>
+                        <button type="button" class="btn btn-primary total_order">عرض اجمالى الأوردر</button>
                     </div>
                 </div>
 
@@ -505,6 +532,35 @@
                 $(this).remove();
                 $(`input[name^="items[${indexToRemove}]"]`).remove(); // Remove hidden inputs with the same index
             });
+        });
+        $(".total_order").click(function (e) {
+            var total = 0;
+            var totalAfterSale = 0;
+            $(".loader").show();
+
+            $('tr').each(function() {
+                var variantTotal = parseInt($(this).find('.total_price').text().trim());
+                console.log(variantTotal);
+                var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
+                console.log(variantTotalAfterSale);
+
+                if (!isNaN(variantTotal)) {
+                    total += variantTotal;
+                }
+                if (!isNaN(variantTotalAfterSale)) {
+                    totalAfterSale += variantTotalAfterSale;
+                }
+            });
+
+            var formattedTotal = total.toLocaleString();
+            var formattedTotalAfterSale = totalAfterSale.toLocaleString();
+            setTimeout(function() {
+                $(".total_total").show();
+                $(".total_after_sale").show();
+                $('#total_total_1').text(formattedTotal);
+                $('#total_after_sale_1').text(formattedTotalAfterSale);
+                $(".loader").hide();
+            }, 1500);
         });
 </script>
 @endsection
