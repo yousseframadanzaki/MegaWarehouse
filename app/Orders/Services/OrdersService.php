@@ -150,6 +150,17 @@ class OrdersService implements OrdersServiceInterface{
         $id = $this->orders_crud_repository->change_order_status($order->id,$status_data);
         return $id;
     }
+    public function DeleteOrderStatusCallback($data){
+
+        $order = $this->orders_crud_repository->get_order_by_waybill($data['waybill']);
+        $status_id = $this->ShippingStatusService->GetStatusMapping($data['status_id'],$order->shipping_company_id);
+
+        $status_data = array(
+            'status_id'=>$status_id,
+        );
+        $id = $this->orders_crud_repository->delete_order_status($order->id,$status_data);
+        return $id;
+    }
     public function checkMaxOrders($company_id)
     {
         return $this->orders_crud_repository->check_max_orders($company_id);

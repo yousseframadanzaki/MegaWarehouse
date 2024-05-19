@@ -48,6 +48,7 @@ Route::post('/cart/{variant_id}/delete',[CartController::class,'destroy'])->name
 
 Route::post('/shipping_status/map', [ShippingStatusController::class,'map'])->name('map_status');
 Route::post('/status_callback',[OrderController::class,'status_callback'])->name('status_callback');
+Route::post('/status_callback_delete',[OrderController::class,'status_callback_delete'])->name('status_callback_delete');
 
 Route::post('/shipping_area/map', [ShippingAreaController::class,'map'])->name('map_area');
 
