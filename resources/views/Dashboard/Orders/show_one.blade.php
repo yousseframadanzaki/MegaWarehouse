@@ -163,14 +163,12 @@
                     <label>{{$order->area->name}}</label>
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-4 fs-5">
-                    <label class="fw-bold">سعر الشحن :</label>
-                    <label>{{$order->area->price}}</label>
-                </div>
-            </div>
             <div class="row mt-4">
                 <h3>بيانات الاوردر</h3>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> الادمن :</label>
+                    <label>{{$order->admin->name}}</label>
+                </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold">رقم الاوردر :</label>
                     <label>{{$order->order_code}}</label>
@@ -179,26 +177,26 @@
                     <label class="fw-bold">تاريخ الاضافة :</label>
                     <label>@date_format($order->created_at)</label>
                 </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold">سعر الشحن :</label>
+                    <label>{{$order->area->price}}</label>
+                </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> الاجمالى :</label>
                     <label>{{$order->total}}</label>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-md-4 fs-5">
-                    <label class="fw-bold"> الادمن :</label>
-                    <label>{{$order->admin->name}}</label>
-                </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> الخصم :</label>
-                    <label>{{$order->total - $order->total_after_sale}}</label>
-                </div>
-                <div class="col-md-4 fs-5">
-                    <label class="fw-bold"> اجمالى بعد الخصم :</label>
-                    <label>{{$order->total_after_sale}}</label>
+                    <label style="color: #f32d2d;"><b>{{$order->total - $order->total_after_sale}}</label>
                 </div>
             </div>
             <div class="row mt-2">
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> اجمالى بعد الخصم :</label>
+                    <label style="color: #f32d2d;">{{$order->total_after_sale}}</label>
+                </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> حالة :</label>
                     <label>{{$order->status->name}}</label>
@@ -207,6 +205,8 @@
                     <label class="fw-bold"> رقم البوليصة :</label>
                     <label>{{$order->waybill}}</label>
                 </div>
+            </div>
+            <div class="row mt-2">
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> شركة الشحن :</label>
                     @isset($order->shipping_company->name)
