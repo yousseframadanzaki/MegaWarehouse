@@ -17,6 +17,7 @@ class Company extends Model
         'max_orders',
         'owner_id',
         'code',
+        'data',
     ];
     use HasFactory;
 
