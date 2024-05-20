@@ -63,6 +63,7 @@
         direction: rtl;
         page-break-inside: avoid;
         overflow: hidden;
+        position: relative;
     }
     .row {
         margin-top: 5px;
@@ -178,14 +179,6 @@
         overflow: hidden;
     }
 
-    .footer {
-        display: flex;
-        /* border-top: 2px solid #000; */
-        margin-top: 5px;
-        font-size: 12px;
-        padding-top: 5px;
-    }
-
     .no-print {
         position: absolute;
         top: 0;
@@ -229,15 +222,19 @@
     }
     .footer{
         position: absolute;
-        top: 58%;
-        width: 889px;
-        height: 38px;
+        display: flex;
+        width: 100%;
+        height: 40px;
+        bottom: 0;
         align-items: center;
         text-align: center;
         background: #eee;
         padding: 10px;
         margin-right: -4px;
         border-radius: 0 0 15px 15px;
+        margin-top: 5px;
+        font-size: 12px;
+        padding-top: 5px;
     }
 </style>
 <button class="no-print" onclick="window.print()"> طباعة </button>
@@ -259,7 +256,7 @@
                 </div>
             </div>
             <div class="column">
-                <div><img src="{{asset('/logo_here.png')}}" alt="Logo here" width="75" height="75"></div>
+                <div><img src="{{asset('/logo.png')}}" alt="Logo here" width="55" height="55"></div>
                 <div style="margin-top: 10px">
                     <h3>{{ $order->companies->name }}</h3>
                 </div>
@@ -278,46 +275,58 @@
                 </div>
             </div>
         </div>
-        <table style="width: 900px;margin-top:25px;">
+        <table style="width: 100%;margin-top:12px;">
             <tbody>
                 <tr>
-                    <td colspan="3" style="font-size: 16px;padding: 5px;"><span>العميل: </span> <b>{{$order->name}}<b> -
-                        <span style="padding: 5px;">العنوان: {{$order->address}}</span> -
-                        <span>رقم العميل: </span> @if($order->phone_1 && $order->phone_2)
-                            <b>{{ $order->phone_1 }} - {{ $order->phone_2 }}</b>
-                            @elseif($order->phone_1)
-                                <b>{{ $order->phone_1 }}</b>
-                            @elseif($order->phone_2)
-                                <b>{{ $order->phone_2 }}</b>
-                            @endif
+                    <td colspan="3" style="font-size: 16px;padding: 10px;"><span>العميل: </span> <b>{{$order->name}}<b> - @if($order->phone_1 && $order->phone_2)
+                        <b>{{ $order->phone_1 }} - {{ $order->phone_2 }}</b>
+                        @elseif($order->phone_1)
+                            <b>{{ $order->phone_1 }}</b>
+                        @elseif($order->phone_2)
+                            <b>{{ $order->phone_2 }}</b>
+                        @endif
+                        <br>
+                        <br>
+                        <span>العنوان: {{$order->address}}</span>
                     </td>
                 </tr>
             </tbody>
         </table>
         @if (count($order->stocks) < 8)
-        <h2 style="margin-top: 20px;margin-right: 190px;">المنتجات</h2>
+        <h3 style="margin-top: 20px;margin-right: 170px;">المنتج
+            <span style="margin-right: 200px;">العدد</span>
+            <span style="margin-right: 60px;">السعر</span>
+            <span style="margin-right: 70px;">الاجمالى</span>
+        </h3>
         @foreach ($order->stocks as $item)
-        <div class="body" style="align-items: center;width: 65%;margin-right: 190px;">
+        <div class="body" style="align-items: center;width: 65%;margin-right: 170px;">
             <table style="width: 40%;margin-left:5px;">
                 <tbody>
-                    <tr style="height: 30px;">
+                    <tr style="height: 30px;direction: ltr;text-align: center;">
                         <center>
-                        <td colspan="3" style="font-size: 18px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
+                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->name}}</span> - {{$item->variant->product->name}}</td>
                         </center>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 15%;margin-left:5px;">
+                <tbody>
+                    <tr colspan="2" style="height: 30px;text-align: center;">
+                        <td style="font-size: 14px;"><span>{{abs($item->quantity)}}</b></td>
                     </tr>
                 </tbody>
             </table>
             <table style="width: 18%;margin-left:5px;">
                 <tbody>
-                    <tr colspan="2" style="height: 30px;">
-                        <td style="font-size: 16px;"><span style="margin-right: 28px;">{{abs($item->quantity)}} قطع</b></td>
+                    <tr colspan="2" style="height: 30px;text-align: center;">
+                        <td style="font-size: 14px;"><span>{{abs($item->unit_price)}}</b></td>
                     </tr>
                 </tbody>
             </table>
-            <table style="width: 25%;margin-left:5px;">
+            <table style="width: 20%;margin-left:5px;">
                 <tbody>
-                    <tr colspan="2" style="height: 30px;">
-                        <td style="font-size: 16px;"><span style="margin-right: 33px;">{{abs($item->unit_price)}} جنيه</b></td>
+                    <tr colspan="2" style="height: 30px;text-align: center;">
+                        <td style="font-size: 14px;"><span>{{abs($item->unit_price * $item->quantity)}}</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -333,9 +342,9 @@
                         <table style="margin-right:20px;">
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="font-size: 18px;width: 250px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
-                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->quantity)}} قطع</b></center></td>
-                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->unit_price)}} جنيه</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 250px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
+                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}} قطع</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}} جنيه</b></center></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -346,9 +355,9 @@
                         <table>
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="font-size: 18px;width: 250px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
-                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->quantity)}} قطع</b></center></td>
-                                    <td colspan="3" style="font-size: 18px;width: 100px;"><center>{{abs($item->unit_price)}} جنيه</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 250px;">{{$item->variant->product->name}} <span>({{$item->variant->name}})</span></td>
+                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}} قطع</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}} جنيه</b></center></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -368,12 +377,13 @@
             </div>
             <div style="margin-top: 10px;margin-right: 160px;">
                 <h3 style="width: 190px;">
-                <span>رقم الشركة: {{ json_decode($order->companies->data)->phone }}</span>
+                <span>{{ json_decode($order->companies->data)->phone }}</span>
+                <h4>{{ json_decode($order->companies->data)->url }}</h4>
                 </h3>
             </div>
             <div style="margin-right: 90px;">
-                <h3 style="width: 250px;">
-                <span>عنوان الشركة : {{ json_decode($order->companies->data)->address }}</span>
+                <h3 style="width: 250px;direction: rtl;">
+                <span>{{ json_decode($order->companies->data)->address }}</span>
                 </h3>
             </div>
         </div>
