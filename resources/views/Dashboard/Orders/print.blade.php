@@ -277,7 +277,7 @@
         </div>
         <table style="width: 100%;margin-top:12px;">
             <tbody>
-                <tr>
+                <tr style="text-align: center;">
                     <td colspan="3" style="font-size: 16px;padding: 10px;"><span>العميل: </span> <b>{{$order->name}}<b> - @if($order->phone_1 && $order->phone_2)
                         <b>{{ $order->phone_1 }} - {{ $order->phone_2 }}</b>
                         @elseif($order->phone_1)
