@@ -8,7 +8,7 @@ interface OrdersRepositoryInterface{
     public function get_order_code($company_id);
     public function get_order_by_id($order_id);
     public function change_order_status($order_id,$data);
-    public function delete_order_status($order->id,$status_data);
+    public function delete_order_status($order_id,$status_data);
     public function get_order_by_waybill($waybill);
     public function check_max_orders($company_id);
     public function update_order($order_id,$data);
