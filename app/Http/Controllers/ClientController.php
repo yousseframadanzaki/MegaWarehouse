@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Clients\Interfaces\ClientCrudServiceInterface;
+use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Clients\Requests\CreateClientRequest;
 use App\Clients\Requests\UpdateClientRequest;
 
@@ -14,18 +15,20 @@ class ClientController extends Controller
 {
     private ClientCrudServiceInterface $ClientCrudService;
     private CommonDataServiceInterface $CommonDataService;
+    private TemplateServiceInterface $TemplateService;
 
-    public function __construct(ClientCrudServiceInterface $ClientCrudService, CommonDataServiceInterface $CommonDataService)
+    public function __construct(ClientCrudServiceInterface $ClientCrudService, CommonDataServiceInterface $CommonDataService, TemplateServiceInterface $TemplateService)
     {
         $this->CommonDataService = $CommonDataService;
         $this->ClientCrudService = $ClientCrudService;
+        $this->TemplateService  = $TemplateService;
     }
 
     public function all()
     {
         $company_id = $this->company_id();
         $clients = $this->ClientCrudService->GetCompanyClients($company_id);
-        return view('Dashboard.Clients.show_all')->with('clients',$clients);
+        return view('Dashboard.Clients.show_all', compact('clients'));
     }
 
     public function create()
@@ -82,4 +85,10 @@ class ClientController extends Controller
         return response()->json(array('client'=>$client,'areas'=>$areas,'citites'=>$citites));
     }
 
+    public function get_templates($id)
+    {
+        $client = $this->ClientCrudService->GetClient($id);
+        $templates = $this->TemplateService->GetTextFromClientsTemplates($client);
+        return response()->json($templates);
+    }
 }

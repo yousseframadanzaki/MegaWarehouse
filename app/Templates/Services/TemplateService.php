@@ -68,4 +68,22 @@ class TemplateService implements TemplateServiceInterface{
         return $texts;
     }
 
+    public function GetTextFromClientsTemplates($client){
+        $templates = $this->template_repository->get_templates_by_type('clients',$client->company_id);
+        $find = [
+            '#client_name',
+            '#address',
+        ];
+
+        $replace = [
+            $client->name,
+            $client->address,
+        ];
+        $texts = array();
+
+        foreach ($templates as $template) {
+            $texts[] = str_replace($find,$replace,$template->text);
+        }
+        return $texts;
+    }
 }
