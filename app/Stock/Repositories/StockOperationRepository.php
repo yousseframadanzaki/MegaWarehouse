@@ -5,7 +5,7 @@ namespace App\Stock\Repositories;
 use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Models\Stock;
 use App\Models\Variant;
-use App\Policies\stockPolicy;
+use App\Policies\StockPolicy;
 use Illuminate\Contracts\Auth\Access\Gate;
 
 class StockOperationRepository implements StockOperationRepositoryInterface{
