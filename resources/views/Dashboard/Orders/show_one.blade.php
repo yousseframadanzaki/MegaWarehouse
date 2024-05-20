@@ -7,6 +7,22 @@
         background-color: var(--bs-primary) !important;
         color: white !important;
     }
+    #loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgb(0, 0, 0);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
 </style>
 
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -334,6 +350,30 @@
                 </table>
             </div>
         </div>
+        <div class="row mt-3">
+            <div class="card p-3 shadow-sm">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                                <button data-id="{{$order->id}}" class="nav-link order_notes" data-bs-toggle="collapse" data-bs-target="#order-notes-collapse">
+                                    ملاحظات الطلب
+                                </button>
+                        </h5>
+                    </div>
+                    <div class="collapse" id="order-notes-collapse" style="">
+                        <div class="card-body">
+                            <div class="notes-list"></div>
+                            <br>
+                            <textarea class=" col-md-12 form-control input-circle recordNots"
+                                            placeholder="اضافة ملاحظة ..."
+                                                rows="4"></textarea>
+                            <div id="mess" style="display:none"> </div>
+                            <div class="add_notes_btn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -435,6 +475,70 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $(obj).attr('href',href.toString());
             });
         });
+        $(".order_notes").click(function () {
+            var order_id = $(this).attr('data-id');
+			$(".notes-list").html("<div id='loading'></div>");
+			var btn_template = `
+			<div class="pull-left" style="margin-top:3px;">
+				<button type="button" class="btn btn-warning"
+					style="margin-top:16px"
+					onclick="recordYourNotes(${order_id});">
+					 إضافة ملاحظة<i class="bi bi-plus-circle"></i>
+                </button>
+			</div>
+			`
+			$(".add_notes_btn").html(btn_template);
+            $.ajax({
+                type:'GET',
+                url:`/api/order/${order_id}/notes`,
+                dataType: "text",
+            }).then((response)=>{
+                data = JSON.parse(response);
+                console.log(data);
+                $(".notes-list").html("");
+                data.forEach(note => {
+                        var template = `
+                            <div>
+                                <div class="btn-group me-2" style="">${note.admin.name} : ${note.note}</div>
+                                <div class="col-md-12" style="margin: 5px;"><span>${note.formatted_created_at}</span></div>
+                                <hr class="col-md-12" style="margin: 10px; border-color: #ddd">
+                            </div>
+                        `;
+                        $(".notes-list").append(template);
+                });
+            });
+        });
+        function recordYourNotes($id){
+            id = $id;
+            note = $(".recordNots").val();
+            token = $("#token").val();
+            $.ajax({
+                type:'POST',
+                url:`/api/order/${id}/add_note`,
+                dataType: "text",
+                data: {
+                    order_id: id,
+                    note: note,
+                    token: token
+                }
+            }).then((response)=>{
+                data = JSON.parse(response);
+                if (data) {
+                    $(".recordNots").html('');
+                    show_success('تمت اضافة الملاحظة بنجاح');
+                }
+            });
+        };
+        function show_success(message) {
+            var template = `
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+            $('#mess').append(template);
+            $('#mess').fadeIn();
+        }
 
     </script>
 @endsection
