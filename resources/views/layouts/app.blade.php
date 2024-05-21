@@ -249,6 +249,22 @@
                             </li>
                         @endcanany
 
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#settings-collapse">
+                                <i class="bi bi-ui-checks"></i>
+                                    الاعدادات
+                            </a>
+                            <div class="collapse" id="settings-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+
+                                        <li class="rounded"><a href="{{ route('all_statuses') }}" class="text-white"> <i
+                                                    class="bi bi-ui-checks"></i>
+                                                اعدادات الحالات </a></li>
+                                </ul>
+                            </div>
+                        </li>
+
                         @canany(['view', 'add'], 'App\Models\Brand')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"

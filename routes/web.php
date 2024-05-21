@@ -24,6 +24,7 @@ use App\Http\Controllers\MarketerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\StatusController;
 
 
 Route::get('/',function (){
@@ -458,4 +459,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('orders/{order_id}/change_after_sale', [OrderController::class,'change_after_sale'])
     ->name('change_after_sale')
     ->can('add_discount',['App\Models\Order']);
+
+    Route::get('statuses/settings', [StatusController::class,'statuses_settings'])
+    ->name('all_statuses');
 });
