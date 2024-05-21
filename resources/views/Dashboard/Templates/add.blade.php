@@ -30,6 +30,7 @@
                         <select class="form-select form-select @error('type') is-invalid @endif" name="type" id="">
                             <option selected value="">اختار النوع</option>
                             <option @if(old('type') == 'orders')selected @endif value="orders">نصوص الاوردرات</option>
+                            <option @if(old('type') == 'clients')selected @endif value="clients">نصوص العملاء</option>
                         </select>
                         @error('type')
                             <div class="invalid-feedback">

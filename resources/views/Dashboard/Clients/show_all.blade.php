@@ -25,8 +25,14 @@
                         <tr class="">
                             <td>{{ $client->name }}</td>
                             <td>{{ $client->client_group->name ?? '' }}</td>
-                            <td>{{ $client->phone_1 }}</td>
-                            <td>{{ $client->phone_2 }}</td>
+                            <td>
+                                {{ $client->phone_1 }}
+                                <label> <i data-phone="{{ $client->phone_1 }}" data-client_id="{{ $client->id }}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp"></i> </label>
+                            </td>
+                            <td>
+                                {{ $client->phone_2 }}
+                                <label> <i data-phone="{{ $client->phone_2 }}" data-client_id="{{ $client->id }}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp"></i> </label>
+                            </td>
                             <td>{{ $client->address }}</td>
                             <td>
                                 @isset($client->links)
@@ -52,5 +58,50 @@
                 {!! $clients->links() !!}
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="whatsappModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+@endsection
+
+
+@section('script')
+    <script>
+        $('#whatsappModal').on('show.bs.modal',function (event) {
+            var id = event.relatedTarget.getAttribute('data-client_id');
+            var phone = event.relatedTarget.getAttribute('data-phone');
+
+            $.ajax({
+                url:`/api/client/${id}/get_templates`,
+                method:'GET',
+                dataType:'text'
+            }).then(response =>{
+                data = JSON.parse(response);
+                if(data){
+                    $("#whatsappModal .container-fluid").html("");
+                    data.forEach(item => {
+                        var template = `
+                            <div class="row">
+                                <div class="card template_card">
+                                    <span>${item}</span>
+                                    <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?phone=2${phone}&text=${item}"><i class="bi bi-whatsapp"></i></a>
+                                </div>
+                            </div>
+                        `
+                        $("#whatsappModal .container-fluid").append(template);
+                    });
+                }
+            })
+        })
+    </script>
 @endsection

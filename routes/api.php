@@ -62,3 +62,4 @@ Route::post('/sectors/{id}/edit_shipping_company', [AreaController::class,'edit_
 Route::get('/order/{order_id}/notes', [OrderNotesController::class,'notes'])->name('notes');
 Route::POST('/order/{id}/add_note', [OrderNotesController::class,'create_note'])->name('create_note');
 Route::GET('/area/{id}/get_price', [AreaController::class,'get_price'])->name('create_note');
+Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
