@@ -144,7 +144,7 @@
             <li><a href="{{ route('all_orders') }}">الاوردرات</a></li>
             <li><a class="link-dark" href="{{ route('show_order',$order->id) }}">{{$order->order_code}} </a></li>
         </ul>
-
+        <div id="message" style="display: none"></div>
         <div class="card p-3 shadow-sm mt-3">
             <div class="row">
                 <h3>بيانات العميل</h3>
@@ -289,7 +289,7 @@
                 </div>
                 @endcan
                 @can('edit_order', 'App\Models\Order')
-                    <div class="btn-group me-2">
+                    <div class="btn-group me-2 edit_order_confirm" data-confirm="{{$order->status->edit_order}}">
                         <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
                     </div>
                 @endcan
@@ -540,6 +540,28 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             `;
             $('#mess').append(template);
             $('#mess').fadeIn();
+        }
+        $(document).ready(function() {
+            $(".edit_order_confirm a").click(function(event) {
+                var $btnGroup = $(this).closest('.edit_order_confirm');
+                var confirmValue = $btnGroup.data('confirm');
+
+                if (confirmValue == 0) {
+                    event.preventDefault();
+                    show_error('عفوا لا يمنك تعديل بيانات الأوردر');
+                    $(window).scrollTop(0);
+                }
+            });
+        });
+        function show_error(message) {
+            var template = `
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+            $('#message').append(template);
+            $('#message').fadeIn();
         }
 
     </script>

@@ -105,7 +105,6 @@
             data: { token,related_status },
         }).then((response) => {
             data = JSON.parse(response)
-            console.log(data);
             if (data == true){
                 show_succes('تم اضافة الحالة نجاح');
                 var td = $(`td[data-id='${id}']`);
