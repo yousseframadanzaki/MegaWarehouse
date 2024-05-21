@@ -310,9 +310,11 @@
                     <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                     </form>
                 </div>
+                @can('add_discount', 'App\Models\Order')
                 <div class="btn-group me-2">
                     <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
                 </div>
+                @endcan
             </div>
 
         <div class="row mt-3">

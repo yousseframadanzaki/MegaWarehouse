@@ -456,5 +456,6 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('store_sector');
 
     Route::post('orders/{order_id}/change_after_sale', [OrderController::class,'change_after_sale'])
-    ->name('change_after_sale');
+    ->name('change_after_sale')
+    ->can('add_discount',['App\Models\Order']);
 });
