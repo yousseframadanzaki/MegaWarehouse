@@ -41,6 +41,7 @@ class OrderController extends Controller
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
         $marketers = $this->CommonDataService->GetCompanyMarketers($this->company_id());
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
+        $products = $this->CommonDataService->GetCompanyProducts($this->company_id(),$filters);
         $filters = $filters->get_values();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
         return view('Dashboard.Orders.show_all')->with(
@@ -51,6 +52,7 @@ class OrderController extends Controller
                 'statuses',
                 'marketers',
                 'shipping_companies',
+                'products',
                 'filters'
             ));
     }
