@@ -146,7 +146,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="form-check form-switch" style="width: auto;">
-                            <input class="form-check-input" type="checkbox" name="product_info[confirm_order]">
+                            <input class="form-check-input confirm_order" type="checkbox" name="product_info[confirm_order]">
                             <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
                         </div>
                     </div>
@@ -229,6 +229,9 @@
 <script type="text/javascript" src="{{url('/static/js/image-uploader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
+    $(document).ready(function(){
+            $('.confirm_order').prop('checked', true);
+        });
     $(document).ready(function() {
         $('#summernote').summernote({
             height: 200,
