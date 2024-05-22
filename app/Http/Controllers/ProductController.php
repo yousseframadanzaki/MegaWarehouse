@@ -29,6 +29,7 @@ class ProductController extends Controller
 
     public function show($product_id) {
         $product = $this->ProductCrudService->GetProduct($product_id);
+        // dd($product);
         $attributes = $product['attributes'];
         $attributes = [];
 
