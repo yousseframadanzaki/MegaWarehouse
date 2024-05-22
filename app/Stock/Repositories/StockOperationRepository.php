@@ -6,14 +6,16 @@ use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Models\Stock;
 use App\Models\Variant;
 use App\Policies\StockPolicy;
-use Illuminate\Contracts\Auth\Access\Gate;
+use App\Policies\OrderPolicy;
 
 class StockOperationRepository implements StockOperationRepositoryInterface{
     protected $stockPolicy;
+    protected $orderPolicy;
 
-    public function __construct(stockPolicy $stockPolicy)
+    public function __construct(stockPolicy $stockPolicy, orderPolicy $orderPolicy)
     {
         $this->stockPolicy = $stockPolicy;
+        $this->orderPolicy = $orderPolicy;
     }
 
     public function create($operation) {
@@ -49,6 +51,28 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
     }
     public function get_variant_stock_warehouse($variant_id,$user) {
         if ($this->stockPolicy->view_his_quantity($user)) {
+            return Stock::with(
+                ['warehouse' => function ($query) {
+                    $query->select('id', 'name');
+                }]
+            )
+            ->groupBy('warehouse_id')
+            ->where('variant_id',$variant_id)
+            ->where('warehouse_id', $user->warehouse_id)
+            ->selectRaw('sum(quantity) as sum, warehouse_id')
+            ->get();
+        } else {
+            return Stock::with(
+                ['warehouse' => function ($query) {
+                    $query->select('id', 'name');
+                }]
+            )
+            ->groupBy('warehouse_id')
+            ->where('variant_id',$variant_id)
+            ->selectRaw('sum(quantity) as sum, warehouse_id')
+            ->get();
+        }
+        if ($this->orderPolicy->hide_quantity($user)) {
             return Stock::with(
                 ['warehouse' => function ($query) {
                     $query->select('id', 'name');

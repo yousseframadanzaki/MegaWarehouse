@@ -20,8 +20,15 @@ use App\Models\Status;
 use App\Models\ShippingCompany;
 use App\Models\Marketer;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
+use App\Policies\OrderPolicy;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
+    protected $orderPolicy;
+
+    public function __construct(orderPolicy $orderPolicy)
+    {
+        $this->orderPolicy = $orderPolicy;
+    }
 
     public function get_roles_by_company_id($company_id){
         return Role::where('company_id',$company_id)->pluck('name','id');
@@ -78,7 +85,13 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     }
 
     public function get_product_variants($product_id){
-        return Variant::with('product')->where(['product_id'=>$product_id])->get();
+        $user = auth()->user();
+        $variants = Variant::with('product')->where('product_id', $product_id)->get();
+        $hide = $this->orderPolicy->hide_quantity($user) ? 1 : 0;
+        $variants = $variants->map(function ($variant) use ($hide) {
+        return array_merge($variant->toArray(), ['hide' => $hide]);
+        });
+        return $variants;
     }
 
     public function get_company_users($company_id){

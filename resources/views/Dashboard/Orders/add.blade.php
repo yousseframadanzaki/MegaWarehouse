@@ -433,25 +433,25 @@
         });
     });
 
-    $("#product_id").change(function() {
-        product_id = $(this).val();
-        $("#variant_id").html("");
-        $.ajax({
-            url: `/api/product/${product_id}/variants`,
-            method: `GET`,
-            dataType: 'text'
-        }).then(response => {
-            data = JSON.parse(response);
-            $("#variant_id").append(`<option value="">اختار المتغير</option>`)
-            data.forEach(element => {
-                $("#variant_id").append(`<option data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+        $("#product_id").change(function () {
+            product_id = $(this).val();
+            $("#variant_id").html("");
+            $.ajax({
+                url:`/api/product/${product_id}/variants`,
+                method:`GET`,
+                dataType:'text'
+            }).then(response =>{
+                data = JSON.parse(response);
+                $("#variant_id").append(`<option value="">اختار المتغير</option>`)
+                data.forEach(element => {
+                    $("#variant_id").append(`<option data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                })
+                $('#variant_id').select2({
+                    dropdownParent: $('#addToCartModal')
+                });
+                $("#variants").fadeIn();
             })
-            $('#variant_id').select2({
-                dropdownParent: $('#addToCartModal')
-            });
-            $("#variants").fadeIn();
         })
-    })
 
     function add_cart_items(items) {
         $("#variants_table tbody").html("");
@@ -527,21 +527,21 @@
         }, 1500);
     });
 
-    $('#variant_id').change(function() {
-        var variant_id = $(this).val();
-        var show_quantity = $(this).find('option:selected').data("show");
+        $('#variant_id').change(function () {
+            var variant_id = $(this).val();
+            var show_quantity = $(this).find('option:selected').data("show");
 
-        $.ajax({
-            url: `/api/variants/${variant_id}/stock`,
-            method: "GET",
-            dataType: "text",
-        }).then(response => {
-            data = JSON.parse(response);
-            if (show_quantity == '0') {
-                add_cart_stock(data);
-            } else {
-                add_cart_stockk(data);
-            }
+            $.ajax({
+                url: `/api/variants/${variant_id}/stock`,
+                method: "GET",
+                dataType: "text",
+            }).then(response => {
+                data = JSON.parse(response);
+                if(show_quantity == '0'){
+                    add_cart_stock(data);
+                } else {
+                    add_cart_stockk(data);
+                }
 
         })
     })

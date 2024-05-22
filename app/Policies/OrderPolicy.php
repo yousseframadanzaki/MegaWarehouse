@@ -91,4 +91,10 @@ class OrderPolicy
         }
         return true;
     }
+    public function hide_quantity(User $user): bool{
+        if(!$user->role->permissions->contains('slug','employee_hide_quantity')){
+            return false;
+        }
+        return true;
+    }
 }

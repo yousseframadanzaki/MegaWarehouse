@@ -40,7 +40,7 @@ class InvoiceService implements InvoiceServiceInterface{
             'invoice_id'=>$invoice->id,
             'company_id'=>$invoice->company_id
         );
-        if(isset($data['image']) && !emoty($data['image'])){
+        if(isset($data['image']) && !empty($data['image'])){
             $image_file = $data['image'];
             unset($data['image']);
             $image = $this->FileUploadService->transaction($image_file,$invoice->company_id,$invoice->id);
