@@ -382,7 +382,7 @@
                 data = JSON.parse(response);
                 $("#variant_id").append(`<option value="">اختار المتغير</option>`)
                 data.forEach(element => {
-                    $("#variant_id").append(`<option data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name}</option>`)
+                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name}</option>`)
                 })
                 $('#variant_id').select2({
                     dropdownParent: $('#addToCartModal')
@@ -420,6 +420,16 @@
             var quantity = $("#quantity").val();
             var variant_price = $("#variant_id option:selected").attr("data-price");
             var variant_quantity = $("#variant_id option:selected").attr("data-quantity");
+            var confirm_order = $('#variant_id option:selected').data("confirm");
+            console.log(confirm_order);
+            var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
+            console.log(quantity_sum);
+            if(confirm_order == '0' && quantity > quantity_sum){
+                $("#addToCartModal").modal('hide');
+                show_error('لا يمكنك اضافة هذا المنتج');
+                $(window).scrollTop(0);
+                return;
+            }
 
             if(product_id && variant_id && warehouse_id && quantity){
                 var warehouses_select = $("#warehouses_select").html();
@@ -473,6 +483,8 @@
 
         $('#variant_id').change(function () {
             var variant_id = $(this).val();
+            var show_quantity = $(this).find('option:selected').data("show");
+            var hide = $(this).find('option:selected').data("hide");
 
             $.ajax({
                 url: `/api/variants/${variant_id}/stock`,
@@ -480,18 +492,47 @@
                 dataType: "text",
             }).then(response => {
                 data = JSON.parse(response);
-                add_cart_stock(data);
+                if(show_quantity == '0'){
+                    add_cart_stock(data);
+                } else {
+                    add_cart_stockk(data);
+                }
+                if(hide == '1'){
+                    add_cart_stockk(data);
+                }
             })
         })
 
         function add_cart_stock(params) {
             $("#cart_stock").html("");
             data.forEach(element => {
-                if(element.sum != "0"){
                     var template = `
                     <tr>
                         <td>${element.warehouse.name}</td>
                         <td>${element.sum}</td>
+                    </tr>
+                    `;
+                    $("#cart_stock").append(template);
+            });
+        }
+
+        function add_cart_stockk(params) {
+            $("#cart_stock").html("");
+            data.forEach(element => {
+                if(element.sum > "0"){
+                    var template = `
+                    <tr>
+                        <td>${element.warehouse.name}</td>
+                        <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">متوفر</td>
+                    </tr>
+                    `;
+                    $("#cart_stock").append(template);
+                }
+                if(element.sum <= "0"){
+                    var template = `
+                    <tr>
+                        <td>${element.warehouse.name}</td>
+                        <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">غير متوفر</td>
                     </tr>
                     `;
                     $("#cart_stock").append(template);
