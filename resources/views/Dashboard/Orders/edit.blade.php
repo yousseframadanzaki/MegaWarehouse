@@ -421,9 +421,7 @@
             var variant_price = $("#variant_id option:selected").attr("data-price");
             var variant_quantity = $("#variant_id option:selected").attr("data-quantity");
             var confirm_order = $('#variant_id option:selected').data("confirm");
-            console.log(confirm_order);
             var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
-            console.log(quantity_sum);
             if(confirm_order == '0' && quantity > quantity_sum){
                 $("#addToCartModal").modal('hide');
                 show_error('لا يمكنك اضافة هذا المنتج');

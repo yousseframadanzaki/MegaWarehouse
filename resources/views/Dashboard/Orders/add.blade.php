@@ -66,7 +66,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label" for="product_id">المنتج</label>
-                            <select id="product_id" class="form-select" style="padding: 0.375rem 0.75rem;width:100%">
+                            <select id="product_id" class="form-select product_info" style="padding: 0.375rem 0.75rem;width:100%">
                                 <option value="">اختار المنتج</option>
                                 @foreach ($products as $id => $name)
                                 <option value="{{$id}}">{{$name}}</option>
@@ -331,7 +331,7 @@
         });
         $('#marketer-select').select2();
         $('#city-select').select2();
-        $('#area-select').select2(); // add search bar
+        $('#area-select').select2();
         if (items) {
             add_cart_items(items);
         }
@@ -348,13 +348,11 @@
                 remove_data();
                 data = JSON.parse(response);
 
-                await $('#city-select').html('<option value="">-- اختار المدينة --</option>');
                 await $.each(data.citites, function(key, value) {
                     $("#city-select").append('<option value="' + key + '">' + value +
                         '</option>');
                 });
 
-                await $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
                 await $.each(data.areas, function(key, value) {
                     $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
                     $("#delivery_cost").val(value.price);
@@ -444,7 +442,7 @@
                 data = JSON.parse(response);
                 $("#variant_id").append(`<option value="">اختار المتغير</option>`)
                 data.forEach(element => {
-                    $("#variant_id").append(`<option data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
                 })
                 $('#variant_id').select2({
                     dropdownParent: $('#addToCartModal')
@@ -465,7 +463,8 @@
                         <td>${variant.name}</td>
                         <td>${variant.price}</td>
                         <td style="width:80px;">
-                            <input @cannot('add_discount', 'App\Models\Order') disabled @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${variant.price}" data-id="${variant.id}" id="unit_sale-${variant.id}" />
+                            <input @cannot('add_discount', 'App\Models\Order') disabled  @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${variant.price}" data-id="${variant.id}" id="unit_sale-${variant.id}" />
+                            @cannot('add_discount', 'App\Models\Order') <input hidden type="number" name="items[${i}][unit_sale]" value="${variant.price}">  @endcannot
                         </td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
                         <td>
@@ -530,6 +529,7 @@
         $('#variant_id').change(function () {
             var variant_id = $(this).val();
             var show_quantity = $(this).find('option:selected').data("show");
+            var hide = $(this).find('option:selected').data("hide");
 
             $.ajax({
                 url: `/api/variants/${variant_id}/stock`,
@@ -540,6 +540,9 @@
                 if(show_quantity == '0'){
                     add_cart_stock(data);
                 } else {
+                    add_cart_stockk(data);
+                }
+                if(hide == '1'){
                     add_cart_stockk(data);
                 }
 
