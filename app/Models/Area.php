@@ -14,6 +14,7 @@ class Area extends Model
         'price',
         'city_id',
         'shipping_company_id',
+        'keywords'
     ];
 
     public function city()
