@@ -461,5 +461,6 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->can('add_discount',['App\Models\Order']);
 
     Route::get('statuses/settings', [StatusController::class,'statuses_settings'])
-    ->name('all_statuses');
+    ->name('all_statuses')
+    ->can('view_statuses', ['App\Models\Status']);
 });
