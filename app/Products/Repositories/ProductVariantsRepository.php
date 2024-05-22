@@ -42,6 +42,10 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
             $created_variant->sku = $variant_info['sku'];
             $created_variant->save();
         }
+        if (!empty($variant_info['shelf_num'])) {
+            $created_variant->shelf_num = $variant_info['shelf_num'];
+            $created_variant->save();
+        }
         $prepared_attributes = $this->prepare_attributes($variant['options'],$attributes);
         $created_variant->attributes()->sync($prepared_attributes);
       }

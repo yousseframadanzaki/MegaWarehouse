@@ -172,6 +172,7 @@
                                 <th scope="col">اسم</th>
                                 <th scope="col">سعر</th>
                                 <th scope="col">sku</th>
+                                <th scope="col">رقم الرف</th>
                                 <th scope="col">اضافة صورة</th>
                             </tr>
                         </thead>
@@ -472,6 +473,7 @@
                 <td>` + element.name + `</td>
                 <td><input class=" product_variant form-control" name="product_variants[` + index + `][price]" type="number"/></td>
                 <td><input class="sku product_variant form-control" name="product_variants[` + index + `][sku]" type="text"/></td>
+                <td><input class="shelf_num product_variant form-control" name="product_variants[` + index + `][shelf_num]" type="text"/></td>
                 <input type="hidden" class="product_variant" name="product_variants[` + index +
                     `][name]" value="` + element.name + `"/>`
                 Object.entries(element).forEach(option_value => {

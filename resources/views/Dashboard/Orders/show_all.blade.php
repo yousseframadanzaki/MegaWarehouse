@@ -193,6 +193,8 @@
                             <label class="form-label">المنطقة</label>
                             <select class="form-select product_info"  name="area_id"
                                 id="area_id">
+                                <option value="">اختار المنطقة </option>
+
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -213,13 +215,34 @@
                         <div class="col-md-4">
                             <label class="form-label">المسوق</label>
                             <select class="form-select product_info" name="marketer_id">
-                                <option value="">اختار الحالة</option>
+                                <option value="">اختار المسوق</option>
                                 @foreach ($marketers as $marketer)
                                     <option  @if(Request::get('marketer_id') == $marketer->id) selected @endif value="{{ $marketer->id }}">{{ $marketer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
+                            <label class="form-label">المنتج</label>
+                            <select class="form-select product_info" name="product_id" id="product_id">
+                                <option value="">اختار المنتج</option>
+                                @foreach ($products as $id => $name)
+                                    <option  @if(Request::get('product_id') == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">المتغير</label>
+                            <select class="form-select product_info" name="variant_id" id="variant_id">
+                                <option value="">اختار المتغير</option>
+                            </select>
+
+                            <div class="invalid-feedback supplier_id">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                    <div class="col-md-4">
                             <label class="form-label">تاريخ من</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">
@@ -229,8 +252,6 @@
                             <input class="form-control datetimeplugin" name="date_to" id=""
                                 value="{{ Request::get('date_to') }}">
                         </div>
-                    </div>
-                    <div class="row mt-3">
                         <div class="col-md-4">
                             <label class="form-label">شركة الشحن</label>
                             <select class="form-select product_info" name="shipping_company_id">
@@ -246,7 +267,7 @@
                                 value="{{ Request::get('waybill') }}">
                         </div>
                     </div>
-                    <div class="d-flex mt-3 justify-content-end">
+                    <div class="d-flex mt-4 justify-content-center">
                         <button type="submit" class="btn btn-primary">
                             بحث
                         </button>
@@ -291,6 +312,7 @@
                     <tr>
                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
                         <th>رقم الاوردر</th>
+                        <th>رقم البوليصة</th>
                         <th>الادمن</th>
                         <th>المسوق</th>
                         <th>الحالة</th>
@@ -308,6 +330,7 @@
                         <tr>
                             <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
                             <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
+                            <td>{{ $order->shipping_company_id?? 'لا يوجد' }}</td>
                             <td>{{$order->admin->name}}</td>
                             <td>
                                 @isset($order->marketer->name)
@@ -383,7 +406,27 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     }
                 })
             }
+
+            var product_id = "{!! Request::get('product_id') !!}"
+            var variant_id = "{!! Request::get('variant_id') !!}"
+            if(product_id){
+                $.ajax({
+                    type:'GET',
+                    url:`/api/product/${product_id}/variants`,
+                    dataType: "text",
+                }).then((response)=>{
+                    data = JSON.parse(response);
+                    $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                    $.each(data, function (key,value) {
+                        $("#variant_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    if(variant_id){
+                        $("#variant_id").val(variant_id);
+                    }
+                })
+            }
         })
+
         $("#city_id").change(function () {
             var city_id = this.value;
             $("#area_id").html('');
@@ -396,6 +439,21 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#area_id').html('<option value="">-- اختار المنطقة --</option>');
                 $.each(data, function (key, value) {
                     $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+            })
+        })
+        $("#product_id").change(function () {
+            var city_id = this.value;
+            $("#variant_id").html('');
+            $.ajax({
+                type:'GET',
+                url:`/api/product/${city_id}/variants`,
+                dataType: "text",
+            }).then((response)=>{
+                data = JSON.parse(response);
+                $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                $.each(data, function (key, value) {
+                    $("#variant_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
             })
         })
