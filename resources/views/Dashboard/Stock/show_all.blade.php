@@ -218,6 +218,7 @@
                         <th scope="col"> الادمن</th>
                         <th scope="col">المنتج</th>
                         <th scope="col">المتغير</th>
+                        <th scope="col">رقم الرف</th>
                         <th scope="col">المورد</th>
                         <th scope="col">الكمية</th>
                         <th scope="col">الفاتورة</th>
@@ -236,6 +237,7 @@
                             <td>{{ $operation->admin->name }}</td>
                             <td>{{ $operation->variant->product->name }}</td>
                             <td>{{ $operation->variant->name }}</td>
+                            <td>{{ $operation->variant->shelf_num }}</td>
                             <td>{{ $operation->variant->product->supplier->name }}</td>
                             <td dir="ltr" class="text-end">
                                 @if ($operation->quantity < 0)
