@@ -12,6 +12,7 @@ use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\OrderNotesController;
 use App\Http\Controllers\admin\CompnayController;
 
@@ -63,3 +64,5 @@ Route::get('/order/{order_id}/notes', [OrderNotesController::class,'notes'])->na
 Route::POST('/order/{id}/add_note', [OrderNotesController::class,'create_note'])->name('create_note');
 Route::GET('/area/{id}/get_price', [AreaController::class,'get_price'])->name('create_note');
 Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
+Route::post('statuses/{id}/settings', [StatusController::class,'update_status'])->name('update_edit_order');
+Route::POST('statuses/{id}/add_status', [StatusController::class,'add_related_status'])->name('add_status');

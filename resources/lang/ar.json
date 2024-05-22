@@ -129,5 +129,6 @@
     "city_id_name_required":"الرجاء اختيار المدينة",
     "create_area_success":"تم اضافت المنطقة الجديدة بنجاح",
     "Area":"مناطق الشحن",
-    "change_after_sale_success":"تم تغيير اجمالى بعد الخصم بنجاح"
+    "change_after_sale_success":"تم تغيير اجمالى بعد الخصم بنجاح",
+    "Settings":"الاعدادات"
 }

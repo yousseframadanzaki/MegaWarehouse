@@ -9,4 +9,13 @@ class Status extends Model
 {
     use HasFactory;
     use EagerLoadPivotTrait;
+
+    public function getRelatedStatusesNames()
+    {
+        if ($this->related_status) {
+            $relatedStatusIds = explode(',', $this->related_status);
+            return self::whereIn('id', $relatedStatusIds)->pluck('name')->toArray();
+        }
+        return [];
+    }
 }

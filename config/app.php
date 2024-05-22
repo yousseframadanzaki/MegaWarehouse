@@ -187,6 +187,7 @@ return [
         App\Providers\ShippingAreaServiceProvider::class,
         App\Providers\OrderNotesProvider::class,
         App\Providers\AreaServiceProvider::class,
+        App\Providers\StatusServiceProvider::class,
         App\Providers\MarketerServiceProvider::class,
         App\Providers\TemplateServiceProvider::class,
         App\Providers\InvoiceServiceProvider::class,
