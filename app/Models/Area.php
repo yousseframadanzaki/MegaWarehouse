@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\City;
 use App\Models\ShippingCompany;
+
 class Area extends Model
 {
     use HasFactory;
@@ -14,7 +15,7 @@ class Area extends Model
         'price',
         'city_id',
         'shipping_company_id',
-        'keywords'
+        'keywords',
     ];
 
     public function city()
@@ -25,5 +26,4 @@ class Area extends Model
     {
         return $this->belongsTo(ShippingCompany::class);
     }
-
 }

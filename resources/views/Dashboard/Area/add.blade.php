@@ -60,28 +60,26 @@
                     </div>
                     @enderror
                 </div>
-                <div class="col-12 my-4">
-                    <div class="row">
-                        <h3> الكلمات الدلالية </h3>
-                        <div class="options mt-3">
-                            <div class="option row mb-3 border shadow-sm p-3" id="1">
-                                <div class="col-md-5 option_value_div">
-                                    <label class="form-label"> الكلمة الدلالية <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control option_values" data-option-id="1" placeholder="برجاء ادخال القيمة والضغط على زر enter">
-                                    <div id="invalid-1" class="invalid-feedback">
-                                        برجاء إضافة الكلمة
-                                    </div>
-
-                                    <input type="hidden" name="keywords">
+                <div class="col-12 my-3">
+                    <h3 class="my-3"> الكلمات الدلالية </h3>
+                    <div class="options">
+                        <div class="option row mb-3 border shadow-sm p-3" id="1">
+                            <div class="col-md-5 option_value_div">
+                                <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control option_values" data-option-id="1" placeholder="برجاء ادخال القيمة والضغط على زر enter">
+                                <div id="invalid-1" class="invalid-feedback">
+                                    برجاء أضافة قيم الاختيار
                                 </div>
-                                <!-- <div class="col-md-2 d-md-flex align-items-end">
-                                    <a class="remove_option btn btn-danger" data-remove-id="1"><i class="bi bi-trash"></i></a>
-                                </div> -->
-                                <div class="row mt-3 values_edit">
-                                    <label class="form-label">قيم الاختيار:-</label>
-                                    <div class="option_values_div">
 
-                                    </div>
+                                <input type="hidden" name="keywords">
+                            </div>
+                            <!-- <div class="col-md-2 d-md-flex align-items-end">
+                                <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
+                            </div> -->
+                            <div class="row mt-3 values_edit">
+                                <label class="form-label">قيم الاختيار:-</label>
+                                <div class="option_values_div">
+
                                 </div>
                             </div>
                         </div>
@@ -94,7 +92,6 @@
 @endsection
 
 @section('script')
-
 <script>
     form_options_array = [];
     form_options_values = new Object();
@@ -122,6 +119,11 @@
             $('#variants_table').fadeOut();
         }
     });
+    $(document).on("keypress", ".option_name", function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+        }
+    })
 
     $(document).on("keypress", ".option_values", function(e) {
         if (e.keyCode == 13) {
@@ -177,5 +179,4 @@
         this.submit();
     })
 </script>
-
 @endsection
