@@ -14,6 +14,7 @@ class Variant extends Model
         'quantity',
         'sku',
         'price',
+        'shelf_num',
         'is_default',
         'product_id',
     ];

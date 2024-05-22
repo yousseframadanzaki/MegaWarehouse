@@ -1,230 +1,223 @@
-
 @extends('layouts.app')
 @section('content')
-    <style>
-        .hover-danger:hover {
-            color: white;
-            background: var(--bs-danger);
-            border-color: transparent;
-        }
-        .checkbox { position: absolute;
-            top: 0%;
-            left: 0%;
-            z-index: 10;
-            width: 20px;
-            height: 20px;
-         }
+<style>
+    .hover-danger:hover {
+        color: white;
+        background: var(--bs-danger);
+        border-color: transparent;
+    }
 
-    </style>
+    .checkbox {
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        z-index: 10;
+        width: 20px;
+        height: 20px;
+    }
+</style>
 
-    <div class="p-3">
-        <div class="row">
-            <ul class="breadcrumb">
-                <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-                <li><a href="{{ route('all_products') }}">المنتجات</a></li>
-                <li>اضافة منتج جديد</li>
-            </ul>
-        </div>
-        <form class="row  " id="product-form" enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
-            @csrf
-            <div class="card p-3 shadow-sm">
-                <h3 class="text-center">أضافة منتج جديد</h3>
+<div class="p-3">
+    <div class="row">
+        <ul class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
+            <li><a href="{{ route('all_products') }}">المنتجات</a></li>
+            <li>اضافة منتج جديد</li>
+        </ul>
+    </div>
+    <form class="row  " id="product-form" enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
+        @csrf
+        <div class="card p-3 shadow-sm">
+            <h3 class="text-center">أضافة منتج جديد</h3>
+            <div class="row mb-3">
+                <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3>
                 <div class="row mb-3">
-                    <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3>
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control product_info @error('product_info.name') is-invalid @enderror"
-                                name="product_info[name]" value="{{ old('product_info.name') }}">
-                            @error('product_info.name')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
+                    <div class="col-md-4">
+                        <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control product_info @error('product_info.name') is-invalid @enderror" name="product_info[name]" value="{{ old('product_info.name') }}">
+                        @error('product_info.name')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
                         </div>
-                        <div class="col-md-4 @error('product_info.brand_id') has-error @enderror">
-                            <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                            <select class="form-select product_info @error('product_info.brand_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
-                                <option value="">اختار الماركة</option>
-                                @foreach ($data['brands'] as $id => $name)
-                                    <option @if ($id == old('product_info.brand_id')) selected @endif value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-
-                            @error('product_info.brand_id')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
-
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">السعر <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control product_info @error('product_info.price') is-invalid @enderror"
-                                name="product_info[price]" value="{{ old('product_info.price') }}">
-
-                                @error('product_info.price')
-                                    <div class="invalid-feedback">
-                                        {{ __($message) }}
-                                    </div>
-                                @enderror
-
-                        </div>
+                        @enderror
                     </div>
+                    <div class="col-md-4 @error('product_info.brand_id') has-error @enderror">
+                        <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
+                        <select class="form-select product_info @error('product_info.brand_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
+                            <option value="">اختار الماركة</option>
+                            @foreach ($data['brands'] as $id => $name)
+                            <option @if ($id==old('product_info.brand_id')) selected @endif value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
 
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label">السعر قبل الخصم</label>
-                            <input type="number"
-                                class="form-control product_info @error('product_info.before_sale_price') is-invalid @enderror"
-                                name="product_info[before_sale_price]" value="{{ old('product_info.before_sale_price') }}">
-                                @error('product_info.before_sale_price')
-                                    <div class="invalid-feedback">
-                                        {{ __($message) }}
-                                    </div>
-                                @enderror
+                        @error('product_info.brand_id')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control product_info @error('product_info.cost') is-invalid @enderror"
-                                name="product_info[cost]" value="{{ old('product_info.cost') }}">
+                        @enderror
 
-                                @error('product_info.cost')
-                                    <div class="invalid-feedback">
-                                        {{ __($message) }}
-                                    </div>
-                                @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">السعر <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control product_info @error('product_info.price') is-invalid @enderror" name="product_info[price]" value="{{ old('product_info.price') }}">
 
+                        @error('product_info.price')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">عمولة المسوق</label>
-                            <input type="number" class="form-control @error('product_info.marketer_commission') is-invalid @enderror" name="product_info[marketer_commission]">
-                            @error('product_info.marketer_commission')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6 @error('product_info.category_id') has-error @enderror">
-                            <label class="form-label">تصنيف<span class="text-danger">*</span></label>
-                            <select class="form-select product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]"
-                                id="product_info.category_id">
-                                <option value="">اختار تصنيف </option>
-                                @foreach ($data['categories'] as $cat)
-                                    <option @if ($cat->id == old('product_info.category_id')) selected @endif  value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
-                                @endforeach
-                            </select>
-                            @error('product_info.category_id')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
-                        </div>
-                        {{-- @dd(old('product_info.supplier_id')) --}}
-                        <div class="col-md-6 @error('product_info.supplier_id') has-error @enderror">
-                            <label class="form-label">المورد <span class="text-danger">*</span></label>
-                            <select class="form-select product_info  @error('product_info.supplier_id') is-invalid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
-                                <option value="">اختار المورد</option>
-                                @foreach ($data['suppliers'] as $id => $name)
-                                    <option @if ($id == old('product_info.supplier_id')) selected="selected"  @endif value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('product_info.supplier_id')
-                                <div class="invalid-feedback">
-                                    {{ __($message) }}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="form-check form-switch" style="width: auto;">
-                            <input class="form-check-input" type="checkbox" name="product_info[show_quantity]">
-                            <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="form-check form-switch" style="width: auto;">
-                            <input class="form-check-input" type="checkbox" name="product_info[confirm_order]">
-                            <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label">وصف المنتج</label>
-                            <textarea id="summernote" type="text" class="form-control product_info "
-                                name="product_info[description]">{!! old('product_info.description') !!}</textarea>
-                            <div class="invalid-feedback">
+                        @enderror
 
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
-                    <div class="input-images"></div>
-                </div>
+                    <div class="col-md-4">
+                        <label class="form-label">السعر قبل الخصم</label>
+                        <input type="number" class="form-control product_info @error('product_info.before_sale_price') is-invalid @enderror" name="product_info[before_sale_price]" value="{{ old('product_info.before_sale_price') }}">
+                        @error('product_info.before_sale_price')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control product_info @error('product_info.cost') is-invalid @enderror" name="product_info[cost]" value="{{ old('product_info.cost') }}">
 
-                {{-- <div class="row mb-3">
+                        @error('product_info.cost')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">عمولة المسوق</label>
+                        <input type="number" class="form-control @error('product_info.marketer_commission') is-invalid @enderror" name="product_info[marketer_commission]">
+                        @error('product_info.marketer_commission')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6 @error('product_info.category_id') has-error @enderror">
+                        <label class="form-label">تصنيف<span class="text-danger">*</span></label>
+                        <select class="form-select product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]" id="product_info.category_id">
+                            <option value="">اختار تصنيف </option>
+                            @foreach ($data['categories'] as $cat)
+                            <option @if ($cat->id == old('product_info.category_id')) selected @endif value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
+                            @endforeach
+                        </select>
+                        @error('product_info.category_id')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+                    </div>
+                    {{-- @dd(old('product_info.supplier_id')) --}}
+                    <div class="col-md-6 @error('product_info.supplier_id') has-error @enderror">
+                        <label class="form-label">المورد <span class="text-danger">*</span></label>
+                        <select class="form-select product_info  @error('product_info.supplier_id') is-invalid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
+                            <option value="">اختار المورد</option>
+                            @foreach ($data['suppliers'] as $id => $name)
+                            <option @if ($id==old('product_info.supplier_id')) selected="selected" @endif value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                        @error('product_info.supplier_id')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-check form-switch" style="width: auto;">
+                        <input class="form-check-input" type="checkbox" name="product_info[show_quantity]">
+                        <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-check form-switch" style="width: auto;">
+                        <input class="form-check-input" type="checkbox" name="product_info[confirm_order]">
+                        <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label">وصف المنتج</label>
+                        <textarea id="summernote" type="text" class="form-control product_info " name="product_info[description]">{!! old('product_info.description') !!}</textarea>
+                        <div class="invalid-feedback">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
+                <div class="input-images"></div>
+            </div>
+
+            {{-- <div class="row mb-3">
                     <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
                     <div class="col-md-12">
                         <form class="dropzone" id="product-form" action="{{ route('store_product') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <textarea style="display: none" name="product_info[description]" id="description"></textarea>
-                            <div class="dropzone-previews">
+            enctype="multipart/form-data">
+            @csrf
+            <textarea style="display: none" name="product_info[description]" id="description"></textarea>
+            <div class="dropzone-previews">
 
-                            </div>
-                            <div class="dz-message" data-dz-message><span>قم بالضغط لرفع الصور</span></div>
-                        </form>
-                    </div>
-                </div> --}}
-
-                <div class="row mb-3 mt-2">
-                    <h3>اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
-                    <div class="options">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <button class="btn btn-primary mt-3" id="add_option_btn">أضافة اختيار</button>
-                            <button class="btn btn-success mt-3" id="save_options_btn" style="display: none">حفظ
-                                الاختيارات</button>
-                            <button class="btn btn-dark mt-3" id="edit_options_btn" style="display: none">تعديل
-                                الاختيارات</button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row mb-3">
-                    <table class="table table-hover fs-4" id="variants_table" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th scope="col">اسم</th>
-                                <th scope="col">سعر</th>
-                                <th scope="col">sku</th>
-                                <th scope="col">اضافة صورة</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                <button class="btn btn-primary btn-lg add_product_btn">أضافة المنتج <i
-                        class="bi bi-plus-square"></i></button>
             </div>
-            <datalist id="default_options">
-                <option value="المقاس">
-                <option value="اللون">
-                <option value="الخامة">
-            </datalist>
-        </form>
-    <meta name="_token" content="{{ csrf_token() }}">
-    @endsection
+            <div class="dz-message" data-dz-message><span>قم بالضغط لرفع الصور</span></div>
+    </form>
+</div>
+</div> --}}
+
+<div class="row mb-3 mt-2">
+    <h3>اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
+    <div class="options">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-primary mt-3" id="add_option_btn">أضافة اختيار</button>
+            <button class="btn btn-success mt-3" id="save_options_btn" style="display: none">حفظ
+                الاختيارات</button>
+            <button class="btn btn-dark mt-3" id="edit_options_btn" style="display: none">تعديل
+                الاختيارات</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row mb-3">
+    <table class="table table-hover fs-4" id="variants_table" style="display: none;">
+        <thead>
+            <tr>
+                <th scope="col">اسم</th>
+                <th scope="col">سعر</th>
+                <th scope="col">sku</th>
+                <th scope="col">رقم الرف</th>
+                <th scope="col">اضافة صورة</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+<button class="btn btn-primary btn-lg add_product_btn">أضافة المنتج <i class="bi bi-plus-square"></i></button>
+</div>
+<datalist id="default_options">
+    <option value="المقاس">
+    <option value="اللون">
+    <option value="الخامة">
+</datalist>
+</form>
+<meta name="_token" content="{{ csrf_token() }}">
+@endsection
 @section('script')
 <script type="text/javascript" src="{{url('/static/js/image-uploader.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -237,7 +230,7 @@
             padding: 'resolve',
         });
         $('.input-images').imageUploader({
-            imagesInputName:'product_images'
+            imagesInputName: 'product_images'
         });
     })
     form_options_array = [];
@@ -255,6 +248,7 @@
             $(this).fadeOut();
         }
     })
+
     function add_option() {
         var option_id = uid();
         form_options_array.push(option_id);
@@ -487,7 +481,8 @@
             <td>` + element.name + `</td>
             <td><input class=" product_variant form-control" name="product_variants[` + index + `][price]" type="number"/></td>
             <td><input class="sku product_variant form-control" name="product_variants[` + index + `][sku]" type="text"/></td>
-            <input type="hidden" class="product_variant" name="product_variants[` + index +
+            <td><input class="product_variant form-control" name="product_variants[` + index + `][shelf_num]" type="text"/></td>
+            <input type="hidden" class="shelf_num product_variant" name="product_variants[` + index +
                 `][name]" value="` + element.name + `"/>`
             Object.entries(element).forEach(option_value => {
                 if (option_value[0] != 'name') {
@@ -497,14 +492,14 @@
             });
             //template += `</tr>`;
             template += `<td>` +
-            `<input class="form-control form-control-sm" id="formFileSm" name="product_variants[` + index + `][photo]" type="file"/></td>` +
-            `</tr>`;
+                `<input class="form-control form-control-sm" id="formFileSm" name="product_variants[` + index + `][photo]" type="file"/></td>` +
+                `</tr>`;
             $("#variants_table tbody").append(template);
         });
         $("#variants_table").fadeIn();
     }
 
-    $('.add_product_btn').on('click',function (e) {
+    $('.add_product_btn').on('click', function(e) {
         e.preventDefault();
         Object.entries(options).forEach(element => {
             var option = element[1];

@@ -122,6 +122,7 @@
                 <th scope="col">السعر</th>
                 <th scope="col">الكمية</th>
                 <th scope="col">sku</th>
+                <th scope="col">رقم الرف</th>
                 <th scope="col">طباعة</th>
             </tr>
         </thead>
@@ -132,6 +133,7 @@
                     <td>{{ $variant->price }}</td>
                     <td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->quantity }}</a></td>
                     <td>{{ $variant->sku }}</td>
+                    <td>{{ $variant->shelf_num }}</td>
                     <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
                 </tr>
             @empty
