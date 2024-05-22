@@ -151,6 +151,7 @@ class OrderController extends Controller
         $data = $request->all();
         $selected_option = 1;
         $data = $this->OrdersService->GetOrderPrint($data ,$order_id);
+        // dd($data);
         return view('Dashboard.Orders.print')->with(compact('data' ,'selected_option'));
     }
     public function print_orders(Request $request){
