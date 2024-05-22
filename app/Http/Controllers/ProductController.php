@@ -29,7 +29,22 @@ class ProductController extends Controller
 
     public function show($product_id) {
         $product = $this->ProductCrudService->GetProduct($product_id);
-        return view("Dashboard.Products.show_one")->with('product',$product);
+        $attributes = $product['attributes'];
+        $attributes = [];
+
+        foreach ($product['attributes'] as $attribute) {
+            $name = $attribute['name'];
+            $values = json_decode($attribute['values'], true);
+            if (!isset($attributes[$name])) {
+                $attributes[$name] = [];
+            }
+            if (isset($attributes[$name]['values'])) {
+                $attributes[$name]['values'] = array_merge($attributes[$name]['values'], $values);
+            } else {
+                $attributes[$name]['values'] = $values;
+            }
+        }
+        return view("Dashboard.Products.show_one")->with(['product'=>$product,'attributes'=>$attributes]);
     }
 
     public function all(ProductFilters $filters) {
@@ -76,7 +91,7 @@ class ProductController extends Controller
             return response()->json();
         }
 
-        $request->session()->flash('success', 'New product added successfully.');
+        $request->session()->flash('success', 'new_product_added_successfully');
         return redirect()->route('show_product', ['product_id' => $product->id]);
     }
 
@@ -96,6 +111,23 @@ class ProductController extends Controller
     }
     public function update(CreateProductRequest $request,$product_id){
         $data = $request->all();
+
+        if (array_key_exists('show_quantity', $data['product_info'])) {
+            if($data['product_info']['show_quantity'] == 'on'){
+                $data['product_info']['show_quantity'] = '1';
+            }
+        } else {
+            $data['product_info']['show_quantity'] = '0';
+        }
+
+        if (array_key_exists('confirm_order', $data['product_info'])) {
+            if($data['product_info']['confirm_order'] == 'on'){
+                $data['product_info']['confirm_order'] = '1';
+            }
+        } else {
+            $data['product_info']['confirm_order'] = '0';
+        }
+
         $product = $this->ProductCrudService->UpdateProduct($product_id,$data);
         if(!$product){
             $request->session()->flash('erroe', 'product_updated_error');

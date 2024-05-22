@@ -23,6 +23,8 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AccountingController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\StatusController;
 
 
 Route::get('/',function (){
@@ -443,5 +445,22 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('update_user')
     ->can('update',['App\Models\User','user_id']);
 
+    Route::get('/sectors',[AreaController::class,'all_sectors'])
+    ->name('all_sectors')
+    ->can('view',['App\Models\Area']);
 
+    Route::get('sectors/add', [AreaController::class,'add_sector'])
+    ->name('add_sector')
+    ->can('add',['App\Models\Area']);
+
+    Route::post('sectors/store', [AreaController::class,'store_sector'])
+    ->name('store_sector');
+
+    Route::post('orders/{order_id}/change_after_sale', [OrderController::class,'change_after_sale'])
+    ->name('change_after_sale')
+    ->can('add_discount',['App\Models\Order']);
+
+    Route::get('statuses/settings', [StatusController::class,'statuses_settings'])
+    ->name('all_statuses')
+    ->can('view_statuses', ['App\Models\Status']);
 });

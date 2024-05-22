@@ -13,7 +13,7 @@ use App\Cart\Interfaces\CartServiceInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\Products\Interfaces\VariantStockServiceInterface;
-
+use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
 
 
 class OrdersService implements OrdersServiceInterface{
@@ -28,6 +28,7 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  ShippingCompanyServiceInterface $ShippingCompanyService,
         protected readonly  ShippingStatusServiceInterface $ShippingStatusService,
         protected readonly VariantStockServiceInterface $VariantStockService,
+        protected readonly OrderNotesServiceInterface $OrderNotesService,
     ) {}
 
     public function AddOrder($user,array $order_details){
@@ -36,8 +37,7 @@ class OrdersService implements OrdersServiceInterface{
             return false;
         }
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
-            //return false;
-            $order_details['status_id'] = '18';
+            $order_details['status_id'] = '5';
         }else{
             $order_details['status_id'] = '1';
         }
@@ -48,8 +48,12 @@ class OrdersService implements OrdersServiceInterface{
         $order_details['admin_id'] = $user->id;
         $order_details['company_id'] = $user->company_id;
         $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
-        // dd($order_details);
+        $note = $order_details['client']['note'];
+        unset($order_details['client']['note']);
         $order = $this->orders_crud_repository->create_order($order_details);
+        if (!empty($note)) {
+            $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
+        }
         $order_details['type'] = 'sell';
         $order_details['order_id'] = $order->id;
 
@@ -73,7 +77,7 @@ class OrdersService implements OrdersServiceInterface{
 
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
 
-        if($data['status_id'] == '5'){
+        if($data['status_id'] == '30'){
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
 
             if(!$shipment){
@@ -99,7 +103,7 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatusBulk($data)
     {
-        if($data['status_id'] == '5'){
+        if($data['status_id'] == '30'){
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
                 $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
@@ -144,6 +148,17 @@ class OrdersService implements OrdersServiceInterface{
             'note'=>$note,
         );
         $id = $this->orders_crud_repository->change_order_status($order->id,$status_data);
+        return $id;
+    }
+    public function DeleteOrderStatusCallback($data){
+
+        $order = $this->orders_crud_repository->get_order_by_waybill($data['waybill']);
+        $status_id = $this->ShippingStatusService->GetStatusMapping($data['status_id'],$order->shipping_company_id);
+
+        $status_data = array(
+            'status_id'=>$status_id,
+        );
+        $id = $this->orders_crud_repository->delete_order_status($order->id,$status_data);
         return $id;
     }
     public function checkMaxOrders($company_id)
@@ -205,5 +220,8 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->VariantStockService->get_scan_items($ids);
     }
+    public function UpdateAfterSaleOrder($id,$company_id,$data){
+        return $this->orders_crud_repository->update_after_sale($id,$company_id,$data);
     }
+}
 

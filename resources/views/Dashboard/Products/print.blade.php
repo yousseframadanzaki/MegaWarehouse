@@ -23,7 +23,7 @@
 <body>
     <div class="container">
         <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
-            {{-- {!! DNS1D::getBarcodeHTML($variant->sku, 'CODABAR') !!} --}}
+            {!! DNS1D::getBarcodeHTML($variant->sku, 'C128',1,30) !!}
             <div>
             {{$variant->sku}}
         </div>

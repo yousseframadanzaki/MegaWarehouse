@@ -249,6 +249,25 @@
                             </li>
                         @endcanany
 
+                        @canany(['view_statuses'], 'App\Models\Status')
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#settings-collapse">
+                                <i class="bi bi-ui-checks"></i>
+                                    الاعدادات
+                            </a>
+                            <div class="collapse" id="settings-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    @can(['view_statuses'], 'App\Models\Status')
+                                        <li class="rounded"><a href="{{ route('all_statuses') }}" class="text-white"> <i
+                                                    class="bi bi-ui-checks"></i>
+                                                اعدادات الحالات </a></li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                        @endcanany
+
                         @canany(['view', 'add'], 'App\Models\Brand')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
@@ -422,7 +441,27 @@
                                 </div>
                             </li>
                         @endcanany
-
+                        @canany(['view', 'add'], 'App\Models\Area')
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#area-collapse">
+                                <i class="bi bi-map-fill"></i>
+                                مناطق الشحن
+                            </a>
+                            <div class="collapse" id="area-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+                                    @can('add', 'App\Models\Area')
+                                        <li class="rounded"><a href="{{ route('add_sector') }}" class="text-white">
+                                                <i class="bi bi-map"></i> اضافة منطقة شحن </a></li>
+                                    @endcan
+                                    @can('view', 'App\Models\Area')
+                                        <li class="rounded"><a href="{{ route('all_sectors') }}" class="text-white">
+                                                <i class="bi bi-map"></i> كل مناطق الشحن </a></li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </li>
+                        @endcanany
                         @canany(['view', 'add'], 'App\Models\Warehouse')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"

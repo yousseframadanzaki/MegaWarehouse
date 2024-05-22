@@ -71,7 +71,8 @@ class StockController extends Controller
     }
 
     public function variants_stock($variant_id) {
-        $data = $this->StockOperationService->GetVarintsStock($variant_id);
+        $user = auth()->user();
+        $data = $this->StockOperationService->GetVarintsStock($variant_id,$user);
         return response()->json($data);
     }
     public function scan(Request $request){

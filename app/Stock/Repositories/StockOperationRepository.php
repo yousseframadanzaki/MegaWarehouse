@@ -5,8 +5,16 @@ namespace App\Stock\Repositories;
 use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Models\Stock;
 use App\Models\Variant;
+use App\Policies\StockPolicy;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class StockOperationRepository implements StockOperationRepositoryInterface{
+    protected $stockPolicy;
+
+    public function __construct(stockPolicy $stockPolicy)
+    {
+        $this->stockPolicy = $stockPolicy;
+    }
 
     public function create($operation) {
         $stock = Stock::create($operation);
@@ -39,16 +47,29 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
     public function delete_operation_by_id($id){
         return Stock::destroy($id);
     }
-    public function get_variant_stock_warehouse($variant_id) {
-        return Stock::with(
-            ['warehouse' => function ($query) {
-                $query->select('id', 'name');
-            }]
-        )
-        ->groupBy('warehouse_id')
-        ->where('variant_id',$variant_id)
-        ->selectRaw('sum(quantity) as sum, warehouse_id')
-        ->get();
+    public function get_variant_stock_warehouse($variant_id,$user) {
+        if ($this->stockPolicy->view_his_quantity($user)) {
+            return Stock::with(
+                ['warehouse' => function ($query) {
+                    $query->select('id', 'name');
+                }]
+            )
+            ->groupBy('warehouse_id')
+            ->where('variant_id',$variant_id)
+            ->where('warehouse_id', $user->warehouse_id)
+            ->selectRaw('sum(quantity) as sum, warehouse_id')
+            ->get();
+        } else {
+            return Stock::with(
+                ['warehouse' => function ($query) {
+                    $query->select('id', 'name');
+                }]
+            )
+            ->groupBy('warehouse_id')
+            ->where('variant_id',$variant_id)
+            ->selectRaw('sum(quantity) as sum, warehouse_id')
+            ->get();
+        }
     }
     public function get_variant_stock_by_warehouse_id($variant_id,$warehouse_id) {
         return Stock::where([

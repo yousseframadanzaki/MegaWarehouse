@@ -12,6 +12,7 @@ use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
 use App\Orders\Filters\OrdersFilters;
+use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
 
 use function Ramsey\Uuid\v1;
 
@@ -20,15 +21,18 @@ class OrderController extends Controller
     private CommonDataServiceInterface $CommonDataService;
     private OrdersServiceInterface $OrdersService;
     private TemplateServiceInterface $TemplateService;
+    private OrderNotesServiceInterface $OrderNotesService;
     public function __construct(
         CommonDataServiceInterface $CommonDataService,
         OrdersServiceInterface $OrdersService,
         TemplateServiceInterface $TemplateService,
+        OrderNotesServiceInterface $OrderNotesService,
     )
     {
         $this->CommonDataService = $CommonDataService;
         $this->OrdersService = $OrdersService;
         $this->TemplateService = $TemplateService;
+        $this->OrderNotesService = $OrderNotesService;
     }
 
     public function all(OrdersFilters $filters) {
@@ -37,6 +41,7 @@ class OrderController extends Controller
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
         $marketers = $this->CommonDataService->GetCompanyMarketers($this->company_id());
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
+        $products = $this->CommonDataService->GetCompanyProducts($this->company_id(),$filters);
         $filters = $filters->get_values();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
         return view('Dashboard.Orders.show_all')->with(
@@ -47,6 +52,7 @@ class OrderController extends Controller
                 'statuses',
                 'marketers',
                 'shipping_companies',
+                'products',
                 'filters'
             ));
     }
@@ -74,7 +80,7 @@ class OrderController extends Controller
             $request->session()->flash('success', 'order_created_success');
             return redirect()->back();
         }
-        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>$request->except('token')])->withInput();
+        return redirect()->back()->with(['error'=>'order_created_error','old_data'=>($request->except('token'))])->withInput();
     }
     public function edit($order_id){
         $company_id = $this->company_id();
@@ -94,14 +100,14 @@ class OrderController extends Controller
         $client = $data['client'];
         $old_items = isset($data['old_items']) ? $data['old_items'] : array() ;
         $new_items = isset($data['items']) ? $data['items'] : array();
-        //dd($new_items);
         $order = $this->OrdersService->UpdateOrder($order_id, $client);
         $old_stock = $this->OrdersService->UpdateStock($order_id, $old_items);
         $new_stock = $this->OrdersService->AddStock(auth()->user() ,$order_id, $new_items);
+        $note = 'تم تعديل بيانات الأوردر';
+        $order_note = $this->OrderNotesService->AddOrderNote($order_id,$note,auth()->user()->id,$this->company_id());
 
         if($order || $old_stock || $new_stock){
-            $request->session()->flash('success', 'order_edited_success');
-            return redirect()->back();
+            return redirect()->route('show_order', [$order_id])->with('success','order_edited_success');
         }
     }
     public function scan_order($order_id){
@@ -137,6 +143,10 @@ class OrderController extends Controller
         $id = $this->OrdersService->ChangeOrderStatusCallback($request->all());
         return response()->json($id, 200);
     }
+    public function status_callback_delete(Request $request) {
+        $id = $this->OrdersService->DeleteOrderStatusCallback($request->all());
+        return response()->json($id, 200);
+    }
     public function print_order(Request $request ,$order_id){
         $data = $request->all();
         $selected_option = 1;
@@ -166,27 +176,23 @@ class OrderController extends Controller
     public function confirm_order(Request $request){
         $data = $request->all();
         $order_id = $data['id'];
-        $order = $this->OrdersService->GetOrder($order_id);
-        foreach ($order->stocks as $item) {
-            $itemKeys = array_keys($data['items']);
-            if (in_array($item->variant_id, $itemKeys)) {
-                $quantity = $data['items'][$item->variant_id]['quantity'];
-                if (abs($item->quantity) == $quantity) {
-                    $res['admin_id'] = auth()->user()->id;
-                    $res['company_id'] = $this->company_id();
-                    $res['status_id'] = '3';
-                    if($this->OrdersService->ChangeOrderStatus($order_id,$res)){
-                        return redirect()->route('show_order', [$order_id])->with('success','confirm_order_success');
-                    }
-                } else {
-                    return redirect()->back()->with('error','confirm_order_error');
-                }
 
-            } else {
-                return redirect()->back()->with('error','confirm_order_error');
+        $res['admin_id'] = auth()->user()->id;
+        $res['company_id'] = $this->company_id();
+        $res['status_id'] = '15';
+            if($this->OrdersService->ChangeOrderStatus($order_id,$res)){
+                return redirect()->route('show_order', [$order_id])->with('success','confirm_order_success');
             }
-            dd($item->quantity);
-        }
+    }
+    public function change_after_sale($order_id, Request $request){
+        $data = $request->all();
+        unset($data['_token']);
+        $total_after_sale = $data['total_after_sale'];
+        $order = $this->OrdersService->GetOrder($order_id);
+        $note = 'تم تغيير اجمالى بعد الخصم من '.$order['total_after_sale'].' الى '.$total_after_sale.'';
+        $order_note = $this->OrderNotesService->AddOrderNote($order_id,$note,auth()->user()->id,$this->company_id());
+        $after_sale_order = $this->OrdersService->UpdateAfterSaleOrder($order_id,$this->company_id(),$data);
+        return redirect()->route('show_order',$order_id)->with('success','change_after_sale_success');
     }
 
 }

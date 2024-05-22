@@ -5,9 +5,9 @@ namespace App\Orders\Repositories;
 use App\Orders\Interfaces\OrdersRepositoryInterface;
 use App\Models\Order;
 use App\Models\Variant;
-use App\Models\Status;
 use App\Models\Company;
-use App\Models\Client;
+use App\Models\OrderStatus;
+use App\Models\OrderNotes;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -22,13 +22,15 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $total_data = $this->calculate_total($data['items'],$order_data['client_id']);
         $total_after_sale = $this->calculate_total_after_sale($data['items']);
 
-        $order_data['total'] = $total_data['total'];
-        $order_data['total_after_sale'] = $total_after_sale;
+        $order_data['total'] = ($total_data['total'] + $order_data['delivery_cost']);
+        $order_data['total_after_sale'] = ($total_after_sale + $order_data['delivery_cost']);
         $order_data['total_marketer_commission'] = $total_data['total_marketer_commission'];
         $order_data['marketer_id'] = $data['marketer_id'];
-
-
+        $sale_note = $order_data['total'] - $order_data['total_after_sale'];
         $order = Order::create($order_data);
+
+        $note = 'تم اضافة خصم على الأوردر (اجمالى الخصم ' . $sale_note . ')';
+        $order_note = $this->add_order_note($order->id,$note,$data['admin_id'],$data['company_id']);
 
         // $order->items()->sync($data['items']);
         $order->order_status()->sync([$order_data['status_id'] => ['admin_id' => $order_data['admin_id'],'note'=>'','current'=>true]]);
@@ -45,8 +47,6 @@ class OrdersRepository implements OrdersRepositoryInterface{
     function calculate_total($items,$client_id) {
         $total = 0;
         $total_marketer_commission = 0;
-        // $client = Client::with('client_group')->where('id',$client_id)->first();
-        // $discount = $client->client_group->discount;
         foreach ($items as $item) {
             $variant = Variant::with('product')->find($item['id']);
             $price = $variant->price;
@@ -55,16 +55,14 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $total += $price * (int)$item['quantity'];
             $total_marketer_commission += $commission * (int)$item['quantity'];
         }
-        // echo $total;
-        // $total = $total - ($total*$discount*0.01);
-        // dd($total);
+
         $data['total'] = $total;
         $data['total_marketer_commission'] = $total_marketer_commission;
         return $data;
     }
 
     public function get_company_orders($company_id,$filters){
-        return Order::with(['marketer','admin','status','city','area'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
+        return Order::with(['marketer','admin','status','city','area','order_notes'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
     }
 
     public function get_order_code($company_id){
@@ -106,6 +104,12 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $id = $order->order_status()->get()[0]->pivot->id;
         return $id;
     }
+    public function delete_order_status($order_id,$data){
+        $status = OrderStatus::where('order_id', $order_id)
+                    ->where('status_id', $data['status_id'])
+                    ->firstOrFail();
+        $status->delete();
+    }
 
     public function change_order_status_bulk($data)
     {
@@ -117,6 +121,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
 
     public function update_order($order_id,$data) {
+        $total = str_replace(',', '', $data['total']);
+        $total_after_sale = str_replace(',', '', $data['total_after_sale']);
+        $data['total'] = $total + $data['delivery_cost'];
+        $data['total_after_sale'] =  $total_after_sale + $data['delivery_cost'];
         return Order::where('id',$order_id)->update($data);
     }
     public function check_max_orders($company_id)
@@ -136,14 +144,14 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
     public function get_order_print($data ,$order_id) {
         $orders = [];
-        $order = Order::find($order_id);
+        $order = Order::with(['stocks','stocks.variant','stocks.variant.product','companies'])->find($order_id);
         $orders[] = $order;
         return $orders;
     }
     public function get_bulk_orders_print($data) {
         $orders = [];
         foreach ($data['orders_ids'] as $order_id) {
-            $order = Order::find($order_id);
+            $order = Order::with(['stocks','stocks.variant','stocks.variant.product'])->find($order_id);
 
             if ($order) {
                 $orders[] = $order;
@@ -169,5 +177,17 @@ class OrdersRepository implements OrdersRepositoryInterface{
             }
         }
         return $orders;
+    }
+    public function add_order_note($order_id,$note,$admin_id,$company_id){
+        $order_note = new OrderNotes;
+        $order_note->order_id = $order_id;
+        $order_note->note = $note;
+        $order_note->admin_id = $admin_id;
+        $order_note->company_id = $company_id;
+        return $order_note->save();
+    }
+    public function update_after_sale($id,$company_id,$data){
+        $order = Order::where('id', $id)->where('company_id', $company_id)->first();
+        $order->update($data);
     }
 }

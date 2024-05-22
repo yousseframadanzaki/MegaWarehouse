@@ -52,18 +52,13 @@ class OrderPolicy
         }
         return true;
     }
-
-    // public function update(User $user, $order_id): bool
-    // {
-    //     if(!$user->role->permissions->contains('slug','edit_orders')){
-    //         return false;
-    //     }
-    //     $order = Order::findOrFail($order_id);
-    //     if($user->company_id != $order->company_id){
-    //         return false;
-    //     }
-    //     return true;
-    // }
+    public function scan_orders(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','scan_orders')){
+            return false;
+        }
+        return true;
+    }
 
     public function change_status(User $user, $order_id): bool
     {
@@ -87,6 +82,13 @@ class OrderPolicy
         return true;
     }
     public function print_labels(User $user){
+        return true;
+    }
+    public function add_discount(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','add_discount')){
+            return false;
+        }
         return true;
     }
 }

@@ -21,7 +21,7 @@
     .small-image:hover{
         border: solid 2px var(--bs-primary);
     }
-    
+
 </style>
 
 
@@ -42,7 +42,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -94,13 +94,15 @@
                 <div class="col-md-12 fs-5"><span style="font-weight: 600;">التصنيف : </span><span><a href="{{ route('show_category',$product->category_id) }}">{{$product->category->parents_names}}</a></span></div>
             </div>
             <div class="row mt-2">
-                @foreach ($product->attributes as $attribute)
+                @foreach ($attributes as $name => $attribute)
                     <div class="col-md-4">
-                        <span style="font-weight: 600;">{{$attribute->name}}</span>
+                        <span style="font-weight: 600;">{{$name}}</span>
                         <br>
-                        @foreach (json_decode($attribute->values) as $value)
-                            <div class="badge p-2 bg-success">{{$value}}</div>
-                        @endforeach
+                                @foreach ($attribute['values'] as $value)
+                                <div class="badge p-2 bg-success">
+                                    {{ $value }}
+                                </div>
+                                @endforeach
                     </div>
                 @endforeach
             </div>
@@ -120,6 +122,7 @@
                 <th scope="col">السعر</th>
                 <th scope="col">الكمية</th>
                 <th scope="col">sku</th>
+                <th scope="col">رقم الرف</th>
                 <th scope="col">طباعة</th>
             </tr>
         </thead>
@@ -130,6 +133,7 @@
                     <td>{{ $variant->price }}</td>
                     <td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->quantity }}</a></td>
                     <td>{{ $variant->sku }}</td>
+                    <td>{{ $variant->shelf_num }}</td>
                     <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
                 </tr>
             @empty

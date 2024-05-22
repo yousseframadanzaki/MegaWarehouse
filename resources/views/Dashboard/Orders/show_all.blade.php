@@ -1,7 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-
+<style>
+#loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgb(0, 0, 0);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+</style>
 <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -63,7 +80,7 @@
                                 <select id="print_id" name="print_id" style="width: 100%">
                                     <option selected> --اختار-- </option>
                                     <option value="1"> 1 بوليصة فى الصفحة </option>
-                                    <option value="2"> 5 بوليصة فى الصفحة </option>
+                                    <option value="2"> 2 بوليصة فى الصفحة </option>
                                 </select>
                             </div>
                         </div>
@@ -74,6 +91,47 @@
             </form>
         </div>
     </div>
+</div>
+<div class="modal fade" id="content-note" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" style="width:60%;">
+            <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
+                <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true"></button>
+                    <h3 class="modal-title">ملاحظات الطلب</h3>
+                </div>
+                <div class="modal-body" style="min-height:150px ; overflow: auto;font-size:14px">
+                    <div class="comment-main-level clearfix" style="margin-bottom:10px">
+                        <div class="">
+                            <div class="comment-box"
+                                style="-webkit-box-shadow: none;-moz-box-shadow: none; box-shadow: none;">
+                                <div class="comment-head"
+                                style="border:none;background: none;padding: 0px;">
+                                <textarea class=" col-md-12 form-control input-circle recordNots"
+                                            placeholder="اضافة ملاحظة ..."
+                                                rows="4"></textarea>
+                                        <div class="col-md-6 " style="margin-top:25px">
+                                        <div class="add_notes_btn" style="">
+                                    </div>
+                                    </div>
+                                <div id="mess" style="display:none"> </div>
+                            </div>
+                    </div>
+                </div>
+                </div>
+                    <div class="row">
+                        <div style="border: 1px solid #ddd">
+                            <h4 style="padding: 15px 10px;background: #eee;margin: 0">
+                                الملاحظات السابقة</h4>
+                        <div class="notes-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+</div>
 </div>
 
     <div class="p-3">
@@ -135,6 +193,8 @@
                             <label class="form-label">المنطقة</label>
                             <select class="form-select product_info"  name="area_id"
                                 id="area_id">
+                                <option value="">اختار المنطقة </option>
+
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -155,13 +215,34 @@
                         <div class="col-md-4">
                             <label class="form-label">المسوق</label>
                             <select class="form-select product_info" name="marketer_id">
-                                <option value="">اختار الحالة</option>
+                                <option value="">اختار المسوق</option>
                                 @foreach ($marketers as $marketer)
                                     <option  @if(Request::get('marketer_id') == $marketer->id) selected @endif value="{{ $marketer->id }}">{{ $marketer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
+                            <label class="form-label">المنتج</label>
+                            <select class="form-select product_info" name="product_id" id="product_id">
+                                <option value="">اختار المنتج</option>
+                                @foreach ($products as $id => $name)
+                                    <option  @if(Request::get('product_id') == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">المتغير</label>
+                            <select class="form-select product_info" name="variant_id" id="variant_id">
+                                <option value="">اختار المتغير</option>
+                            </select>
+
+                            <div class="invalid-feedback supplier_id">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                    <div class="col-md-4">
                             <label class="form-label">تاريخ من</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">
@@ -171,8 +252,6 @@
                             <input class="form-control datetimeplugin" name="date_to" id=""
                                 value="{{ Request::get('date_to') }}">
                         </div>
-                    </div>
-                    <div class="row mt-3">
                         <div class="col-md-4">
                             <label class="form-label">شركة الشحن</label>
                             <select class="form-select product_info" name="shipping_company_id">
@@ -188,7 +267,7 @@
                                 value="{{ Request::get('waybill') }}">
                         </div>
                     </div>
-                    <div class="d-flex mt-3 justify-content-end">
+                    <div class="d-flex mt-4 justify-content-center">
                         <button type="submit" class="btn btn-primary">
                             بحث
                         </button>
@@ -223,13 +302,17 @@
                         <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                         </form>
                     </div>
+                    <div class="btn-group me-2" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
+                        <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
+                    </div>
                 </div>
 
-            <table class="mt-3 table table-hover">
+            <table class="mt-3 table table-hover" id="orders">
                 <thead>
                     <tr>
                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
                         <th>رقم الاوردر</th>
+                        <th>رقم البوليصة</th>
                         <th>الادمن</th>
                         <th>المسوق</th>
                         <th>الحالة</th>
@@ -239,6 +322,7 @@
                         <th>المنطقة</th>
                         <th>الاجمالى</th>
                         <th>تاريخ الاضافة</th>
+                        <th>ملاحظات الطلب</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -246,6 +330,7 @@
                         <tr>
                             <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
                             <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
+                            <td>{{ $order->shipping_company_id?? 'لا يوجد' }}</td>
                             <td>{{$order->admin->name}}</td>
                             <td>
                                 @isset($order->marketer->name)
@@ -259,6 +344,9 @@
                             <td>{{$order->city->name}} - {{$order->area->name}}</td>
                             <td>{{$order->total}}</td>
                             <td>@date_format($order->created_at)</td>
+                            <td class="order_notes" data-id="{{$order->id}}">
+                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -268,18 +356,19 @@
             </div>
         </div>
     </div>
-
+<input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 @endsection
 
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
 integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         $(document).ready(function() {
             $("td[data-status]").each(function() {
                 var status = $(this).data("status");
-                if (status == 18) {
+                if (status == 5) {
                     $(this).css({"background-color": "#bb4141","color": "white"});
                 }
             });
@@ -317,7 +406,27 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     }
                 })
             }
+
+            var product_id = "{!! Request::get('product_id') !!}"
+            var variant_id = "{!! Request::get('variant_id') !!}"
+            if(product_id){
+                $.ajax({
+                    type:'GET',
+                    url:`/api/product/${product_id}/variants`,
+                    dataType: "text",
+                }).then((response)=>{
+                    data = JSON.parse(response);
+                    $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                    $.each(data, function (key,value) {
+                        $("#variant_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    if(variant_id){
+                        $("#variant_id").val(variant_id);
+                    }
+                })
+            }
         })
+
         $("#city_id").change(function () {
             var city_id = this.value;
             $("#area_id").html('');
@@ -330,6 +439,21 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#area_id').html('<option value="">-- اختار المنطقة --</option>');
                 $.each(data, function (key, value) {
                     $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+            })
+        })
+        $("#product_id").change(function () {
+            var city_id = this.value;
+            $("#variant_id").html('');
+            $.ajax({
+                type:'GET',
+                url:`/api/product/${city_id}/variants`,
+                dataType: "text",
+            }).then((response)=>{
+                data = JSON.parse(response);
+                $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                $.each(data, function (key, value) {
+                    $("#variant_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
             })
         })
@@ -452,9 +576,93 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         });
         $('#status_id').change(function () {
             var status_id = $(this).val();
-            if(status_id == '5'){
+            if(status_id == '30'){
                 $("#shipping_company_select").fadeIn();
             }
-        })
+        });
+        function exportTableToExcel(orders, filename = '') {
+            var table = document.getElementById(orders);
+            var wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"});
+            var wbout = XLSX.write(wb, {bookType: 'xlsx', type: 'binary'});
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            var blob = new Blob([s2ab(wbout)], {type: "application/octet-stream"});
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename ? filename + '.xlsx' : 'export.xlsx';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        $(".order_notes").click(function () {
+            var order_id = $(this).attr('data-id');
+            $("#content-note").modal("show");
+			$(".notes-list").html("<div id='loading'></div>");
+			var btn_template = `
+			<div class="pull-left" style="margin-top:3px;">
+				<button type="button" class="btn btn-warning"
+					style="margin-top:16px"
+					onclick="recordYourNotes(${order_id});">
+					 إضافة ملاحظة<i class="bi bi-plus-circle"></i>
+                </button>
+			</div>
+			`
+			$(".add_notes_btn").html(btn_template);
+            $.ajax({
+                type:'GET',
+                url:`/api/order/${order_id}/notes`,
+                dataType: "text",
+            }).then((response)=>{
+                data = JSON.parse(response);
+                $(".notes-list").html("");
+                data.forEach(note => {
+                        var template = `
+                            <div>
+                                <div class="btn-group me-2" style="">${note.admin.name} : ${note.note}</div>
+                                <div class="col-md-12" style="margin: 5px;"><span>${note.formatted_created_at}</span></div>
+                                <hr class="col-md-12" style="margin: 10px; border-color: #ddd">
+                            </div>
+                        `;
+                        $(".notes-list").append(template);
+                });
+            });
+        });
+        function recordYourNotes($id){
+            id = $id;
+            note = $(".recordNots").val();
+            token = $("#token").val();
+            $.ajax({
+                type:'POST',
+                url:`/api/order/${id}/add_note`,
+                dataType: "text",
+                data: {
+                    order_id: id,
+                    note: note,
+                    token: token
+                }
+            }).then((response)=>{
+                data = JSON.parse(response);
+                if (data) {
+                    $(".recordNots").html('');
+                    show_success('تمت اضافة الملاحظة بنجاح');
+                }
+            });
+            function show_success(message) {
+                var template = `
+                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                    <strong>${message}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `;
+                $('#mess').append(template);
+                $('#mess').fadeIn();
+            }
+        }
     </script>
 @endsection

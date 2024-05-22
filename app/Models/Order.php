@@ -14,6 +14,8 @@ use App\Models\OrderItem;
 use App\Models\OrderStatus;
 use App\Models\ShippingCompany;
 use App\Models\Marketer;
+use App\Models\Company;
+use App\Models\OrderNotes;
 
 class Order extends Model
 {
@@ -26,6 +28,7 @@ class Order extends Model
         'country_id',
         'city_id',
         'area_id',
+        'delivery_cost',
         'total',
         'total_after_sale',
         'client_id',
@@ -96,10 +99,18 @@ class Order extends Model
     {
         return $this->belongsTo(ShippingCompany::class);
     }
+    public function companies()
+    {
+        return $this->belongsTo(Company::class ,'company_id');
+    }
 
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+    public function order_notes()
+    {
+        return $this->hasMany(OrderNotes::class, 'order_id');
     }
 
 }

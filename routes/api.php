@@ -11,8 +11,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\OrderNotesController;
 use App\Http\Controllers\admin\CompnayController;
-use App\Models\Order;
 
 /*
     |--------------------------------------------------------------------------
@@ -47,10 +49,20 @@ Route::post('/cart/{variant_id}/delete',[CartController::class,'destroy'])->name
 
 Route::post('/shipping_status/map', [ShippingStatusController::class,'map'])->name('map_status');
 Route::post('/status_callback',[OrderController::class,'status_callback'])->name('status_callback');
+Route::post('/status_callback_delete',[OrderController::class,'status_callback_delete'])->name('status_callback_delete');
 
 Route::post('/shipping_area/map', [ShippingAreaController::class,'map'])->name('map_area');
 
 Route::get('/company/{company_id}/users',[CompnayController::class,'get_company_users'])->name('company_users');
 Route::post('/stock/scan', [StockController::class,'scan'])->name('scan_stock');
 Route::post('/stock/{id}/remove', [StockController::class,'remove_stock'])->name('remove_stock');
-Route::post('/order/scan_items', [OrderController::class,'scan_items'])->name('scan_items');
+Route::get('/order/scan_items', [OrderController::class,'scan_items'])->name('scan_items');
+Route::post('/sectors/{id}/edit', [AreaController::class,'edit_area'])->name('edit_area');
+Route::post('/sectors/{id}/edit_city', [AreaController::class,'edit_city'])->name('edit_city');
+Route::post('/sectors/{id}/edit_shipping_company', [AreaController::class,'edit_shipping_company'])->name('edit_shipping_company');
+Route::get('/order/{order_id}/notes', [OrderNotesController::class,'notes'])->name('notes');
+Route::POST('/order/{id}/add_note', [OrderNotesController::class,'create_note'])->name('create_note');
+Route::GET('/area/{id}/get_price', [AreaController::class,'get_price'])->name('create_note');
+Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
+Route::post('statuses/{id}/settings', [StatusController::class,'update_status'])->name('update_edit_order');
+Route::POST('statuses/{id}/add_status', [StatusController::class,'add_related_status'])->name('add_status');

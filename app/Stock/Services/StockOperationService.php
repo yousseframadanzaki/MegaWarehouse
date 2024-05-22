@@ -173,8 +173,8 @@ class StockOperationService implements StockOperationServiceInterface{
         }
     }
 
-    function GetVarintsStock($variant_id) {
-        return $this->stock_operation_repository->get_variant_stock_warehouse($variant_id);
+    function GetVarintsStock($variant_id,$user) {
+        return $this->stock_operation_repository->get_variant_stock_warehouse($variant_id,$user);
     }
 
     public function CheckItemsAvailable($items) {

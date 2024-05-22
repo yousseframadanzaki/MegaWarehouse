@@ -22,11 +22,11 @@ use App\Models\Marketer;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
-    
+
     public function get_roles_by_company_id($company_id){
         return Role::where('company_id',$company_id)->pluck('name','id');
     }
-    
+
     public function get_roles_by_type($company_id,$type){
         return Role::where(['company_id'=>$company_id,'type'=>$type])->pluck('name','id');
     }
@@ -42,7 +42,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     public function get_brands_by_company_id($company_id){
         return Brand::where('company_id',$company_id)->pluck('name','id');
     }
-    
+
     public function get_sub_categories($category_id){
         return Category::where(['parent_id'=>$category_id])->pluck('name','id');
     }
@@ -78,7 +78,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     }
 
     public function get_product_variants($product_id){
-        return Variant::where(['product_id'=>$product_id])->get();
+        return Variant::with('product')->where(['product_id'=>$product_id])->get();
     }
 
     public function get_company_users($company_id){
@@ -107,7 +107,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     public function get_company_marketers($company_id){
         return Marketer::all();
     }
-    
+
     public function get_users_by_role_type($company_id,$role_type){
         return User::whereHas('role',function($query) use($role_type) {
             $query->where('type',$role_type);

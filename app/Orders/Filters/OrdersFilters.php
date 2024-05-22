@@ -12,13 +12,17 @@ use App\Orders\Filters\DateToFilter;
 use App\Orders\Filters\MarketerFilter;
 use App\Orders\Filters\ShippingCompanyFilter;
 use App\Orders\Filters\WaybillFilter;
+use App\Orders\Filters\ProductFilter;
+use App\Orders\Filters\VariantFilter;
 
 use App\Models\Client;
 use App\Models\Status;
 use App\Models\City;
 use App\Models\Area;
 use App\Models\Marketer;
+use App\Models\Product;
 use App\Models\ShippingCompany;
+use App\Models\Variant;
 
 class OrdersFilters
 {
@@ -29,6 +33,8 @@ class OrdersFilters
         'status_id' => StatusFilter::class,
         'city_id'   => CityFilter::class,
         'area_id'   => AreaFilter::class,
+        'product_id'   => ProductFilter::class,
+        'variant_id'   => VariantFilter::class,
         'date_from' => DateFromFilter::class,
         'date_to'   => DateToFilter::class,
         'marketer_id'   => MarketerFilter::class,
@@ -50,7 +56,11 @@ class OrdersFilters
 
     public function receivedFilters()
     {
-        return request()->only(array_keys($this->filters));
+        $filters = request()->only(array_keys($this->filters));
+        $filtered = array_filter($filters, function($value) {
+            return !is_null($value);
+        });
+        return $filtered;
     }
 
     public function get_values() {
@@ -84,6 +94,14 @@ class OrdersFilters
             }
             if($key == 'shipping_company_id'){
                 $filters['shipping_company_id'] = ShippingCompany::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'product_id'){
+                $filters['product_id'] = Product::findOrfail($value)->name;
+                continue;
+            }
+            if($key == 'variant_id'){
+                $filters['variant_id'] = Variant::findOrfail($value)->name;
                 continue;
             }
         }

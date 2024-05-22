@@ -56,5 +56,12 @@ class stockPolicy
 
         return true;
     }
+    public function view_his_quantity(User $user): bool{
+        if(!$user->role->permissions->contains('slug','view_his_warehouse')){
+            return false;
+        }
+
+        return true;
+    }
 
 }

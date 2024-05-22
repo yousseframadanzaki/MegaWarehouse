@@ -7,6 +7,22 @@
         background-color: var(--bs-primary) !important;
         color: white !important;
     }
+    #loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgb(0, 0, 0);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
 </style>
 
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -96,6 +112,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="after_sale" tabindex="-1" aria-labelledby="after_sale" aria-hidden="true" style="margin-top: -100px;">
+    <div class="modal-dialog modal-dialog-centered" style="width: 300px;">
+        <div class="modal-content">
+            <form action="{{route('change_after_sale',$order->id)}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">اجمالى الأوردر بعد الخصم</label>
+                                <input type="number" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
+                                    name="total_after_sale" value="{{ $order->total_after_sale }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">تعديل</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="p-3">
@@ -105,7 +144,7 @@
             <li><a href="{{ route('all_orders') }}">الاوردرات</a></li>
             <li><a class="link-dark" href="{{ route('show_order',$order->id) }}">{{$order->order_code}} </a></li>
         </ul>
-
+        <div id="message" style="display: none"></div>
         <div class="card p-3 shadow-sm mt-3">
             <div class="row">
                 <h3>بيانات العميل</h3>
@@ -143,6 +182,10 @@
             <div class="row mt-4">
                 <h3>بيانات الاوردر</h3>
                 <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> الادمن :</label>
+                    <label>{{$order->admin->name}}</label>
+                </div>
+                <div class="col-md-4 fs-5">
                     <label class="fw-bold">رقم الاوردر :</label>
                     <label>{{$order->order_code}}</label>
                 </div>
@@ -150,15 +193,25 @@
                     <label class="fw-bold">تاريخ الاضافة :</label>
                     <label>@date_format($order->created_at)</label>
                 </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold">سعر الشحن :</label>
+                    <label>{{$order->delivery_cost}}</label>
+                </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> الاجمالى :</label>
                     <label>{{$order->total}}</label>
                 </div>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> الخصم :</label>
+                    <label style="color: #f32d2d;"><b>{{$order->total - $order->total_after_sale}}</label>
+                </div>
             </div>
             <div class="row mt-2">
                 <div class="col-md-4 fs-5">
-                    <label class="fw-bold"> الادمن :</label>
-                    <label>{{$order->admin->name}}</label>
+                    <label class="fw-bold"> اجمالى بعد الخصم :</label>
+                    <label style="color: #f32d2d;">{{$order->total_after_sale}}</label>
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> حالة :</label>
@@ -176,7 +229,6 @@
                     <label>{{$order->shipping_company->name}}</label>
                     @endisset
                 </div>
-
             </div>
             <div class="row mt-4">
                 <h3>بيانات المسوق</h3>
@@ -237,13 +289,15 @@
                 </div>
                 @endcan
                 @can('edit_order', 'App\Models\Order')
-                    <div class="btn-group me-2">
+                    <div class="btn-group me-2 edit_order_confirm" data-confirm="{{$order->status->edit_order}}">
                         <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
                     </div>
                 @endcan
+                @can('scan_orders', 'App\Models\Order')
                 <div class="btn-group me-2">
                     <a href="{{ route('scan_order',$order->id) }}" target="_blank" class="btn btn-warning"> مراجعة الأوردر <i class="bi bi-upc-scan"></i></a>
                 </div>
+                @endcan
                 <div class="btn-group me-2">
                     <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -256,6 +310,11 @@
                     <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                     </form>
                 </div>
+                @can('add_discount', 'App\Models\Order')
+                <div class="btn-group me-2">
+                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
+                </div>
+                @endcan
             </div>
 
         <div class="row mt-3">
@@ -291,6 +350,30 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="card p-3 shadow-sm">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                                <button data-id="{{$order->id}}" class="nav-link order_notes" data-bs-toggle="collapse" data-bs-target="#order-notes-collapse">
+                                    ملاحظات الطلب
+                                </button>
+                        </h5>
+                    </div>
+                    <div class="collapse" id="order-notes-collapse" style="">
+                        <div class="card-body">
+                            <div class="notes-list"></div>
+                            <br>
+                            <textarea class=" col-md-12 form-control input-circle recordNots"
+                                            placeholder="اضافة ملاحظة ..."
+                                                rows="4"></textarea>
+                            <div id="mess" style="display:none"> </div>
+                            <div class="add_notes_btn"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -378,7 +461,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         })
         $('#status_id').change(function () {
             var status_id = $(this).val();
-            if(status_id == '5'){
+            if(status_id == '30'){
                 $("#shipping_company_select").fadeIn();
             }
         })
@@ -394,6 +477,92 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $(obj).attr('href',href.toString());
             });
         });
+        $(".order_notes").click(function () {
+            var order_id = $(this).attr('data-id');
+			$(".notes-list").html("<div id='loading'></div>");
+			var btn_template = `
+			<div class="pull-left" style="margin-top:3px;">
+				<button type="button" class="btn btn-warning"
+					style="margin-top:16px"
+					onclick="recordYourNotes(${order_id});">
+					 إضافة ملاحظة<i class="bi bi-plus-circle"></i>
+                </button>
+			</div>
+			`
+			$(".add_notes_btn").html(btn_template);
+            $.ajax({
+                type:'GET',
+                url:`/api/order/${order_id}/notes`,
+                dataType: "text",
+            }).then((response)=>{
+                data = JSON.parse(response);
+                console.log(data);
+                $(".notes-list").html("");
+                data.forEach(note => {
+                        var template = `
+                            <div>
+                                <div class="btn-group me-2" style="">${note.admin.name} : ${note.note}</div>
+                                <div class="col-md-12" style="margin: 5px;"><span>${note.formatted_created_at}</span></div>
+                                <hr class="col-md-12" style="margin: 10px; border-color: #ddd">
+                            </div>
+                        `;
+                        $(".notes-list").append(template);
+                });
+            });
+        });
+        function recordYourNotes($id){
+            id = $id;
+            note = $(".recordNots").val();
+            token = $("#token").val();
+            $.ajax({
+                type:'POST',
+                url:`/api/order/${id}/add_note`,
+                dataType: "text",
+                data: {
+                    order_id: id,
+                    note: note,
+                    token: token
+                }
+            }).then((response)=>{
+                data = JSON.parse(response);
+                if (data) {
+                    $(".recordNots").html('');
+                    show_success('تمت اضافة الملاحظة بنجاح');
+                }
+            });
+        };
+        function show_success(message) {
+            var template = `
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+            $('#mess').append(template);
+            $('#mess').fadeIn();
+        }
+        $(document).ready(function() {
+            $(".edit_order_confirm a").click(function(event) {
+                var $btnGroup = $(this).closest('.edit_order_confirm');
+                var confirmValue = $btnGroup.data('confirm');
+
+                if (confirmValue == 0) {
+                    event.preventDefault();
+                    show_error('عفوا لا يمنك تعديل بيانات الأوردر');
+                    $(window).scrollTop(0);
+                }
+            });
+        });
+        function show_error(message) {
+            var template = `
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+            $('#message').append(template);
+            $('#message').fadeIn();
+        }
 
     </script>
 @endsection
