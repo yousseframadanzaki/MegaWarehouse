@@ -27,4 +27,7 @@ class Variant extends Model
         return $this->belongsToMany(Attribute::class,'variants_attributes','variant_id','attribute_id')->withPivot('value');
     }
 
+    public function stock() {
+        return $this->hasMany(Stock::class);
+    }
 }
