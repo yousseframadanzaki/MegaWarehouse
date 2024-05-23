@@ -23,7 +23,7 @@ class StatusController extends Controller
     public function statuses_settings(){
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
         $statuses = $statuses->map(function ($status) {
-            $status->related_statuses = $status->getRelatedStatusesNames();
+            $status->related_statuses = $status->getRelatedStatuses();
             return $status;
         });
         return view('Dashboard.Status.statuses_settings',compact('statuses'));
@@ -38,6 +38,12 @@ class StatusController extends Controller
         $data = $request->all();
         $related_status = $data['related_status'];
         $status = $this->StatusService->AddRelatedStatus($status_id,$related_status);
+        return response()->json($status);
+    }
+    public function remove_related_status($related_status, Request $request){
+        $data = $request->all();
+        $status_id = $data['status_id'];
+        $status = $this->StatusService->RemoveRelatedStatus($related_status, $status_id);
         return response()->json($status);
     }
 }
