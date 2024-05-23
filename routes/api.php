@@ -66,3 +66,4 @@ Route::GET('/area/{id}/get_price', [AreaController::class,'get_price'])->name('c
 Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
 Route::post('statuses/{id}/settings', [StatusController::class,'update_status'])->name('update_edit_order');
 Route::POST('statuses/{id}/add_status', [StatusController::class,'add_related_status'])->name('add_status');
+Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class,'remove_related_status'])->name('remove_status');
