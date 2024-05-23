@@ -65,7 +65,7 @@
                     <div class="options">
                         <div class="option row mb-3 border shadow-sm p-3" id="1">
                             <div class="col-md-5 option_value_div">
-                                <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
+                                <label class="form-label"> الكلمة الدلالية <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control option_values" data-option-id="1" placeholder="برجاء ادخال القيمة والضغط على زر enter">
                                 <div id="invalid-1" class="invalid-feedback">
                                     برجاء أضافة قيم الاختيار
@@ -77,7 +77,7 @@
                                 <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
                             </div> -->
                             <div class="row mt-3 values_edit">
-                                <label class="form-label">قيم الاختيار:-</label>
+                                <label class="form-label"> الكلمات التي سيتم إضافتها:-</label>
                                 <div class="option_values_div">
 
                                 </div>
@@ -95,35 +95,6 @@
 <script>
     form_options_array = [];
     form_options_values = new Object();
-
-    $(document).on("click", ".remove_option", function(e) {
-        e.preventDefault();
-        var remove_id = $(this).attr("data-remove-id");
-        $("#" + remove_id).fadeOut();
-        $("#" + remove_id).remove();
-        delete form_options_values[remove_id];
-        delete options[remove_id];
-        update_form_options();
-        const index = form_options_array.indexOf(remove_id);
-
-        if (index > -1) {
-            form_options_array.splice(index, 1);
-        }
-        if (form_options_array.length < 3) {
-            $("#add_option_btn").fadeIn();
-        }
-        var options_count = form_options_array.length;
-        if (options_count === 0) {
-            $('#save_options_btn').fadeOut();
-            $('#variants_table tbody').html("");
-            $('#variants_table').fadeOut();
-        }
-    });
-    $(document).on("keypress", ".option_name", function(e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-        }
-    })
 
     $(document).on("keypress", ".option_values", function(e) {
         if (e.keyCode == 13) {
