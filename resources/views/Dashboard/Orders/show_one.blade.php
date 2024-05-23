@@ -3,25 +3,32 @@
 @section('content')
 
 <style>
-    tr.current_status{
+    tr.current_status {
         background-color: var(--bs-primary) !important;
         color: white !important;
     }
+
     #loading {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgb(0, 0, 0);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      -webkit-animation: spin 1s ease-in-out infinite;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgb(0, 0, 0);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
     }
+
     @keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
+        to {
+            -webkit-transform: rotate(360deg);
+        }
     }
+
     @-webkit-keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
+        to {
+            -webkit-transform: rotate(360deg);
+        }
     }
 </style>
 
@@ -47,46 +54,46 @@
         <div class="modal-content">
             <form action="{{route('change_order_status',$order->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="form-label">الحالة</label>
-                                <select id="status_id" name="status_id" style="width: 100%">
-                                    <option value="">اختار الحالة</option>
-                                    @foreach ($statuses as $status)
-                                        <option  value="{{ $status->id }}">{{ $status->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">الحالة</label>
+                            <select id="status_id" name="status_id" style="width: 100%">
+                                <option value="">اختار الحالة</option>
+                                @foreach ($statuses as $status)
+                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="row mt-2" style="display: none;" id="shipping_company_select">
-                            <div class="col-md-12">
-                                <label class="form-label">شركة الشحن</label>
-                                <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
-                                    <option value="">اختار شركة الشحن</option>
-                                    @foreach ($shipping_companies as $shipping_company)
-                                        <option  value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                    </div>
+                    <div class="row mt-2" style="display: none;" id="shipping_company_select">
+                        <div class="col-md-12">
+                            <label class="form-label">شركة الشحن</label>
+                            <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
+                                <option value="">اختار شركة الشحن</option>
+                                @foreach ($shipping_companies as $shipping_company)
+                                <option value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <label class="form-label">ملاحظة</label>
-                                <textarea class="form-control" name="note" id="note" rows="3"></textarea>
-                            </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="form-label">ملاحظة</label>
+                            <textarea class="form-control" name="note" id="note" rows="3"></textarea>
                         </div>
-                        <div class="mt-2">
-                            <button class="btn btn-primary add_image">أضافة صورة</button>
-                        </div>
-                        <div id="images" class="mt-2">
+                    </div>
+                    <div class="mt-2">
+                        <button class="btn btn-primary add_image">أضافة صورة</button>
+                    </div>
+                    <div id="images" class="mt-2">
 
-                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">تعديل</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">تعديل</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                </div>
             </form>
         </div>
     </div>
@@ -99,12 +106,12 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     @foreach ($templates as $template)
-                        <div class="row">
-                            <div class="card template_card">
-                                <span>{{$template}}</span>
-                                <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?text=@urlencode($template)"><i class="bi bi-whatsapp"></i></a>
-                            </div>
+                    <div class="row">
+                        <div class="card template_card">
+                            <span>{!! $template !!}</span>
+                            <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?text=@urlencode($template)"><i class="bi bi-whatsapp"></i></a>
                         </div>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -117,19 +124,18 @@
         <div class="modal-content">
             <form action="{{route('change_after_sale',$order->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="form-label">اجمالى الأوردر بعد الخصم</label>
-                                <input type="number" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
-                                    name="total_after_sale" value="{{ $order->total_after_sale }}">
-                            </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">اجمالى الأوردر بعد الخصم</label>
+                            <input type="number" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost" name="total_after_sale" value="{{ $order->total_after_sale }}">
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">تعديل</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">تعديل</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                </div>
             </form>
         </div>
     </div>
@@ -160,7 +166,7 @@
                     <label class="fw-bold"> رقم تليفون اخر :</label>
                     <label>
                         @isset($order->phone_2)
-                            {{$order->phone_2}}@can('send_whatsapp','App\Models\Template') <i data-phone="{{$order->phone_2}}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp">@endcan</i>
+                        {{$order->phone_2}}@can('send_whatsapp','App\Models\Template') <i data-phone="{{$order->phone_2}}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp">@endcan</i>
                         @endisset
                     </label>
                 </div>
@@ -235,13 +241,13 @@
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> المسوق :</label>
                     @isset($order->marketer->name)
-                        <label>{{$order->marketer->name}}</label>
+                    <label>{{$order->marketer->name}}</label>
                     @endisset
                 </div>
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> اجمالى عمولة المسوق :</label>
                     @isset($order->marketer->name)
-                        <label>{{$order->total_marketer_commission}}</label>
+                    <label>{{$order->total_marketer_commission}}</label>
                     @endisset
                 </div>
             </div>
@@ -263,152 +269,148 @@
                     </thead>
                     <tbody>
                         @foreach ($order->stocks as $item)
-                            <tr>
-                                <td>{{$item->variant->product->name}}</td>
-                                <td>{{$item->variant->name}}</td>
-                                <td>{{$item->warehouse->name}}</td>
-                                <td>{{$item->variant->product->supplier->name}}</td>
-                                <td>{{$item->unit_price}}</td>
-                                <td>{{$item->unit_commission}}</td>
-                                <td>{{abs($item->quantity)}}</td>
-                                <td>{{abs($item->quantity) * $item->unit_commission}}</td>
-                                <td>{{abs($item->quantity) * $item->unit_price}}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-            </div>
-            </div>
-        </div>
-
-            <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row">
-                @can('edit_change_status','App\\Models\Order')
-                <div class="btn-group me-2">
-                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
-                </div>
-                @endcan
-                @can('edit_order', 'App\Models\Order')
-                    <div class="btn-group me-2 edit_order_confirm" data-confirm="{{$order->status->edit_order}}">
-                        <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
-                    </div>
-                @endcan
-                @can('scan_orders', 'App\Models\Order')
-                <div class="btn-group me-2">
-                    <a href="{{ route('scan_order',$order->id) }}" target="_blank" class="btn btn-warning"> مراجعة الأوردر <i class="bi bi-upc-scan"></i></a>
-                </div>
-                @endcan
-                <div class="btn-group me-2">
-                    <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                    <div class="btn btn-warning print_order"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
-                    </form>
-                </div>
-                <div class="btn-group me-2">
-                    <form id="print_label_form" action="{{ route('print_label',$order->id)}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                    <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
-                    </form>
-                </div>
-                @can('add_discount', 'App\Models\Order')
-                <div class="btn-group me-2">
-                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
-                </div>
-                @endcan
-            </div>
-
-        <div class="row mt-3">
-            <div class="card p-3 shadow-sm">
-                <h3>الحالات</h3>
-                <table class="table table-hover" id="variants_table">
-                    <thead>
                         <tr>
-                            <th>الادمن</th>
-                            <th>الحالة</th>
-                            <th>ملاحظة</th>
-                            <th>صور</th>
-                            <th>تاريخ الحالة</th>
+                            <td>{{$item->variant->product->name}}</td>
+                            <td>{{$item->variant->name}}</td>
+                            <td>{{$item->warehouse->name}}</td>
+                            <td>{{$item->variant->product->supplier->name}}</td>
+                            <td>{{$item->unit_price}}</td>
+                            <td>{{$item->unit_commission}}</td>
+                            <td>{{abs($item->quantity)}}</td>
+                            <td>{{abs($item->quantity) * $item->unit_commission}}</td>
+                            <td>{{abs($item->quantity) * $item->unit_price}}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($order->order_status as $status)
-                            <tr class="@if($status->pivot->current) table-primary @endif">
-                                @if(isset($status->pivot->admin->name))
-                                    <td>{{$status->pivot->admin->name}}</td>
-                                @else
-                                    <td>{{$order->shipping_company->name}}</td>
-                                @endif
-                                <td>{{$status->name}}</td>
-                                <td class="truncate">{{$status->pivot->note}}</td>
-                                <td>
-                                    @if (count($status->pivot->images) > 0)
-                                        <a class="link-primary" data-id="{{$status->pivot->id}}" style="cursor: pointer" data-bs-target="#imageModal" data-bs-toggle="modal"><i class="bi bi-eye"></i></a>
-                                    @endif
-                                </td>
-                                <td>@date_format($status->pivot->created_at)</td>
-                            </tr>
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="card p-3 shadow-sm">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h5 class="mb-0">
-                                <button data-id="{{$order->id}}" class="nav-link order_notes" data-bs-toggle="collapse" data-bs-target="#order-notes-collapse">
-                                    ملاحظات الطلب
-                                </button>
-                        </h5>
-                    </div>
-                    <div class="collapse" id="order-notes-collapse" style="">
-                        <div class="card-body">
-                            <div class="notes-list"></div>
-                            <br>
-                            <textarea class=" col-md-12 form-control input-circle recordNots"
-                                            placeholder="اضافة ملاحظة ..."
-                                                rows="4"></textarea>
-                            <div id="mess" style="display:none"> </div>
-                            <div class="add_notes_btn"></div>
-                        </div>
+    </div>
+
+    <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row">
+        @can('edit_change_status','App\\Models\Order')
+        <div class="btn-group me-2">
+            <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+        </div>
+        @endcan
+        @can('edit_order', 'App\Models\Order')
+        <div class="btn-group me-2 edit_order_confirm" data-confirm="{{$order->status->edit_order}}">
+            <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
+        </div>
+        @endcan
+        @can('scan_orders', 'App\Models\Order')
+        <div class="btn-group me-2">
+            <a href="{{ route('scan_order',$order->id) }}" target="_blank" class="btn btn-warning"> مراجعة الأوردر <i class="bi bi-upc-scan"></i></a>
+        </div>
+        @endcan
+        <div class="btn-group me-2">
+            <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="btn btn-warning print_order"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
+            </form>
+        </div>
+        <div class="btn-group me-2">
+            <form id="print_label_form" action="{{ route('print_label',$order->id)}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
+            </form>
+        </div>
+        @can('add_discount', 'App\Models\Order')
+        <div class="btn-group me-2">
+            <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
+        </div>
+        @endcan
+    </div>
+
+    <div class="row mt-3">
+        <div class="card p-3 shadow-sm">
+            <h3>الحالات</h3>
+            <table class="table table-hover" id="variants_table">
+                <thead>
+                    <tr>
+                        <th>الادمن</th>
+                        <th>الحالة</th>
+                        <th>ملاحظة</th>
+                        <th>صور</th>
+                        <th>تاريخ الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($order->order_status as $status)
+                    <tr class="@if($status->pivot->current) table-primary @endif">
+                        @if(isset($status->pivot->admin->name))
+                        <td>{{$status->pivot->admin->name}}</td>
+                        @else
+                        <td>{{$order->shipping_company->name}}</td>
+                        @endif
+                        <td>{{$status->name}}</td>
+                        <td class="truncate">{{$status->pivot->note}}</td>
+                        <td>
+                            @if (count($status->pivot->images) > 0)
+                            <a class="link-primary" data-id="{{$status->pivot->id}}" style="cursor: pointer" data-bs-target="#imageModal" data-bs-toggle="modal"><i class="bi bi-eye"></i></a>
+                            @endif
+                        </td>
+                        <td>@date_format($status->pivot->created_at)</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="card p-3 shadow-sm">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button data-id="{{$order->id}}" class="nav-link order_notes" data-bs-toggle="collapse" data-bs-target="#order-notes-collapse">
+                            ملاحظات الطلب
+                        </button>
+                    </h5>
+                </div>
+                <div class="collapse" id="order-notes-collapse" style="">
+                    <div class="card-body">
+                        <div class="notes-list"></div>
+                        <br>
+                        <textarea class=" col-md-12 form-control input-circle recordNots" placeholder="اضافة ملاحظة ..." rows="4"></textarea>
+                        <div id="mess" style="display:none"> </div>
+                        <div class="add_notes_btn"></div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
+</div>
 </div>
 
 @endsection
 
 @section('script')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
-integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        $('.print_order').click(function(){
-            $("#print_order_form").submit();
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $('.print_order').click(function() {
+        $("#print_order_form").submit();
+    });
+    $('.print_label').click(function() {
+        $("#print_label_form").submit();
+    });
+    $(document).ready(function() {
+        $('#status_id').select2({
+            dropdownParent: $('#statusModal')
         });
-        $('.print_label').click(function(){
-            $("#print_label_form").submit();
+        $('#shipping_company_id').select2({
+            dropdownParent: $('#statusModal')
         });
-        $(document).ready(function() {
-            $('#status_id').select2({
-                dropdownParent: $('#statusModal')
-            });
-            $('#shipping_company_id').select2({
-                dropdownParent: $('#statusModal')
-            });
-        })
-        const uid = function() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-        $('.add_image').click(function (e) {
-            e.preventDefault();
-            var id = uid();
-            var template = `
+    })
+    const uid = function() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+    $('.add_image').click(function(e) {
+        e.preventDefault();
+        var id = uid();
+        var template = `
             <div id="${id}" class="d-flex flex-column align-items-center">
                 <div class="input-group mb-3" dir="ltr" >
                     <button class="btn btn-danger remove_image" data-id="${id}"><i class="bi bi-trash"></i></button>
@@ -416,71 +418,71 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 </div>
             </div>
             `
-            $("#images").append(template);
-        })
-        $(document).on('change',".image_file",function (e) {
-            const [file] = e.target.files;
-            if(file){
-                var template = `<img
+        $("#images").append(template);
+    })
+    $(document).on('change', ".image_file", function(e) {
+        const [file] = e.target.files;
+        if (file) {
+            var template = `<img
                 src='${URL.createObjectURL(file)}'
                 class='image_preview'
                 style="width: 100px;height:100px;object-fit:contain;"
                 />`
-                var id= $(this).attr('data-id');
-                $("#"+id).prepend(template)
-            }
-        })
-        $(document).on('click',".remove_image",function (e) {
             var id = $(this).attr('data-id');
-            $("#"+id).fadeOut();
-            $("#"+id).remove();
-        })
-        $("#imageModal").on('show.bs.modal',function (e) {
-            var id = $(e.relatedTarget).attr('data-id');
-            $("#imageModal .modal-body").html("")
-            $.ajax({
-                url:`/api/status/${id}/images`,
-                method:'GET',
-                dataType:'text'
-            }).then(response =>{
-                data = JSON.parse(response);
-                if(data){
-                    data.forEach(image => {
-                        var template = `
+            $("#" + id).prepend(template)
+        }
+    })
+    $(document).on('click', ".remove_image", function(e) {
+        var id = $(this).attr('data-id');
+        $("#" + id).fadeOut();
+        $("#" + id).remove();
+    })
+    $("#imageModal").on('show.bs.modal', function(e) {
+        var id = $(e.relatedTarget).attr('data-id');
+        $("#imageModal .modal-body").html("")
+        $.ajax({
+            url: `/api/status/${id}/images`,
+            method: 'GET',
+            dataType: 'text'
+        }).then(response => {
+            data = JSON.parse(response);
+            if (data) {
+                data.forEach(image => {
+                    var template = `
                             <div class="d-flex justify-content-center mt-1">
                                 <a href="/storage/${image.path}" target="_blank"><img src='/storage/${image.path}'
                                     style="width: 250px;height:250px;object-fit:contain;"
                                 ></a>
                             </div>
                         `
-                        $("#imageModal .modal-body").append(template);
-                    });
-                }
-
-            })
-        })
-        $('#status_id').change(function () {
-            var status_id = $(this).val();
-            if(status_id == '30'){
-                $("#shipping_company_select").fadeIn();
+                    $("#imageModal .modal-body").append(template);
+                });
             }
+
         })
+    })
+    $('#status_id').change(function() {
+        var status_id = $(this).val();
+        if (status_id == '30') {
+            $("#shipping_company_select").fadeIn();
+        }
+    })
 
-        var whatsappModal = document.getElementById('whatsappModal');
+    var whatsappModal = document.getElementById('whatsappModal');
 
-        whatsappModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var phone = '2'+button.getAttribute('data-phone');
-            $('.whatsapp_anchor').each(function(i, obj) {
-                var href = new URL($(obj).attr('href'));
-                href.searchParams.set('phone',phone);
-                $(obj).attr('href',href.toString());
-            });
+    whatsappModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget;
+        var phone = '2' + button.getAttribute('data-phone');
+        $('.whatsapp_anchor').each(function(i, obj) {
+            var href = new URL($(obj).attr('href'));
+            href.searchParams.set('phone', phone);
+            $(obj).attr('href', href.toString());
         });
-        $(".order_notes").click(function () {
-            var order_id = $(this).attr('data-id');
-			$(".notes-list").html("<div id='loading'></div>");
-			var btn_template = `
+    });
+    $(".order_notes").click(function() {
+        var order_id = $(this).attr('data-id');
+        $(".notes-list").html("<div id='loading'></div>");
+        var btn_template = `
 			<div class="pull-left" style="margin-top:3px;">
 				<button type="button" class="btn btn-warning"
 					style="margin-top:16px"
@@ -489,80 +491,82 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 </button>
 			</div>
 			`
-			$(".add_notes_btn").html(btn_template);
-            $.ajax({
-                type:'GET',
-                url:`/api/order/${order_id}/notes`,
-                dataType: "text",
-            }).then((response)=>{
-                data = JSON.parse(response);
-                console.log(data);
-                $(".notes-list").html("");
-                data.forEach(note => {
-                        var template = `
+        $(".add_notes_btn").html(btn_template);
+        $.ajax({
+            type: 'GET',
+            url: `/api/order/${order_id}/notes`,
+            dataType: "text",
+        }).then((response) => {
+            data = JSON.parse(response);
+            console.log(data);
+            $(".notes-list").html("");
+            data.forEach(note => {
+                var template = `
                             <div>
                                 <div class="btn-group me-2" style="">${note.admin.name} : ${note.note}</div>
                                 <div class="col-md-12" style="margin: 5px;"><span>${note.formatted_created_at}</span></div>
                                 <hr class="col-md-12" style="margin: 10px; border-color: #ddd">
                             </div>
                         `;
-                        $(".notes-list").append(template);
-                });
+                $(".notes-list").append(template);
             });
         });
-        function recordYourNotes($id){
-            id = $id;
-            note = $(".recordNots").val();
-            token = $("#token").val();
-            $.ajax({
-                type:'POST',
-                url:`/api/order/${id}/add_note`,
-                dataType: "text",
-                data: {
-                    order_id: id,
-                    note: note,
-                    token: token
-                }
-            }).then((response)=>{
-                data = JSON.parse(response);
-                if (data) {
-                    $(".recordNots").html('');
-                    show_success('تمت اضافة الملاحظة بنجاح');
-                }
-            });
-        };
-        function show_success(message) {
-            var template = `
+    });
+
+    function recordYourNotes($id) {
+        id = $id;
+        note = $(".recordNots").val();
+        token = $("#token").val();
+        $.ajax({
+            type: 'POST',
+            url: `/api/order/${id}/add_note`,
+            dataType: "text",
+            data: {
+                order_id: id,
+                note: note,
+                token: token
+            }
+        }).then((response) => {
+            data = JSON.parse(response);
+            if (data) {
+                $(".recordNots").html('');
+                show_success('تمت اضافة الملاحظة بنجاح');
+            }
+        });
+    };
+
+    function show_success(message) {
+        var template = `
             <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
                 <strong>${message}</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             `;
-            $('#mess').append(template);
-            $('#mess').fadeIn();
-        }
-        $(document).ready(function() {
-            $(".edit_order_confirm a").click(function(event) {
-                var $btnGroup = $(this).closest('.edit_order_confirm');
-                var confirmValue = $btnGroup.data('confirm');
+        $('#mess').append(template);
+        $('#mess').fadeIn();
+    }
+    $(document).ready(function() {
+        $(".edit_order_confirm a").click(function(event) {
+            var $btnGroup = $(this).closest('.edit_order_confirm');
+            var confirmValue = $btnGroup.data('confirm');
 
-                if (confirmValue == 0) {
-                    event.preventDefault();
-                    show_error('عفوا لا يمنك تعديل بيانات الأوردر');
-                    $(window).scrollTop(0);
-                }
-            });
+            if (confirmValue == 0) {
+                event.preventDefault();
+                show_error('عفوا لا يمنك تعديل بيانات الأوردر');
+                $(window).scrollTop(0);
+            }
         });
-        function show_error(message) {
-            var template = `
+    });
+
+    function show_error(message) {
+        var template = `
             <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
                 <strong>${message}</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             `;
-            $('#message').append(template);
-            $('#message').fadeIn();
-        }
-
-    </script>
+        $('#message').append(template);
+        $('#message').fadeIn();
+    }
+</script>
 @endsection
