@@ -16,18 +16,19 @@ class AreaController extends Controller
     public function __construct(
         CommonDataServiceInterface $CommonDataService,
         AreaServiceInterface $AreaService,
-    )
-    {
+    ) {
         $this->CommonDataService = $CommonDataService;
         $this->AreaService = $AreaService;
     }
-    public function all_sectors(){
+    public function all_sectors()
+    {
         $sectors = $this->AreaService->GetAllSectors();
         $cities = $this->CommonDataService->GetCities();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
-        return view('Dashboard.Area.show_all',compact('sectors','cities','shipping_companies'));
+        return view('Dashboard.Area.show_all', compact('sectors', 'cities', 'shipping_companies'));
     }
-    public function edit_area($area_id ,Request $request){
+    public function edit_area($area_id, Request $request)
+    {
         $data = $request->all();
         $price = $data['price'];
         $sector = $this->AreaService->EditArea($area_id, $price);
@@ -35,7 +36,8 @@ class AreaController extends Controller
             return response()->json($sector);
         }
     }
-    public function edit_city($area_id ,Request $request){
+    public function edit_city($area_id, Request $request)
+    {
         $data = $request->all();
         $city_id = $data['city_id'];
         $city = $this->AreaService->EditCity($area_id, $city_id);
@@ -43,7 +45,8 @@ class AreaController extends Controller
             return response()->json($city);
         }
     }
-    public function edit_shipping_company($area_id ,Request $request){
+    public function edit_shipping_company($area_id, Request $request)
+    {
         $data = $request->all();
         $shipping_company_id = $data['shipping_company_id'];
         $shipping_company = $this->AreaService->EditShippingCompany($area_id, $shipping_company_id);
@@ -51,20 +54,34 @@ class AreaController extends Controller
             return response()->json($shipping_company);
         }
     }
-    public function add_sector(){
+    public function edit_keywords($area_id, Request $request)
+    {
+        $this->AreaService->EditKeywords($area_id, $request->keywords);
+        return response()->json('تم التعديل بنجاح');
+    }
+    public function add_sector()
+    {
         $cities = $this->CommonDataService->GetCities();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
-        return view('Dashboard.Area.add',compact('cities','shipping_companies'));
+        return view('Dashboard.Area.add', compact('cities', 'shipping_companies'));
     }
-    public function store_sector(CreateAreaRequest $request){
+    public function store_sector(CreateAreaRequest $request)
+    {
         $data = $request->all();
         unset($data['_token']);
-        if($this->AreaService->CreateSector($data)){
-            return redirect()->route('all_sectors')->with('success','create_area_success');
+        if ($this->AreaService->CreateSector($data)) {
+            return redirect()->route('all_sectors')->with('success', 'create_area_success');
         }
     }
-    public function get_price($id){
+    public function get_price($id)
+    {
         $price = $this->AreaService->GetPrice($id);
         return response()->json($price);
+    }
+    public function get_keywords($id)
+    {
+        $keywords = $this->AreaService->getKeywords($id);
+        $keywords = explode(' - ', $keywords);
+        return response()->json($keywords);
     }
 }
