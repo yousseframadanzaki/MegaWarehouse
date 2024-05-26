@@ -442,7 +442,7 @@
                 data = JSON.parse(response);
                 $("#variant_id").append(`<option value="">اختار المتغير</option>`)
                 data.forEach(element => {
-                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                    $("#variant_id").append(`<option data-hide="${element.hide}" ${data.length == 1 ? 'selected' : ''} data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
                 })
                 $('#variant_id').select2({
                     dropdownParent: $('#addToCartModal')
