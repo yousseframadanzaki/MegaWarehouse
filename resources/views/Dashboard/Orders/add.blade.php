@@ -415,7 +415,7 @@
             data = JSON.parse(response);
             $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
             $.each(data, function(key, value) {
-                $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
+                $("#area-select").append('<option value="' + value.id + '">' + value.name + ' - ( ' + value.keywords + ' )</option>');
             });
         })
     })
