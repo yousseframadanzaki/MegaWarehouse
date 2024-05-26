@@ -21,12 +21,15 @@ use App\Models\ShippingCompany;
 use App\Models\Marketer;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
 use App\Policies\OrderPolicy;
+use App\Policies\StockPolicy;
 
 class CommonDataRepository implements CommonDataRepositoryInterface{
+    protected $stockPolicy;
     protected $orderPolicy;
 
-    public function __construct(orderPolicy $orderPolicy)
+    public function __construct(stockPolicy $stockPolicy, orderPolicy $orderPolicy)
     {
+        $this->stockPolicy = $stockPolicy;
         $this->orderPolicy = $orderPolicy;
     }
 
@@ -77,6 +80,15 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     }
 
     public function get_company_warehouses($company_id){
+        $user = auth()->user();
+        if ($this->stockPolicy->view_his_quantity($user)){
+            $warehouse = Warehouse::find($user->warehouse_id);
+            return [$warehouse->id => $warehouse->name];
+        }
+        if ($this->orderPolicy->hide_quantity($user)){
+            $warehouse = Warehouse::find($user->warehouse_id);
+            return [$warehouse->id => $warehouse->name];
+        }
         return Warehouse::where(['company_id'=>$company_id])->pluck('name','id');
     }
 
