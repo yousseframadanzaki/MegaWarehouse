@@ -74,7 +74,7 @@ class ProductCrudService implements ProductCrudServiceInterface
         if (isset($details['product_attributes']) && count($details['product_attributes']) > 0) {
             $attributes = $this->product_attributes_repository->add_attributes($product->id, $details['product_attributes']);
             $variants = $this->product_variants_repository->add_variants($product, $attributes, $details['product_variants']);
-        } else {
+        } else if ($product->variants->count() == 0) {
             $variants = $this->product_variants_repository->add_default_variant($product);
         }
         return $product;
