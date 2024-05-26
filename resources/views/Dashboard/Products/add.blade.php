@@ -234,9 +234,7 @@
         $('select.product_info').select2({
             padding: 'resolve',
         });
-        $('.input-images').imageUploader({
-            imagesInputName: 'product_images'
-        });
+        $('.input-images').imageUploader();
     })
     form_options_array = [];
     form_options_values = new Object();

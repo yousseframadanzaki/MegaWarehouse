@@ -222,7 +222,6 @@
                     padding: 'resolve',
                 });
                 $('.input-images').imageUploader({
-                    imagesInputName: 'product_images',
                     preloadedInputName:'preloaded_images',
                     preloaded: preloaded
                 });
