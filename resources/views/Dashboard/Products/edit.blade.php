@@ -147,7 +147,13 @@
 
                 <div class="row mb-3">
                     <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
-                    <div class="input-images"></div>
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary my-3 rounded" style="cursor: pointer;" id="addImage">
+                            أضف صورة
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                    <div class="input-images" style="cursor:pointer;"></div>
                 </div>
                 <div class="row mb-3 mt-2">
                     <h3>اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
@@ -199,6 +205,9 @@
             integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
+            $('#addImage').on('click', function() {
+                $('.image-uploader input').click();
+            })
             $(document).ready(function() {
                 var images = {!! json_encode($data['product']->images) !!}
                 var main_image = {!! json_encode($data['product']->main_image) !!}
@@ -212,7 +221,7 @@
                 }) => {
                     return {
                         id: id,
-                        src: '/storage/' + path
+                        src: '/' + path
                     }
                 });
                 $('#summernote').summernote({
@@ -222,7 +231,7 @@
                     padding: 'resolve',
                 });
                 $('.input-images').imageUploader({
-                    preloadedInputName:'preloaded_images',
+                    // preloadedInputName:'preloaded_images',
                     preloaded: preloaded
                 });
             });
