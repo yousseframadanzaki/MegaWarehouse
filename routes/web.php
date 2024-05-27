@@ -463,4 +463,6 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('statuses/settings', [StatusController::class,'statuses_settings'])
     ->name('all_statuses')
     ->can('view_statuses', ['App\Models\Status']);
+
+    Route::get('test', [StockController::class, 'update_variant_shelf']);
 });

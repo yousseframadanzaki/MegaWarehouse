@@ -57,5 +57,7 @@ class VariantStockService implements VariantStockServiceInterface{
         $items = $this->product_variants_repository->get_scan_items($ids);
         return $items;
     }
-
+    public function update_varient_stock_shelf($variant_id, $shelf) {
+        $this->product_variants_repository->update_variant_shelf($variant_id, $shelf);
+    }
 }

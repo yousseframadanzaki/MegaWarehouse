@@ -84,6 +84,9 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
     public function add_variant_stock_by_id($variant_id,$quantity){
         return Variant::where('id',$variant_id)->increment('quantity',$quantity);
     }
+    public function update_variant_shelf($variant_id,$shelf){
+        return Variant::where('id',$variant_id)->update(['shelf_num' => $shelf]);
+    }
     public function get_variants($variants_ids){
         return Variant::with('product')->whereIn('id',$variants_ids)->get();
     }

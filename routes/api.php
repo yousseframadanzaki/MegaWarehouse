@@ -56,6 +56,7 @@ Route::post('/shipping_area/map', [ShippingAreaController::class, 'map'])->name(
 Route::get('/company/{company_id}/users', [CompnayController::class, 'get_company_users'])->name('company_users');
 Route::post('/stock/scan', [StockController::class, 'scan'])->name('scan_stock');
 Route::post('/stock/{id}/remove', [StockController::class, 'remove_stock'])->name('remove_stock');
+Route::post('/stock/update_varient_shelf', [StockController::class, 'update_variant_shelf'])->name('update_variant_shelf');
 Route::get('/order/scan_items', [OrderController::class, 'scan_items'])->name('scan_items');
 Route::post('/sectors/{id}/edit', [AreaController::class, 'edit_area'])->name('edit_area');
 Route::post('/sectors/{id}/edit_city', [AreaController::class, 'edit_city'])->name('edit_city');
@@ -66,6 +67,6 @@ Route::POST('/order/{id}/add_note', [OrderNotesController::class, 'create_note']
 Route::GET('/area/{id}/get_price', [AreaController::class, 'get_price'])->name('create_note');
 Route::get('/area/{id}/get_keywords', [AreaController::class, 'get_keywords'])->name('get_keywords');
 Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
-Route::post('statuses/{id}/settings', [StatusController::class,'update_status'])->name('update_edit_order');
-Route::POST('statuses/{id}/add_status', [StatusController::class,'add_related_status'])->name('add_status');
-Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class,'remove_related_status'])->name('remove_status');
+Route::post('statuses/{id}/settings', [StatusController::class, 'update_status'])->name('update_edit_order');
+Route::POST('statuses/{id}/add_status', [StatusController::class, 'add_related_status'])->name('add_status');
+Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class, 'remove_related_status'])->name('remove_status');
