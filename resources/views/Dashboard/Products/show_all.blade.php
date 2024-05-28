@@ -14,6 +14,10 @@
             background-size: contain;
             background-position: center center;
         }
+
+        label {
+            font-weight: bold;
+        }
     </style>
 
     <div id="message" style="display: none">
@@ -65,7 +69,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary add_to_cart_btn">أضافة</button>
+                    <button type="button" class="btn btn-primary add_to_cart_btn">إضافة</button>
                 </div>
             </div>
         </div>
@@ -82,7 +86,7 @@
         <div class="card shadow-sm p-3">
             <form method="GET" action="{{ route('all_products') }}" id="search">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-lg-3 mt-4">
                         <label class="form-label">اسم المنتج</label>
                         <input type="text" class="form-control product_info @error('name') is-invalid @enderror"
                             name="name" value="{{ Request::get('name') }}">
@@ -92,9 +96,9 @@
                         </div>
 
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-lg-3 mt-4">
                         <label class="form-label">ماركة المنتج</label>
-                        <select class="form-select product_info" aria-label="Default  select example" name="brand_id"
+                        <select class="form-control product_info w-100" aria-label="Default  select example" name="brand_id"
                             style="padding: 0.375rem 0.75rem;">
                             <option value="">اختار الماركة</option>
                             @foreach ($data['brands'] as $id => $name)
@@ -108,9 +112,9 @@
                         </div>
 
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-lg-3 mt-4">
                         <label class="form-label">المورد </label>
-                        <select class="form-select product_info" aria-label="Default select example" name="supplier_id">
+                        <select class="form-control product_info w-100" aria-label="Default select example" name="supplier_id">
                             <option value="">اختار المورد</option>
                             @foreach ($data['suppliers'] as $id => $name)
                                 <option @if (Request::get('supplier_id') == $id) selected @endif value="{{ $id }}">
@@ -122,11 +126,9 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-lg-3 mt-4">
                         <label class="form-label">تصنيف</label>
-                        <select class="form-select product_info" aria-label="Default  select example" name="category_id"
+                        <select class="form-control product_info w-100" aria-label="Default  select example" name="category_id"
                             id="category_id">
                             <option value="">اختار تصنيف </option>
                             @foreach ($data['categories'] as $cat)
@@ -139,21 +141,25 @@
 
                         </div>
                     </div>
-                </div>
-                <div class="d-flex mt-3 justify-content-end">
-                    <button type="submit" class="btn btn-primary">
-                        بحث
-                    </button>
+                    <div class="col-12 my-4">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                بحث
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
 
         @if ($data['filters'])
             <div class="card shadow-sm p-3 mt-2">
-                <div class="d-flex justify-content-start">
+                <div class="row">
                     @foreach ($data['filters'] as $key => $value)
-                        <div class=" sidebar-bg p-2 m-1" style="color: white">
-                            {{ __($key) }}: {{ $value }}
+                        <div class="col-md-4 col-lg-3">
+                            <div class=" sidebar-bg p-2 m-1" style="color: white">
+                                {{ __($key) }}: {{ $value }}
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -162,10 +168,10 @@
 
         <div class="mt-3">
             <div class="card p-3" style="background: #fff;">
-                <div class="row row-cols-5">
+                <div class="row">
                     @foreach ($products as $product)
-                        <div class="mt-3 col">
-                            <div class="card border-0 shadow card-hover @isset($product->images[1]) has-second @endisset text-black"
+                        <div class="mt-4 col-sm-6 col-md-4 col-lg-3">
+                            <div class="card border-secondary shadow card-hover @isset($product->images[1]) has-second @endisset text-black"
                                 style="transition:all 0.3s ease-in-out">
                                 <a href="{{ route('show_product', $product->id) }}">
                                     <img src="{{ asset($product->images[0]->path ?? '') }}" class="card-img-top"
@@ -208,7 +214,7 @@
                                                 style="width:48%" href="{{ route('edit_product', $product->id) }}">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <a class="btn btn-primary d-block mt-2 border-0" title="أضافة الى عربة"
+                                            <a class="btn btn-primary d-block mt-2 border-0" title="إضافة الى عربة"
                                                 style="width:48%" data-id="{{ $product->id }}" data-bs-toggle="modal"
                                                 data-bs-target="#addToCartModal">
                                                 <i class="bi bi-cart-plus"></i>
@@ -239,6 +245,7 @@
         $(document).ready(function() {
             $('select.product_info').select2({
                 padding: 'resolve',
+                width: 'resolve',
             });
         })
 

@@ -15,6 +15,10 @@
         width: 20px;
         height: 20px;
     }
+
+    label {
+        font-weight: bold;
+    }
 </style>
 
 <div class="p-3">
@@ -28,11 +32,11 @@
     <form class="row  " id="product-form" enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
         @csrf
         <div class="card p-3 shadow-sm">
-            <h3 class="text-center">أضافة منتج جديد</h3>
-            <div class="row mb-3">
-                <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3>
-                <div class="row mb-3">
-                    <div class="col-md-4">
+            <h3 class="text-center">إضافة منتج جديد</h3>
+            
+                <!-- <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3> -->
+                <div class="row">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
                         <input type="text" class="form-control product_info @error('product_info.name') is-invalid @enderror" name="product_info[name]" value="{{ old('product_info.name') }}">
                         @error('product_info.name')
@@ -41,9 +45,9 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4 @error('product_info.brand_id') has-error @enderror">
+                    <div class="col-md-4 mt-4 @error('product_info.brand_id') has-error @enderror">
                         <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                        <select class="form-select product_info @error('product_info.brand_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
+                        <select class="form-control product_info @error('product_info.brand_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[brand_id]" style="padding: 0.375rem 0.75rem;">
                             <option value="">اختار الماركة</option>
                             @foreach ($data['brands'] as $id => $name)
                             <option @if ($id==old('product_info.brand_id')) selected @endif value="{{ $id }}">{{ $name }}</option>
@@ -57,7 +61,7 @@
                         @enderror
 
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">السعر <span class="text-danger">*</span></label>
                         <input type="number" class="form-control product_info @error('product_info.price') is-invalid @enderror" name="product_info[price]" value="{{ old('product_info.price') }}">
 
@@ -70,8 +74,8 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">السعر قبل الخصم</label>
                         <input type="number" class="form-control product_info @error('product_info.before_sale_price') is-invalid @enderror" name="product_info[before_sale_price]" value="{{ old('product_info.before_sale_price') }}">
                         @error('product_info.before_sale_price')
@@ -80,7 +84,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
                         <input type="number" class="form-control product_info @error('product_info.cost') is-invalid @enderror" name="product_info[cost]" value="{{ old('product_info.cost') }}">
 
@@ -91,7 +95,7 @@
                         @enderror
 
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">عمولة المسوق</label>
                         <input type="number" class="form-control @error('product_info.marketer_commission') is-invalid @enderror" name="product_info[marketer_commission]">
                         @error('product_info.marketer_commission')
@@ -102,9 +106,9 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-6 @error('product_info.category_id') has-error @enderror">
+                    <div class="col-md-4 mt-4 @error('product_info.category_id') has-error @enderror">
                         <label class="form-label">تصنيف<span class="text-danger">*</span></label>
-                        <select class="form-select product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]" id="product_info.category_id">
+                        <select class="form-control product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]" id="product_info.category_id">
                             <option value="">اختار تصنيف </option>
                             @foreach ($data['categories'] as $cat)
                             <option @if ($cat->id == old('product_info.category_id')) selected @endif value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
@@ -117,9 +121,9 @@
                         @enderror
                     </div>
                     {{-- @dd(old('product_info.supplier_id')) --}}
-                    <div class="col-md-6 @error('product_info.supplier_id') has-error @enderror">
+                    <div class="col-md-4 mt-4 @error('product_info.supplier_id') has-error @enderror">
                         <label class="form-label">المورد <span class="text-danger">*</span></label>
-                        <select class="form-select product_info  @error('product_info.supplier_id') is-invalid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
+                        <select class="form-control product_info  @error('product_info.supplier_id') is-invalid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
                             <option value="">اختار المورد</option>
                             @foreach ($data['suppliers'] as $id => $name)
                             <option @if ($id==old('product_info.supplier_id')) selected="selected" @endif value="{{ $id }}">{{ $name }}</option>
@@ -132,7 +136,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 mt-5">
                     <div class="form-check form-switch" style="width: auto;">
                         <input class="form-check-input" type="checkbox" name="product_info[show_quantity]">
                         <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
@@ -144,7 +148,7 @@
                         <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row my-5">
                     <div class="col-md-12">
                         <label class="form-label">وصف المنتج</label>
                         <textarea id="summernote" type="text" class="form-control product_info " name="product_info[description]">{!! old('product_info.description') !!}</textarea>
@@ -153,9 +157,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
+            <div class="row mb-5">
                 <h3 class="form-label">صور المنتج <i class="bi bi-images"></i></h3>
                 <div class="col-12">
                     <button type="button" class="btn btn-primary my-3 rounded" style="cursor: pointer;" id="addImage">
@@ -181,13 +184,15 @@
 </div>
 </div> --}}
 
-<div class="row mb-3 mt-2">
-    <h3>اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
-    <div class="options">
+<div class="row mb-5">
+    <h3 class="mb-4">اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
+    <div class="col-12">
+        <div class="options">
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <button class="btn btn-primary mt-3" id="add_option_btn">أضافة اختيار</button>
+            <button class="btn btn-primary mt-3" id="add_option_btn">إضافة اختيار</button>
             <button class="btn btn-success mt-3" id="save_options_btn" style="display: none">حفظ
                 الاختيارات</button>
             <button class="btn btn-dark mt-3" id="edit_options_btn" style="display: none">تعديل
@@ -214,7 +219,7 @@
     </table>
 </div>
 
-<button class="btn btn-primary btn-lg add_product_btn">أضافة المنتج <i class="bi bi-plus-square"></i></button>
+<button class="btn btn-primary btn-lg add_product_btn">إضافة المنتج <i class="bi bi-plus-square"></i></button>
 </div>
 <datalist id="default_options">
     <option value="المقاس">
@@ -240,6 +245,7 @@
         });
         $('select.product_info').select2({
             padding: 'resolve',
+            width: 'resolve',
         });
         $('.input-images').imageUploader();
     })
@@ -263,37 +269,41 @@
         var option_id = uid();
         form_options_array.push(option_id);
         var option_template = `
-        <div class="option row mb-3 border shadow-sm p-3" id="` + option_id + `">
-            <div class="col-md-5">
-                <label class="form-label">اسم الاختيار <span class="text-danger">*</span></label>
-                <input type="text" class="form-control option_name"  list="default_options">
-                <div class="invalid-feedback">
-                    برجاء أضافة اسم الاختيار
-                </div>
-            </div>
-            <div class="col-md-5 values_display" style="display:none;">
-                <label class="form-label">قيم الاختيار:-</label>
-                <div class="option_values_div">
+            <div class="option mb-4 border shadow-sm p-3" id="` + option_id + `">
+                <div class="row align-items-center">
+                    <div class="col-sm-4 col-md-3 my-2">
+                        <label class="form-label">اسم الاختيار <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control option_name"  list="default_options">
+                        <div class="invalid-feedback">
+                            برجاء إضافة اسم الاختيار
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-md-3 values_display" style="display:none;">
+                        <label class="form-label">قيم الاختيار:-</label>
+                        <div class="option_values_div">
 
-                </div>
-            </div>
-            <div class="col-md-5 option_value_div">
-                <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
-                <input type="text" class="form-control option_values" data-option-id="` + option_id + `" placeholder="برجاء ادخال القيمة والضغط على زر enter">
-                <div id="invalid-` + option_id + `" class="invalid-feedback">
-                    برجاء أضافة قيم الاختيار
-                </div>
-            </div>
-            <div class="col-md-2 d-md-flex align-items-end">
-                <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
-            </div>
-            <div class="row mt-3 values_edit">
-                <label class="form-label">قيم الاختيار:-</label>
-                <div class="option_values_div">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-7 my-2 option_value_div">
+                        <label class="form-label">قيم الاختيار <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control option_values" data-option-id="` + option_id + `" placeholder="أدخل القيمة و اضغط زر enter">
+                        <div id="invalid-` + option_id + `" class="invalid-feedback">
+                            برجاء إضافة قيم الاختيار
+                        </div>
+                    </div>
+                    <div class="col-sm-2 my-2">
+                        <div class="text-center">
+                            <a class="remove_option btn btn-danger" data-remove-id="` + option_id + `"><i class="bi bi-trash"></i></a>
+                        </div>
+                    </div>
+                    <div class="row mt-3 values_edit">
+                        <label class="form-label">قيم الاختيار:-</label>
+                        <div class="option_values_div">
 
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
         `;
         $('.options').append(option_template);
     }

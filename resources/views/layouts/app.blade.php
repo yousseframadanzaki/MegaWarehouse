@@ -26,6 +26,50 @@
         .sidebar {
             overflow-y: auto;
         }
+
+        @media(max-width: 767.98px) {
+            div.sidebar-layout {
+                width: 100%;
+                height:100vh;
+                position: fixed;
+                z-index: 1;
+                top: 0px;
+                right: 0px;
+                visibility: hidden;
+            }
+
+            div.sidebar {
+                width: 50%;
+                position: fixed;
+                right: 0;
+                z-index: 1;
+                visibility: hidden;
+            }
+
+            div#main {
+                width: 100%;
+            }
+        }
+
+        @media(min-width: 768px) {
+            div.sidebar {
+                width: 27%;
+            }
+
+            div#main {
+                width: 70%;
+            }
+        }
+
+        @media(min-width: 991px) {
+            div.sidebar {
+                width: 17%;
+            }
+
+            div#main {
+                width: 80%;
+            }
+        }
     </style>
 </head>
 
@@ -33,15 +77,14 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark navbar-bg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">{{ auth()->user()->company->name }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
+            <a class="navbar-brand" href="#">{{ auth()->user()->company->name }}</a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-row">
+                    <li class="nav-item mx-2">
                         <a class="nav-link  " href="{{route('add_order')}}" >
                             <i class="bi bi-cart-fill position-relative" style="font-size: 16px">
                                 @if (Session::has('cart'))
@@ -59,7 +102,7 @@
                             aria-expanded="false">
                             <strong>{{ auth()->user()->name }}</strong>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" style="position: absolute;" aria-labelledby="dropdownUser1">
 
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
@@ -73,7 +116,6 @@
                         </ul>
                     </li>
                 </ul>
-            </div>
         </div>
     </nav>
 
@@ -101,9 +143,10 @@
 
     <div class="container-fluid">
         <div class="row">
-
+            <div class="sidebar-layout d-md-none">
+            </div>
             <div class="d-flex sidebar sidebar-bg flex-column flex-shrink-0 p-3 text-white sticky-top"
-                style="height:100vh;width:16.8%">
+                style="height:100vh;">
                 {{-- <a href="/" class="d-flex  align-items-center mb-3 mb-md-0 text-white  text-decoration-none">
                     <span class="fs-3 ">Mega Warehouse</span>
                 </a>
@@ -507,7 +550,7 @@
 
             </div>
 
-            <div class="col " style="width:80%" id="main">
+            <div class="col " id="main">
                 @include('partials.flash-messages')
                 @yield('content')
             </div>
@@ -523,8 +566,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"
         integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    @yield('script')
+    <script>
+        $('.navbar-toggler').on('click', function () {
+            $('.sidebar-layout, .sidebar').css({'visibility': 'visible'})
+        })
 
+        $('.sidebar-layout').on('click', function (e) {
+            $('.sidebar-layout, .sidebar').css({'visibility': 'hidden'})
+        })
+    </script>
+    @yield('script')
 </body>
 
 </html>
