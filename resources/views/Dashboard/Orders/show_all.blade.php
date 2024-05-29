@@ -18,6 +18,10 @@
     @-webkit-keyframes spin {
       to { -webkit-transform: rotate(360deg); }
     }
+
+    label {
+        font-weight: bold;
+    }
 </style>
 <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -36,7 +40,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mt-2" style="display: none;" id="shipping_company_select">
+                        <div class="row mt-4" style="display: none;" id="shipping_company_select">
                             <div class="col-md-12">
                                 <label class="form-label">شركة الشحن</label>
                                 <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
@@ -47,16 +51,16 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mt-2">
+                        <div class="row mt-4">
                             <div class="col-md-12">
                                 <label class="form-label">ملاحظة</label>
                                 <textarea class="form-control" name="note" id="note" rows="3"></textarea>
                             </div>
                         </div>
-                        <div class="mt-2">
-                            <button class="btn btn-primary add_image">أضافة صورة</button>
+                        <div class="mt-4">
+                            <button class="btn btn-primary add_image">إضافة صورة</button>
                         </div>
-                        <div id="images" class="mt-2">
+                        <div id="images" class="mt-4">
 
                         </div>
                     </div>
@@ -77,7 +81,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="form-label">طباعة بوليصة</label>
-                                <select id="print_id" name="print_id" style="width: 100%">
+                                <select id="print_id" class="form-select" name="print_id" style="width: 100%">
                                     <option selected> --اختار-- </option>
                                     <option value="1"> 1 بوليصة فى الصفحة </option>
                                     <option value="2"> 2 بوليصة فى الصفحة </option>
@@ -96,9 +100,7 @@
     <div class="modal-dialog" style="width:60%;">
             <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
                 <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"
-                            aria-hidden="true"></button>
-                    <h3 class="modal-title">ملاحظات الطلب</h3>
+                    <h3 class="modal-title mx-auto">ملاحظات الطلب</h3>
                 </div>
                 <div class="modal-body" style="min-height:150px ; overflow: auto;font-size:14px">
                     <div class="comment-main-level clearfix" style="margin-bottom:10px">
@@ -138,19 +140,22 @@
         <div class="row">
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-                <li><a class="link-dark" href="{{ route('all_orders') }}">الاوردرات</a></li>
+                <li><a class="link-dark" href="{{ route('all_orders') }}">الأوردرات</a></li>
             </ul>
         </div>
         <div class="row">
             <div class="card shadow-sm p-3" >
                 <form method="GET" action="{{route('all_orders')}}" id="search">
                     <div class="row">
-                        <div class="col-md-4">
-                            <label class="form-label">رقم الاوردر</label>
+                        <div class="col-12 mt-4">
+                            <h3 class="text-center">البحث عن أوردرات</h3>
+                        </div>
+                        <div class="col-md-4 mt-4">
+                            <label class="form-label">رقم الأوردر</label>
                             <input class="form-control" name="order_code" id=""
                                 value="{{ Request::get('order_code') }}">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">العميل</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار العميل</option>
@@ -162,7 +167,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">رقم التليفون</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار رقم التليفون</option>
@@ -177,9 +182,7 @@
 
                         </div>
 
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">المدينة</label>
                             <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id"
                                 id="city_id">
@@ -189,7 +192,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">المنطقة</label>
                             <select class="form-select product_info"  name="area_id"
                                 id="area_id">
@@ -197,7 +200,7 @@
 
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">الحالة</label>
                             <select class="form-select product_info js-example-basic-multiple" name="status_id" multiple="multiple">
                                 <option value="">اختار الحالة</option>
@@ -210,9 +213,8 @@
 
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-4">
+
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">المسوق</label>
                             <select class="form-select product_info" name="marketer_id">
                                 <option value="">اختار المسوق</option>
@@ -221,7 +223,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">المنتج</label>
                             <select class="form-select product_info" name="product_id" id="product_id">
                                 <option value="">اختار المنتج</option>
@@ -230,7 +232,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">المتغير</label>
                             <select class="form-select product_info" name="variant_id" id="variant_id">
                                 <option value="">اختار المتغير</option>
@@ -240,19 +242,17 @@
 
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                    <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">تاريخ من</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">تاريخ الى</label>
                             <input class="form-control datetimeplugin" name="date_to" id=""
                                 value="{{ Request::get('date_to') }}">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">شركة الشحن</label>
                             <select class="form-select product_info" name="shipping_company_id">
                                 <option value="">اختار شركة الشحن</option>
@@ -261,13 +261,13 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-4">
                             <label class="form-label">رقم البوليصة</label>
                             <input class="form-control" name="waybill" id=""
                                 value="{{ Request::get('waybill') }}">
                         </div>
                     </div>
-                    <div class="d-flex mt-4 justify-content-center">
+                    <div class="d-flex my-4 justify-content-center">
                         <button type="submit" class="btn btn-primary">
                             بحث
                         </button>
@@ -276,7 +276,7 @@
             </div>
 
             @if($filters)
-                <div class="card shadow-sm p-3 mt-2">
+                <div class="card shadow-sm p-3 my-4">
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
                             <div class=" sidebar-bg p-2 m-1" style="color: white">
@@ -307,11 +307,12 @@
                     </div>
                 </div>
 
-            <table class="mt-3 table table-hover" id="orders">
+                <div class="table-responsive">
+            <table class="mt-3 table table-hover" id="orders" style="min-width: 1000px;">
                 <thead>
                     <tr>
                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
-                        <th>رقم الاوردر</th>
+                        <th>رقم الأوردر</th>
                         <th>رقم البوليصة</th>
                         <th>الادمن</th>
                         <th>المسوق</th>
@@ -351,6 +352,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
             <div dir="ltr" class="d-flex justify-content-center">
                 {!! $orders->appends($_GET)->links() !!}
             </div>

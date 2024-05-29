@@ -33,6 +33,10 @@
             transform: rotate(1turn)
         }
     }
+
+    label {
+        font-weight: bold;
+    }
 </style>
 <div id="message" style="display: none">
 </div>
@@ -109,7 +113,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                <button type="button" class="btn btn-primary add_to_cart_btn">أضافة</button>
+                <button type="button" class="btn btn-primary add_to_cart_btn">إضافة</button>
             </div>
         </div>
     </div>
@@ -119,8 +123,8 @@
     <div class="row">
         <ul class="breadcrumb">
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-            <li><a href="{{ route('all_orders') }}">الاوردرات</a></li>
-            <li><a class="link-dark" href="{{ route('add_order') }}">اضافة اوردر جديد </a></li>
+            <li><a href="{{ route('all_orders') }}">الأوردرات</a></li>
+            <li><a class="link-dark" href="{{ route('add_order') }}">اضافة أوردر جديد </a></li>
         </ul>
     </div>
 
@@ -131,10 +135,11 @@
             <input id="client_id" type="hidden" name="client_id" value="{{old('client_id')}}" />
             @endif
             <div class="row">
-                <h1 class="text-center">أضافة اوردر جديد</h1>
+                <div class="col-12">
+                <h1 class="text-center my-4">إضافة أوردر جديد</h1>
                 <div class="row">
                     <h4>بيانات العميل</h4>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">رقم التليفون</label>
                         <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('client.phone_1') is-invalid @enderror form-control" autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
                         @error('client.phone_1')
@@ -144,7 +149,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">الاسم </label>
                         <input type="text" class="form-control @error('client.name') is-invalid @enderror" name="client[name]" id="name" value="{{ old('client.name') }}">
                         @error('client.name')
@@ -154,7 +159,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">عنوان <i class="bi bi-map-marker">
                             </i></label>
                         <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address" name="client[address]" value="{{ old('client.address') }}">
@@ -165,7 +170,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 mt-3">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">رقم التليفون 2 </label>
                         <input type="text" class="form-control @error('client.phone_2') is-invalid @enderror" name="client[phone_2]" id="phone_2" value="{{ old('client.phone_2') }}">
                         @error('client.phone_2')
@@ -175,27 +180,27 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 mt-3">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">ملاحظة <i class="bi bi-map-marker">
                             </i></label>
                         <input type="text" class="form-control @error('clientnote') is-invalid @enderror" id="note" name="client[note]" value="{{ old('client.note') }}">
                     </div>
-                    <div class="col-md-4 mt-3">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                         <input type="text" class="form-control" name="client[links][facebook]" value="{{ old('client.links.facebook') }}">
                     </div>
-                    <div class="col-md-4 mt-3">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">لينك انستجرام <i class="bi bi-instagram"> </i></label>
                         <input type="text" class="form-control" name="client[links][instagram]" value="{{ old('client.links.instagram') }}">
                     </div>
-                    <div class="col-md-4 mt-3">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
                         <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
                     </div>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label"> الدولة </label>
                         <select id="country-select" class="form-select @error('client.country_id') is-invalid @enderror" aria-label="Default select example" name="client[country_id]">
                             <option value="">اختار</option>
@@ -209,7 +214,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label">المدينة </label>
                         <select id="city-select" class="form-select @error('client.city_id') is-invalid @enderror" aria-label="Default select example" name="client[city_id]">
 
@@ -221,7 +226,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-4">
                         <label class="form-label ">المنطقة </label>
                         <select id="area-select" class="form-select @error('client.area_id') is-invalid @enderror" aria-label="Default select example" name="client[area_id]">
 
@@ -232,10 +237,10 @@
                         </div>
                         @enderror
                     </div>
-                </div>
-                <div class="col-md-4 mt-3">
-                    <label class="form-label">سعر الشحن</label>
-                    <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost" name="client[delivery_cost]" value="{{ old('client.delivery_cost') }}">
+                    <div class="col-md-4 mt-4">
+                        <label class="form-label">سعر الشحن</label>
+                        <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost" name="client[delivery_cost]" value="{{ old('client.delivery_cost') }}">
+                    </div>
                 </div>
                 <div class="row mt-5">
                     <h4>المسوق</h4>
@@ -255,49 +260,53 @@
                     </div>
                 </div>
                 <div class="row mt-5">
-                    <h4>المنتجات</h4>
-                    @error('items')
-                    <div class="alert alert-danger" role="alert">
-                        برجاء اضافة منتج واحد على الاقل
-                    </div>
-                    @enderror
-                    @error('items.*.warehouse_id')
-                    <div class="alert alert-danger" role="alert">
-                        برجاء اختيار المخزن لكل منتج
-                    </div>
-                    @enderror
-                    <table class="table table-hover" id="variants_table">
-                        <thead>
-                            <tr>
-                                <th>اسم المنتج</th>
-                                <th>عمولة المسوق</th>
-                                <th>اسم المتغير</th>
-                                <th>السعر</th>
-                                <th>السعر بعد الخصم</th>
-                                <th>الكمية المتوفرة</th>
-                                <th>المخزن</th>
-                                <th>الكمية</th>
-                                <th>الاجمالى</th>
-                                <th>الاجمالى بعد الخصم</th>
-                                <th>حذف</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="col-12">
+                        <h4 class="mb-4">المنتجات</h4>
+                        @error('items')
+                        <div class="alert alert-danger" role="alert">
+                            برجاء اضافة منتج واحد على الاقل
+                        </div>
+                        @enderror
+                        @error('items.*.warehouse_id')
+                        <div class="alert alert-danger" role="alert">
+                            برجاء اختيار المخزن لكل منتج
+                        </div>
+                        @enderror
+                        <div class="table-responsive mb-5">
+                            <table class="table table-hover" id="variants_table" style="min-width: 1000px;">
+                                <thead>
+                                    <tr>
+                                        <th>اسم المنتج</th>
+                                        <th>عمولة المسوق</th>
+                                        <th>اسم المتغير</th>
+                                        <th>السعر</th>
+                                        <th>السعر بعد الخصم</th>
+                                        <th>الكمية المتوفرة</th>
+                                        <th>المخزن</th>
+                                        <th>الكمية</th>
+                                        <th>الاجمالى</th>
+                                        <th>الاجمالى بعد الخصم</th>
+                                        <th>حذف</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                        </tbody>
-                    </table>
-                    <div class="loader" style="display: none;direction: ltr;"></div>
-                    <div class="total_total" style="direction: ltr;display: none;">الاجمالى :<span id="total_total_1"></span></div>
-                    <div class="total_after_sale" style="direction: ltr;display: none;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
-                    <div>
-                        <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">أضافة منتج الى الاوردر</a>
-                        <button type="button" class="btn btn-primary total_order">عرض اجمالى الأوردر</button>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="loader mt-5" style="display: none;direction: ltr;"></div>
+                        <div class="total_total" style="direction: ltr;display: none;">الاجمالى :<span id="total_total_1"></span></div>
+                        <div class="total_after_sale" style="direction: ltr;display: none;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
+                        <div>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">إضافة منتج الى الأوردر</a>
+                            <button type="button" class="btn btn-primary total_order">عرض اجمالى الأوردر</button>
+                        </div>
                     </div>
                 </div>
-
+                </div>
             </div>
-            <div class="row p-3">
-                <button type="submit" class="btn btn-primary btn-lg mt-3 add_order_btn">أضافة الاوردر <i class="bi bi-plus"></i></button>
+            <div class="row p-3 mt-5">
+                <button type="submit" class="btn btn-primary btn-lg mt-3 add_order_btn">إضافة الأوردر <i class="bi bi-plus"></i></button>
             </div>
         </form>
     </div>

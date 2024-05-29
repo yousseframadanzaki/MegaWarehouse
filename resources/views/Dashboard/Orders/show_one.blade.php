@@ -66,7 +66,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-2" style="display: none;" id="shipping_company_select">
+                    <div class="row mt-4" style="display: none;" id="shipping_company_select">
                         <div class="col-md-12">
                             <label class="form-label">شركة الشحن</label>
                             <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
@@ -77,16 +77,16 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row mt-4">
                         <div class="col-md-12">
                             <label class="form-label">ملاحظة</label>
                             <textarea class="form-control" name="note" id="note" rows="3"></textarea>
                         </div>
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-4">
                         <button class="btn btn-primary add_image">أضافة صورة</button>
                     </div>
-                    <div id="images" class="mt-2">
+                    <div id="images" class="mt-4">
 
                     </div>
                 </div>
@@ -153,16 +153,16 @@
         <div id="message" style="display: none"></div>
         <div class="card p-3 shadow-sm mt-3">
             <div class="row">
-                <h3>بيانات العميل</h3>
-                <div class="col-md-4 fs-5">
+                <h3 class="mb-4">بيانات العميل</h3>
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">اسم العميل :</label>
                     <label>{{$order->name}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">رقم التليفون :</label>
                     <label>{{$order->phone_1}} @can('send_whatsapp','App\Models\Template') <i data-phone="{{$order->phone_1}}" data-bs-toggle="modal" data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;" class="bi bi-whatsapp"></i> @endcan</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> رقم تليفون اخر :</label>
                     <label>
                         @isset($order->phone_2)
@@ -171,64 +171,64 @@
                     </label>
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-4 fs-5">
+            <div class="row mt-3">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">العنوان :</label>
                     <label>{{$order->address}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">المدينة :</label>
                     <label>{{$order->city->name}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">المنطقة :</label>
                     <label>{{$order->area->name}}</label>
                 </div>
             </div>
-            <div class="row mt-4">
-                <h3>بيانات الاوردر</h3>
-                <div class="col-md-4 fs-5">
+            <div class="row mt-5">
+                <h3 class="mb-4">بيانات الاوردر</h3>
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> الادمن :</label>
                     <label>{{$order->admin->name}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">رقم الاوردر :</label>
                     <label>{{$order->order_code}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">تاريخ الاضافة :</label>
                     <label>@date_format($order->created_at)</label>
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-4 fs-5">
+            <div class="row mt-3">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold">سعر الشحن :</label>
                     <label>{{$order->delivery_cost}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> الاجمالى :</label>
                     <label>{{$order->total}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> الخصم :</label>
-                    <label style="color: #f32d2d;"><b>{{$order->total - $order->total_after_sale}}</label>
+                    <label style="color: #f32d2d;"><b>{{$order->total - $order->total_after_sale}}</b></label>
                 </div>
             </div>
-            <div class="row mt-2">
-                <div class="col-md-4 fs-5">
+            <div class="row mt-3">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> اجمالى بعد الخصم :</label>
                     <label style="color: #f32d2d;">{{$order->total_after_sale}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> حالة :</label>
                     <label>{{$order->status->name}}</label>
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> رقم البوليصة :</label>
                     <label>{{$order->waybill}}</label>
                 </div>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-3">
                 <div class="col-md-4 fs-5">
                     <label class="fw-bold"> شركة الشحن :</label>
                     @isset($order->shipping_company->name)
@@ -236,94 +236,113 @@
                     @endisset
                 </div>
             </div>
-            <div class="row mt-4">
-                <h3>بيانات المسوق</h3>
-                <div class="col-md-4 fs-5">
+            <div class="row mt-5">
+                <h3 class="mb-4">بيانات المسوق</h3>
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> المسوق :</label>
                     @isset($order->marketer->name)
                     <label>{{$order->marketer->name}}</label>
                     @endisset
                 </div>
-                <div class="col-md-4 fs-5">
+                <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> اجمالى عمولة المسوق :</label>
                     @isset($order->marketer->name)
                     <label>{{$order->total_marketer_commission}}</label>
                     @endisset
                 </div>
             </div>
-            <div class="row mt-4">
-                <h3>المنتجات</h3>
-                <table class="table table-hover" id="variants_table">
-                    <thead>
-                        <tr>
-                            <th>اسم المنتج</th>
-                            <th>اسم المتغير</th>
-                            <th>المخزن</th>
-                            <th>المورد</th>
-                            <th>السعر</th>
-                            <th>عمولة المسوق</th>
-                            <th>الكمية</th>
-                            <th>اجمالى العمولة</th>
-                            <th>الاجمالى</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($order->stocks as $item)
-                        <tr>
-                            <td>{{$item->variant->product->name}}</td>
-                            <td>{{$item->variant->name}}</td>
-                            <td>{{$item->warehouse->name}}</td>
-                            <td>{{$item->variant->product->supplier->name}}</td>
-                            <td>{{$item->unit_price}}</td>
-                            <td>{{$item->unit_commission}}</td>
-                            <td>{{abs($item->quantity)}}</td>
-                            <td>{{abs($item->quantity) * $item->unit_commission}}</td>
-                            <td>{{abs($item->quantity) * $item->unit_price}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="mb-3">المنتجات</h3>
+                    <div class="table-responsive">
+                    <table class="table table-hover" id="variants_table" style="min-width: 1000px;">
+                        <thead>
+                            <tr>
+                                <th>اسم المنتج</th>
+                                <th>اسم المتغير</th>
+                                <th>المخزن</th>
+                                <th>المورد</th>
+                                <th>السعر</th>
+                                <th>عمولة المسوق</th>
+                                <th>الكمية</th>
+                                <th>اجمالى العمولة</th>
+                                <th>الاجمالى</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($order->stocks as $item)
+                            <tr>
+                                <td>{{$item->variant->product->name}}</td>
+                                <td>{{$item->variant->name}}</td>
+                                <td>{{$item->warehouse->name}}</td>
+                                <td>{{$item->variant->product->supplier->name}}</td>
+                                <td>{{$item->unit_price}}</td>
+                                <td>{{$item->unit_commission}}</td>
+                                <td>{{abs($item->quantity)}}</td>
+                                <td>{{abs($item->quantity) * $item->unit_commission}}</td>
+                                <td>{{abs($item->quantity) * $item->unit_price}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row">
-        @can('edit_change_status','App\\Models\Order')
-        <div class="btn-group me-2">
-            <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+    <div class="row">
+        <div class="card p-3 my-3 shadow-sm">
+            <div class="row">
+                @can('edit_change_status','App\\Models\Order')
+                <div class="col-sm-4 col-md-3 mb-3">
+                    <div class="w-100 btn-group">
+                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+                    </div>
+                </div>
+                @endcan
+                @can('edit_order', 'App\Models\Order')
+                <div class="col-sm-4 col-md-3 mb-3">
+                    <div class="w-100 btn-group edit_order_confirm" data-confirm="{{$order->status->edit_order}}">
+                        <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل الأوردر <i class="bi bi-pencil-fill"></i></a>
+                    </div>
+                </div>
+                @endcan
+                @can('scan_orders', 'App\Models\Order')
+                <div class="col-sm-4 col-md-3 mb-3">
+                    <div class="w-100 btn-group">
+                        <a href="{{ route('scan_order',$order->id) }}" target="_blank" class="btn btn-warning"> مراجعة الأوردر <i class="bi bi-upc-scan"></i></a>
+                    </div>
+                </div>
+                @endcan
+                <div class="col-sm-4 col-md-3 mb-3">
+                    <div class="w-100 btn-group">
+                        <form id="print_order_form" class="w-100" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="btn btn-warning print_order w-100"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="w-100 btn-group">
+                        <form id="print_label_form" class="w-100" action="{{ route('print_label',$order->id)}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="btn btn-warning print_label w-100"> طباعة ليبل <i class="bi bi-printer"></i></div>
+                        </form>
+                    </div>
+                </div>
+                @can('add_discount', 'App\Models\Order')
+                <div class="col-12">
+                    <div class="btn-group">
+                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
+                    </div>
+                </div>
+                @endcan
+            </div>
         </div>
-        @endcan
-        @can('edit_order', 'App\Models\Order')
-        <div class="btn-group me-2 edit_order_confirm" data-confirm="{{$order->status->edit_order}}">
-            <a href="{{ route('edit_order',$order->id) }}" class="btn btn-warning"> تعديل بيانات الأوردر <i class="bi bi-pencil-fill"></i></a>
-        </div>
-        @endcan
-        @can('scan_orders', 'App\Models\Order')
-        <div class="btn-group me-2">
-            <a href="{{ route('scan_order',$order->id) }}" target="_blank" class="btn btn-warning"> مراجعة الأوردر <i class="bi bi-upc-scan"></i></a>
-        </div>
-        @endcan
-        <div class="btn-group me-2">
-            <form id="print_order_form" action="{{ route('print_order',$order->id)}}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="btn btn-warning print_order"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
-            </form>
-        </div>
-        <div class="btn-group me-2">
-            <form id="print_label_form" action="{{ route('print_label',$order->id)}}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
-            </form>
-        </div>
-        @can('add_discount', 'App\Models\Order')
-        <div class="btn-group me-2">
-            <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
-        </div>
-        @endcan
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3 mb-4">
         <div class="card p-3 shadow-sm">
             <h3>الحالات</h3>
             <table class="table table-hover" id="variants_table">

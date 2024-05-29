@@ -574,6 +574,8 @@
         $('.sidebar-layout').on('click', function (e) {
             $('.sidebar-layout, .sidebar').css({'visibility': 'hidden'})
         })
+
+        $('table.table').addClass('table-bordered')
     </script>
     @yield('script')
 </body>
