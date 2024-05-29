@@ -576,6 +576,11 @@
         })
 
         $('table.table').addClass('table-bordered')
+        $('table.table').css('min-width', '700px');
+
+        if (!$('table.table').parent().hasClass('table-responsive')) {
+            $('table.table').wrap('<div class="table-responsive"></div>');
+        }
     </script>
     @yield('script')
 </body>

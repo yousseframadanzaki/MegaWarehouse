@@ -136,7 +136,7 @@
             @endif
             <div class="row">
                 <div class="col-12">
-                <h1 class="text-center my-4">إضافة أوردر جديد</h1>
+                <h1 class="text-center mt-4 mb-5">إضافة أوردر جديد</h1>
                 <div class="row">
                     <h4>بيانات العميل</h4>
                     <div class="col-md-4 mt-4">
@@ -298,8 +298,8 @@
                         <div class="total_total" style="direction: ltr;display: none;">الاجمالى :<span id="total_total_1"></span></div>
                         <div class="total_after_sale" style="direction: ltr;display: none;">الاجمالى بعد الخصم :<span id="total_after_sale_1"></span></div>
                         <div>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary">إضافة منتج الى الأوردر</a>
-                            <button type="button" class="btn btn-primary total_order">عرض اجمالى الأوردر</button>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#addToCartModal" class="btn btn-primary mb-2 me-1">إضافة منتج لأوردر</a>
+                            <button type="button" class="btn btn-primary total_order mb-2">عرض اجمالى الأوردر</button>
                         </div>
                     </div>
                 </div>

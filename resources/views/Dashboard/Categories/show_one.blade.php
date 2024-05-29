@@ -30,39 +30,41 @@
         </ul>
     </div>
     <div class="card fs-5 p-3 row mb-3 shadow-sm">
-        <div class="d-flex justify-content-between align-items-center"> 
+        <div class="d-flex justify-content-between align-items-center">
             <div class="fs-2">
                 التصنيف : <span class="badge  bg-success">{{$data['category']->parents_names}}</span>
             </div>
         </div>
     </div>
     <div class="row card p-2 shadow-sm">
-        <table class="table  table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">صورة المنتج</th>
-                    <th scope="col">اسم المنتج</th>
-                    <th scope="col">المورد</th>
-                    <th scope="col">التصنيف</th>
-                    <th scope="col">الماركة</th>
-                    <th scope="col">السعر</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($data['products'] as $product)
-                    <tr class="">
-                        <td><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
-                        <td><a  href="{{route('show_product',$product->id)}}" class="link-primary"
-                            title="مشاهدة المنتج">{{ $product->name }}</a></td>
-                        <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name }}</td>
-                        <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
-                        <td><a href="{{ route('show_brand',$product->brand_id) }}">{{ $product->brand->name }}</a></td>
-                        <td>{{ $product->price }}</td>
+        <div class="table-responsive">
+            <table class="table  table-hover" style="min-width: 700px">
+                <thead>
+                    <tr>
+                        <th scope="col">صورة المنتج</th>
+                        <th scope="col">اسم المنتج</th>
+                        <th scope="col">المورد</th>
+                        <th scope="col">التصنيف</th>
+                        <th scope="col">الماركة</th>
+                        <th scope="col">السعر</th>
                     </tr>
-                @empty
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse ($data['products'] as $product)
+                        <tr class="">
+                            <td><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
+                            <td><a  href="{{route('show_product',$product->id)}}" class="link-primary"
+                                title="مشاهدة المنتج">{{ $product->name }}</a></td>
+                            <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name }}</td>
+                            <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
+                            <td><a href="{{ route('show_brand',$product->brand_id) }}">{{ $product->brand->name }}</a></td>
+                            <td>{{ $product->price }}</td>
+                        </tr>
+                    @empty
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
         <div dir="ltr" class="d-flex justify-content-center">
             {!! $data['products']->links() !!}
         </div>

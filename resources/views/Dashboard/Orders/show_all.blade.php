@@ -307,8 +307,8 @@
                     </div>
                 </div>
 
-                <div class="table-responsive">
-            <table class="mt-3 table table-hover" id="orders" style="min-width: 1000px;">
+                <div class="table-responsive px-0">
+            <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
                 <thead>
                     <tr>
                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>

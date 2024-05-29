@@ -34,7 +34,7 @@
             @csrf
             <div class="card p-3 shadow-sm">
                 <h3 class="text-center">تعديل منتج </h3>
-                
+
                     <!-- <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3> -->
                     <div class="row">
                         <div class="col-md-4 mt-4">
@@ -131,7 +131,7 @@
                             <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
                         </div>
                     </div>
-                    <div class="row mb-3 mt-5">
+                    <div class="row mb-5">
                         <div class="form-check form-switch" style="width: auto;">
                             <input class="form-check-input" type="checkbox" name="product_info[confirm_order]" {{ $data['product']->confirm_order == 1 ? 'checked' : '' }}>
                             <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
@@ -159,7 +159,7 @@
                     <div class="input-images" style="cursor:pointer;"></div>
                 </div>
 
-                <div class="row my-5">
+                <div class="row mb-5">
                     <h3 class="mb-4">اختيارات المنتج <i class="bi bi-list-ul"></i></h3>
                     <div class="col-12">
                         <div class="options">

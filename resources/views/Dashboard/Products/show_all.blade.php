@@ -51,7 +51,7 @@
                                 <label class="form-label">الكمية</label>
                                 <input type="number" name="quantity" id="quantity" class="form-control">
                             </div>
-                            <div class="col-md-12 mt-2">
+                            <div class="col-md-12 mt-4">
                                 <table class="table hover-table">
                                     <thead>
                                         <tr>
@@ -191,12 +191,11 @@
                                             <a class="text-break link-dark"
                                                 href="{{ route('show_product', $product->id) }}">{{ $product->name }}</a>
                                         </h5>
-                                        <p class="text-muted mb-2"><a class="text-break link-dark"
+                                        <a class="text-break my-2 d-inline-block"
                                                 href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
-                                        </p>
                                     </div>
                                     <div>
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between mb-2">
                                             <span>المورد</span><span><a class=""
                                                     href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name }}</a></span>
                                         </div>
@@ -205,7 +204,7 @@
                                                     href="{{ route('show_category', $product->category_id) }}">{{ $product->category->name }}</a></span>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-between total font-weight-bold mt-2">
+                                    <div class="d-flex justify-content-between total font-weight-bold my-2">
                                         <span>السعر</span><span>{{ $product->price }} </span>
                                     </div>
                                     @can('edit', 'App\Models\Product')
@@ -351,12 +350,12 @@
                 data:item,
                 dataType:'json'
             }).then(data =>{
-                
+
                     if(data){
                         $("#addToCartModal").modal('hide');
                         window.location = '{!! route('add_order') !!}'
                     }
-                
+
             })
             // $("#cart_form").submit();
 
@@ -373,7 +372,7 @@
             $('#message').append(template);
             $('#message').fadeIn();
         }
-        
+
         function add_stock(data) {
             $("#stock").html("");
             data.forEach(element => {

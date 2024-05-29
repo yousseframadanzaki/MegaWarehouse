@@ -332,9 +332,9 @@
                     </div>
                 </div>
                 @can('add_discount', 'App\Models\Order')
-                <div class="col-12">
-                    <div class="btn-group">
-                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
+                <div class="col-sm-4 col-md-3">
+                    <div class="w-100 btn-group">
+                        <div class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
                     </div>
                 </div>
                 @endcan
