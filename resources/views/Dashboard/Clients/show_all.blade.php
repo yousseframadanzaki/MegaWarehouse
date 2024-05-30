@@ -97,7 +97,7 @@
                             <div class="row">
                                 <div class="card template_card">
                                     <span>${item}</span>
-                                    <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?phone=2${phone}&text=${item}"><i class="bi bi-whatsapp"></i></a>
+                                    <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?phone=2${phone}&text=${item.replace('<br>', '%0a')}"><i class="bi bi-whatsapp"></i></a>
                                 </div>
                             </div>
                         `

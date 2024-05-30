@@ -109,7 +109,7 @@
                     <div class="row">
                         <div class="card template_card">
                             <span>{!! $template !!}</span>
-                            <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?text=@urlencode($template)"><i class="bi bi-whatsapp"></i></a>
+                            <a target="_blank" class="whatsapp_anchor" href="https://api.whatsapp.com/send?text={{ str_replace('<br>', '%0a', $template) }}"><i class="bi bi-whatsapp"></i></a>
                         </div>
                     </div>
                     @endforeach
