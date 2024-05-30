@@ -13,7 +13,7 @@ enum Type: string
 
 
 class TransactionService implements TransactionServiceInterface{
-    
+
     public function __construct(
         protected readonly TransactionRepositoryInterface $transaction_repository
     ) {}
@@ -24,6 +24,10 @@ class TransactionService implements TransactionServiceInterface{
 
     public function AddInvoiceTransaction($transaction_data){
         $transaction_data['payment_type_id'] = Type::SUPPLIER_INVOICE;
+        return $this->transaction_repository->create_transaction($transaction_data);
+    }
+
+    public function AddTransaction($transaction_data){
         return $this->transaction_repository->create_transaction($transaction_data);
     }
 

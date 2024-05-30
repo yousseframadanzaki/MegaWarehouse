@@ -100,9 +100,11 @@
                             <th>الكمية</th>
                         </tr>
                     </thead>
-                    <tbody id="stock">
+                    <div class="table-responsive">
+                        <tbody id="stock">
 
-                    </tbody>
+                        </tbody>
+                    </div>
                 </table>
             </div>
 

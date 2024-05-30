@@ -254,7 +254,6 @@
             <div class="row mt-5">
                 <div class="col-12">
                     <h3 class="mb-3">المنتجات</h3>
-                    <div class="table-responsive">
                     <table class="table table-hover" id="variants_table" style="min-width: 1000px;">
                         <thead>
                             <tr>
@@ -285,7 +284,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    </div>
                 </div>
             </div>
         </div>
@@ -332,7 +330,7 @@
                     </div>
                 </div>
                 @can('add_discount', 'App\Models\Order')
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-4 col-md-3 mt-3">
                     <div class="w-100 btn-group">
                         <div class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#after_sale"> تعديل اجمالى بعد الخصم <i class="bi bi-cash-coin"></i></div>
                     </div>
