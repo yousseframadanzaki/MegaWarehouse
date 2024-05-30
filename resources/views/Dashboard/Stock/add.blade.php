@@ -113,8 +113,8 @@
     </div>
 
     <div class="modal fade" id="scan" tabindex="-1" aria-labelledby="scanModalLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-lg">
-            <div class="modal-content">
+        <div class="modal-dialog  modal-xl">
+            <div class="modal-content modal-xl">
                 <div class="modal-header" style="display: block;text-align: center;">
                     <h5 class="modal-title"> فحص <i class="bi bi-upc-scan"></i></h5>
                 </div>
@@ -124,7 +124,7 @@
                             <textarea name="scan_ids" id="scan_ids" cols="30" rows="5" style="width: 75%; height: 100%;"></textarea>
                         </div>
                         <div class="col-md-6">
-                            <table class="table hover-table" style="width: 350px;margin-right: -65px;">
+                            <table class="table hover-table" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>اسم المنتج</th>
@@ -172,7 +172,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('script')
@@ -279,7 +278,7 @@
             if (e.which == 13) {
                 $.ajax({
                     url: `/api/stock/scan/`,
-                    method: 'POST',
+                    method: 'get',
                     data: {
                         id
                     },
