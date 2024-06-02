@@ -20,6 +20,7 @@ use App\Models\Status;
 use App\Models\ShippingCompany;
 use App\Models\Marketer;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
+use App\Models\PaymentType;
 use App\Policies\OrderPolicy;
 use App\Policies\StockPolicy;
 
@@ -126,7 +127,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return Status::all();
     }
     public function get_company_shipping_companies($company_id){
-        return ShippingCompany::where(['active'=>true])->get();
+        return ShippingCompany::where(['active'=>true, 'company_id' => $company_id])->get();
     }
 
     public function get_company_marketers($company_id){
@@ -139,4 +140,11 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         })->where(['company_id'=>$company_id])->get();
     }
 
+    public function get_payment_types_categories(){
+        return PaymentType::distinct()->pluck('category');
+    }
+
+    public function get_payment_types_by_category($category){
+        return PaymentType::where('category', $category)->pluck('name', 'id');
+    }
 }

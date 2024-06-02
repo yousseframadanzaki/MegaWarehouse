@@ -16,7 +16,7 @@ class CommonDataService implements CommonDataServiceInterface{
     public function GetCompanyRoles($company_id){
         return $this->common_data_repository->get_roles_by_company_id($company_id);
     }
-    
+
     public function GetRolesByType($company_id,$type){
         return $this->common_data_repository->get_roles_by_type($company_id,$type);
     }
@@ -80,11 +80,17 @@ class CommonDataService implements CommonDataServiceInterface{
     public function GetCompanyShippingCompanies($company_id){
         return $this->common_data_repository->get_company_shipping_companies($company_id);
     }
-    
+
     public function GetCompanyMarketers($company_id){
         return $this->common_data_repository->get_company_marketers($company_id);
     }
     public function GetUsersByRoleType($company_id,$role_type){
         return $this->common_data_repository->get_users_by_role_type($company_id,$role_type);
+    }
+    public function GetPaymentTypesCategories() {
+        return $this->common_data_repository->get_payment_types_categories();
+    }
+    public function GetPaymentTypesByCategory($category) {
+        return $this->common_data_repository->get_payment_types_by_category($category);
     }
 }

@@ -20,5 +20,6 @@ interface CommonDataServiceInterface{
     public function GetCompanyShippingCompanies($company_id);
     public function GetCompanyMarketers($company_id);
     public function GetUsersByRoleType($company_id,$role_type);
-    
+    public function GetPaymentTypesCategories();
+    public function GetPaymentTypesByCategory($category);
 }

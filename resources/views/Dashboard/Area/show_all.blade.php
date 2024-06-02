@@ -128,40 +128,44 @@
         var token = $('#token').val();
         var city_id = $(this).val();
         var id = $(this).attr('data-id');
-        if (confirm("هل تريد تغيير المحافظة؟")) {
-            $.ajax({
-                type: 'POST',
-                url: `/api/sectors/${id}/edit_city`,
-                dataType: "text",
-                data: {
-                    city_id,
-                    token
-                },
-            }).then((response) => {
-                $("#area_" + id).val(city_id);
-            })
-        } else {
-            return false;
+        if (city_id != '') {
+            if (confirm("هل تريد تغيير المحافظة؟")) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/sectors/${id}/edit_city`,
+                    dataType: "text",
+                    data: {
+                        city_id,
+                        token
+                    },
+                }).then((response) => {
+                    $("#area_" + id).val(city_id);
+                })
+            } else {
+                return false;
+            }
         }
     });
     $(".area_shipping_company").change(function() {
         var token = $('#token').val();
         var shipping_company_id = $(this).val();
         var id = $(this).attr('data-id');
-        if (confirm("هل تريد تغيير شركة الشحن؟")) {
-            $.ajax({
-                type: 'POST',
-                url: `/api/sectors/${id}/edit_shipping_company`,
-                dataType: "text",
-                data: {
-                    shipping_company_id,
-                    token
-                },
-            }).then((response) => {
-                $("#shipping_company_" + id).val(shipping_company_id);
-            })
-        } else {
-            return false;
+        if (shipping_company_id != '') {
+            if (confirm("هل تريد تغيير شركة الشحن؟")) {
+                $.ajax({
+                    type: 'POST',
+                    url: `/api/sectors/${id}/edit_shipping_company`,
+                    dataType: "text",
+                    data: {
+                        shipping_company_id,
+                        token
+                    },
+                }).then((response) => {
+                    $("#shipping_company_" + id).val(shipping_company_id);
+                })
+            } else {
+                return false;
+            }
         }
     });
 
