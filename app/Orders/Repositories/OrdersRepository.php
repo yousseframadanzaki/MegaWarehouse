@@ -121,10 +121,14 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
 
     public function update_order($order_id,$data) {
-        $total = str_replace(',', '', $data['total']);
-        $total_after_sale = str_replace(',', '', $data['total_after_sale']);
-        $data['total'] = $total + $data['delivery_cost'];
-        $data['total_after_sale'] =  $total_after_sale + $data['delivery_cost'];
+        if (isset($data['total'])) {
+            $total = str_replace(',', '', $data['total']);
+            $data['total'] = $total + $data['delivery_cost'];
+        }
+        if (isset($data['total_after_sale'])) {
+            $total_after_sale = str_replace(',', '', $data['total_after_sale']);
+            $data['total_after_sale'] =  $total_after_sale + $data['delivery_cost'];
+        }
         return Order::where('id',$order_id)->update($data);
     }
     public function check_max_orders($company_id)
