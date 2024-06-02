@@ -64,6 +64,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/transactions', [AccountingController::class,'all'])
     ->name('all_transactions');
 
+    Route::get('/transactions/add', [AccountingController::class, 'create'])->name('add_transaction');
+
     Route::get('/invoices', [InvoiceController::class,'all'])
     ->name('all_invoices');
     Route::get('/invoices/{invoice_id}', [InvoiceController::class,'show'])

@@ -125,6 +125,8 @@
         }
     })
     $(".area_city").change(function() {
+        $('#cityerror').remove();
+
         var token = $('#token').val();
         var city_id = $(this).val();
         var id = $(this).attr('data-id');
@@ -144,9 +146,13 @@
             } else {
                 return false;
             }
+        } else {
+            $('<span class="text-danger mt-1" id="cityerror">يجب الاختيار من القائمة</span>').insertAfter($(this));
         }
     });
     $(".area_shipping_company").change(function() {
+        $('#shiperror').remove();
+
         var token = $('#token').val();
         var shipping_company_id = $(this).val();
         var id = $(this).attr('data-id');
@@ -166,6 +172,8 @@
             } else {
                 return false;
             }
+        } else {
+            $('<span class="text-danger mt-1" id="shiperror">يجب الاختيار من القائمة</span>').insertAfter($(this));
         }
     });
 
