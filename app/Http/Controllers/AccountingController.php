@@ -52,16 +52,6 @@ class AccountingController extends Controller
         return redirect()->route('all_transactions')->with('success', 'Transaction_added_successfully');
     }
 
-    public function create()
-    {
-        $company_id = $this->company_id();
-        $users = $this->CommonDataService->GetCompanyUsers($company_id);
-        $suppliers = $this->CommonDataService->GetCompanySuppliers($company_id);
-        $payment_categories = $this->CommonDataService->GetPaymentTypesCategories();
-
-        return view('Dashboard.Accounting.add', compact('users', 'suppliers', 'payment_categories'));
-    }
-
     public function get_payments($category)
     {
         return $this->CommonDataService->GetPaymentTypesByCategory($category);
