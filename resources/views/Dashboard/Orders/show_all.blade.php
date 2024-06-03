@@ -280,7 +280,7 @@
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
                             <div class=" sidebar-bg p-2 m-1" style="color: white">
-                                {{__($key)}}: {{$value}}
+                                 {{$value}}
                             </div>
                         @endforeach
                     </div>
