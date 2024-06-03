@@ -31,8 +31,8 @@ class TransactionService implements TransactionServiceInterface{
         return $this->transaction_repository->create_transaction($transaction_data);
     }
 
-    public function GetCompanyTransactions($company_id){
-        return $this->transaction_repository->get_transactions_by_company_id($company_id);
+    public function GetCompanyTransactions($company_id, $filters){
+        return $this->transaction_repository->get_transactions_by_company_id($company_id, $filters);
     }
 
 }

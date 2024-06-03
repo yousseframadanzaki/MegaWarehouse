@@ -14,13 +14,13 @@ class TransactionRepository implements TransactionRepositoryInterface{
     public function create_transaction($data){
         return Transaction::create($data);
     }
-    public function get_transactions_by_company_id($company_id){
+    public function get_transactions_by_company_id($company_id, $filters){
         return Transaction::with([
             'from_user',
             'to_user',
             'order',
             'payment_type',
-        ])->where('company_id',$company_id)
+        ])->where('company_id',$company_id)->filter($filters)
         ->orderBy('created_at','DESC')
         ->paginate(20);
     }

@@ -262,6 +262,14 @@
                                             <li class="rounded"><a href="{{ route('all_invoices') }}" class="text-white">
                                                 <i class="bi bi-cash-coin"></i> الفواتير </a></li>
                                         @endcan
+                                        @can('view_invoice', 'App\Models\Invoice')
+                                            <li class="rounded"><a href="{{ route('all_transactions') }}" class="text-white">
+                                                <i class="bi bi-cash-coin"></i> عرض العمليات المالية </a></li>
+                                        @endcan
+                                        @can('view_invoice', 'App\Models\Invoice')
+                                            <li class="rounded"><a href="{{ route('add_transaction') }}" class="text-white">
+                                                <i class="bi bi-cash-coin"></i> إضافة عملية مالية </a></li>
+                                        @endcan
                                     </ul>
                                 </div>
                             </li>
@@ -576,7 +584,7 @@
         })
 
         $('table.table').addClass('table-bordered')
-        $('table.table').css('min-width', '700px');
+        // $('table.table').css('min-width', '700px');
 
         if (!$('table.table').parent().hasClass('table-responsive')) {
             $('table.table').wrap('<div class="table-responsive"></div>');

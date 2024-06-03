@@ -51,5 +51,5 @@ class CreateClientRequest extends FormRequest
             'area_id.exists'=>'area_id_exists',
             'client_group_id.exists'=>'client_groups_exists',
         ];
-    }   
+    }
 }

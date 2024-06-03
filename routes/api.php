@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommonDataController;
@@ -54,7 +55,7 @@ Route::post('/status_callback_delete', [OrderController::class, 'status_callback
 Route::post('/shipping_area/map', [ShippingAreaController::class, 'map'])->name('map_area');
 
 Route::get('/company/{company_id}/users', [CompnayController::class, 'get_company_users'])->name('company_users');
-Route::post('/stock/scan', [StockController::class, 'scan'])->name('scan_stock');
+Route::get('/stock/scan', [StockController::class, 'scan'])->name('scan_stock');
 Route::post('/stock/{id}/remove', [StockController::class, 'remove_stock'])->name('remove_stock');
 Route::post('/stock/update_varient_shelf', [StockController::class, 'update_variant_shelf'])->name('update_variant_shelf');
 Route::get('/order/scan_items', [OrderController::class, 'scan_items'])->name('scan_items');
@@ -70,3 +71,5 @@ Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates
 Route::post('statuses/{id}/settings', [StatusController::class, 'update_status'])->name('update_edit_order');
 Route::POST('statuses/{id}/add_status', [StatusController::class, 'add_related_status'])->name('add_status');
 Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class, 'remove_related_status'])->name('remove_status');
+
+Route::get('category/{category}/payment_types', [AccountingController::class, 'get_payments']);
