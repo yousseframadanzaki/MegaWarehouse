@@ -171,20 +171,25 @@
 
         function get_payment_types() {
             category = $('#payment_category').val();
-            $.ajax({
-                url: `/api/category/${category}/payment_types`,
-                method: 'get',
-                success: function(response) {
-                    $('#payment_type_id').empty();
-                    $('#payment_type_id').append('<option>اختار نوع العملية ...</option>')
-                    $.each(response, function(key, value) {
-                        $('#payment_type_id').append(`<option value="${key}" ${ '{{ Request::get("payment_type_id") }}' == key ? 'selected' : '' }>${value}</option>`)
-                    })
-                },
-                error: function() {
+            if (category != '') {
+                $.ajax({
+                    url: `/api/category/${category}/payment_types`,
+                    method: 'get',
+                    success: function(response) {
+                        $('#payment_type_id').empty();
+                        $('#payment_type_id').append('<option value="">اختار نوع العملية ...</option>')
+                        $.each(response, function(key, value) {
+                            $('#payment_type_id').append(`<option value="${key}" ${ '{{ Request::get("payment_type_id") }}' == key ? 'selected' : '' }>${value}</option>`)
+                        })
+                    },
+                    error: function() {
 
-                }
-            })
+                    }
+                })
+            } else {
+                $('#payment_type_id').empty();
+                $('#payment_type_id').append('<option value="">اختار نوع العملية ...</option>')
+            }
         }
     </script>
 @endsection
