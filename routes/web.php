@@ -65,6 +65,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_transactions');
 
     Route::get('/transactions/add', [AccountingController::class, 'create'])->name('add_transaction');
+    Route::post('/transactions/add', [AccountingController::class, 'store'])->name('store_transaction');
 
     Route::get('/invoices', [InvoiceController::class,'all'])
     ->name('all_invoices');

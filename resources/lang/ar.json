@@ -118,6 +118,10 @@
     "marketer_id":"المسوق",
     "brand_id":"الماركة",
     "shipping_company_id":"شركة الشحن",
+    "payment_type_id": "نوع العملية",
+    "from_user": "من",
+    "to_user":"إلي",
+    "transaction_code": "رقم العملية",
     "order_status_change_bulk_success":"تم تغيير حالة الاوردرات بنجاح",
     "pay_invoice_success":"تم الدفع بنجاح",
     "Accounting":"الحسابات",
@@ -130,5 +134,8 @@
     "create_area_success":"تم اضافت المنطقة الجديدة بنجاح",
     "Area":"مناطق الشحن",
     "change_after_sale_success":"تم تغيير اجمالى بعد الخصم بنجاح",
-    "Settings":"الاعدادات"
+    "Settings":"الاعدادات",
+    "value_required_min": "الرجاء ادخال قيمة لا تقل عن صفر",
+    "payment_type_id_required": "الرجاء اختيار نوع العملية",
+    "payment_category_required": "الرجاء اختيار تصنيف العملية"
 }
