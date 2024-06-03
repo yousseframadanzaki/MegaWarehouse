@@ -62,9 +62,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
 
     Route::get('/transactions', [AccountingController::class,'all'])
-    ->name('all_transactions');
+    ->name('all_transactions')->can('view_transactions', 'App\Models\Transaction');
 
-    Route::get('/transactions/add', [AccountingController::class, 'create'])->name('add_transaction');
+    Route::get('/transactions/add', [AccountingController::class, 'create'])->name('add_transaction')->can('add_transaction', 'App\Models\Transaction');
     Route::post('/transactions/add', [AccountingController::class, 'store'])->name('store_transaction');
 
     Route::get('/invoices', [InvoiceController::class,'all'])

@@ -262,11 +262,11 @@
                                             <li class="rounded"><a href="{{ route('all_invoices') }}" class="text-white">
                                                 <i class="bi bi-cash-coin"></i> الفواتير </a></li>
                                         @endcan
-                                        @can('view_invoice', 'App\Models\Invoice')
+                                        @can('view_transactions', 'App\Models\Transaction')
                                             <li class="rounded"><a href="{{ route('all_transactions') }}" class="text-white">
                                                 <i class="bi bi-cash-coin"></i> عرض العمليات المالية </a></li>
                                         @endcan
-                                        @can('view_invoice', 'App\Models\Invoice')
+                                        @can('add_transaction', 'App\Models\Transaction')
                                             <li class="rounded"><a href="{{ route('add_transaction') }}" class="text-white">
                                                 <i class="bi bi-cash-coin"></i> إضافة عملية مالية </a></li>
                                         @endcan

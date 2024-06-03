@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Template' => 'App\Policies\TemplatePolicy',
         'App\Models\Invoice' => 'App\Policies\InvoicePolicy',
         'App\Models\Status' => 'App\Policies\StatusPolicy',
+        'App\Models\Transaction' => 'App\Policies\AccountingPolicy',
 
 
     ];
