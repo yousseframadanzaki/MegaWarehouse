@@ -131,9 +131,7 @@
     <div class="card p-3">
         <form id="order_form" method="POST" action="{{route('store_order')}}">
             @csrf
-            @if (old('client_id'))
-            <input id="client_id" type="hidden" name="client_id" value="{{old('client_id')}}" />
-            @endif
+            <input id="client_id" type="hidden" name="client_id" value="{{ old('client_id') }}" />
             <div class="row">
                 <div class="col-12">
                 <h1 class="text-center mt-4 mb-5">إضافة أوردر جديد</h1>
@@ -371,7 +369,7 @@
             },
             async function(response, textStatus, xhr) {
                 if (textStatus === "error") {
-                    $("#order_form #client_id").remove();
+                    $("#order_form #client_id").attr('value', '');
                 }
             })
     })
@@ -383,7 +381,7 @@
         $("#country-select").val(data.client.country_id);
         $("#city-select").val(data.client.city_id);
         $("#area-select").val(data.client.area_id);
-        $("#order_form").append(`<input id="client_id" type="hidden" name="client_id" value="${data.client.id}" />`);
+        $("#order_form #client_id").attr('value', data.client.id);
     }
 
     function remove_data() {
@@ -395,7 +393,7 @@
         $("#area-select").val("");
         $("#city-select").html("");
         $("#area-select").html("");
-        $("#order_form #client_id").remove();
+        $("#order_form #client_id").attr('value', '');
     }
     $("#country-select").change(function() {
         var country_id = $(this).val();

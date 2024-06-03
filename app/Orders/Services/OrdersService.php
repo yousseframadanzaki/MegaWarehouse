@@ -41,10 +41,12 @@ class OrdersService implements OrdersServiceInterface{
         }else{
             $order_details['status_id'] = '1';
         }
-        if(!isset($order_details['client_id'])){
+
+        $client = $this->ClientCrudService->GetClientByPhone($order_details['client']['phone_1']);
+        if(empty($client)) {
             $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);
-            $order_details['client_id'] = $client->id;
         }
+        $order_details['client_id'] = $client->id;
         $order_details['admin_id'] = $user->id;
         $order_details['company_id'] = $user->company_id;
         $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
