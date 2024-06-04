@@ -33,7 +33,7 @@
         @csrf
         <div class="card p-3 shadow-sm">
             <h3 class="text-center">أضافة باكيدج</h3>
-            
+
                 <!-- <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3> -->
                 <div class="row">
                     <div class="col-md-4 mt-4">
@@ -194,7 +194,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control variant-select" disabled>
+                            <select class="form-control variant-select">
                                 <option value="">اختار المتغير</option>
                             </select>
                         </td>
@@ -204,9 +204,7 @@
         $("#variants_table").fadeIn();
         $(".product-select").select2();
         $(".variant-select").select2();
-        form_options_data.push(newRow);
-    }
-    $(".product-select").last().change(function() {
+        $(".product-select").last().change(function() {
             var productSelect = $(this);
             var variantSelect = productSelect.closest('tr').find('.variant-select');
             var product_id = productSelect.val();
@@ -217,19 +215,17 @@
                 method: 'GET',
                 dataType: 'text'
             }).then(response => {
-                console.log(response);
                 var data = JSON.parse(response);
                 variantSelect.append(`<option value="">اختار المتغير</option>`);
                 data.forEach(element => {
                     variantSelect.append(`<option data-hide="${element.hide}" ${data.length == 1 ? 'selected' : ''} data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`);
                 });
                 variantSelect.prop('disabled', false);
-                variantSelect.select2({
-                    dropdownParent: $('#addToCartModal')
-                });
                 $("#variants").fadeIn();
             });
         });
+        form_options_data.push(newRow);
+    }
 
 
     $(document).on("click", "#edit_options_btn", function(e) {
