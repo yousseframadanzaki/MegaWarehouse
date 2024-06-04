@@ -46,7 +46,7 @@ class AccountingController extends Controller
 
     public function store(CreateTransactionRequest $request)
     {
-        $transactionData = $request->all();
+        $transactionData = $request->except('_token');
         $transactionData['company_id'] = $this->company_id();
         $this->TransactionService->AddTransaction($transactionData);
         return redirect()->route('all_transactions')->with('success', 'Transaction_added_successfully');

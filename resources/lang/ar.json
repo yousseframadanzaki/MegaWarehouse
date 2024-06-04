@@ -137,5 +137,6 @@
     "Settings":"الاعدادات",
     "value_required_min": "الرجاء ادخال قيمة لا تقل عن صفر",
     "payment_type_id_required": "الرجاء اختيار نوع العملية",
-    "payment_category_required": "الرجاء اختيار تصنيف العملية"
+    "payment_category_required": "الرجاء اختيار تصنيف العملية",
+    "Transaction_added_successfully": "تم إضافة العملية بنجاح"
 }
