@@ -336,7 +336,7 @@
                         <tr>
                             <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
                             <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
-                            <td>{{ $order->shipping_company_id?? 'لا يوجد' }}</td>
+                            <td>{{ $order->waybill?? 'لا يوجد' }}</td>
                             <td>{{$order->admin->name}}</td>
                             <td>
                                 @isset($order->marketer->name)

@@ -255,7 +255,7 @@
                                 @foreach ($orders as $order)
                                     <tr>
                                         <td>{{ $order->order_code }}</td>
-                                        <td>{{ $order->shipping_company_id ?? 'لا يوجد' }}</td>
+                                        <td>{{ $order->waybill ?? 'لا يوجد' }}</td>
                                         <td>{{ $order->name }}</td>
                                         <td>{{ $order->phone_1 }}</td>
                                     </tr>
