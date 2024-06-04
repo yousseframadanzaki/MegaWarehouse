@@ -287,23 +287,28 @@
                 </div>
             @endif
 
-                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row">
+                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row align-items-center">
                     @can('edit_change_status','App\\Models\Order')
-                    <div class="btn-group me-2">
+                    <div class="me-2">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
                     </div>
                     @endcan
-                    <div class="btn-group me-2">
+                    <div class="me-2">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
                     </div>
-                    <div class="btn-group me-2">
+                    <div class="me-2">
                         <form method="POST" action="{{route('print_labels')}}" id="print_label">
                             @csrf
                         <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                         </form>
                     </div>
-                    <div class="btn-group me-2" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
+                    <div class="me-2" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
                         <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
+                    </div>
+                    <div class="me-2">
+                        <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
+                            <button type="submit" disabled class="btn btn-warning"> واتساب <i class="bi bi-whatsapp"></i></div>
+                        </form>
                     </div>
                 </div>
 
@@ -666,5 +671,17 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#mess').fadeIn();
             }
         }
+        $('input[type=checkbox]').change(function() {
+            if($(this).is(':checked'))
+                $('#whatsappForm').append(`<input type="hidden" name="orders_ids[]" value=${ $(this).val() }>`)
+            else
+                $(`#whatsappForm input[value=${ $(this).val() }]`).remove();
+
+            if ($('table input:checked').length > 0) {
+                $('#whatsappForm button').removeAttr('disabled')
+            } else {
+                $('#whatsappForm button').attr('disabled', 'disabled')
+            }
+        })
     </script>
 @endsection

@@ -467,5 +467,5 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_statuses')
     ->can('view_statuses', ['App\Models\Status']);
 
-
+    Route::get('campaign', [OrderController::class,'show_campaign'])->name('show_campaign');
 });

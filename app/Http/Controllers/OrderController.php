@@ -115,6 +115,11 @@ class OrderController extends Controller
         return view('Dashboard.Orders.scan_order')->with(compact('order'));
     }
 
+    public function show_campaign(Request $request) {
+        $orders = $this->OrdersService->GetOrders($request->orders_ids);
+        return view('Dashboard.Orders.campaign', compact('orders'));
+    }
+
     public function change_status(Request $request,$order_id) {
 
         $data = $request->all();

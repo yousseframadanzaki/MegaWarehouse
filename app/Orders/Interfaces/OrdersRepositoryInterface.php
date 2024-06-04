@@ -7,6 +7,7 @@ interface OrdersRepositoryInterface{
     public function get_company_orders($company_id,$filters);
     public function get_order_code($company_id);
     public function get_order_by_id($order_id);
+    public function get_orders_by_ids($orders_ids);
     public function change_order_status($order_id,$data);
     public function delete_order_status($order_id,$status_data);
     public function get_order_by_waybill($waybill);
