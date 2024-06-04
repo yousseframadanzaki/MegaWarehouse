@@ -21,7 +21,7 @@
         integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{{ url('/static/css/image-uploader.css') }}" />
-
+    <link rel="icon" type="image/x-icon" href="/public/tab_icon.png">
     <style>
         .sidebar {
             overflow-y: auto;
@@ -244,6 +244,8 @@
                                             <li class="rounded "><a href="{{ route('add_product') }}" class="text-white"><i
                                                         class="bi bi-plus-circle-fill"></i> أضافة منتج جديد</a></li>
                                         @endcan
+                                        <li class="rounded "><a href="{{ route('add_package') }}" class="text-white"><i
+                                            class="bi bi-plus"></i> أضافة باكيدج للمنتجات</a></li>
                                     </ul>
                                 </div>
                             </li>

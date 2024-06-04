@@ -149,4 +149,18 @@ class ProductController extends Controller
         $variant = $this->ProductCrudService->GetVariantPrint($variant_id);
         return view('Dashboard.Products.print')->with('variant', $variant);
     }
+    public function create_package(){
+        $company_id = $this->company_id();
+        $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
+        $categories = $this->CommonDataService->GetCompanyCategories($company_id);
+        $brands = $this->CommonDataService->GetCompanyBrands($company_id);
+        $products = $this->CommonDataService->GetCompanyProducts($company_id);
+        $data = array(
+            'suppliers' => $suppliers,
+            'categories' => $categories,
+            'brands' => $brands,
+            "products" => $products
+        );
+        return view('Dashboard.Products.create_package')->with('data', $data);
+    }
 }

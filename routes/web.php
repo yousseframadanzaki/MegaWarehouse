@@ -212,6 +212,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/stock/delete', [StockController::class,'delete'])
     ->name('delete_stock');
 
+    Route::get('/package/add', [ProductController::class,'create_package'])
+    ->name('add_package');
+
     Route::get('/products', [ProductController::class,'all'])
     ->name('all_products')
     ->can('view','App\Models\Product');
