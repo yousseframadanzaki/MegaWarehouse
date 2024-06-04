@@ -87,6 +87,22 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'shipping_company',
             'marketer'])->where('id',$order_id)->first();
     }
+    public function get_orders_by_ids($orders_ids) {
+        return Order::with([
+            'order_status',
+            'order_status.pivot.admin',
+            'order_status.pivot.images',
+            'admin',
+            'stocks',
+            'stocks.variant',
+            'stocks.variant.product',
+            'stocks.warehouse',
+            'client',
+            'city',
+            'area',
+            'shipping_company',
+            'marketer'])->whereIn('id',$orders_ids)->get();
+    }
     public function change_order_status($order_id,$data){
         $order = Order::findOrfail($order_id);
         $order->status_id = $data['status_id'];

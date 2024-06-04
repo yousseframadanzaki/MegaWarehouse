@@ -6,6 +6,7 @@ interface OrdersServiceInterface{
     public function AddOrder($user ,array $data);
     public function GetCompanyOrders($company_id,$filters);
     public function GetOrder($order_id);
+    public function GetOrders($orders_ids);
     public function ChangeOrderStatus($order_id,$data);
     public function ChangeOrderStatusCallback($data);
     public function DeleteOrderStatusCallback($data);

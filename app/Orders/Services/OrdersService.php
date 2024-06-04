@@ -75,6 +75,10 @@ class OrdersService implements OrdersServiceInterface{
         return $this->orders_crud_repository->get_order_by_id($order_id);
     }
 
+    public function GetOrders($orders_ids){
+        return $this->orders_crud_repository->get_orders_by_ids($orders_ids);
+    }
+
     public function ChangeOrderStatus($order_id,$data){
 
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
