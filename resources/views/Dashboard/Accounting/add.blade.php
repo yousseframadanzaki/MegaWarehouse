@@ -144,12 +144,14 @@
                 $("#to").parent().show();
             }
 
+            $('#payment_type_id option:not([value=""])').remove();
+            $('#from option:not([value=""])').remove();
+            $('#to option:not([value=""])').remove();
+
             $.ajax({
                 url: `/api/category/${category}/payment_types`,
                 method: 'get',
                 success: function(response) {
-                    $('#payment_type_id').empty();
-                    $('#payment_type_id').append('<option value="">اختار نوع العملية ...</option>')
                     $.each(response, function(key, value) {
                         $('#payment_type_id').append(`<option value="${key}">${value}</option>`)
                     })
@@ -160,10 +162,6 @@
                 url: `/api/users/company/role_type/${role_type}`,
                 method: 'get',
                 success: function(response) {
-                    $('#from').empty();
-                    $('#to').empty();
-                    $('#from').append('<option value=""> من ...</option>')
-                    $('#to').append('<option value=""> إلي ...</option>')
                     $.each(response, function(key, value) {
                         $('#from').append(`<option value="${key}">${value}</option>`)
                         $('#to').append(`<option value="${key}">${value}</option>`)
