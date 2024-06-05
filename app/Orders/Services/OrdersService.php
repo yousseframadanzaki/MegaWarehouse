@@ -14,7 +14,7 @@ use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\Products\Interfaces\VariantStockServiceInterface;
 use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
-
+use App\Accounting\Interfaces\TransactionServiceInterface;
 
 class OrdersService implements OrdersServiceInterface{
 
@@ -29,6 +29,7 @@ class OrdersService implements OrdersServiceInterface{
         protected readonly  ShippingStatusServiceInterface $ShippingStatusService,
         protected readonly VariantStockServiceInterface $VariantStockService,
         protected readonly OrderNotesServiceInterface $OrderNotesService,
+        protected readonly TransactionServiceInterface $TransactionService,
     ) {}
 
     public function AddOrder($user,array $order_details){
@@ -95,9 +96,19 @@ class OrdersService implements OrdersServiceInterface{
                     'shipping_company_id'=>$data['shipping_company_id'],
                 )
             );
+        } else if ($data['status_id'] == '45') {
+            $this->TransactionService->AddTransaction(array(
+                'order_id' => $order->id,
+                'value' => $order->total_after_sale,
+                'company_id' => $order->company_id,
+                'commission' => $order->total_marketer_commission,
+                'delivery_cost' => $order->delivery_cost,
+                'payment_type_id' => 2,
+            ));
         }
 
         $id = $this->orders_crud_repository->change_order_status($order_id,$data);
+
         if(isset($data['status_images'])){
             foreach ($data['status_images'] as $image) {
                 $file = $this->FileUploadService->status($image,$data['company_id'],$id);
@@ -123,6 +134,19 @@ class OrdersService implements OrdersServiceInterface{
                         'shipping_company_id'=>$data['shipping_company_id'],
                     )
                 );
+            }
+        } else if ($data['status_id'] == '45') {
+            foreach ($data['orders_ids'] as $order_id) {
+                $order = $this->orders_crud_repository->get_order_by_id($order_id);
+
+                $this->TransactionService->AddTransaction(array(
+                    'order_id' => $order->id,
+                    'value' => $order->total_after_sale,
+                    'company_id' => $order->company_id,
+                    'commission' => $order->total_marketer_commission,
+                    'delivery_cost' => $order->delivery_cost,
+                    'payment_type_id' => 2,
+                ));
             }
         }
 

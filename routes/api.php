@@ -74,3 +74,4 @@ Route::POST('statuses/{id}/add_status', [StatusController::class, 'add_related_s
 Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class, 'remove_related_status'])->name('remove_status');
 
 Route::get('category/{category}/payment_types', [AccountingController::class, 'get_payments']);
+Route::get('users/company/role_type/{role_type}', [AccountingController::class, 'get_company_users_by_role_type']);

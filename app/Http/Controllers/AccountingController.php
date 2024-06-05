@@ -37,11 +37,9 @@ class AccountingController extends Controller
     public function create()
     {
         $company_id = $this->company_id();
-        $users = $this->CommonDataService->GetCompanyUsers($company_id);
-        $suppliers = $this->CommonDataService->GetCompanySuppliers($company_id);
         $payment_categories = $this->CommonDataService->GetPaymentTypesCategories();
 
-        return view('Dashboard.Accounting.add', compact('users', 'suppliers', 'payment_categories'));
+        return view('Dashboard.Accounting.add', compact('payment_categories'));
     }
 
     public function store(CreateTransactionRequest $request)
@@ -55,5 +53,14 @@ class AccountingController extends Controller
     public function get_payments($category)
     {
         return $this->CommonDataService->GetPaymentTypesByCategory($category);
+    }
+
+    public function get_company_users_by_role_type($role_type) {
+        if ($role_type == 'default')
+            $users = $this->CommonDataService->GetCompanyUsers($this->company_id());
+        else
+            $users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), $role_type)->pluck('name', 'id');
+
+        return $users;
     }
 }
