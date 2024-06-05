@@ -72,10 +72,7 @@
                 <label  class="form-label"> من </label>
                 <select id="from" class="form-select @error('from') is-invalid @enderror" aria-label="Default select example" name="from" id="from">
                     <option value="">  من ...</option>
-                    @foreach ($users as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                    @endforeach
-                    </select>
+                </select>
                 @error('from')
                    <div class="invalid-feedback">
                          {{__($message)}}
@@ -86,9 +83,6 @@
                 <label  class="form-label"> إلي </label>
                 <select id="to" class="form-select @error('to') is-invalid @enderror" aria-label="Default select example" name="to" id="to">
                     <option value="">  إلي ...</option>
-                    @foreach ($users as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                    @endforeach
                 </select>
                 @error('to')
                    <div class="invalid-feedback">
@@ -139,7 +133,10 @@
 
         $('#payment_category').on('change', function() {
             category = $(this).val();
+            role_type = 'default';
+
             if (category == 'Expense') {
+                role_type = 'manager';
                 $("#to").attr('disabled', 'disabled');
                 $("#to").parent().hide();
             } else {
@@ -155,6 +152,21 @@
                     $('#payment_type_id').append('<option value="">اختار نوع العملية ...</option>')
                     $.each(response, function(key, value) {
                         $('#payment_type_id').append(`<option value="${key}">${value}</option>`)
+                    })
+                }
+            })
+
+            $.ajax({
+                url: `/api/users/company/role_type/${role_type}`,
+                method: 'get',
+                success: function(response) {
+                    $('#from').empty();
+                    $('#to').empty();
+                    $('#from').append('<option value=""> من ...</option>')
+                    $('#to').append('<option value=""> إلي ...</option>')
+                    $.each(response, function(key, value) {
+                        $('#from').append(`<option value="${key}">${value}</option>`)
+                        $('#to').append(`<option value="${key}">${value}</option>`)
                     })
                 }
             })
