@@ -49,8 +49,9 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('update_car
 Route::post('/cart/{variant_id}/delete', [CartController::class, 'destroy'])->name('delete_cart');
 
 Route::post('/shipping_status/map', [ShippingStatusController::class, 'map'])->name('map_status');
-Route::post('/status_callback', [OrderController::class, 'status_callback'])->name('status_callback');
-Route::post('/status_callback_delete', [OrderController::class, 'status_callback_delete'])->name('status_callback_delete');
+
+Route::post('/status_callback/{mega_company_code}', [OrderController::class, 'status_callback'])->name('status_callback');
+Route::post('/status_callback_delete/{mega_company_code}', [OrderController::class, 'status_callback_delete'])->name('status_callback_delete');
 
 Route::post('/shipping_area/map', [ShippingAreaController::class, 'map'])->name('map_area');
 
