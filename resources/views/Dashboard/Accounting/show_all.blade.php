@@ -141,8 +141,8 @@
                             <td>{{$transaction->delivery_cost}}</td>
                             <td>{{$transaction->commission}}</td>
                             <td>{{$transaction->note}}</td>
-                            <td>{{$transaction->order->order_code ?? ''}}</td>
-                            <td><a href="{{route('show_invoice',$transaction->invoice_id ?? '')}}">{{$transaction->invoice_id}}</td>
+                            <td><a href="{{route('show_order', $transaction->order->id ?? '')}}" target="_blank">{{$transaction->order->order_code ?? ''}}</a></td>
+                            <td><a href="{{route('show_invoice', $transaction->invoice_id ?? '')}}" target="_blank">{{$transaction->invoice_id}}</td>
                             <td>{{$transaction->payment_type->name}}</td>
                             <td>@date_format($transaction->created_at)</td>
                         </tr>
