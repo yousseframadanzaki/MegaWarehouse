@@ -6,6 +6,7 @@ use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
 use App\Products\Interfaces\ProductAttributesRepositoryInterface;
 use App\Products\Interfaces\ProductVariantsRepositoryInterface;
+use App\Products\Interfaces\ProductPackageRepositoryInterface;
 
 use App\Products\Interfaces\ProductCrudRepositoryInterface;
 use App\Products\Interfaces\ProductCrudServiceInterface;
@@ -20,6 +21,7 @@ class ProductCrudService implements ProductCrudServiceInterface
         protected readonly  ProductVariantsRepositoryInterface $product_variants_repository,
         protected readonly  UploadServiceInterface $FileUploadService,
         protected readonly  MediaCrudServiceInterface $MediaService,
+        protected readonly  ProductPackageRepositoryInterface $product_package_repository,
     ) {
     }
 
@@ -91,5 +93,36 @@ class ProductCrudService implements ProductCrudServiceInterface
     public function GetVariantPrint($variant_id)
     {
         return $this->product_variants_repository->get_variant_by_id($variant_id);
+    }
+
+    public function AddPackage($company_id,array $details) {
+        // dd($details);
+        $details['product_info']['company_id'] = $company_id;
+        if (!empty($details['product_info']['show_quantity'])) {
+            if ($details['product_info']['show_quantity'] == 'on') {
+                $details['product_info']['show_quantity'] = '1';
+            }
+        } else {
+            $details['product_info']['show_quantity'] = '0';
+        }
+        if (!empty($details['product_info']['confirm_order'])) {
+            if ($details['product_info']['confirm_order'] == 'on') {
+                $details['product_info']['confirm_order'] = '1';
+            }
+        } else {
+            $details['product_info']['confirm_order'] = '0';
+        }
+
+        $details['product_info']['is_bundle'] = '1';
+        $package = $this->product_crud_repository->add_product($details['product_info']);
+
+        if (!empty($details['package'])) {
+            $this->product_package_repository->AddPackageItems($package->id, $details['package']);
+        }
+        if (!empty($details['images'])) {
+            $this->add_images($package, $details['images']);
+        }
+
+        return $package;
     }
 }

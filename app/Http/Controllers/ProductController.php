@@ -154,7 +154,7 @@ class ProductController extends Controller
         $suppliers  = $this->CommonDataService->GetCompanySuppliers($company_id);
         $categories = $this->CommonDataService->GetCompanyCategories($company_id);
         $brands = $this->CommonDataService->GetCompanyBrands($company_id);
-        $products = $this->CommonDataService->GetCompanyProducts($company_id);
+        $products = $this->CommonDataService->GetCompanyProductsData($company_id);
         $data = array(
             'suppliers' => $suppliers,
             'categories' => $categories,
@@ -162,5 +162,11 @@ class ProductController extends Controller
             "products" => $products
         );
         return view('Dashboard.Products.create_package')->with('data', $data);
+    }
+
+    public function store_package(Request $request) {
+        $package = $this->ProductCrudService->AddPackage($this->company_id(), $request->all());
+        $request->session()->flash('success', 'new_product_added_successfully');
+        return redirect()->route('show_product', ['product_id' => $package->id]);
     }
 }

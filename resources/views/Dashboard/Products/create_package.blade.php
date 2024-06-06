@@ -26,15 +26,14 @@
         <ul class="breadcrumb">
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
             <li><a href="{{ route('all_products') }}">المنتجات</a></li>
-            <li>أضافة باكيدج</li>
+            <li>إضافة باكيدج</li>
         </ul>
     </div>
-    <form class="row  " id="product-form" enctype="multipart/form-data" action="{{route('store_product')}}" method="POST">
+    <form class="row  " id="product-form" enctype="multipart/form-data" action="{{route('add_package')}}" method="POST">
         @csrf
         <div class="card p-3 shadow-sm">
-            <h3 class="text-center">أضافة باكيدج</h3>
+            <h3 class="text-center">إضافة باكيدج</h3>
 
-                <!-- <h3>بيانات المنتج <i class="bi bi-box-fill"></i></h3> -->
                 <div class="row">
                     <div class="col-md-4 mt-4">
                         <label class="form-label">اسم الباكيدج <span class="text-danger">*</span></label>
@@ -108,7 +107,7 @@
                 <h3 class="form-label">صور الباكيدج <i class="bi bi-images"></i></h3>
                 <div class="col-12">
                     <button type="button" class="btn btn-primary my-3 rounded" style="cursor: pointer;" id="addImage">
-                        أضف صورة
+                        إضف صورة
                         <i class="bi bi-plus"></i>
                     </button>
                 </div>
@@ -143,7 +142,7 @@
     </table>
 </div>
 
-<button type="button" class="btn btn-primary btn-lg add_product_btn"> أضافة باكدج <i class="bi bi-plus-square"></i></button>
+<button type="submit" class="btn btn-primary btn-lg add_product_btn"> إضافة باكدج <i class="bi bi-plus-square"></i></button>
 </div>
 </form>
 <meta name="_token" content="{{ csrf_token() }}">
@@ -171,6 +170,7 @@
     form_options_array = [];
     form_options_values = new Object();
     options = {};
+    var i = 0;
 
     var products = @json($data['products']);
     var form_options_data = [];
@@ -181,24 +181,25 @@
         add_option();
     });
     function add_option() {
-        var productOptions = '';
-        for (var id in products) {
-            productOptions += `<option value="">اختر منتج</option>
-            <option value="${id}">${products[id]}</option>`;
-        }
+        var productOptions = '<option value="">اختر منتج</option>';
+
+        products.forEach(element => {
+            if (element.is_bundle == 0)
+                productOptions += `<option Isbundle=${element.is_bundle} value="${element.id}">${element.name}</option>`;
+        });
 
         var newRow = `<tr>
                         <td>
-                            <select class="form-control product-select">
+                            <select class="form-control product-select name="package[][product_id]">
                                 ${productOptions}
                             </select>
                         </td>
                         <td>
-                            <select class="form-control variant-select">
+                            <select class="form-control variant-select" name="package[${i}][variant_id]">
                                 <option value="">اختار المتغير</option>
                             </select>
                         </td>
-                        <td><input type="number" name="quantity" id="quantity" class="form-control"></td>
+                        <td><input type="number" name="package[${i}][price]" id="price" class="form-control"></td>
                       </tr>`;
         $("#variants_table tbody").append(newRow);
         $("#variants_table").fadeIn();
@@ -225,6 +226,7 @@
             });
         });
         form_options_data.push(newRow);
+        i++;
     }
 
 
