@@ -192,6 +192,7 @@ return [
         App\Providers\TemplateServiceProvider::class,
         App\Providers\InvoiceServiceProvider::class,
         App\Providers\AccountingServiceProvider::class,
+        App\Providers\WhatsappServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\AggregateServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
