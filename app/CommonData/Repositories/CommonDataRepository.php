@@ -97,6 +97,10 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return Product::where(['company_id'=>$company_id])->pluck('name','id');
     }
 
+    public function get_company_products_data($company_id){
+        return Product::where(['company_id'=>$company_id])->get();
+    }
+
     public function get_product_variants($product_id){
         $user = auth()->user();
         $variants = Variant::with('product')->where('product_id', $product_id)->get();

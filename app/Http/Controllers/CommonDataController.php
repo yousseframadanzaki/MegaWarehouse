@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Products\Interfaces\ProductCrudServiceInterface;
 
 class CommonDataController extends Controller
 {
     private CommonDataServiceInterface $CommonDataService;
+    private ProductCrudServiceInterface $ProductCrudService;
 
-    public function __construct(CommonDataServiceInterface $CommonDataService)
+    public function __construct(CommonDataServiceInterface $CommonDataService, ProductCrudServiceInterface $ProductCrudService)
     {
         $this->CommonDataService = $CommonDataService;
+        $this->ProductCrudService = $ProductCrudService;
     }
     public function city($country_id) {
         return response()->json($this->CommonDataService->GetCities($country_id));
@@ -27,8 +30,18 @@ class CommonDataController extends Controller
     }
 
     public function variants($product_id) {
-        return response()->json($this->CommonDataService->GetProductVariants($product_id));
+        $product = $this->ProductCrudService->GetProduct($product_id);
+        if ($product->is_bundle == 0)
+            return response()->json($this->CommonDataService->GetProductVariants($product_id));
+        else
+            return response()->json($product->bundle_variants->map(function($item) use ($product) {
+                $item['name']  = "( {$item->product->name} ) - ( $item->name )";
+                $item['price'] = $item->pivot->price;
+                $item['product'] = $product->first();
+                return $item;
+            }));
     }
+
     public function attributes($product_id) {
         return response()->json($this->CommonDataService->GetProductAttributes($product_id));
     }

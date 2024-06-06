@@ -72,8 +72,8 @@
                             <label class="form-label" for="product_id">المنتج</label>
                             <select id="product_id" class="form-select product_info" style="padding: 0.375rem 0.75rem;width:100%">
                                 <option value="">اختار المنتج</option>
-                                @foreach ($products as $id => $name)
-                                <option value="{{$id}}">{{$name}}</option>
+                                @foreach ($products as $product)
+                                <option value="{{$product->id}}" is_bundle="{{ $product->is_bundle }}">{{$product->name}}</option>
                                 @endforeach
                             </select>
                         </div>

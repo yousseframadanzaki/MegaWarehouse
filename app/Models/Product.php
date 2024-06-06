@@ -23,6 +23,7 @@ class Product extends Model
         'price',
         'before_sale_price',
         'marketer_commission',
+        'is_bundle',
     ];
 
     public function supplier() {
@@ -43,6 +44,10 @@ class Product extends Model
 
     public function variants() {
         return $this->hasMany(Variant::class);
+    }
+
+    public function bundle_variants() {
+        return $this->belongsToMany(Variant::class, 'bundles')->withPivot('price');
     }
 
     public function main_image() {

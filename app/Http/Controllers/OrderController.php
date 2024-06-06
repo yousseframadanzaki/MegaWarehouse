@@ -69,7 +69,7 @@ class OrderController extends Controller
         $company_id = $this->company_id();
         $clients = $this->CommonDataService->GetCompanyClients($company_id);
         $countries = $this->CommonDataService->GetCountries();
-        $products = $this->CommonDataService->GetCompanyProducts($company_id);
+        $products = $this->CommonDataService->GetCompanyProductsData($company_id);
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
         $marketers = $this->CommonDataService->GetCompanyMarketers($company_id);
         return view('Dashboard.Orders.add')->with(compact('clients','countries','products','warehouses','marketers'));

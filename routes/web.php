@@ -24,8 +24,9 @@ use App\Http\Controllers\MarketerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CommonDataController;
 use App\Http\Controllers\StatusController;
-
+use App\Http\Controllers\TestController;
 
 Route::get('/',function (){
     if(auth()->user()->is_admin){
@@ -218,6 +219,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('delete_stock');
 
     Route::get('/package/add', [ProductController::class,'create_package'])
+    ->name('add_package');
+
+    Route::post('/package/add', [ProductController::class,'store_package'])
     ->name('add_package');
 
     Route::get('/products', [ProductController::class,'all'])
@@ -476,4 +480,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->can('view_statuses', ['App\Models\Status']);
 
     Route::get('campaign', [OrderController::class,'show_campaign'])->name('show_campaign');
+
+    Route::get('test', [TestController::class, 'test']);
+    Route::get('product/var/{product_id}', [CommonDataController::class, 'variants']);
 });

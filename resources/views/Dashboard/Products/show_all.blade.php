@@ -191,14 +191,20 @@
                                             <a class="text-break link-dark"
                                                 href="{{ route('show_product', $product->id) }}">{{ $product->name }}</a>
                                         </h5>
-                                        <a class="text-break my-2 d-inline-block"
+                                        @if ($product->is_bundle == 0)
+                                            <a class="text-break my-2 d-inline-block"
                                                 href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
+                                        @else
+                                            <div style="height: 70px"></div>
+                                        @endif
                                     </div>
                                     <div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>المورد</span><span><a class=""
-                                                    href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name }}</a></span>
-                                        </div>
+                                        @if ($product->is_bundle == 0)
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <span>المورد</span><span><a class=""
+                                                        href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name }}</a></span>
+                                            </div>
+                                        @endif
                                         <div class="d-flex justify-content-between" style="font-s">
                                             <span>التصنيف</span><span><a class=""
                                                     href="{{ route('show_category', $product->category_id) }}">{{ $product->category->name }}</a></span>
@@ -208,13 +214,21 @@
                                         <span>السعر</span><span>{{ $product->price }} </span>
                                     </div>
                                     @can('edit', 'App\Models\Product')
-                                        <div class="d-flex flex-row justify-content-between">
-                                            <a class="btn btn-primary d-block mt-2 border-0" title="تعديل المنتج"
-                                                style="width:48%" href="{{ route('edit_product', $product->id) }}">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
+                                        <div class="d-flex flex-row justify-content-around">
+                                            @if ($product->is_bundle == 0)
+                                                <a class="btn btn-primary d-block mt-2 border-0" title="تعديل المنتج"
+                                                    style="width:48%" href="{{ route('edit_product', $product->id) }}">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                            @else
+                                                <a class="btn btn-dark text-white d-block mt-2 border-0" title="باكيدج"
+                                                    style="width:48%; cursor: context-menu;">
+                                                    باكيدج
+                                                    <i class="bi bi-bag"></i>
+                                                </a>
+                                            @endif
                                             <a class="btn btn-primary d-block mt-2 border-0" title="إضافة الى عربة"
-                                                style="width:48%" data-id="{{ $product->id }}" data-bs-toggle="modal"
+                                                style="width:48%;" data-id="{{ $product->id }}" data-bs-toggle="modal"
                                                 data-bs-target="#addToCartModal">
                                                 <i class="bi bi-cart-plus"></i>
                                             </a>
