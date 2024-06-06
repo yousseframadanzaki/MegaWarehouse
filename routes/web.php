@@ -483,14 +483,14 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('campaign/add', [WhatsappController::class,'show_campaign'])
     ->name('show_campaign');
 
-    Route::get('campaign/add', [OrderController::class,'show_campaign'])
-    ->name('show_campaign');
-
     Route::get('whatsapp/points/add', [WhatsappController::class,'add_points'])
     ->name('add_points');
 
     Route::post('whatsapp/points/add', [WhatsappController::class,'store_points'])
     ->name('store_whatsapp_points');
+
+    Route::post('whatsapp/device/add', [WhatsappController::class,'add_device'])
+    ->name('add_whatsapp_device');
 
     Route::get('test', [TestController::class, 'test']);
     Route::get('product/var/{product_id}', [CommonDataController::class, 'variants']);

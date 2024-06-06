@@ -17,4 +17,7 @@ class WhatsappService implements WhatsappServiceInterface
     public function AddPoints($data){
         return $this->whatsapp_crud_repository->add_points($data);
     }
+    public function GetUserPoints($user_id){
+        return $this->whatsapp_crud_repository->get_user_points($user_id);
+    }
 }

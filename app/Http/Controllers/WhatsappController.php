@@ -37,7 +37,7 @@ class WhatsappController extends Controller
         $data['admin_id'] = "$user->id";
         $data['type'] = "add_ponits";
         $data['expire_date'] = Carbon::now()->addDay();
-        // dd($data);
+
         if( $this->WhatsappService->AddPoints($data) ){
             $request->session()->flash('success', 'store_points_success');
             return redirect()->back();
@@ -46,6 +46,32 @@ class WhatsappController extends Controller
     }
     public function show_campaign(Request $request) {
         $orders = $this->OrdersService->GetOrders($request->orders_ids);
-        return view('Dashboard.Orders.campaign', compact('orders'));
+        $user = auth()->user();
+        $user_points = $this->WhatsappService->GetUserPoints($user->id);
+        return view('Dashboard.Orders.campaign', compact('orders','user_points'));
+    }
+    public function add_device(Request $request) {
+
+        // create instance_id
+        $access_token = "6450f3b188e73";
+        $url = "https://whatsbotcloud.com/api/create_instance?access_token=" . $access_token;
+        $headers = array(
+            'Content-Type: application/json'
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_REFERER, $url);
+        curl_setopt($ch, CURLOPT_GET, 1);
+        $result = curl_exec($ch);
+        $result =  explode(',', $result);
+        $array = explode(':', $result[2]);
+        $array[1] = preg_replace('/[^A-Za-z0-9\-]/', '', $array[1]);
+        $instance_id = $array[1];
     }
 }
