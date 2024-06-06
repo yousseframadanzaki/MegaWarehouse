@@ -26,12 +26,8 @@ use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CommonDataController;
 use App\Http\Controllers\StatusController;
-<<<<<<< HEAD
 use App\Http\Controllers\WhatsappController;
-
-=======
 use App\Http\Controllers\TestController;
->>>>>>> 60bebe288fa566939ba2355467eba4fdcc662132
 
 Route::get('/',function (){
     if(auth()->user()->is_admin){
@@ -487,7 +483,14 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('campaign/add', [WhatsappController::class,'show_campaign'])
     ->name('show_campaign');
 
-    Route::get('campaign', [OrderController::class,'show_campaign'])->name('show_campaign');
+    Route::get('campaign/add', [OrderController::class,'show_campaign'])
+    ->name('show_campaign');
+
+    Route::get('whatsapp/points/add', [WhatsappController::class,'add_points'])
+    ->name('add_points');
+
+    Route::post('whatsapp/points/add', [WhatsappController::class,'store_points'])
+    ->name('store_whatsapp_points');
 
     Route::get('test', [TestController::class, 'test']);
     Route::get('product/var/{product_id}', [CommonDataController::class, 'variants']);
