@@ -46,8 +46,32 @@ class WhatsappController extends Controller
     }
     public function show_campaign(Request $request) {
         $orders = $this->OrdersService->GetOrders($request->orders_ids);
-        $devices = $this->WhatsappService->GetDevices();
         $user = auth()->user();
+        $devices = $this->WhatsappService->GetDevices($user->id);
+        foreach($devices as $device){
+            $access_token = "6450f3b188e73";
+            $headers = array(
+                'Content-Type: application/json'
+            );
+            $url = 'https://whatsbotcloud.com/api/get_qrcode?instance_id=' . $device->instance_id . '&access_token=' . $access_token;
+        
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_REFERER, $url);
+            curl_setopt($ch, CURLOPT_HTTPGET, 1);
+            $result = curl_exec($ch);
+            $decoded_result = json_decode($result, true);
+            if (isset($decoded_result['status']) && $decoded_result['status'] == 'error' && isset($decoded_result['message']) && $decoded_result['message'] == 'instance id has been used') {
+                $device['active'] = '1';
+            }
+            curl_close($ch);
+        }
         $user_points = $this->WhatsappService->GetUserPoints($user->id);
         return view('Dashboard.Orders.campaign', compact('orders','user_points','devices'));
     }
@@ -89,7 +113,6 @@ class WhatsappController extends Controller
         $headers = array(
             'Content-Type: application/json'
         );
-    
         $url = 'https://whatsbotcloud.com/api/get_qrcode?instance_id=' . $instance_id . '&access_token=' . $access_token;
     
         $ch = curl_init();

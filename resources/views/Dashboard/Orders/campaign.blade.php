@@ -2,23 +2,33 @@
 
 @section('content')
 <style>
-#loading {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgb(0, 0, 0);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      -webkit-animation: spin 1s ease-in-out infinite;
-    }
-    @keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
-    }
-    @-webkit-keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
+.loader {
+        width: 45px;
+        aspect-ratio: 1;
+        display: flex;
+        margin-right: 40%;
+        color: #582b8c;
+        border: 4px solid;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle 5px, currentColor 95%, #0000),
+            linear-gradient(currentColor 50%, #0000 0) 50%/4px 60% no-repeat;
+        animation: l1 2s infinite linear;
     }
 
+    .loader:before {
+        content: "";
+        flex: 1;
+        background: linear-gradient(currentColor 50%, #0000 0) 50%/4px 80% no-repeat;
+        animation: inherit;
+    }
+
+    @keyframes l1 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
     label {
         font-weight: bold;
     }
@@ -61,12 +71,9 @@
         <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
             <div class="modal-body text-center">
                 <h3 style="color: #5b9bd1;">برجاء مسح ال qr code</h3>
-                <form method='post'>
+                <div id="message" style="display:none;"></div>
+                    <div class="loader" style="display: none"></div>
                     <img id="whatsapp_qrCode" src='' width='310' title="فحص" />
-                </form>
-                <button type="button" id="close_modal" class="btn btn-danger">
-                    <i class="fa fa-xmark"></i>
-                </button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -126,7 +133,7 @@
                                     </td>
                                     <td>
                                         @if ($device->active == '1')
-                                            <h5><span class="text-success">مفعل</span></h5>
+                                            <h5><span class="text-success active_word">مفعل</span></h5>
                                         @else
                                             <h5><span class="text-danger">غير مفعل</span></h5>
                                         @endif
@@ -234,41 +241,36 @@
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    $("#submitButton").click(function(ev) {
-            var form = $("#new_device_form");
-            var url = form.attr('action');
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function(data) {
-
-                    // Ajax call completed successfully
-                    msg = JSON.parse(data);
-
-                    document.getElementById("alert_message").style.display = "block";
-                    document.getElementById("alert_message").classList.add(msg['type']);
-                    document.getElementById("alert_message").innerHTML = msg['message'];
-
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 3000);
-                },
-                error: function(data) {
-                    // Some error in ajax call
-                    alert("some Error");
-                }
-            });
-        });
         function show_qr_code(instance_id) {
             var instance_id = instance_id;
+            $('.loader').show();
+            $('#whatsapp_qrCode').hide();
             $.ajax({
-                type: 'GET',
+                type: 'get',
                 url: `/api/campaign/get_qr_code/${instance_id}`,
                 dataType: "json",
-            }).then((data) => {
-                $('#whatsapp_qrCode').attr('src', data);
-            })
+            }).then((response) => {
+                data = JSON.parse(response);
+                    if (data['status'] == 'success') {
+                        $('.loader').hide();
+                        $('#whatsapp_qrCode').show();
+                        document.getElementById("whatsapp_qrCode").src = data['base64'];
+                    }
+                    if (data['status'] == 'error' && data['message'] ==
+                        'instance id has been used') {
+                        show_error('هذا الرقم مفعل بالفعل!');
+                    }
+            });
         };
+        function show_error(message) {
+            var template = `
+                <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                    <strong>${message}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `;
+            $('#message').append(template);
+            $('#message').fadeIn();
+        }
 </script>
 @endsection

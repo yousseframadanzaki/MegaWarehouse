@@ -6,6 +6,6 @@ interface WhatsappServiceInterface
 {
     public function AddPoints($data);
     public function GetUserPoints($user_id);
-    public function GetDevices();
+    public function GetDevices($user_id);
     public function AddDevice($data);
 }
