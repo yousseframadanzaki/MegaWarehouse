@@ -63,8 +63,8 @@ class CartRepository implements CartRepositoryInterface{
 
     private function exists($id, $cart)
     {
-        for ($i = 0; $i < count($cart); $i++) {
-            if ($cart[$i]['variant']->id == $id) {
+        foreach ($cart as $i => $item) {
+            if ($item['variant']->id == $id) {
                 return $i;
             }
         }

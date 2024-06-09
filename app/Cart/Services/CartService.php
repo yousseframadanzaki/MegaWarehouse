@@ -13,9 +13,25 @@ class CartService implements CartServiceInterface{
 
     public function AddToCart($item)
     {
-        $variant = $this->CommonDataService->GetVariant($item['variant_id']);
-        $item['variant'] = $variant;
-        return $this->cart_repository->add_to_cart($item);
+        if ($item['is_bundle'] == 1) {
+            $result = null;
+            foreach ($item['variant_id'] as $id) {
+                $variant = $this->CommonDataService->GetVariant($id);
+                $bundle = $variant->bundles->find($item['product_id']);
+                $variant['name'] = "( {$variant->product->name} ) - ( $variant->name )";
+                $variant['price'] = $bundle->pivot->price;
+                $variant['product']['name'] = $bundle->name;
+                $variant['product']['marketer_commission'] = $bundle->marketer_commission;
+                $item['variant'] = $variant;
+
+                $result = $this->cart_repository->add_to_cart($item);
+            }
+            return $result;
+        } else {
+            $variant = $this->CommonDataService->GetVariant($item['variant_id']);
+            $item['variant'] = $variant;
+            return $this->cart_repository->add_to_cart($item);
+        }
     }
 
     public function UpdateCart($item)

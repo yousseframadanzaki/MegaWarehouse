@@ -438,30 +438,50 @@
         });
     });
 
+        let is_bundle = 0;
+        let bundle_variants_ids = [];
         $("#product_id").change(function () {
             product_id = $(this).val();
+            is_bundle = $(this).find(':selected').attr('is_bundle');
             $("#variant_id").html("");
+            bundle_variants_ids = [];
+
+            if (is_bundle == 1) {
+                $('#variant_id').parent().hide();
+                $('#addToCartModal table').hide();
+            }
+            else {
+                $('#variant_id').parent().show();
+                $('#addToCartModal table').show();
+            }
+
             $.ajax({
                 url:`/api/product/${product_id}/variants`,
                 method:`GET`,
                 dataType:'text'
             }).then(response =>{
                 data = JSON.parse(response);
-                $("#variant_id").append(`<option value="">اختار المتغير</option>`)
-                data.forEach(element => {
-                    $("#variant_id").append(`<option data-hide="${element.hide}" ${data.length == 1 ? 'selected' : ''} data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
-                })
-                $('#variant_id').select2({
-                    dropdownParent: $('#addToCartModal')
-                });
-                $("#variants").fadeIn();
+                if (is_bundle == 0) {
+                    $("#variant_id").append(`<option value="">اختار المتغير</option>`)
+                    data.forEach(element => {
+                        $("#variant_id").append(`<option data-hide="${element.hide}" ${data.length == 1 ? 'selected' : ''} data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                    })
+                    $('#variant_id').select2({
+                        dropdownParent: $('#addToCartModal')
+                    });
+                    $("#variants").fadeIn();
+                } else {
+                    data.forEach(element => {
+                        bundle_variants_ids.push(element.id);
+                    })
+                }
             })
         })
 
     function add_cart_items(items) {
         $("#variants_table tbody").html("");
         var warehouse_select = $("#warehouse_select").html();
-        items.forEach(function(item, i) {
+        $.each(items, function(i, item) {
             variant = item['variant'];
             var template = `
                     <tr id="${variant.id}">
@@ -595,8 +615,9 @@
 
     $(".add_to_cart_btn").click(function(e) {
         e.preventDefault();
-        var variant_id = $('#variant_id').val();
+        var variant_id = (is_bundle == 1) ? bundle_variants_ids : $('#variant_id').val();
         var warehouse_id = $('#warehouse_id').val();
+        var product_id = $('#product_id').val();
         var quantity = $('#quantity').val();
         var confirm_order = $('#variant_id option:selected').data("confirm");
         var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
@@ -621,6 +642,8 @@
         }
 
         const item = {
+            product_id,
+            is_bundle,
             variant_id,
             warehouse_id,
             quantity
@@ -749,7 +772,7 @@
         $.ajax({
             url: `/api/cart/${variant_id}/delete`,
             method: 'POST',
-            dataType: 'json'
+            dataType: 'text'
         }).then(data => {
             if (data) {
                 $(`tr#${variant_id}`).fadeOut();

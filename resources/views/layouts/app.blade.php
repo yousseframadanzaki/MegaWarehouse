@@ -244,8 +244,11 @@
                                             <li class="rounded "><a href="{{ route('add_product') }}" class="text-white"><i
                                                         class="bi bi-plus-circle-fill"></i> أضافة منتج جديد</a></li>
                                         @endcan
-                                        <li class="rounded "><a href="{{ route('add_package') }}" class="text-white"><i
-                                            class="bi bi-plus"></i> أضافة باكيدج للمنتجات</a></li>
+
+                                        @can('add_package', 'App\Models\Product')
+                                            <li class="rounded "><a href="{{ route('add_package') }}" class="text-white"><i
+                                                class="bi bi-plus"></i> أضافة باكيدج للمنتجات</a></li>
+                                        @endcan
                                     </ul>
                                 </div>
                             </li>
