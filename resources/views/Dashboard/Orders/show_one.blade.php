@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ __('show_order_title') }}
+@endsection
+
 @section('content')
 
 <style>

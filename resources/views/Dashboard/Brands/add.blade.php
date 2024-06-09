@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ __('add_brand_title') }}
+@endsection
+
 @section('content')
     <div class="p-3">
         <div class="row">

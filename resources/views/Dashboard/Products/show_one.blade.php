@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ ($product->is_bundle == 0) ? __('show_product_title') : __('show_package_title') }}
+@endsection
+
 @section('content')
 
 <style>
