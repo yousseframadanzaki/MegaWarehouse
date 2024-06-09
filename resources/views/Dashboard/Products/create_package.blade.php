@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('add_package_title') }}
+@endsection
+
 @section('content')
 <style>
     .hover-danger:hover {
@@ -67,9 +72,9 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-4 mt-4 @error('product_info.category_id') has-error @enderror">
-                        <label class="form-label">تصنيف<span class="text-danger">*</span></label>
+                        <label class="form-label">منتج<span class="text-danger">*</span></label>
                         <select class="form-control product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]" id="product_info.category_id">
-                            <option value="">اختار تصنيف </option>
+                            <option value="">اختار منتج </option>
                             @foreach ($data['categories'] as $cat)
                             <option @if ($cat->id == old('product_info.category_id')) selected @endif value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                             @endforeach
@@ -93,6 +98,35 @@
                         <label class="form-check-label">السماح باكمال الطلب لو المخزون غير كافى</label>
                     </div>
                 </div>
+
+                <div class="row mt-5 mb-4">
+                    <h3 class="mb-4">منتجات الباكيدج <i class="bi bi-list-ul"></i></h3>
+                    <div class="col-12">
+                        <div class="options">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary mt-3" id="add_option_btn">إضافة منتج</button>
+                        </div>
+                    </div>
+                
+                </div>
+
+                <div class="row">
+                    <table class="table table-hover fs-4" id="variants_table" style="display: none">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 320px">المنتج</th>
+                                <th scope="col" style="width: 320px">المتغير</th>
+                                <th scope="col">السعر</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="row my-5">
                     <div class="col-md-12">
                         <label class="form-label">وصف الباكيدج</label>
@@ -114,33 +148,6 @@
                 <div class="input-images" style="cursor:pointer;"></div>
             </div>
 
-<div class="row mb-5">
-    <h3 class="mb-4">تصنيفات الباكيدج <i class="bi bi-list-ul"></i></h3>
-    <div class="col-12">
-        <div class="options">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <button class="btn btn-primary mt-3" id="add_option_btn">إضافة تصنيف</button>
-        </div>
-    </div>
-
-</div>
-
-<div class="row mb-3">
-    <table class="table table-hover fs-4" id="variants_table" style="display: none">
-        <thead>
-            <tr>
-                <th scope="col" style="width: 320px">المنتج</th>
-                <th scope="col" style="width: 320px">المتغير</th>
-                <th scope="col">السعر</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
 
 <button type="submit" class="btn btn-primary btn-lg add_product_btn"> إضافة باكدج <i class="bi bi-plus-square"></i></button>
 </div>

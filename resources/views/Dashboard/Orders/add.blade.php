@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('add_order_title') }}
+@endsection
+
 @section('content')
 <style>
     .remove_variant {

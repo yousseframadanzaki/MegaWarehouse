@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ __('orders_title') }}
+@endsection
+
 @section('content')
 <style>
 #loading {

@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('brands_title') }}
+@endsection
+
 <style>
     .brand-logo{
         width: 200px;

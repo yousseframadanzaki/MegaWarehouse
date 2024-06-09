@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('products_title') }}
+@endsection
+
 @section('content')
     <style>
         .product-main {

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ __('add_whatsapp_points_title') }}
+@endsection
+
 @section('content')
 <style>
 .loader {

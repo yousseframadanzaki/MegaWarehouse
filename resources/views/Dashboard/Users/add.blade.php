@@ -1,5 +1,9 @@
 @extends('layouts.app')
- 
+
+@section('title')
+    {{ __('add_user_title') }}
+@endsection
+
 @section('content')
 
 

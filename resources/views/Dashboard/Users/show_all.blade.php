@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('users_title') }}
+@endsection
+
 <style>
     .user-header-avatar{
         width: 60px;

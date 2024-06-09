@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('templates_title') }}
+@endsection
+
 @section('content')
 <div class="p-3">
     <div class="row">

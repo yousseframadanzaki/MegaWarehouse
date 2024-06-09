@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+@section('title')
+    {{ __('transactions_title') }}
+@endsection
+
 @section('content')
     <style>
         label {
