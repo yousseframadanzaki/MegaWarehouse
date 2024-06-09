@@ -138,5 +138,7 @@
     "value_required_min": "الرجاء ادخال قيمة لا تقل عن صفر",
     "payment_type_id_required": "الرجاء اختيار نوع العملية",
     "payment_category_required": "الرجاء اختيار تصنيف العملية",
-    "Transaction_added_successfully": "تم إضافة العملية بنجاح"
+    "Transaction_added_successfully": "تم إضافة العملية بنجاح",
+    "store_points_success":"تمت اضافة النقاط بنجاح",
+    "store_points_error":"خطأ فى عملية اضافة النقاط"
 }

@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
-use App\Models\Client;
-use App\Models\Order;
-use App\Models\OrderItem;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Templates\Interfaces\TemplateServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
@@ -113,11 +110,6 @@ class OrderController extends Controller
     public function scan_order($order_id){
         $order = $this->OrdersService->GetOrder($order_id);
         return view('Dashboard.Orders.scan_order')->with(compact('order'));
-    }
-
-    public function show_campaign(Request $request) {
-        $orders = $this->OrdersService->GetOrders($request->orders_ids);
-        return view('Dashboard.Orders.campaign', compact('orders'));
     }
 
     public function change_status(Request $request,$order_id) {

@@ -319,6 +319,9 @@
                                                     class="bi bi-gear"></i>
                                                 اعدادات الحالات </a></li>
                                     @endcan
+                                        <li class="rounded"><a href="{{ route('add_points') }}" class="text-white"> <i
+                                            class="bi bi-plus"></i>
+                                        اضافة نقاط (واتساب) </a></li>
                                 </ul>
                             </div>
                         </li>

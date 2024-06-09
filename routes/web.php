@@ -26,6 +26,7 @@ use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CommonDataController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\TestController;
 
 Route::get('/',function (){
@@ -480,7 +481,17 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('all_statuses')
     ->can('view_statuses', ['App\Models\Status']);
 
-    Route::get('campaign', [OrderController::class,'show_campaign'])->name('show_campaign');
+    Route::get('campaign/add', [WhatsappController::class,'show_campaign'])
+    ->name('show_campaign');
+
+    Route::get('whatsapp/points/add', [WhatsappController::class,'add_points'])
+    ->name('add_points');
+
+    Route::post('whatsapp/points/add', [WhatsappController::class,'store_points'])
+    ->name('store_whatsapp_points');
+
+    Route::post('whatsapp/device/add', [WhatsappController::class,'add_device'])
+    ->name('add_whatsapp_device');
 
     Route::get('test', [TestController::class, 'test']);
     Route::get('product/var/{product_id}', [CommonDataController::class, 'variants']);
