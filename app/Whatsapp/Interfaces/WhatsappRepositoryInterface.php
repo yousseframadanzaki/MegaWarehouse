@@ -5,4 +5,6 @@ namespace App\Whatsapp\Interfaces;
 interface WhatsappRepositoryInterface{
     public function add_points($data);
     public function get_user_points($user_id);
+    public function get_devices();
+    public function add_device($data);
 }

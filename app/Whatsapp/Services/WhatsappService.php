@@ -20,4 +20,10 @@ class WhatsappService implements WhatsappServiceInterface
     public function GetUserPoints($user_id){
         return $this->whatsapp_crud_repository->get_user_points($user_id);
     }
+    public function GetDevices(){
+        return $this->whatsapp_crud_repository->get_devices();
+    }
+    public function AddDevice($data){
+        return $this->whatsapp_crud_repository->add_device($data);
+    }
 }

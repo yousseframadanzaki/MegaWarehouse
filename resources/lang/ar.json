@@ -141,6 +141,7 @@
     "Transaction_added_successfully": "تم إضافة العملية بنجاح",
     "store_points_success":"تمت اضافة النقاط بنجاح",
     "store_points_error":"خطأ فى عملية اضافة النقاط",
+<<<<<<< HEAD
     
     "homepage_title": "الرئيسية",
     "users_title": "جميع الأعضاء",
@@ -199,5 +200,8 @@
     "show_warehouse_title": "عرض المخزن",
     "stock_title": "عمليات الخصم و الإضافة",
     "add_stock_title": "إضافة مخزون",
-    "move_stock_title": "نقل مخزون"
+    "move_stock_title": "نقل مخزون",
+
+    "add_device_success": "تم اضافة الجهاز بنجاح",
+    "add_device_error": "خطأ فى عملية اضافة الجهاز"
 }

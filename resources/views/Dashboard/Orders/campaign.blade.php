@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="d-flex flex-column align-items-center w-100">
-                <button type="button" class="btn btn-primary">إضافة جهاز</button>
+                <button type="submit" class="btn btn-primary">إضافة جهاز</button>
             </div>
             </form>
         </div>
@@ -60,6 +60,24 @@
 </div>
 <!-- /.modal -->
 
+<div class="modal fade hidden-print" id="ActivatePhone" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 350px;">
+        <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
+            <div class="modal-body text-center">
+                <h3 style="color: #5b9bd1;">برجاء مسح ال qr code</h3>
+                <form method='post'>
+                    <img id="whatsapp_qrCode" src='' width='310' title="فحص" />
+                </form>
+                <button type="button" id="close_modal" class="btn btn-danger">
+                    <i class="fa fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
@@ -68,16 +86,17 @@
             </ul>
         </div>
         <div class="row">
-
-            <div class="col-12 mt-5 mb-4">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddDeviceModal">إضافة جهاز</button>
+            <div class="d-flex justify-content-between my-2">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddDeviceModal">إضافة جهاز</button>
+                    <p data-expire="{{ $user_points->expire_date }}" class="fw-bold">
+                        رصيد نقاط الواتساب: {{ $user_points->points }} نقطة
+                    </p>
             </div>
-
             <div class="col-12 mb-4">
                 <div class="card shadow-sm p-3">
                     <div class="d-flex justify-content-between my-2">
                         <h3>الأجهزة</h3>
-                        <p data-expire="{{ $user_points->expire_date }}" class="fw-bold">رصيد نقاط الواتساب: {{ $user_points->points }} نقطة</p>
+                        <span>تاريخ الانتهاء: {{ date('Y-m-d h:i:s A', strtotime($user_points->expire_date)) }}</span>
                     </div>
                     <div class="table-responsive px-0">
                         <table class="mt-3 table table-hover" id="orders" style="width: 100%;">
@@ -95,11 +114,34 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($devices as $device)
+                                <tr>
+                                    <td class="fw-bold">#{{ $device->id }}</td>
+                                    <td>{{ $device->name }}</td>
+                                    <td>0{{ $device->phone }}</td>
+                                    <td>{{ $device->instance_id }}</td>
+                                    <td>
+                                        @if ($device->active != '1')
+                                            <a href="#" id="actv" data-instance="{{ $device->instance_id }}" data-bs-toggle="modal"
+                                                data-bs-target="#ActivatePhone" class="btn btn-primary" onclick="show_qr_code('{{ $device->instance_id }}')">
+                                                تفعيل الرقم <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                        @endif 
+                                    </td>
+                                    <td>
+                                        @if ($device->active == '1')
+                                            <h5><span class="text-success">مفعل</span></h5>
+                                        @else
+                                            <h5><span class="text-danger">غير مفعل</span></h5>
+                                        @endif
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="fw-bold">حذف <i class="text-danger bi bi-trash"></i></td>
+                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
-                    </div>
-                    <div dir="ltr" class="d-flex justify-content-center">
-                        {{-- {!! $orders->appends($_GET)->links() !!} --}}
                     </div>
                 </div>
             </div>
@@ -222,5 +264,15 @@
                 }
             });
         });
+        function show_qr_code(instance_id) {
+            var instance_id = instance_id;
+            $.ajax({
+                type: 'GET',
+                url: `/api/campaign/get_qr_code/${instance_id}`,
+                dataType: "json",
+            }).then((data) => {
+                $('#whatsapp_qrCode').attr('src', data);
+            })
+        };
 </script>
 @endsection
