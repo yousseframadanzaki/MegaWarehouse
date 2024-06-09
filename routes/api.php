@@ -16,6 +16,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\OrderNotesController;
 use App\Http\Controllers\admin\CompnayController;
+use App\Http\Controllers\WhatsappController;
 
 /*
     |--------------------------------------------------------------------------
@@ -75,3 +76,4 @@ Route::POST('statuses/related_status/{related_status}/remove', [StatusController
 
 Route::get('category/{category}/payment_types', [AccountingController::class, 'get_payments']);
 Route::get('users/company/role_type/{role_type}', [AccountingController::class, 'get_company_users_by_role_type']);
+Route::get('campaign/get_qr_code/{instance_id}',[WhatsappController::class, 'get_qr_code']);

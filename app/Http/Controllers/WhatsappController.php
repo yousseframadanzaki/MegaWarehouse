@@ -46,13 +46,16 @@ class WhatsappController extends Controller
     }
     public function show_campaign(Request $request) {
         $orders = $this->OrdersService->GetOrders($request->orders_ids);
+        $devices = $this->WhatsappService->GetDevices();
         $user = auth()->user();
         $user_points = $this->WhatsappService->GetUserPoints($user->id);
-        return view('Dashboard.Orders.campaign', compact('orders','user_points'));
+        return view('Dashboard.Orders.campaign', compact('orders','user_points','devices'));
     }
     public function add_device(Request $request) {
+        $data = $request->except('_token');
+        $user = auth()->user();
+        $data['user_id'] = $user->id;
 
-        // create instance_id
         $access_token = "6450f3b188e73";
         $url = "https://whatsbotcloud.com/api/create_instance?access_token=" . $access_token;
         $headers = array(
@@ -67,11 +70,40 @@ class WhatsappController extends Controller
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_REFERER, $url);
-        curl_setopt($ch, CURLOPT_GET, 1);
+        curl_setopt($ch, CURLOPT_HTTPGET, 1);
         $result = curl_exec($ch);
         $result =  explode(',', $result);
         $array = explode(':', $result[2]);
         $array[1] = preg_replace('/[^A-Za-z0-9\-]/', '', $array[1]);
         $instance_id = $array[1];
+        $data['instance_id'] = $instance_id;
+
+        if( $this->WhatsappService->AddDevice($data)){
+            $request->session()->flash('success', 'add_device_success');
+            return redirect()->back();
+        }
+        return redirect()->back()->with(['error'=>'add_device_error','old_data'=>($request->except('token'))])->withInput();
+    }
+    public function get_qr_code($instance_id){
+        $access_token = "6450f3b188e73";
+        $headers = array(
+            'Content-Type: application/json'
+        );
+    
+        $url = 'https://whatsbotcloud.com/api/get_qrcode?instance_id=' . $instance_id . '&access_token=' . $access_token;
+    
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_REFERER, $url);
+        curl_setopt($ch, CURLOPT_HTTPGET, 1);
+        $result = curl_exec($ch);
+        echo json_encode($result);
+        exit();
     }
 }
