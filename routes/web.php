@@ -219,7 +219,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('delete_stock');
 
     Route::get('/package/add', [ProductController::class,'create_package'])
-    ->name('add_package');
+    ->name('add_package')
+    ->can('add_package', 'App\Models\Product');
 
     Route::post('/package/add', [ProductController::class,'store_package'])
     ->name('add_package');

@@ -101,13 +101,23 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
         return Product::where(['company_id'=>$company_id])->get();
     }
 
-    public function get_product_variants($product_id){
-        $user = auth()->user();
-        $variants = Variant::with('product')->where('product_id', $product_id)->get();
-        $hide = $this->orderPolicy->hide_quantity($user) ? 1 : 0;
-        $variants = $variants->map(function ($variant) use ($hide) {
-        return array_merge($variant->toArray(), ['hide' => $hide]);
-        });
+    public function get_product_variants($product_id, $is_bundle = 0){
+        if ($is_bundle == 1) {
+            $product = Product::find($product_id);
+            $variants = $product->bundle_variants->map(function($item) use ($product) {
+                $item['name']  = "( {$item->product->name} ) - ( $item->name )";
+                $item['price'] = $item->pivot->price;
+                $item['product'] = $product->first();
+                return $item;
+            });
+        } else {
+            $user = auth()->user();
+            $variants = Variant::with('product')->where('product_id', $product_id)->get();
+            $hide = $this->orderPolicy->hide_quantity($user) ? 1 : 0;
+            $variants = $variants->map(function ($variant) use ($hide) {
+                return array_merge($variant->toArray(), ['hide' => $hide]);
+            });
+        }
         return $variants;
     }
 

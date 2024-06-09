@@ -31,15 +31,10 @@ class CommonDataController extends Controller
 
     public function variants($product_id) {
         $product = $this->ProductCrudService->GetProduct($product_id);
-        if ($product->is_bundle == 0)
-            return response()->json($this->CommonDataService->GetProductVariants($product_id));
-        else
-            return response()->json($product->bundle_variants->map(function($item) use ($product) {
-                $item['name']  = "( {$item->product->name} ) - ( $item->name )";
-                $item['price'] = $item->pivot->price;
-                $item['product'] = $product->first();
-                return $item;
-            }));
+        if ($product->is_bundle == 1)
+            return response()->json($this->CommonDataService->GetProductVariants($product_id, 1));
+
+        return response()->json($this->CommonDataService->GetProductVariants($product_id));
     }
 
     public function attributes($product_id) {

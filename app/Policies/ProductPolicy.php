@@ -66,4 +66,12 @@ class ProductPolicy
         }
         return true;
     }
+
+    public function add_package(User $user) {
+        if(!$user->role->permissions->contains('slug','add_package')){
+            return false;
+        }
+
+        return true;
+    }
 }

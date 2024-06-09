@@ -23,6 +23,10 @@ class Variant extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function bundles() {
+        return $this->belongsToMany(Product::class, 'bundles')->withPivot('price');
+    }
+
     public function attributes() {
         return $this->belongsToMany(Attribute::class,'variants_attributes','variant_id','attribute_id')->withPivot('value');
     }
