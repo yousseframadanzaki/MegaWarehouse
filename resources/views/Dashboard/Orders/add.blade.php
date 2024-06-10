@@ -141,8 +141,8 @@
                 <div class="col-12">
                 <h1 class="text-center mt-4 mb-5">إضافة أوردر جديد</h1>
                 <div class="row">
-                    <h4>بيانات العميل</h4>
-                    <div class="col-md-4 mt-4">
+                    <h4 class="mb-4">بيانات العميل</h4>
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">رقم التليفون</label>
                         <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('client.phone_1') is-invalid @enderror form-control" autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
                         @error('client.phone_1')
@@ -152,7 +152,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">الاسم </label>
                         <input type="text" class="form-control @error('client.name') is-invalid @enderror" name="client[name]" id="name" value="{{ old('client.name') }}">
                         @error('client.name')
@@ -162,7 +162,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">عنوان <i class="bi bi-map-marker">
                             </i></label>
                         <input type="text" class="form-control @error('client.address') is-invalid @enderror" id="address" name="client[address]" value="{{ old('client.address') }}">
@@ -173,7 +173,7 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">رقم التليفون 2 </label>
                         <input type="text" class="form-control @error('client.phone_2') is-invalid @enderror" name="client[phone_2]" id="phone_2" value="{{ old('client.phone_2') }}">
                         @error('client.phone_2')
@@ -183,27 +183,27 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">ملاحظة <i class="bi bi-map-marker">
                             </i></label>
                         <input type="text" class="form-control @error('clientnote') is-invalid @enderror" id="note" name="client[note]" value="{{ old('client.note') }}">
                     </div>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                         <input type="text" class="form-control" name="client[links][facebook]" value="{{ old('client.links.facebook') }}">
                     </div>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">لينك انستجرام <i class="bi bi-instagram"> </i></label>
                         <input type="text" class="form-control" name="client[links][instagram]" value="{{ old('client.links.instagram') }}">
                     </div>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
                         <input type="text" class="form-control" name="client[links][tiktok]" value="{{ old('client.links.tiktok') }}">
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label"> الدولة </label>
                         <select id="country-select" class="form-select @error('client.country_id') is-invalid @enderror" aria-label="Default select example" name="client[country_id]">
                             <option value="">اختار</option>
@@ -217,7 +217,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">المدينة </label>
                         <select id="city-select" class="form-select @error('client.city_id') is-invalid @enderror" aria-label="Default select example" name="client[city_id]">
 
@@ -229,7 +229,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label ">المنطقة </label>
                         <select id="area-select" class="form-select @error('client.area_id') is-invalid @enderror" aria-label="Default select example" name="client[area_id]">
 
@@ -240,14 +240,14 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col-md-4 mt-4">
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">سعر الشحن</label>
                         <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost" name="client[delivery_cost]" value="{{ old('client.delivery_cost') }}">
                     </div>
                 </div>
                 <div class="row mt-5">
                     <h4>المسوق</h4>
-                    <div class="col-md-4">
+                    <div class="col-md-4 mt-3">
 
                         <select id="marketer-select" class="form-select @error('marketer_id') is-invalid @enderror" name="marketer_id">
                             <option value="">اختار</option>

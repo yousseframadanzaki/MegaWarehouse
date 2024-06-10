@@ -151,15 +151,15 @@
             <div class="card shadow-sm p-3" >
                 <form method="GET" action="{{route('all_orders')}}" id="search">
                     <div class="row">
-                        <div class="col-12 mt-4">
+                        <div class="col-12 my-4">
                             <h3 class="text-center">البحث عن أوردرات</h3>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم الأوردر</label>
                             <input class="form-control" name="order_code" id=""
                                 value="{{ Request::get('order_code') }}">
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">العميل</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار العميل</option>
@@ -171,7 +171,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم التليفون</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار رقم التليفون</option>
@@ -186,7 +186,7 @@
 
                         </div>
 
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المدينة</label>
                             <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id"
                                 id="city_id">
@@ -196,7 +196,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المنطقة</label>
                             <select class="form-select product_info"  name="area_id"
                                 id="area_id">
@@ -204,7 +204,7 @@
 
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">الحالة</label>
                             <select class="form-select product_info js-example-basic-multiple" name="status_id" multiple="multiple">
                                 <option value="">اختار الحالة</option>
@@ -218,7 +218,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المسوق</label>
                             <select class="form-select product_info" name="marketer_id">
                                 <option value="">اختار المسوق</option>
@@ -227,7 +227,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المنتج</label>
                             <select class="form-select product_info" name="product_id" id="product_id">
                                 <option value="">اختار المنتج</option>
@@ -236,7 +236,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المتغير</label>
                             <select class="form-select product_info" name="variant_id" id="variant_id">
                                 <option value="">اختار المتغير</option>
@@ -246,17 +246,17 @@
 
                             </div>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">تاريخ من</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">تاريخ الى</label>
                             <input class="form-control datetimeplugin" name="date_to" id=""
                                 value="{{ Request::get('date_to') }}">
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">شركة الشحن</label>
                             <select class="form-select product_info" name="shipping_company_id">
                                 <option value="">اختار شركة الشحن</option>
@@ -265,7 +265,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم البوليصة</label>
                             <input class="form-control" name="waybill" id=""
                                 value="{{ Request::get('waybill') }}">
@@ -291,25 +291,25 @@
                 </div>
             @endif
 
-                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row align-items-center">
+                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-wrap flex-row align-items-center">
                     @can('edit_change_status','App\\Models\Order')
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
                     </div>
                     @endcan
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
                     </div>
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <form method="POST" action="{{route('print_labels')}}" id="print_label">
                             @csrf
                         <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                         </form>
                     </div>
-                    <div class="me-2" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
+                    <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
                         <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
                     </div>
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
                             <button type="submit" disabled class="btn btn-warning"> واتساب <i class="bi bi-whatsapp"></i></div>
                         </form>
