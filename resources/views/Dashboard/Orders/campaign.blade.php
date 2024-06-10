@@ -92,6 +92,7 @@
                 <li><a class="link-dark" href="{{ route('all_orders') }}">الأوردرات</a></li>
             </ul>
         </div>
+        <div id="mess" style="display: none;"></div>
         <div class="row">
             <div class="d-flex justify-content-between my-2">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddDeviceModal">إضافة جهاز</button>
@@ -115,14 +116,12 @@
                                     <th>كود الواتساب</th>
                                     <th>تفعيل</th>
                                     <th>الحالة</th>
-                                    <th>إعادة تفعيل</th>
-                                    <th>استخدام</th>
                                     <th>حذف</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($devices as $device)
-                                <tr>
+                                <tr data-id="{{$device->id}}">
                                     <td class="fw-bold">#{{ $device->id }}</td>
                                     <td>{{ $device->name }}</td>
                                     <td>0{{ $device->phone }}</td>
@@ -142,9 +141,13 @@
                                             <h5><span class="text-danger">غير مفعل</span></h5>
                                         @endif
                                     </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="fw-bold">حذف <i class="text-danger bi bi-trash"></i></td>
+                                    <td><div data-id="{{ $device->id }}" class="badge p-2 remove_device" style="background-color: #6e35ae;font-size: 14px;cursor: pointer;">
+                                            <span class="icon-class">
+                                                <i class="bi bi-trash fw-bold">
+                                                    </i>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -180,13 +183,13 @@
 
                             <div class="col-12 mt-4">
                                 <label class="form-label"> من </label>
-                                <input type="number" class="form-control" id=""
+                                <input type="number" class="form-control" id="from"
                                     value="" placeholder="الحد الأدني 10 ثواني">
                             </div>
 
                             <div class="col-12 mt-4">
                                 <label class="form-label"> إلي </label>
-                                <input type="number" class="form-control" id=""
+                                <input type="number" class="form-control" id="to"
                                     value="" placeholder="الحد الأدني 20 ثانية">
                             </div>
                         </div>
@@ -245,6 +248,47 @@
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+        function formatDateTime(date) {
+            const dateOptions = { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit' 
+            };
+            const timeOptions = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true 
+            };
+
+        const formattedDate = date.toLocaleDateString('en-US', dateOptions);
+        const formattedTime = date.toLocaleTimeString('en-US', timeOptions);
+        return `${formattedDate} ${formattedTime}`;
+    };
+    $(document).ready(function() {
+        let currentDateTime = new Date();
+        let formattedDateTime = formatDateTime(currentDateTime);
+        $('.datetimeplugin').val(formattedDateTime);
+        $('#from').val('10');
+        $('#to').val('20');
+    });
+    $('.remove_device').click(function() {
+        device_id = $(this).attr('data-id');
+        token = $("#token").val();
+        $.ajax({
+            type: 'POST',
+            url: `/api/campaign/${device_id}/delete_device`,
+            dataType: "json",
+            data: {
+                token
+            }
+        }).then((response) => {
+            data = JSON.parse(response);
+            if (data) {
+                $(`tr[data-id="${device_id}"]`).remove();
+                show_success('تمت حذف الجهاز بنجاح');
+            }
+        });
+    });
         function show_qr_code(instance_id) {
             var instance_id = instance_id;
             $('.loader').show();
@@ -266,6 +310,16 @@
                     }
             });
         };
+        function show_success(message) {
+            var template = `
+                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                    <strong>${message}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                `;
+            $('#mess').append(template);
+            $('#mess').fadeIn();
+        };
         function show_error(message) {
             var template = `
                 <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
@@ -275,6 +329,6 @@
                 `;
             $('#message').append(template);
             $('#message').fadeIn();
-        }
+        };
 </script>
 @endsection

@@ -26,4 +26,7 @@ class WhatsappService implements WhatsappServiceInterface
     public function AddDevice($data){
         return $this->whatsapp_crud_repository->add_device($data);
     }
+    public function DeleteDevice($device_id){
+        return $this->whatsapp_crud_repository->delete_device($device_id);
+    }
 }

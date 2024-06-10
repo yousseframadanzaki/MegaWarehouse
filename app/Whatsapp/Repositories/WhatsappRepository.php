@@ -21,4 +21,7 @@ class WhatsappRepository implements WhatsappRepositoryInterface
     public function add_device($data){
         return WhatsappDevice::create($data);
     }
+    public function delete_device($device_id){
+        return WhatsappDevice::where('id',$device_id)->delete();
+    }
 }

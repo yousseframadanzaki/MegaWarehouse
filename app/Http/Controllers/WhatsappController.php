@@ -108,6 +108,10 @@ class WhatsappController extends Controller
         }
         return redirect()->back()->with(['error'=>'add_device_error','old_data'=>($request->except('token'))])->withInput();
     }
+    function delete_device($device_id) {
+        $device = $this->WhatsappService->DeleteDevice($device_id);
+        return response()->json($device);
+    }
     public function get_qr_code($instance_id){
         $access_token = "6450f3b188e73";
         $headers = array(
