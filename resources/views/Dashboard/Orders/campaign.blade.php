@@ -6,23 +6,33 @@
 
 @section('content')
 <style>
-#loading {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgb(0, 0, 0);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      -webkit-animation: spin 1s ease-in-out infinite;
-    }
-    @keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
-    }
-    @-webkit-keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
+.loader {
+        width: 45px;
+        aspect-ratio: 1;
+        display: flex;
+        margin-right: 40%;
+        color: #582b8c;
+        border: 4px solid;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle 5px, currentColor 95%, #0000),
+            linear-gradient(currentColor 50%, #0000 0) 50%/4px 60% no-repeat;
+        animation: l1 2s infinite linear;
     }
 
+    .loader:before {
+        content: "";
+        flex: 1;
+        background: linear-gradient(currentColor 50%, #0000 0) 50%/4px 80% no-repeat;
+        animation: inherit;
+    }
+
+    @keyframes l1 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
     label {
         font-weight: bold;
     }
@@ -65,12 +75,10 @@
         <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
             <div class="modal-body text-center">
                 <h3 style="color: #5b9bd1;">برجاء مسح ال qr code</h3>
-                <form method='post'>
+                <div id="message" style="display:none;"></div>
+                    <div class="loader" style="display: none"></div>
                     <img id="whatsapp_qrCode" src='' width='310' title="فحص" />
-                </form>
-                <button type="button" id="close_modal" class="btn btn-danger">
-                    <i class="fa fa-xmark"></i>
-                </button>
+                    <div id="countdown" style="margin-top: 10px; display:none;"></div>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -85,6 +93,7 @@
                 <li><a class="link-dark" href="{{ route('all_orders') }}">الأوردرات</a></li>
             </ul>
         </div>
+        <div id="mess" style="display: none;"></div>
         <div class="row">
             <div class="d-flex justify-content-between my-2">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddDeviceModal">إضافة جهاز</button>
@@ -108,36 +117,38 @@
                                     <th>كود الواتساب</th>
                                     <th>تفعيل</th>
                                     <th>الحالة</th>
-                                    <th>إعادة تفعيل</th>
-                                    <th>استخدام</th>
                                     <th>حذف</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($devices as $device)
-                                <tr>
+                                <tr data-id="{{$device->id}}">
                                     <td class="fw-bold">#{{ $device->id }}</td>
                                     <td>{{ $device->name }}</td>
                                     <td>0{{ $device->phone }}</td>
                                     <td>{{ $device->instance_id }}</td>
                                     <td>
                                         @if ($device->active != '1')
-                                            <a href="#" id="actv" data-instance="{{ $device->instance_id }}" data-bs-toggle="modal"
+                                            <a href="#" id="actv_{{ $device->instance_id }}" data-instance="{{ $device->instance_id }}" data-bs-toggle="modal"
                                                 data-bs-target="#ActivatePhone" class="btn btn-primary" onclick="show_qr_code('{{ $device->instance_id }}')">
                                                 تفعيل الرقم <i class="bi bi-pencil-square"></i>
                                             </a>
                                         @endif 
                                     </td>
-                                    <td>
+                                    <td data-instance_id="{{ $device->instance_id }}">
                                         @if ($device->active == '1')
-                                            <h5><span class="text-success">مفعل</span></h5>
+                                            <h5><span class="text-success active_word">مفعل</span></h5>
                                         @else
                                             <h5><span class="text-danger">غير مفعل</span></h5>
                                         @endif
                                     </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="fw-bold">حذف <i class="text-danger bi bi-trash"></i></td>
+                                    <td><div data-id="{{ $device->id }}" class="badge p-2 remove_device" style="background-color: #6e35ae;font-size: 14px;cursor: pointer;">
+                                            <span class="icon-class">
+                                                <i class="bi bi-trash fw-bold">
+                                                    </i>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -146,42 +157,42 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6 w-100">
                 <div class="card shadow-sm p-3" >
-                    <form method="GET" action="" id="search">
+                    <form  action="{{ route('create_campaign') }}"  method="POST" id="add_campaign">
+                        @csrf
                         <div class="row">
                             <div class="col-12 mt-4">
                                 <h3 class="text-center"> تحضير حملة واتساب </h3>
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label">اسم الحملة</label>
-                                <input class="form-control" id=""
+                                <input class="form-control" id="" name="name"
                                     value="" placeholder="اسم الحملة">
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label">محتوي الرسالة</label>
-                                <textarea class="form-control" id=""
+                                <textarea class="form-control" id="" name="text"
                                     value="" placeholder="محتوي الرسالة"></textarea>
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label">وقت الحملة</label>
-                                <input class="form-control datetimeplugin" value="" placeholder="وقت الحملة">
+                                <input class="form-control datetimeplugin" name="schedule_date" placeholder="وقت الحملة">
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label"> من </label>
-                                <input type="number" class="form-control" id=""
+                                <input type="number" class="form-control" id="from" name="min_time"
                                     value="" placeholder="الحد الأدني 10 ثواني">
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label"> إلي </label>
-                                <input type="number" class="form-control" id=""
+                                <input type="number" class="form-control" id="to" name="max_time"
                                     value="" placeholder="الحد الأدني 20 ثانية">
                             </div>
+                            @foreach ($orders as $order)
+                                <input type="hidden" name="phone_numbers[]" value="{{ $order->phone_1 }}">
+                                <input type="hidden" name="order_ids[]" value="{{ $order->id }}">
+                            @endforeach
                         </div>
                         <div class="d-flex my-4 justify-content-center">
                             <button type="submit" class="btn btn-primary">
@@ -191,19 +202,6 @@
                     </form>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="card shadow-sm p-3" >
-                    <form method="GET" action="" id="search">
-                        <div class="row">
-                            <div class="col-12 my-4">
-                                <h3 class="text-center"> بيانات الحملة </h3>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
             <div class="col-12 my-4">
                 <div class="card shadow-sm p-3">
                     <h3 class="text-center my-4"> جميع الأوردرات </h3>
@@ -238,41 +236,104 @@
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    $("#submitButton").click(function(ev) {
-            var form = $("#new_device_form");
-            var url = form.attr('action');
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function(data) {
+        function formatDateTime(date) {
+            const dateOptions = { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit' 
+            };
+            const timeOptions = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                hour12: true 
+            };
 
-                    // Ajax call completed successfully
-                    msg = JSON.parse(data);
-
-                    document.getElementById("alert_message").style.display = "block";
-                    document.getElementById("alert_message").classList.add(msg['type']);
-                    document.getElementById("alert_message").innerHTML = msg['message'];
-
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 3000);
-                },
-                error: function(data) {
-                    // Some error in ajax call
-                    alert("some Error");
-                }
-            });
+        const formattedDate = date.toLocaleDateString('en-US', dateOptions);
+        const formattedTime = date.toLocaleTimeString('en-US', timeOptions);
+        return `${formattedDate} ${formattedTime}`;
+    };
+    $(document).ready(function() {
+        let currentDateTime = new Date();
+        let formattedDateTime = formatDateTime(currentDateTime);
+        $('.datetimeplugin').val(formattedDateTime);
+        $('#from').val('10');
+        $('#to').val('20');
+    });
+    $('.remove_device').click(function() {
+        device_id = $(this).attr('data-id');
+        token = $("#token").val();
+        $.ajax({
+            type: 'POST',
+            url: `/api/campaign/${device_id}/delete_device`,
+            dataType: "json",
+            data: {
+                token
+            }
+        }).then((response) => {
+            data = JSON.parse(response);
+            if (data) {
+                $(`tr[data-id="${device_id}"]`).remove();
+                show_success('تمت حذف الجهاز بنجاح');
+            }
         });
-        function show_qr_code(instance_id) {
-            var instance_id = instance_id;
-            $.ajax({
-                type: 'GET',
-                url: `/api/campaign/get_qr_code/${instance_id}`,
-                dataType: "json",
-            }).then((data) => {
-                $('#whatsapp_qrCode').attr('src', data);
-            })
-        };
+    });
+    function show_qr_code(instance_id) {
+        $('.loader').show();
+        $('#whatsapp_qrCode').hide();
+        $.ajax({
+            type: 'get',
+            url: `/api/campaign/get_qr_code/${instance_id}`,
+            dataType: "json",
+        }).then((response) => {
+            data = JSON.parse(response);
+            if (data['status'] == 'success') {
+                $('.loader').hide();
+                $('#whatsapp_qrCode').show();
+                startCountdown(15, instance_id);
+                document.getElementById("whatsapp_qrCode").src = data['base64'];
+            } else if (data['status'] == 'error' && data['message'] == 'instance id has been used') {
+                $(`td[data-instance_id="${instance_id}"]`).html('<h5><span class="text-success active_word">مفعل</span></h5>');
+                $(`#actv_${instance_id}`).remove();
+                $('#ActivatePhone').modal('hide');
+            }
+        }); 
+    }
+    function startCountdown(duration, instance_id) {
+        var timer = duration, seconds;
+        var countdownElement = document.getElementById('countdown');
+        countdownElement.style.display = 'block';
+
+        var interval = setInterval(() => {
+            seconds = parseInt(timer % 60, 10);
+
+            countdownElement.textContent = `الوقت المتبقي: ${seconds} ثانية`;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                show_qr_code(instance_id);
+                countdownElement.style.display = 'none';
+            }
+        }, 1000);
+    }
+    function show_success(message) {
+        var template = `
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+        $('#mess').append(template);
+        $('#mess').fadeIn();
+    }
+    function show_error(message) {
+        var template = `
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+        $('#message').append(template);
+        $('#message').fadeIn();
+    }
 </script>
 @endsection

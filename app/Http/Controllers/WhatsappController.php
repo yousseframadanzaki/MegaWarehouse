@@ -46,10 +46,56 @@ class WhatsappController extends Controller
     }
     public function show_campaign(Request $request) {
         $orders = $this->OrdersService->GetOrders($request->orders_ids);
-        $devices = $this->WhatsappService->GetDevices();
         $user = auth()->user();
+        $devices = $this->WhatsappService->GetDevices($user->id);
+        foreach($devices as $device){
+            $access_token = "6450f3b188e73";
+            $headers = array(
+                'Content-Type: application/json'
+            );
+            $url = 'https://whatsbotcloud.com/api/get_qrcode?instance_id=' . $device->instance_id . '&access_token=' . $access_token;
+        
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_REFERER, $url);
+            curl_setopt($ch, CURLOPT_HTTPGET, 1);
+            $result = curl_exec($ch);
+            $decoded_result = json_decode($result, true);
+            if (isset($decoded_result['status']) && $decoded_result['status'] == 'error' && isset($decoded_result['message']) && $decoded_result['message'] == 'instance id has been used') {
+                $device['active'] = '1';
+            }
+            curl_close($ch);
+        }
         $user_points = $this->WhatsappService->GetUserPoints($user->id);
         return view('Dashboard.Orders.campaign', compact('orders','user_points','devices'));
+    }
+    public function store_campaign(Request $request){
+        $data = $request->except('_token');
+        $user = auth()->user();
+        $data['admin_number'] = $user->phone_1;
+        $data['user_id'] = "$user->id";
+        $random_delay = rand($data['min_time'], $data['max_time']);
+        $data['delay'] = "$random_delay";
+        $data['status'] = "pending";
+        $phone_numbers_str = implode(',', $data['phone_numbers']);
+        $order_ids_str = implode(',', $data['order_ids']);
+        unset($data['phone_numbers']);
+        $data['unsent_numbers'] = "$phone_numbers_str";
+        $data['order_ids'] = "$order_ids_str";
+        $schedule_date = Carbon::createFromFormat('m/d/Y h:i a', $data['schedule_date']);
+        $formatted_schedule_date = $schedule_date->format('Y-m-d H:i:s');
+        $data['schedule_date'] = $formatted_schedule_date;
+
+        if( $this->WhatsappService->StoreCampagin($data)){
+            return redirect()->route('all_orders')
+            ->with('success', 'create_campaign_success');
+        }
     }
     public function add_device(Request $request) {
         $data = $request->except('_token');
@@ -84,12 +130,15 @@ class WhatsappController extends Controller
         }
         return redirect()->back()->with(['error'=>'add_device_error','old_data'=>($request->except('token'))])->withInput();
     }
+    function delete_device($device_id) {
+        $device = $this->WhatsappService->DeleteDevice($device_id);
+        return response()->json($device);
+    }
     public function get_qr_code($instance_id){
         $access_token = "6450f3b188e73";
         $headers = array(
             'Content-Type: application/json'
         );
-    
         $url = 'https://whatsbotcloud.com/api/get_qrcode?instance_id=' . $instance_id . '&access_token=' . $access_token;
     
         $ch = curl_init();

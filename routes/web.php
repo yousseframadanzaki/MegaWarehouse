@@ -484,6 +484,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('campaign/add', [WhatsappController::class,'show_campaign'])
     ->name('show_campaign');
 
+    Route::post('campaign/add', [WhatsappController::class,'store_campaign'])
+    ->name('create_campaign');
+
     Route::get('whatsapp/points/add', [WhatsappController::class,'add_points'])
     ->name('add_points');
 
