@@ -5,6 +5,7 @@ namespace App\Whatsapp\Repositories;
 use App\Whatsapp\Interfaces\WhatsappRepositoryInterface;
 use App\Models\WhatsappUserPoint;
 use App\Models\WhatsappDevice;
+use App\Models\WhatsappCampaign;
 
 
 class WhatsappRepository implements WhatsappRepositoryInterface
@@ -23,5 +24,8 @@ class WhatsappRepository implements WhatsappRepositoryInterface
     }
     public function delete_device($device_id){
         return WhatsappDevice::where('id',$device_id)->delete();
+    }
+    public function store_campagin($data){
+        return WhatsappCampaign::create($data);
     }
 }

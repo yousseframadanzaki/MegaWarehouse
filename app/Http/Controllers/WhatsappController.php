@@ -75,6 +75,28 @@ class WhatsappController extends Controller
         $user_points = $this->WhatsappService->GetUserPoints($user->id);
         return view('Dashboard.Orders.campaign', compact('orders','user_points','devices'));
     }
+    public function store_campaign(Request $request){
+        $data = $request->except('_token');
+        $user = auth()->user();
+        $data['admin_number'] = $user->phone_1;
+        $data['user_id'] = "$user->id";
+        $random_delay = rand($data['min_time'], $data['max_time']);
+        $data['delay'] = "$random_delay";
+        $data['status'] = "pending";
+        $phone_numbers_str = implode(',', $data['phone_numbers']);
+        $order_ids_str = implode(',', $data['order_ids']);
+        unset($data['phone_numbers']);
+        $data['unsent_numbers'] = "$phone_numbers_str";
+        $data['order_ids'] = "$order_ids_str";
+        $schedule_date = Carbon::createFromFormat('m/d/Y h:i a', $data['schedule_date']);
+        $formatted_schedule_date = $schedule_date->format('Y-m-d H:i:s');
+        $data['schedule_date'] = $formatted_schedule_date;
+
+        if( $this->WhatsappService->StoreCampagin($data)){
+            return redirect()->route('all_orders')
+            ->with('success', 'create_campaign_success');
+        }
+    }
     public function add_device(Request $request) {
         $data = $request->except('_token');
         $user = auth()->user();

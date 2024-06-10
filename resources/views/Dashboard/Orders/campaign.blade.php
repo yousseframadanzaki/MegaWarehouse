@@ -78,6 +78,7 @@
                 <div id="message" style="display:none;"></div>
                     <div class="loader" style="display: none"></div>
                     <img id="whatsapp_qrCode" src='' width='310' title="فحص" />
+                    <div id="countdown" style="margin-top: 10px; display:none;"></div>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -128,13 +129,13 @@
                                     <td>{{ $device->instance_id }}</td>
                                     <td>
                                         @if ($device->active != '1')
-                                            <a href="#" id="actv" data-instance="{{ $device->instance_id }}" data-bs-toggle="modal"
+                                            <a href="#" id="actv_{{ $device->instance_id }}" data-instance="{{ $device->instance_id }}" data-bs-toggle="modal"
                                                 data-bs-target="#ActivatePhone" class="btn btn-primary" onclick="show_qr_code('{{ $device->instance_id }}')">
                                                 تفعيل الرقم <i class="bi bi-pencil-square"></i>
                                             </a>
                                         @endif 
                                     </td>
-                                    <td>
+                                    <td data-instance_id="{{ $device->instance_id }}">
                                         @if ($device->active == '1')
                                             <h5><span class="text-success active_word">مفعل</span></h5>
                                         @else
@@ -156,42 +157,42 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-6">
+            <div class="col-12 col-lg-6 w-100">
                 <div class="card shadow-sm p-3" >
-                    <form method="GET" action="" id="search">
+                    <form  action="{{ route('create_campaign') }}"  method="POST" id="add_campaign">
+                        @csrf
                         <div class="row">
                             <div class="col-12 mt-4">
                                 <h3 class="text-center"> تحضير حملة واتساب </h3>
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label">اسم الحملة</label>
-                                <input class="form-control" id=""
+                                <input class="form-control" id="" name="name"
                                     value="" placeholder="اسم الحملة">
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label">محتوي الرسالة</label>
-                                <textarea class="form-control" id=""
+                                <textarea class="form-control" id="" name="text"
                                     value="" placeholder="محتوي الرسالة"></textarea>
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label">وقت الحملة</label>
-                                <input class="form-control datetimeplugin" value="" placeholder="وقت الحملة">
+                                <input class="form-control datetimeplugin" name="schedule_date" placeholder="وقت الحملة">
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label"> من </label>
-                                <input type="number" class="form-control" id="from"
+                                <input type="number" class="form-control" id="from" name="min_time"
                                     value="" placeholder="الحد الأدني 10 ثواني">
                             </div>
-
                             <div class="col-12 mt-4">
                                 <label class="form-label"> إلي </label>
-                                <input type="number" class="form-control" id="to"
+                                <input type="number" class="form-control" id="to" name="max_time"
                                     value="" placeholder="الحد الأدني 20 ثانية">
                             </div>
+                            @foreach ($orders as $order)
+                                <input type="hidden" name="phone_numbers[]" value="{{ $order->phone_1 }}">
+                                <input type="hidden" name="order_ids[]" value="{{ $order->id }}">
+                            @endforeach
                         </div>
                         <div class="d-flex my-4 justify-content-center">
                             <button type="submit" class="btn btn-primary">
@@ -201,19 +202,6 @@
                     </form>
                 </div>
             </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="card shadow-sm p-3" >
-                    <form method="GET" action="" id="search">
-                        <div class="row">
-                            <div class="col-12 my-4">
-                                <h3 class="text-center"> بيانات الحملة </h3>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
             <div class="col-12 my-4">
                 <div class="card shadow-sm p-3">
                     <h3 class="text-center my-4"> جميع الأوردرات </h3>
@@ -289,46 +277,63 @@
             }
         });
     });
-        function show_qr_code(instance_id) {
-            var instance_id = instance_id;
-            $('.loader').show();
-            $('#whatsapp_qrCode').hide();
-            $.ajax({
-                type: 'get',
-                url: `/api/campaign/get_qr_code/${instance_id}`,
-                dataType: "json",
-            }).then((response) => {
-                data = JSON.parse(response);
-                    if (data['status'] == 'success') {
-                        $('.loader').hide();
-                        $('#whatsapp_qrCode').show();
-                        document.getElementById("whatsapp_qrCode").src = data['base64'];
-                    }
-                    if (data['status'] == 'error' && data['message'] ==
-                        'instance id has been used') {
-                        show_error('هذا الرقم مفعل بالفعل!');
-                    }
-            });
-        };
-        function show_success(message) {
-            var template = `
-                <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
-                    <strong>${message}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                `;
-            $('#mess').append(template);
-            $('#mess').fadeIn();
-        };
-        function show_error(message) {
-            var template = `
-                <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
-                    <strong>${message}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                `;
-            $('#message').append(template);
-            $('#message').fadeIn();
-        };
+    function show_qr_code(instance_id) {
+        $('.loader').show();
+        $('#whatsapp_qrCode').hide();
+        $.ajax({
+            type: 'get',
+            url: `/api/campaign/get_qr_code/${instance_id}`,
+            dataType: "json",
+        }).then((response) => {
+            data = JSON.parse(response);
+            if (data['status'] == 'success') {
+                $('.loader').hide();
+                $('#whatsapp_qrCode').show();
+                startCountdown(15, instance_id);
+                document.getElementById("whatsapp_qrCode").src = data['base64'];
+            } else if (data['status'] == 'error' && data['message'] == 'instance id has been used') {
+                $(`td[data-instance_id="${instance_id}"]`).html('<h5><span class="text-success active_word">مفعل</span></h5>');
+                $(`#actv_${instance_id}`).remove();
+                $('#ActivatePhone').modal('hide');
+            }
+        }); 
+    }
+    function startCountdown(duration, instance_id) {
+        var timer = duration, seconds;
+        var countdownElement = document.getElementById('countdown');
+        countdownElement.style.display = 'block';
+
+        var interval = setInterval(() => {
+            seconds = parseInt(timer % 60, 10);
+
+            countdownElement.textContent = `الوقت المتبقي: ${seconds} ثانية`;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                show_qr_code(instance_id);
+                countdownElement.style.display = 'none';
+            }
+        }, 1000);
+    }
+    function show_success(message) {
+        var template = `
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+        $('#mess').append(template);
+        $('#mess').fadeIn();
+    }
+    function show_error(message) {
+        var template = `
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+        $('#message').append(template);
+        $('#message').fadeIn();
+    }
 </script>
 @endsection

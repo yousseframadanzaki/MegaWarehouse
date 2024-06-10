@@ -9,4 +9,5 @@ interface WhatsappServiceInterface
     public function GetDevices($user_id);
     public function AddDevice($data);
     public function DeleteDevice($device_id);
+    public function StoreCampagin($data);
 }
