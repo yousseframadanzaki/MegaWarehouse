@@ -22,6 +22,33 @@
     @-webkit-keyframes spin {
       to { -webkit-transform: rotate(360deg); }
     }
+    .loader {
+        width: 45px;
+        aspect-ratio: 1;
+        display: flex;
+        margin-right: 95%;
+        color: #582b8c;
+        border: 4px solid;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle 5px, currentColor 95%, #0000),
+            linear-gradient(currentColor 50%, #0000 0) 50%/4px 60% no-repeat;
+        animation: l1 2s infinite linear;
+    }
+
+    .loader:before {
+        content: "";
+        flex: 1;
+        background: linear-gradient(currentColor 50%, #0000 0) 50%/4px 80% no-repeat;
+        animation: inherit;
+    }
+
+    @keyframes l1 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
 
     label {
         font-weight: bold;
@@ -97,6 +124,25 @@
                         <button type="submit" class="btn btn-primary print">طباعة</button>
                     </div>
             </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="text-center mb-3">البحث عن أوردر أو أكثر</h5>
+                    </div>
+                    <div class="col-12">
+                        <textarea name="" id="searchData" class="w-100 form-control" rows="10" placeholder="ابحث برقم الأوردر أو رقم البوليصة"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">بحث</button>
+            </div>
         </div>
     </div>
 </div>
@@ -280,11 +326,14 @@
             </div>
 
             @if($filters)
-                <div class="card shadow-sm p-3 my-4">
+                <h5 class="my-3">
+                    عدد نتائج البحث: {{ count($orders) }}
+                </h5>
+                <div class="card shadow-sm p-3 mb-4">
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
-                            <div class=" sidebar-bg p-2 m-1" style="color: white">
-                                 {{$value}}
+                            <div class=" sidebar-bg d-flex align-items-center 1 m-1" style="color: white;padding: 6px;border-radius: 6px;">
+                                {{ __($key) }}: {{$value}}
                             </div>
                         @endforeach
                     </div>
@@ -316,55 +365,62 @@
                     </div>
                 </div>
 
-                <div class="table-responsive px-0">
-            <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
-                        <th>رقم الأوردر</th>
-                        <th>رقم البوليصة</th>
-                        <th>الادمن</th>
-                        <th>المسوق</th>
-                        <th>الحالة</th>
-                        <th>اسم العميل</th>
-                        <th>رقم التليفون</th>
-                        <th>العنوان</th>
-                        <th>المنطقة</th>
-                        <th>الاجمالى</th>
-                        <th>تاريخ الاضافة</th>
-                        <th>ملاحظات الطلب</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($orders as $order)
-                        <tr>
-                            <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
-                            <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
-                            <td>{{ $order->waybill?? 'لا يوجد' }}</td>
-                            <td>{{$order->admin->name}}</td>
-                            <td>
-                                @isset($order->marketer->name)
-                                    {{$order->marketer->name}}
-                                @endisset
-                            </td>
-                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
-                            <td>{{$order->name}}</td>
-                            <td>{{$order->phone_1}}</td>
-                            <td>{{$order->address}}</td>
-                            <td>{{$order->city->name}} - {{$order->area->name}}</td>
-                            <td>{{$order->total}}</td>
-                            <td>@date_format($order->created_at)</td>
-                            <td class="order_notes" data-id="{{$order->id}}">
-                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            </div>
-            <div dir="ltr" class="d-flex justify-content-center">
-                {!! $orders->appends($_GET)->links() !!}
-            </div>
+                <div class="row">
+                    <div class="card p-3 shadow-sm">
+                        <div>
+                            <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">ابحث عن أوردر أو أكثر</button>
+                        </div>
+                        <div class="table-responsive px-0">
+                            <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
+                                        <th>رقم الأوردر</th>
+                                        <th>رقم البوليصة</th>
+                                        <th>الادمن</th>
+                                        <th>المسوق</th>
+                                        <th>الحالة</th>
+                                        <th>اسم العميل</th>
+                                        <th>رقم التليفون</th>
+                                        <th>العنوان</th>
+                                        <th>المنطقة</th>
+                                        <th>الاجمالى</th>
+                                        <th>تاريخ الاضافة</th>
+                                        <th>ملاحظات الطلب</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($orders as $order)
+                                        <tr>
+                                            <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
+                                            <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
+                                            <td>{{ $order->waybill?? 'لا يوجد' }}</td>
+                                            <td>{{$order->admin->name}}</td>
+                                            <td>
+                                                @isset($order->marketer->name)
+                                                    {{$order->marketer->name}}
+                                                @endisset
+                                            </td>
+                                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
+                                            <td>{{$order->name}}</td>
+                                            <td>{{$order->phone_1}}</td>
+                                            <td>{{$order->address}}</td>
+                                            <td>{{$order->city->name}} - {{$order->area->name}}</td>
+                                            <td>{{$order->total}}</td>
+                                            <td>@date_format($order->created_at)</td>
+                                            <td class="order_notes" data-id="{{$order->id}}">
+                                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div dir="ltr" class="d-flex justify-content-center mt-4">
+                            {!! $orders->appends($_GET)->links() !!}
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
@@ -611,7 +667,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             link.click();
             document.body.removeChild(link);
         }
-        $(".order_notes").click(function () {
+        $(document).on('click',".order_notes",function (e) {
             var order_id = $(this).attr('data-id');
             $("#content-note").modal("show");
 			$(".notes-list").html("<div id='loading'></div>");
@@ -687,5 +743,74 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#whatsappForm button').attr('disabled', 'disabled')
             }
         })
+
+        $('#searchModal button').click(function() {
+            $('#searchModal').modal('hide');
+            let search_data = $('textarea#searchData').val();
+            $('#orders tbody').html('<td colspan="13" class="text-center"><div id="loading" class="my-4"></div></td>');
+
+            $.ajax({
+                url: '/api/orders/search',
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    search_data
+                },
+                success: function(response) {
+                    $('#orders tbody').html('');
+                    let data = response.data; // we need only data from paginate function.
+
+                    $.each(data, function(key, value) {
+                        let table_row = `
+                            <tr>
+                                <td><input type="checkbox" class="order_id form-check-input" value="${value.id}"></td>
+                                <td><a href="orders/${value.id}" target="_blank">${value.order_code}</a></td>
+                                <td>${value.waybill ? value.waybill : 'لا يوجد'}</td>
+                                <td>${value.admin.name}</td>
+                                <td>
+                                    ${(value.marketer == null) ? '' : value.marketer.name}
+                                </td>
+                                <td data-status="${value.status.id}">${value.status.name}</td>
+                                <td>${value.name}</td>
+                                <td>${value.phone_1}</td>
+                                <td>${value.address}</td>
+                                <td>${value.city.name} - ${value.area.name}</td>
+                                <td>${value.total}</td>
+                                <td>${format_date(value.created_at)}</td>
+                                <td class="order_notes" data-id="${value.id}">
+                                    <span class="btn btn-primary" style="border-radius: 50px">${value.order_notes.length}</span>
+                                </td>
+                            </tr>
+                        `;
+
+                        $('#orders tbody').append(table_row);
+                    }) 
+                }
+            })
+        })
+
+        function format_date(datee) {
+            // Create a specific date
+            const date = new Date(datee);
+
+            // Extract parts of the date
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(date.getDate()).padStart(2, '0');
+
+            let hours = String(date.getHours()).padStart(2, '0') - 1;
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            // Determine AM or PM
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = String(hours).padStart(2, '0');
+
+            // Format the date
+            const formattedDate = `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
+            return formattedDate;
+        }
     </script>
 @endsection
