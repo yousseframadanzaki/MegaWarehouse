@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_whatsapp_points_title') }}
+    {{ __('add_whatsapp_campaign_title') }}
 @endsection
 
 @section('content')
@@ -94,10 +94,11 @@
             </ul>
         </div>
         <div id="mess" style="display: none;"></div>
+        <div id="message_dg" style="display:none;"></div>
         <div class="row">
             <div class="d-flex justify-content-between my-2">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddDeviceModal">إضافة جهاز</button>
-                    <p data-expire="{{ $user_points->expire_date }}" class="fw-bold">
+                    <p id="expirationDate" data-expire="{{ $user_points->expire_date }}" class="fw-bold">
                         رصيد نقاط الواتساب: {{ $user_points->points }} نقطة
                     </p>
             </div>
@@ -167,12 +168,12 @@
                             </div>
                             <div class="col-12 mt-4">
                                 <label class="form-label">اسم الحملة</label>
-                                <input class="form-control" id="" name="name"
+                                <input class="form-control" id="campaign_name" name="name"
                                     value="" placeholder="اسم الحملة">
                             </div>
                             <div class="col-12 mt-4">
                                 <label class="form-label">محتوي الرسالة</label>
-                                <textarea class="form-control" id="" name="text"
+                                <textarea class="form-control" id="campaign_text" name="text"
                                     value="" placeholder="محتوي الرسالة"></textarea>
                             </div>
                             <div class="col-12 mt-4">
@@ -194,7 +195,7 @@
                                 <input type="hidden" name="order_ids[]" value="{{ $order->id }}">
                             @endforeach
                         </div>
-                        <div class="d-flex my-4 justify-content-center">
+                        <div class="d-flex my-4 justify-content-center create_btn">
                             <button type="submit" class="btn btn-primary">
                                 تجهيز
                             </button>
@@ -236,6 +237,28 @@
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+        $(document).ready(function() {
+            $('.create_btn').click(function(e) {
+                var expireDate = new Date($("#expirationDate").data("expire")).getTime();
+                var currentTime = new Date().getTime();
+                var campaignName = $("#campaign_name").val().trim();
+                var campaignText = $("#campaign_text").val().trim();
+                
+                if (currentTime > expireDate) {
+                    e.preventDefault();
+                    $(this).prop('disabled', true);
+                    show_error('لا يمكنك تحضير الحملة, لقد تخطيت وقت الانتهاء');
+                    $(window).scrollTop(0);
+                    return;
+                }
+                if (campaignName == "" || campaignText == "") {
+                    e.preventDefault();
+                    show_error('لا يمكنك تحضير الحملة بدون اسم الحملة أو نص الحملة');
+                    $(window).scrollTop(0);
+                    return;
+                }
+            });
+        });
         function formatDateTime(date) {
             const dateOptions = { 
                 year: 'numeric', 
@@ -334,6 +357,16 @@
             `;
         $('#message').append(template);
         $('#message').fadeIn();
+    }
+    function show_error(message) {
+        var template = `
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            `;
+        $('#message_dg').append(template);
+        $('#message_dg').fadeIn();
     }
 </script>
 @endsection
