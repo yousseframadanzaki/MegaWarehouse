@@ -44,4 +44,12 @@ class ShippingCompanyPolicy
         }
         return true;
     }
+
+    public function view_orders(User $user): bool {
+        if(!$user->role->permissions->contains('slug','view_shipping_company_orders')){
+            return false;
+        }
+
+        return true;
+    }
 }

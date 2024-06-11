@@ -17,4 +17,12 @@ class ShippingCompany extends Model
         'company_id',
         'user_id',
     ];
+
+    public function statues() {
+        return $this->belongsToMany(Status::class, 'shipping_statuses');
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
 }

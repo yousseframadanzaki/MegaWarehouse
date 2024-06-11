@@ -11,6 +11,10 @@ class StatusRepository implements StatusRepositoryInterface{
         return Status::where(['id'=>$status_id])
         ->update(['edit_order'=>$edit_order]);
     }
+    public function update_related_shipping($data) {
+        return Status::where(['id'=>$data['id']])
+        ->update(['related_shipping'=>$data['related_shipping']]);
+    }
     public function add_related_status($status_id, $related_status){
         $status = Status::find($status_id);
         $current_related_status = $status->related_status;

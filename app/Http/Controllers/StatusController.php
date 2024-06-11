@@ -34,6 +34,10 @@ class StatusController extends Controller
         $status = $this->StatusService->UpdateStatus($status_id,$edit_order);
         return response()->json($status);
     }
+    public function update_related_shipping(Request $request){
+        $status = $this->StatusService->UpdateRelatedShipping($request->all());
+        return response()->json($status);
+    }
     public function add_related_status($status_id, Request $request){
         $data = $request->all();
         $related_status = $data['related_status'];

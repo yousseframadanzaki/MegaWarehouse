@@ -8,10 +8,14 @@ use Illuminate\Http\Request;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
+use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Orders\Interfaces\OrdersServiceInterface;
 
 use App\ShippingCompanies\Requests\CreateShippingCompanyRequest;
 use App\ShippingCompanies\Requests\UpdateShippingCompanyRequest;
-use App\CommonData\Interfaces\CommonDataServiceInterface;
+
+use App\Orders\Filters\OrdersFilters;
+
 class ShippingCompanyController extends Controller
 {
     public function __construct(
@@ -19,6 +23,7 @@ class ShippingCompanyController extends Controller
        protected readonly ShippingStatusServiceInterface $ShippingStatusService,
        protected readonly ShippingAreaServiceInterface $ShippingAreaService,
        protected readonly CommonDataServiceInterface $CommonDataService,
+       protected readonly OrdersServiceInterface $OrdersService
     ) {}
 
     public function all()
@@ -47,7 +52,7 @@ class ShippingCompanyController extends Controller
         $roles = $this->CommonDataService->GetRolesByType($company_id,'shipping_company');
         return view('Dashboard.ShippingCompanies.add')->with('roles',$roles);
     }
-    
+
     public function store(CreateShippingCompanyRequest $request)
     {
         if(!$this->ShippingCompanyService->AddShippingCompany($this->company_id(),$request->except('_token'))){
@@ -84,5 +89,23 @@ class ShippingCompanyController extends Controller
         return redirect()->back()->with('error','deactivate_shipping_company_error');
     }
 
+    // shipping orders functions
 
+    public function shipping_orders() {
+        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
+        return view('Dashboard.ShippingCompanies.shipping_orders')->with(compact('shipping_companies'));
+    }
+
+    public function shipping_company_statues(Request $request) {
+        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
+        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id);
+        $statuses = $shipping_company->statues->where('related_shipping', 1);
+        $orders_number = $shipping_company->orders->whereIn('status_id', $statuses->pluck('id'))->count();
+        return view('Dashboard.ShippingCompanies.shipping_orders', compact('shipping_companies', 'orders_number', 'shipping_company','statuses'));
+    }
+
+    public function get_orders_by_status_id(OrdersFilters $filters) {
+        $orders = $this->OrdersService->GetCompanyOrders($this->company_id(), $filters);
+        return response()->json($orders);
+    }
 }

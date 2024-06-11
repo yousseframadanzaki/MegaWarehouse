@@ -16,6 +16,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\OrderNotesController;
 use App\Http\Controllers\admin\CompnayController;
+use App\Http\Controllers\ShippingCompanyController;
 use App\Http\Controllers\WhatsappController;
 use App\Models\Order;
 
@@ -73,6 +74,7 @@ Route::GET('/area/{id}/get_price', [AreaController::class, 'get_price'])->name('
 Route::get('/area/{id}/get_keywords', [AreaController::class, 'get_keywords'])->name('get_keywords');
 Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
 Route::post('statuses/{id}/settings', [StatusController::class, 'update_status'])->name('update_edit_order');
+Route::post('statuses/{id}/related_shipping', [StatusController::class, 'update_related_shipping'])->name('update_related_shipping');
 Route::POST('statuses/{id}/add_status', [StatusController::class, 'add_related_status'])->name('add_status');
 Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class, 'remove_related_status'])->name('remove_status');
 
@@ -80,3 +82,5 @@ Route::get('category/{category}/payment_types', [AccountingController::class, 'g
 Route::get('users/company/role_type/{role_type}', [AccountingController::class, 'get_company_users_by_role_type']);
 Route::get('campaign/get_qr_code/{instance_id}',[WhatsappController::class, 'get_qr_code']);
 Route::post('campaign/{device_id}/delete_device',[WhatsappController::class, 'delete_device']);
+
+Route::get('shipping_company/orders', [ShippingCompanyController::class, 'get_orders_by_status_id']);

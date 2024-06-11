@@ -139,6 +139,12 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('deactivate_shipping_company')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
 
+    Route::get('/shipping_orders', [ShippingCompanyController::class,'shipping_orders'])
+    ->name('shipping_orders')
+    ->can('view_orders', 'App\Models\ShippingCompany');
+
+    Route::post('/shipping_orders', [ShippingCompanyController::class,'shipping_company_statues'])
+    ->name('shipping_orders_results');
 
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders')
@@ -495,7 +501,4 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::post('whatsapp/device/add', [WhatsappController::class,'add_device'])
     ->name('add_whatsapp_device');
-
-    Route::get('test', [TestController::class, 'test']);
-    Route::get('product/var/{product_id}', [CommonDataController::class, 'variants']);
 });

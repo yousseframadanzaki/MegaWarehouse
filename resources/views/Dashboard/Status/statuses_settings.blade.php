@@ -41,6 +41,7 @@
         <thead>
             <th>الحالة</th>
             <th>السماح بتعديل الأوردر</th>
+            <th class="text-center"> قيد الشحن </th>
             <th>الحالات التابعة</th>
         </thead>
         <tbody>
@@ -50,6 +51,11 @@
                 <td style="width: 145px;">
                     <div class="form-check" style="margin-left: 50px;">
                         <input data-id="{{ $status->id }}" style="width: 20px;height: 20px;" class="form-check-input edit_btn" type="checkbox" name="edit_order" {{ $status->edit_order == 1 ? 'checked' : '' }}>
+                    </div>
+                </td>
+                <td style="width: 145px;">
+                    <div class="form-check" style="margin-left: 50px;">
+                        <input data-id="{{ $status->id }}" style="width: 20px;height: 20px;" class="form-check-input related_shipping_btn" type="checkbox" name="related_shipping" {{ $status->related_shipping == 1 ? 'checked' : '' }}>
                     </div>
                 </td>
                 <td data-id="{{ $status->id }}">
@@ -97,6 +103,21 @@
             url: `/api/statuses/${id}/settings`,
             dataType: "text",
             data: { token,edit_order },
+        }).then((response) => {
+            if (response) {
+                show_success('تم تعديل الحالة بنجاح');
+            }
+        });
+    });
+    $(".related_shipping_btn").click(function(){
+        var token = $('#token').val();
+        var id = $(this).attr('data-id');
+        var related_shipping = $(this).prop('checked') ? 1 : 0;
+        $.ajax({
+            type: 'POST',
+            url: `/api/statuses/${id}/related_shipping`,
+            dataType: "text",
+            data: { token,related_shipping,id },
         }).then((response) => {
             if (response) {
                 show_success('تم تعديل الحالة بنجاح');

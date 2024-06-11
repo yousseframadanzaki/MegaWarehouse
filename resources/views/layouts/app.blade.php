@@ -498,6 +498,11 @@
                                             <li class="rounded "><a href="{{ route('add_shipping_company') }}" class="text-white"><i
                                                         class="bi bi-plus"></i> أضافة شركة شحن</a></li>
                                         @endcan
+
+                                        @can('view_orders', 'App\Models\ShippingCompany')
+                                            <li class="rounded "><a href="{{ route('shipping_orders') }}" class="text-white"><i
+                                                        class="bi bi-bi-truck"></i> أوردرات قيد الشحن</a></li>
+                                        @endcan
                                     </ul>
                                 </div>
                             </li>
