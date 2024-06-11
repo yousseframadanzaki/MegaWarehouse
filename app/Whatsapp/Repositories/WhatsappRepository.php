@@ -6,6 +6,7 @@ use App\Whatsapp\Interfaces\WhatsappRepositoryInterface;
 use App\Models\WhatsappUserPoint;
 use App\Models\WhatsappDevice;
 use App\Models\WhatsappCampaign;
+use Illuminate\Support\Facades\DB;
 
 
 class WhatsappRepository implements WhatsappRepositoryInterface
@@ -13,8 +14,14 @@ class WhatsappRepository implements WhatsappRepositoryInterface
     public function add_points($data){
         return WhatsappUserPoint::create($data);
     }
+    // public function get_user_points($user_id){
+    //     return WhatsappUserPoint::where('user_id',$user_id)->get();
+    // }
     public function get_user_points($user_id){
-        return WhatsappUserPoint::where('user_id',$user_id)->firstOrfail();
+        return DB::table('whatsapp_user_points')
+            ->selectRaw('(SELECT points FROM whatsapp_user_points WHERE user_id = ? AND type = ?) - (SELECT SUM(messages) FROM whatsapp_user_points WHERE user_id = ? AND type = ?) AS points', [$user_id, 'add_ponits', $user_id, 'send_message'])
+            ->selectRaw('(SELECT expire_date FROM whatsapp_user_points WHERE user_id = ? AND type = ?) AS expire_date', [$user_id, 'add_ponits'])
+            ->first();
     }
     public function get_devices($user_id){
         return WhatsappDevice::where('user_id',$user_id)->get();
@@ -26,6 +33,7 @@ class WhatsappRepository implements WhatsappRepositoryInterface
         return WhatsappDevice::where('id',$device_id)->delete();
     }
     public function store_campagin($data){
-        return WhatsappCampaign::create($data);
+        $campaign = WhatsappCampaign::create($data);
+        return $campaign->id;
     }
 }

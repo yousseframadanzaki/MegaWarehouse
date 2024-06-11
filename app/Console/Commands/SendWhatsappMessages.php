@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use App\Models\WhatsappCampaign;
+use App\Models\WhatsappDevice;
+use Carbon\Carbon;
+
+
+class SendWhatsappMessages extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'app:send-whatsapp-messages';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Send scheduled WhatsApp messages';
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        $now = Carbon::now();
+        $campaigns = WhatsappCampaign::where('status', 'pending')
+            ->where('schedule_date', '<=', $now)
+            ->get();
+
+        foreach ($campaigns as $campaign) {
+            $device = WhatsappDevice::where('user_id', $campaign->user_id)->first();
+            if (!$device) {
+                $this->error("No device found for user_id {$campaign->user_id}");
+                continue;
+            }
+
+            $unsentNumbers = explode(',', $campaign->unsent_numbers);
+            $sendNumbers = $campaign->sent_numbers ? explode(',', $campaign->sent_numbers) : [];
+
+            foreach ($unsentNumbers as $key => $number) {
+                $this->sendMessage($number, $campaign->text, $campaign->media, $device->instance_id);
+
+                $sendNumbers[] = $number;
+                unset($unsentNumbers[$key]);
+                $campaign->unsent_numbers = implode(',', $unsentNumbers);
+                $campaign->sent_numbers = implode(',', $sendNumbers);
+                $campaign->status = empty($unsentNumbers) ? 'finished' : 'pending';
+                $campaign->save();
+
+                sleep($campaign->delay);
+            }
+        }
+    }
+    protected function sendMessage($number, $text, $media = null, $instance_id)
+    {
+        $access_token = '6450f3b188e73';
+        $site_url = request()->getHost();
+
+        if ($media) {
+            // Message with media
+            $media_url = $site_url . "/templates/default/uploads/whatsapp/" . $media;
+            $url = "https://whatsbotcloud.com/api/send?type=media&number=2" . $number . "&message=" . urlencode($text) . "&media_url=" . urlencode($media_url) . "&instance_id=" . $instance_id . "&access_token=" . $access_token;
+        } else {
+            // Normal message
+            $url = "https://whatsbotcloud.com/api/send?type=text&number=2" . $number . "&message=" . urlencode($text) . "&instance_id=" . $instance_id . "&access_token=" . $access_token;
+        }
+    
+        $ch = curl_init();
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => $url,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6",
+        ));
+        $result = curl_exec($ch);
+        curl_close($ch);
+    
+        $res = json_decode($result, true);
+    
+    }
+}

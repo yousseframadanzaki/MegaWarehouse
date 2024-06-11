@@ -85,6 +85,7 @@ class WhatsappController extends Controller
         $data['status'] = "pending";
         $phone_numbers_str = implode(',', $data['phone_numbers']);
         $order_ids_str = implode(',', $data['order_ids']);
+        $messages = count($data['phone_numbers']);
         unset($data['phone_numbers']);
         $data['unsent_numbers'] = "$phone_numbers_str";
         $data['order_ids'] = "$order_ids_str";
@@ -92,7 +93,13 @@ class WhatsappController extends Controller
         $formatted_schedule_date = $schedule_date->format('Y-m-d H:i:s');
         $data['schedule_date'] = $formatted_schedule_date;
 
-        if( $this->WhatsappService->StoreCampagin($data)){
+        $details['messages'] = $messages;
+        $campaign_id = $this->WhatsappService->StoreCampagin($data);
+        $details['campaign_id'] = $campaign_id;
+        $details['user_id'] = "$user->id";
+        $details['type'] = "send_message";
+        $whatsapp_messages = $this->WhatsappService->AddPoints($details);
+        if($campaign_id && $whatsapp_messages){
             return redirect()->route('all_orders')
             ->with('success', 'create_campaign_success');
         }
