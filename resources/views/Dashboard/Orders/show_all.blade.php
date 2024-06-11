@@ -22,6 +22,33 @@
     @-webkit-keyframes spin {
       to { -webkit-transform: rotate(360deg); }
     }
+    .loader {
+        width: 45px;
+        aspect-ratio: 1;
+        display: flex;
+        margin-right: 95%;
+        color: #582b8c;
+        border: 4px solid;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background:
+            radial-gradient(circle 5px, currentColor 95%, #0000),
+            linear-gradient(currentColor 50%, #0000 0) 50%/4px 60% no-repeat;
+        animation: l1 2s infinite linear;
+    }
+
+    .loader:before {
+        content: "";
+        flex: 1;
+        background: linear-gradient(currentColor 50%, #0000 0) 50%/4px 80% no-repeat;
+        animation: inherit;
+    }
+
+    @keyframes l1 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
 
     label {
         font-weight: bold;
@@ -100,6 +127,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="text-center mb-3">البحث عن أوردر أو أكثر</h5>
+                    </div>
+                    <div class="col-12">
+                        <textarea name="" id="searchData" class="w-100 form-control" rows="10" placeholder="ابحث برقم الأوردر أو رقم البوليصة"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">بحث</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="content-note" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" style="width:60%;">
             <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
@@ -151,15 +197,15 @@
             <div class="card shadow-sm p-3" >
                 <form method="GET" action="{{route('all_orders')}}" id="search">
                     <div class="row">
-                        <div class="col-12 mt-4">
+                        <div class="col-12 my-4">
                             <h3 class="text-center">البحث عن أوردرات</h3>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم الأوردر</label>
                             <input class="form-control" name="order_code" id=""
                                 value="{{ Request::get('order_code') }}">
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">العميل</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار العميل</option>
@@ -171,7 +217,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم التليفون</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار رقم التليفون</option>
@@ -186,7 +232,7 @@
 
                         </div>
 
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المدينة</label>
                             <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id"
                                 id="city_id">
@@ -196,7 +242,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المنطقة</label>
                             <select class="form-select product_info"  name="area_id"
                                 id="area_id">
@@ -204,7 +250,7 @@
 
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">الحالة</label>
                             <select class="form-select product_info js-example-basic-multiple" name="status_id" multiple="multiple">
                                 <option value="">اختار الحالة</option>
@@ -218,7 +264,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المسوق</label>
                             <select class="form-select product_info" name="marketer_id">
                                 <option value="">اختار المسوق</option>
@@ -227,7 +273,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المنتج</label>
                             <select class="form-select product_info" name="product_id" id="product_id">
                                 <option value="">اختار المنتج</option>
@@ -236,7 +282,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">المتغير</label>
                             <select class="form-select product_info" name="variant_id" id="variant_id">
                                 <option value="">اختار المتغير</option>
@@ -246,17 +292,17 @@
 
                             </div>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">تاريخ من</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">تاريخ الى</label>
                             <input class="form-control datetimeplugin" name="date_to" id=""
                                 value="{{ Request::get('date_to') }}">
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">شركة الشحن</label>
                             <select class="form-select product_info" name="shipping_company_id">
                                 <option value="">اختار شركة الشحن</option>
@@ -265,7 +311,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 mt-4">
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">رقم البوليصة</label>
                             <input class="form-control" name="waybill" id=""
                                 value="{{ Request::get('waybill') }}">
@@ -280,91 +326,101 @@
             </div>
 
             @if($filters)
-                <div class="card shadow-sm p-3 my-4">
+                <h5 class="my-3">
+                    عدد نتائج البحث: {{ count($orders) }}
+                </h5>
+                <div class="card shadow-sm p-3 mb-4">
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
-                            <div class=" sidebar-bg p-2 m-1" style="color: white">
-                                 {{$value}}
+                            <div class=" sidebar-bg d-flex align-items-center 1 m-1" style="color: white;padding: 6px;border-radius: 6px;">
+                                {{ __($key) }}: {{$value}}
                             </div>
                         @endforeach
                     </div>
                 </div>
             @endif
 
-                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-row align-items-center">
+                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-wrap flex-row align-items-center">
                     @can('edit_change_status','App\\Models\Order')
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
                     </div>
                     @endcan
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
                     </div>
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <form method="POST" action="{{route('print_labels')}}" id="print_label">
                             @csrf
                         <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
                         </form>
                     </div>
-                    <div class="me-2" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
+                    <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
                         <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
                     </div>
-                    <div class="me-2">
+                    <div class="me-2 my-1">
                         <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
                             <button type="submit" disabled class="btn btn-warning"> واتساب <i class="bi bi-whatsapp"></i></div>
                         </form>
                     </div>
                 </div>
 
-                <div class="table-responsive px-0">
-            <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
-                        <th>رقم الأوردر</th>
-                        <th>رقم البوليصة</th>
-                        <th>الادمن</th>
-                        <th>المسوق</th>
-                        <th>الحالة</th>
-                        <th>اسم العميل</th>
-                        <th>رقم التليفون</th>
-                        <th>العنوان</th>
-                        <th>المنطقة</th>
-                        <th>الاجمالى</th>
-                        <th>تاريخ الاضافة</th>
-                        <th>ملاحظات الطلب</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($orders as $order)
-                        <tr>
-                            <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
-                            <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
-                            <td>{{ $order->waybill?? 'لا يوجد' }}</td>
-                            <td>{{$order->admin->name}}</td>
-                            <td>
-                                @isset($order->marketer->name)
-                                    {{$order->marketer->name}}
-                                @endisset
-                            </td>
-                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
-                            <td>{{$order->name}}</td>
-                            <td>{{$order->phone_1}}</td>
-                            <td>{{$order->address}}</td>
-                            <td>{{$order->city->name}} - {{$order->area->name}}</td>
-                            <td>{{$order->total}}</td>
-                            <td>@date_format($order->created_at)</td>
-                            <td class="order_notes" data-id="{{$order->id}}">
-                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            </div>
-            <div dir="ltr" class="d-flex justify-content-center">
-                {!! $orders->appends($_GET)->links() !!}
-            </div>
+                <div class="row">
+                    <div class="card p-3 shadow-sm">
+                        <div>
+                            <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">ابحث عن أوردر أو أكثر</button>
+                        </div>
+                        <div class="table-responsive px-0">
+                            <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
+                                        <th>رقم الأوردر</th>
+                                        <th>رقم البوليصة</th>
+                                        <th>الادمن</th>
+                                        <th>المسوق</th>
+                                        <th>الحالة</th>
+                                        <th>اسم العميل</th>
+                                        <th>رقم التليفون</th>
+                                        <th>العنوان</th>
+                                        <th>المنطقة</th>
+                                        <th>الاجمالى</th>
+                                        <th>تاريخ الاضافة</th>
+                                        <th>ملاحظات الطلب</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($orders as $order)
+                                        <tr>
+                                            <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
+                                            <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
+                                            <td>{{ $order->waybill?? 'لا يوجد' }}</td>
+                                            <td>{{$order->admin->name}}</td>
+                                            <td>
+                                                @isset($order->marketer->name)
+                                                    {{$order->marketer->name}}
+                                                @endisset
+                                            </td>
+                                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
+                                            <td>{{$order->name}}</td>
+                                            <td>{{$order->phone_1}}</td>
+                                            <td>{{$order->address}}</td>
+                                            <td>{{$order->city->name}} - {{$order->area->name}}</td>
+                                            <td>{{$order->total}}</td>
+                                            <td>@date_format($order->created_at)</td>
+                                            <td class="order_notes" data-id="{{$order->id}}">
+                                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div dir="ltr" class="d-flex justify-content-center mt-4">
+                            {!! $orders->appends($_GET)->links() !!}
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
@@ -611,7 +667,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             link.click();
             document.body.removeChild(link);
         }
-        $(".order_notes").click(function () {
+        $(document).on('click',".order_notes",function (e) {
             var order_id = $(this).attr('data-id');
             $("#content-note").modal("show");
 			$(".notes-list").html("<div id='loading'></div>");
@@ -687,5 +743,74 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#whatsappForm button').attr('disabled', 'disabled')
             }
         })
+
+        $('#searchModal button').click(function() {
+            $('#searchModal').modal('hide');
+            let search_data = $('textarea#searchData').val();
+            $('#orders tbody').html('<td colspan="13" class="text-center"><div id="loading" class="my-4"></div></td>');
+
+            $.ajax({
+                url: '/api/orders/search',
+                method: 'get',
+                dataType: 'json',
+                data: {
+                    search_data
+                },
+                success: function(response) {
+                    $('#orders tbody').html('');
+                    let data = response.data; // we need only data from paginate function.
+
+                    $.each(data, function(key, value) {
+                        let table_row = `
+                            <tr>
+                                <td><input type="checkbox" class="order_id form-check-input" value="${value.id}"></td>
+                                <td><a href="orders/${value.id}" target="_blank">${value.order_code}</a></td>
+                                <td>${value.waybill ? value.waybill : 'لا يوجد'}</td>
+                                <td>${value.admin.name}</td>
+                                <td>
+                                    ${(value.marketer == null) ? '' : value.marketer.name}
+                                </td>
+                                <td data-status="${value.status.id}">${value.status.name}</td>
+                                <td>${value.name}</td>
+                                <td>${value.phone_1}</td>
+                                <td>${value.address}</td>
+                                <td>${value.city.name} - ${value.area.name}</td>
+                                <td>${value.total}</td>
+                                <td>${format_date(value.created_at)}</td>
+                                <td class="order_notes" data-id="${value.id}">
+                                    <span class="btn btn-primary" style="border-radius: 50px">${value.order_notes.length}</span>
+                                </td>
+                            </tr>
+                        `;
+
+                        $('#orders tbody').append(table_row);
+                    }) 
+                }
+            })
+        })
+
+        function format_date(datee) {
+            // Create a specific date
+            const date = new Date(datee);
+
+            // Extract parts of the date
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+            const day = String(date.getDate()).padStart(2, '0');
+
+            let hours = String(date.getHours()).padStart(2, '0') - 1;
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+
+            // Determine AM or PM
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            hours = String(hours).padStart(2, '0');
+
+            // Format the date
+            const formattedDate = `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
+            return formattedDate;
+        }
     </script>
 @endsection

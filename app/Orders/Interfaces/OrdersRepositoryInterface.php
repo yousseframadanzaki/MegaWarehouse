@@ -14,4 +14,5 @@ interface OrdersRepositoryInterface{
     public function check_max_orders($company_id);
     public function update_order($order_id,$data);
     public function update_after_sale($id,$company_id,$data);
+    public function search_orders($company_id, array $data);
 }

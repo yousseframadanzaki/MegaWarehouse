@@ -19,6 +19,10 @@
         background-size: cover;
         background-position: center center;
     }
+
+    label {
+        font-weight: bold;
+    }
 </style>
 @section('content')
     <div class="p-3">
@@ -31,7 +35,7 @@
             <div class="card shadow-sm p-3">
             <form method="GET" action="{{ route('all_users') }}" id="search">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label">المخزن</label>
                             <select class="form-select product_info" aria-label="Default  select example" name="warehouse_id"
                                 style="padding: 0.375rem 0.75rem;">
@@ -47,7 +51,7 @@
                             </div>
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label">الادارة</label>
                             <select class="form-select product_info" aria-label="Default  select example" name="role_id"
                                 style="padding: 0.375rem 0.75rem;">
@@ -63,7 +67,7 @@
                             </div>
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label">رقم التليفون</label>
                             <input class="form-control" name="phone" id=""
                                 value="{{ Request::get('phone') }}">

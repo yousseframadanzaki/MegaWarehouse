@@ -253,5 +253,8 @@ class OrdersService implements OrdersServiceInterface{
     public function UpdateAfterSaleOrder($id,$company_id,$data){
         return $this->orders_crud_repository->update_after_sale($id,$company_id,$data);
     }
+    public function SearchOrders($company_id, $data) {
+        return $this->orders_crud_repository->search_orders($company_id, $data);
+    }
 }
 

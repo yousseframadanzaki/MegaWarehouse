@@ -62,7 +62,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
 
     public function get_company_orders($company_id,$filters){
-        return Order::with(['marketer','admin','status','city','area','order_notes'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(20);
+        return Order::with(['marketer','admin','status','city','area','order_notes'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(50);
     }
 
     public function get_order_code($company_id){
@@ -209,5 +209,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function update_after_sale($id,$company_id,$data){
         $order = Order::where('id', $id)->where('company_id', $company_id)->first();
         $order->update($data);
+    }
+    public function search_orders($company_id, $data) {
+        return Order::with(['marketer','admin','status','city','area','order_notes'])->where('company_id', $company_id)->where(function($query) use ($data) {
+            $query->whereIn('order_code', $data)->orWhereIn('waybill', $data);
+        })->paginate(50);
     }
 }

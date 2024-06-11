@@ -193,4 +193,9 @@ class OrderController extends Controller
         return redirect()->route('show_order',$order_id)->with('success','change_after_sale_success');
     }
 
+    public function search_orders(Request $request) {
+        $data = explode("\n", $request->search_data);
+        $orders = $this->OrdersService->SearchOrders($this->company_id(), $data);
+        return response()->json($orders);
+    }
 }
