@@ -256,7 +256,7 @@
                             </li>
                         @endcanany
 
-                        @canany(['view_invoice'], 'App\Models\Invoice')
+                        @canany(['view_invoice','view_transactions','add_transaction'], 'App\Models\Invoice')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
                                     data-bs-target="#invoices-collapse">
@@ -325,7 +325,7 @@
                             </div>
                         </li>
                         @endcanany
-
+                        @canany(['whatsapp_campaigns','add_points'], 'App\Models\Status')
                         <li>
                             <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
                                 data-bs-target="#whatsapp-collapse">
@@ -349,7 +349,7 @@
                                 </ul>
                             </div>
                         </li>
-
+                        @endcanany
                         @canany(['view', 'add'], 'App\Models\Brand')
                             <li>
                                 <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
