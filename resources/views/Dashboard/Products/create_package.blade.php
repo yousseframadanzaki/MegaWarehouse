@@ -108,7 +108,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <button class="btn btn-primary mt-3 is-invalid" id="add_option_btn">إضافة منتج</button>
-                            @if ($errors->has('package') || $errors->has('package.*.variant_id') || $errors->has('package.*.price'))
+                            @if ($errors->has('package') || $errors->has('package.*.price') || $errors->has('package.*.variant_id'))
                                 <div class="invalid-feedback">
                                     {{ __('package_product_required') }}
                                 </div>
