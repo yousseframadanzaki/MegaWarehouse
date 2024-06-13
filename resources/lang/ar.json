@@ -204,5 +204,6 @@
     "add_device_success": "تم اضافة الجهاز بنجاح",
     "add_device_error": "خطأ فى عملية اضافة الجهاز",
     "create_campaign_success":"تم اضافة الحملة بنجاح",
-    "related_shipping_orders":"أوردرات قيد الشحن"
+    "related_shipping_orders":"أوردرات قيد الشحن",
+    "orders_pie_chart":"عدد أوردرات المناطق"
 }

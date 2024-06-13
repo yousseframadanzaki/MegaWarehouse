@@ -1,4 +1,5 @@
 import './bootstrap';
+import './chart.umd';
 
 import AirDatepicker from 'air-datepicker';
 import 'air-datepicker/air-datepicker.css';
