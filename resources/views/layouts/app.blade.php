@@ -325,7 +325,7 @@
                             </div>
                         </li>
                         @endcanany
-                        @canany(['whatsapp_campaigns','add_points'], 'App\Models\Status')
+                        @canany(['whatsapp_campaigns','add_points'], 'App\Models\WhatsappCampaign')
                         <li>
                             <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
                                 data-bs-target="#whatsapp-collapse">
