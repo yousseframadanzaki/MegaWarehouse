@@ -501,7 +501,7 @@
 
                                         @can('view_orders', 'App\Models\ShippingCompany')
                                             <li class="rounded "><a href="{{ route('shipping_orders') }}" class="text-white"><i
-                                                        class="bi bi-bi-truck"></i> أوردرات قيد الشحن</a></li>
+                                                        class="bi bi-basket"></i> أوردرات قيد الشحن</a></li>
                                         @endcan
                                     </ul>
                                 </div>

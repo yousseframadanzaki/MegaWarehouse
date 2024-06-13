@@ -72,9 +72,9 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-4 mt-4 @error('product_info.category_id') has-error @enderror">
-                        <label class="form-label">منتج<span class="text-danger">*</span></label>
+                        <label class="form-label">تصنيف<span class="text-danger">*</span></label>
                         <select class="form-control product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]" id="product_info.category_id">
-                            <option value="">اختار منتج </option>
+                            <option value="">اختار تصنيف </option>
                             @foreach ($data['categories'] as $cat)
                             <option @if ($cat->id == old('product_info.category_id')) selected @endif value="{{ $cat->id }}">{{ $cat->parents_names }}</option>
                             @endforeach
@@ -107,10 +107,15 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <button class="btn btn-primary mt-3" id="add_option_btn">إضافة منتج</button>
+                            <button class="btn btn-primary mt-3 @error('package') is-invalid @enderror" id="add_option_btn">إضافة منتج</button>
+                            @error('package')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
-                
+
                 </div>
 
                 <div class="row">

@@ -48,12 +48,12 @@
         const ctx = canvas.getContext('2d');
 
         // Set the canvas size
-        if (data.length <= 14 )
+        if (data.filter(element => element != '').length <= 14)
             canvas.width = container.clientWidth;
         else
             canvas.width = container.clientWidth * 1.5;
 
-        canvas.height = 420;
+        canvas.height = 400;
 
         new Chart(ctx, {
             type: 'pie',
@@ -74,8 +74,8 @@
                         padding: {
                             left: 10,
                             right: 10,
-                            top: 10,
-                            bottom: 10
+                            top: 5,
+                            bottom: 5
                         }
                     },
                 plugins: {

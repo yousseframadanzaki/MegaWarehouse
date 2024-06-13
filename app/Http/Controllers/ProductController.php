@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Products\Requests\CreateProductRequest;
+use App\Products\Requests\CreatePackageRequest;
 use App\Products\Interfaces\ProductCrudServiceInterface;
 use App\Products\Filters\ProductFilters;
 
@@ -164,7 +165,7 @@ class ProductController extends Controller
         return view('Dashboard.Products.create_package')->with('data', $data);
     }
 
-    public function store_package(Request $request) {
+    public function store_package(CreatePackageRequest $request) {
         $package = $this->ProductCrudService->AddPackage($this->company_id(), $request->all());
         $request->session()->flash('success', 'new_product_added_successfully');
         return redirect()->route('show_product', ['product_id' => $package->id]);
