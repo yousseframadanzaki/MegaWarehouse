@@ -45,9 +45,6 @@ class WhatsappRepository implements WhatsappRepositoryInterface
         $campaign->save();
         return true;
     }
-    // public function get_user_points($user_id){
-    //     return WhatsappUserPoint::where('user_id',$user_id)->get();
-    // }
     public function get_user_points($user_id){
         return DB::table('whatsapp_user_points')
             ->selectRaw('(SELECT points FROM whatsapp_user_points WHERE user_id = ? AND type = ?) - (SELECT SUM(messages) FROM whatsapp_user_points WHERE user_id = ? AND type = ?) AS points', [$user_id, 'add_ponits', $user_id, 'send_message'])
