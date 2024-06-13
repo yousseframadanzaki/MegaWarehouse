@@ -77,10 +77,9 @@ Route::post('statuses/{id}/settings', [StatusController::class, 'update_status']
 Route::post('statuses/{id}/related_shipping', [StatusController::class, 'update_related_shipping'])->name('update_related_shipping');
 Route::POST('statuses/{id}/add_status', [StatusController::class, 'add_related_status'])->name('add_status');
 Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class, 'remove_related_status'])->name('remove_status');
-
 Route::get('category/{category}/payment_types', [AccountingController::class, 'get_payments']);
 Route::get('users/company/role_type/{role_type}', [AccountingController::class, 'get_company_users_by_role_type']);
 Route::get('campaign/get_qr_code/{instance_id}',[WhatsappController::class, 'get_qr_code']);
 Route::post('campaign/{device_id}/delete_device',[WhatsappController::class, 'delete_device']);
-
+Route::POST('campaign/{campaign_id}/edit_status', [WhatsappController::class, 'edit_status']);
 Route::get('shipping_company/orders', [ShippingCompanyController::class, 'get_orders_by_status_id']);

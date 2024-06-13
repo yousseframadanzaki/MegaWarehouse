@@ -14,6 +14,37 @@ class WhatsappRepository implements WhatsappRepositoryInterface
     public function add_points($data){
         return WhatsappUserPoint::create($data);
     }
+    public function get_campaigns($company_id){
+        return DB::table('whatsapp_campaigns')
+            ->leftJoin('users', 'whatsapp_campaigns.user_id', '=', 'users.id')
+            ->leftJoin('orders', function($join) {
+                $join->on(DB::raw('FIND_IN_SET(orders.id, whatsapp_campaigns.order_ids)'), '>', DB::raw('0'));
+            })
+            ->select(
+                'whatsapp_campaigns.id',
+                'whatsapp_campaigns.name',
+                'whatsapp_campaigns.schedule_date',
+                'whatsapp_campaigns.status',
+                'users.name as user_name',
+                DB::raw('GROUP_CONCAT(orders.id SEPARATOR ",") as order_ids'),
+                DB::raw('GROUP_CONCAT(orders.order_code SEPARATOR ",") as order_codes')
+            )
+            ->where('users.company_id', $company_id)
+            ->groupBy(
+                'whatsapp_campaigns.id',
+                'whatsapp_campaigns.name',
+                'whatsapp_campaigns.schedule_date',
+                'whatsapp_campaigns.status',
+                'users.name'
+            )
+            ->get();
+    }
+    public function change_campaign_status($campaign_id,$status){
+        $campaign = WhatsappCampaign::find($campaign_id);
+        $campaign->status = $status;
+        $campaign->save();
+        return true;
+    }
     // public function get_user_points($user_id){
     //     return WhatsappUserPoint::where('user_id',$user_id)->get();
     // }

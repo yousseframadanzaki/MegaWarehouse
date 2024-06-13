@@ -30,13 +30,23 @@ class WhatsappController extends Controller
         $users = $this->CommonDataService->GetCompanyUsers($company_id);
         return view('Dashboard.Whatsapp.add_points', compact('users'));
     }
+    public function all_campaign(){
+        $company_id = $this->company_id();
+        $campaigns = $this->WhatsappService->GetCampaigns($company_id);
+        return view('Dashboard.Whatsapp.show_all', compact('campaigns'));
+    }
+    public function edit_status($campaign_id,Request $request){
+        $data = $request->except('_token');
+        $status = $this->WhatsappService->ChangeCampaignStatus($campaign_id,$data['status']);
+        return response()->json($status);
+    }
     public function store_points(Request $request){
         $data = $request->all();
         unset($data['_token']);
         $user = auth()->user();
         $data['admin_id'] = "$user->id";
         $data['type'] = "add_ponits";
-        $data['expire_date'] = Carbon::now()->addDay();
+        $data['expire_date'] = Carbon::now()->addDays(30);
 
         if( $this->WhatsappService->AddPoints($data) ){
             $request->session()->flash('success', 'store_points_success');
@@ -100,7 +110,7 @@ class WhatsappController extends Controller
         $details['type'] = "send_message";
         $whatsapp_messages = $this->WhatsappService->AddPoints($details);
         if($campaign_id && $whatsapp_messages){
-            return redirect()->route('all_orders')
+            return redirect()->route('whatsapp_campaigns')
             ->with('success', 'create_campaign_success');
         }
     }

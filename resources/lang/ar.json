@@ -1,4 +1,5 @@
 {
+    "dashboard":"الرئيسية",
     "login_error":"بيانات تسجيل دخول خطأ",
     "identity_required":"برجاء ادخال الايميل او رقم التليفون",
     "identity_min":"الايميل او رقم التليفون يجب ان يكون 6 احرف على الاقل",
@@ -204,5 +205,17 @@
     "add_device_success": "تم اضافة الجهاز بنجاح",
     "add_device_error": "خطأ فى عملية اضافة الجهاز",
     "create_campaign_success":"تم اضافة الحملة بنجاح",
-    "related_shipping_orders":"أوردرات قيد الشحن"
+    "related_shipping_orders":"أوردرات قيد الشحن",
+    "add_whatsapp_points":"اضافة نقاط (الوأتس أب)",
+    "all_campaign":"حملات الوأتس أب",
+    "campaign_name":"اسم الحملة",
+    "campaign_user":"منفذ الحملة",
+    "campaign_id":"رقم الحملة",
+    "campaign_time":"وقت تنفيذ الحملة",
+    "campaign_status":"حالة الحملة",
+    "campaign_orders":"أوردرات الحملة",
+    "pending":"قيد الانتظار",
+    "not sent":"لم ترسل",
+    "hold":"معلقة",
+    "finished":"تم الانتهاء"
 }

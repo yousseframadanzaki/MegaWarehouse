@@ -321,13 +321,30 @@
                                                     class="bi bi-gear"></i>
                                                 اعدادات الحالات </a></li>
                                     @endcan
-                                        <li class="rounded"><a href="{{ route('add_points') }}" class="text-white"> <i
-                                            class="bi bi-plus"></i>
-                                        اضافة نقاط (واتساب) </a></li>
                                 </ul>
                             </div>
                         </li>
                         @endcanany
+
+                        <li>
+                            <a href="#" class="nav-link text-white" data-bs-toggle="collapse"
+                                data-bs-target="#whatsapp-collapse">
+                                <i class="bi bi-megaphone-fill"></i>
+                                @lang('all_campaign') 
+                            </a>
+                            <div class="collapse" id="whatsapp-collapse" style="">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small collapsible-sidenav">
+    
+                                        <li class="rounded"><a href="{{ route('whatsapp_campaigns') }}" class="text-white"> <i
+                                            class="bi bi-megaphone"></i>
+                                        @lang('all_campaign') </a></li>
+
+                                        <li class="rounded"><a href="{{ route('add_points') }}" class="text-white"> <i
+                                            class="bi bi-plus"></i>
+                                        @lang('add_whatsapp_points') </a></li>
+                                </ul>
+                            </div>
+                        </li>
 
                         @canany(['view', 'add'], 'App\Models\Brand')
                             <li>
