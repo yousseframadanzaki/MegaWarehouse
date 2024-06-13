@@ -488,16 +488,19 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->can('view_statuses', ['App\Models\Status']);
 
     Route::get('campaign/add', [WhatsappController::class,'show_campaign'])
-    ->name('show_campaign');
+    ->name('show_campaign')
+    ->can('whatsapp_order', ['App\Models\WhatsappCampaign']);
 
     Route::post('campaign/add', [WhatsappController::class,'store_campaign'])
     ->name('create_campaign');
 
     Route::get('whatsapp/campaigns', [WhatsappController::class,'all_campaign'])
-    ->name('whatsapp_campaigns');
+    ->name('whatsapp_campaigns')
+    ->can('whatsapp_campaigns', ['App\Models\WhatsappCampaign']);
 
     Route::get('whatsapp/points/add', [WhatsappController::class,'add_points'])
-    ->name('add_points');
+    ->name('add_points')
+    ->can('add_points', ['App\Models\WhatsappCampaign']);
 
     Route::post('whatsapp/points/add', [WhatsappController::class,'store_points'])
     ->name('store_whatsapp_points');

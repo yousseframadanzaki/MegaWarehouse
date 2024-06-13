@@ -358,11 +358,13 @@
                     <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
                         <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
                     </div>
+                    @can('whatsapp_order', ['App\\Models\WhatsappCampaign'])
                     <div class="me-2 my-1">
                         <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
                             <button type="submit" disabled class="btn btn-warning"> واتساب <i class="bi bi-whatsapp"></i></div>
                         </form>
                     </div>
+                    @endcan
                 </div>
 
                 <div class="row">
@@ -784,7 +786,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                         `;
 
                         $('#orders tbody').append(table_row);
-                    }) 
+                    })
                 }
             })
         })

@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Invoice' => 'App\Policies\InvoicePolicy',
         'App\Models\Status' => 'App\Policies\StatusPolicy',
         'App\Models\Transaction' => 'App\Policies\AccountingPolicy',
-
+        'App\Models\WhatsappCampaign' => 'App\Policies\WhatsappCampaign',
 
     ];
 
