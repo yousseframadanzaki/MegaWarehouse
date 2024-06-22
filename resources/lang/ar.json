@@ -221,5 +221,6 @@
     "orders_pie_chart":"عدد أوردرات المناطق",
     "package_product_required": "يجب اختيار منتجات مع إدخال بياناتها كاملة",
 
-    "WhatsappCampaign": "حملات الواتساب"
+    "WhatsappCampaign": "حملات الواتساب",
+    "variants_print_title": "طباعة متغيرات"
 }

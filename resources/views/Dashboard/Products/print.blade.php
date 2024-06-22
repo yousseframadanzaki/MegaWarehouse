@@ -3,41 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{$variant->name}}</title>
+    <title>@lang('variants_print_title')</title>
     <style>
         .container{
             direction: rtl;
             margin: auto;
         }
-        .attributes{
-            display: flex;
-            justify-content:center;
-            font-size: 16px;
-            font-weight: bold;
+
+        .barcode-card {
+            width: 38mm;
+            height: 12.5mm;
+            margin: auto;
+            margin-bottom: 0px;
+            page-break-inside: avoid;
         }
-        .attributes div{
-            margin-left:10px;
+        @media print {
+            body {
+                margin: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    @php
+        $flag = false;
+    @endphp
     <div class="container">
-        <div style="display:flex;flex-direction:column;justify-content:center;align-items:center">
-            {!! DNS1D::getBarcodeHTML($variant->sku, 'C128',1,30) !!}
-            <div>
-            {{$variant->sku}}
-        </div>
-        </div>
-        <div style="font-weight: bold;text-align:center">
-            <h4 style="margin: 0">{{$variant->product->name}} - <span>({{$variant->product->brand->name}})</span></h4 style="margin: 0">
-        </div>
-        <div class="attributes">
-            {{$variant->name}}
-        </div>
-        <div style="text-align: center;margin-top:5px;">
-            <span style="font-weight: bold">السعر</span>
-            <span>{{$variant->price}}</span>
-        </div>
+        @foreach ($variants as $variant)
+            <div class="parent" style="width: fit-content; margin: 2mm auto">
+                @for ($i=0; $i<2; $i++)
+                    <div class="barcode-card">
+                        <div style="text-align:center; text-overflow: ellipsis;">
+                            <p style="margin: 0px; font-size: 9px;">{{$variant->product->name}} - <bdi><span>({{$variant->name}})</span></bdi></p>
+                        </div>
+                        <div style="width: fit-content; margin: 1px auto;">
+                            {!! DNS1D::getBarcodeHTML($variant->sku, 'C128',1,20) !!}
+                        </div>
+                        <div style="text-align: center; margin: 0; font-size: 10px;">
+                            {{$variant->sku}}
+                        </div>
+                    </div>
+                @endfor
+            </div>
+        @endforeach
     </div>
 </body>
 </html>

@@ -11,6 +11,7 @@ use App\Products\Requests\CreateProductRequest;
 use App\Products\Requests\CreatePackageRequest;
 use App\Products\Interfaces\ProductCrudServiceInterface;
 use App\Products\Filters\ProductFilters;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 
 class ProductController extends Controller
@@ -147,8 +148,13 @@ class ProductController extends Controller
 
     public function print($variant_id)
     {
-        $variant = $this->ProductCrudService->GetVariantPrint($variant_id);
-        return view('Dashboard.Products.print')->with('variant', $variant);
+        $variant = [$this->ProductCrudService->GetVariantPrint($variant_id)];
+        return view('Dashboard.Products.print')->with('variants', $variant);
+    }
+    public function print_bulk_variants(Request $request)
+    {
+        $variants = $this->ProductCrudService->GetBulkVariantsPrint($request->ids);
+        return view('Dashboard.Products.print')->with('variants', $variants);
     }
     public function create_package(){
         $company_id = $this->company_id();

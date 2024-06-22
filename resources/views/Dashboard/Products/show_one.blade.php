@@ -107,11 +107,11 @@
                     <div class="col-md-4">
                         <span style="font-weight: 600;">{{$name}}</span>
                         <br>
-                                @foreach ($attribute['values'] as $value)
-                                <div class="badge p-2 bg-success my-2">
-                                    {{ $value }}
-                                </div>
-                                @endforeach
+                        @foreach ($attribute['values'] as $value)
+                            <div class="badge p-2 bg-success my-2">
+                                {{ $value }}
+                            </div>
+                        @endforeach
                     </div>
                 @endforeach
             </div>
@@ -126,10 +126,18 @@
 <div class="card mt-3 p-2 shadow-sm">
     <div class="row">
         <div class="col-12">
+            <div class="mb-2">
+                <form method="GET" target="_blank" action="{{route('print_bulk_variants', $product->id)}}" id="print_label">
+                    <div class="btn btn-primary print_label"> طباعة <i class="bi bi-printer"></i></div>
+                </form>
+            </div>
+        </div>
+        <div class="col-12">
             <div class="table-responsive">
                 <table class="table  table-hover fs-5" style="min-width: 700px;">
                     <thead>
                         <tr>
+                            <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
                             <th scope="col">اسم</th>
                             <th scope="col">السعر</th>
                             @if ($product->is_bundle == 0)<th scope="col">الكمية</th>@endif
@@ -141,6 +149,7 @@
                     <tbody>
                         @forelse (($product->is_bundle == 0) ? $product->variants : $product->bundle_variants as $variant)
                             <tr class="">
+                                <td><input type="checkbox" class="variant_id form-check-input" value="{{$variant->id}}"></td>
                                 <td>{{ $variant->name }}</td>
                                 <td>{{ ($product->is_bundle == 0) ? $variant->price : $variant->pivot->price }}</td>
                                 @if ($product->is_bundle == 0)<td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->total_stock_quantity }}</a></td>@endif
@@ -197,6 +206,39 @@ function add_data(data) {
         }
     });
 }
+
+$("#check_all").click(function () {
+    if ($(this).is(":checked"))
+        $('.variant_id').prop('checked', true);
+    else
+        $('.variant_id').prop('checked', false);
+})
+
+function get_checked_orders() {
+    ids = [];
+    $('.variant_id').each(function (index, obj) {
+        if (this.checked === true) {
+            ids.push(this.value);
+        }
+    });
+    return ids;
+}
+
+$('.print_label').click(function(e){
+    e.preventDefault();
+    var ids = get_checked_orders();
+
+    if(ids.length < 1){
+        alert('برجاء اختيار متغير واحد على الاقل');
+        return;
+    }
+
+    ids.forEach(id => {
+        $("#print_label").append(`<input type="hidden" name="ids[]" value="${id}" />`);
+    });
+
+    $("#print_label").submit();
+});
 
 </script>
 

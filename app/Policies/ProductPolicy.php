@@ -67,6 +67,15 @@ class ProductPolicy
         return true;
     }
 
+    public function print_bulk_variants(User $user, $product_id): bool
+    {
+        $product = Product::findOrFail($product_id);
+        if($user->company_id != $product->company_id){
+            return false;
+        }
+        return true;
+    }
+
     public function add_package(User $user) {
         if(!$user->role->permissions->contains('slug','add_package')){
             return false;
