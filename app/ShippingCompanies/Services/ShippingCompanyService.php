@@ -95,8 +95,41 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         
         return $shipment_info;
     }
+    public function SendShipmentV2($order,$shipping_company_id){
+        $shipping_company = $this->GetShippingCompany($shipping_company_id);
+        $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
+
+        if(!$shipment){
+            return false;
+        }
+
+        $shipment_info = $this->MegaApiService
+        ->CreateNewShipmentV2(
+            $shipping_company->username,
+            $shipping_company->password,
+            $shipping_company->url,
+            $shipment
+        );
+        
+        return $shipment_info;
+    }
 
     private function ShipmentInfoFromOrder($order,$shipping_company_id)
+    {
+        
+        $sector_id = $this->ShippingAreaService->GetAreaSectorIdMapping($order->area_id,$shipping_company_id);
+        if(!$sector_id){
+            return false;
+        }
+        
+        $order_id = $order->order_code;
+        $shipment = array(
+            'sector_id' =>$sector_id,
+            'order_id' =>$order_id
+        );
+        return $shipment;
+    }
+    private function ShipmentInfoFromOrderV2($order,$shipping_company_id)
     {
         
         $sector_id = $this->ShippingAreaService->GetAreaSectorIdMapping($order->area_id,$shipping_company_id);
