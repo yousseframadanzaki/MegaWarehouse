@@ -242,10 +242,10 @@ class OrdersService implements OrdersServiceInterface{
         }
         return $this->StockService->AddStock($new_items);
     }
-    public function DeleteOrder($variant_id)
-    {
-        return $this->orders_crud_repository->DeleteOrder($variant_id);
-    }
+    // public function DeleteOrder($variant_id)
+    // {
+    //     return $this->orders_crud_repository->DeleteOrder($variant_id);
+    // }
     public function get_scan_items($ids)
     {
         return $this->VariantStockService->get_scan_items($ids);
@@ -255,6 +255,9 @@ class OrdersService implements OrdersServiceInterface{
     }
     public function SearchOrders($company_id, $data) {
         return $this->orders_crud_repository->search_orders($company_id, $data);
+    }
+    public function DeleteOrder($order_id) {
+        return $this->orders_crud_repository->delete_order($order_id);
     }
 }
 

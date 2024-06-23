@@ -171,6 +171,8 @@ class StockOperationService implements StockOperationServiceInterface{
             $this->VariantStockService->UpdateStock($operation['variant_id'],$operation['quantity']*-1);
             $this->stock_operation_repository->delete_operation_by_id($id);
         }
+
+        return true;
     }
 
     function GetVarintsStock($variant_id,$user) {

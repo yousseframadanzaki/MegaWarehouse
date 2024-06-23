@@ -15,4 +15,5 @@ interface OrdersRepositoryInterface{
     public function update_order($order_id,$data);
     public function update_after_sale($id,$company_id,$data);
     public function search_orders($company_id, array $data);
+    public function delete_order($order_id);
 }

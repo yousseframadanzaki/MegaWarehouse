@@ -15,4 +15,5 @@ interface OrdersServiceInterface{
     public function get_scan_items($ids);
     public function UpdateAfterSaleOrder($id,$company_id,$data);
     public function SearchOrders($company_id, array $data);
+    public function DeleteOrder($order_id);
 }

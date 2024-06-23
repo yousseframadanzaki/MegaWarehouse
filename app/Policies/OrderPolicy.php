@@ -97,4 +97,10 @@ class OrderPolicy
         }
         return true;
     }
+    public function delete_order(User $user): bool {
+        if(!$user->role->permissions->contains('slug','delete_order')){
+            return false;
+        }
+        return true;
+    }
 }

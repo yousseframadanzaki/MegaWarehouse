@@ -215,4 +215,11 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $query->whereIn('order_code', $data)->orWhereIn('waybill', $data);
         })->paginate(50);
     }
+    public function delete_order($order_id)
+    {
+        $order = Order::findOrFail($order_id);
+        OrderNotes::where('order_id', $order->id)->delete();
+        $deleted = $order->delete();
+        return $deleted;
+    }
 }

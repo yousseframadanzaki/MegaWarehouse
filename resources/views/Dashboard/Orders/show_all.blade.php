@@ -389,6 +389,9 @@
                                         <th>الاجمالى</th>
                                         <th>تاريخ الاضافة</th>
                                         <th>ملاحظات الطلب</th>
+                                        @can('delete_order', 'App\Models\Order')
+                                            <th>حذف الطلب</th>
+                                        @endcan
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -413,6 +416,11 @@
                                             <td class="order_notes" data-id="{{$order->id}}">
                                                 <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
                                             </td>
+                                            @can('delete_order', 'App\Models\Order')
+                                                <td>
+                                                    <i class="bi bi-trash text-danger delete-button" style="font-size: 20px; cursor: pointer;" data-id="{{$order->id}}" data-code="{{$order->order_code}}"></i>
+                                                </td>
+                                            @endcan
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -814,5 +822,27 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             const formattedDate = `${day}-${month}-${year} ${hours}:${minutes} ${ampm}`;
             return formattedDate;
         }
+
+        $('.delete-button').click(function() {
+            order_code = $(this).attr('data-code');
+            if (confirm(`هل أنت متأكد من حذف الأوردر ( ${order_code} ) ؟`)) {
+                order_id = $(this).attr('data-id');
+                tr = $(this).closest('tr');
+                $.ajax({
+                    url: `/api/order/${order_id}/delete`,
+                    method: 'POST',
+                    data: {
+                        order_id,
+                        _token: '@csrf'
+                    },
+                    success: function (response) {
+                        tr.remove();
+                        setTimeout(() => {
+                            alert('تم حذف الأوردر بنجاح');
+                        }, 500);
+                    }
+                })
+            }
+        })
     </script>
 @endsection

@@ -221,5 +221,6 @@
     "orders_pie_chart":"عدد أوردرات المناطق",
     "package_product_required": "يجب اختيار منتجات مع إدخال بياناتها كاملة",
 
-    "WhatsappCampaign": "حملات الواتساب"
+    "WhatsappCampaign": "حملات الواتساب",
+    "stock_delete_success": "تم الحذف بنجاح"
 }

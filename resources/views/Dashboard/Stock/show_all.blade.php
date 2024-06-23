@@ -31,7 +31,8 @@
                     </p>
                     <div>
                         <a class="delete_btn btn btn-danger">نعم </a>
-                        <a data-bs-dismiss="modal" class="delete_btn btn btn-secondary">لا</a>
+                        <a data-bs-dismiss="modal" class="btn btn-secondary">لا</a>
+                        <p class="mt-2 text-danger text-center error-message" style="display: none;">قم باختيار عنصر واحد علي الأقل</p>
                     </div>
                 </div>
 
@@ -239,8 +240,8 @@
                             <td>{{ __($operation->type) }}</td>
                             <td>{{ $operation->warehouse->name }}</td>
                             <td>{{ $operation->admin->name }}</td>
-                            <td>{{ $operation->variant->product->name }}</td>
-                            <td>{{ $operation->variant->name }}</td>
+                            <td @empty($operation->variant->product->name) class="text-danger" @endempty>{{ $operation->variant->product->name?? 'منتج كان موجود مسبقا' }}</td>
+                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->name?? 'متغير كان موجود مسبقا' }}</td>
                             <td>{{ $operation->variant->shelf_num }}</td>
                             <td>{{ $operation->variant->product->supplier->name }}</td>
                             <td dir="ltr" class="text-end">
@@ -364,7 +365,14 @@
             ids.forEach(element => {
                 $('#delete_form').append("<input type='hidden' name='opertation_ids[]' value='"+element+"'' />");
             });
-            $('#delete_form').submit();
+            if (ids.length > 0)
+                $('#delete_form').submit();
+            else
+                $('.error-message').show();
+        })
+
+        $('#deleteModal').on('hidden.bs.modal', function () {
+            $('.error-message').hide();
         })
     </script>
 @endsection

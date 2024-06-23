@@ -198,4 +198,7 @@ class OrderController extends Controller
         $orders = $this->OrdersService->SearchOrders($this->company_id(), $data);
         return response()->json($orders);
     }
+    public function destroy(Request $request) {
+        return response()->json($this->OrdersService->DeleteOrder($request->order_id));
+    }
 }
