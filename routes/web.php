@@ -260,6 +260,10 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('print_variant')
     ->can('print',['App\Models\Product','variant_id']);
 
+    Route::get('/product/{id}/bulk/variants/print', [ProductController::class,'print_bulk_variants'])
+    ->name('print_bulk_variants')
+    ->can('print_bulk_variants',['App\Models\Product','id']);
+
     Route::get('/warehouses', [WarehouseController::class,'all'])
     ->name('all_warehouses')
     ->can('view','App\Models\Warehouse');

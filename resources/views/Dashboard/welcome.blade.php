@@ -35,7 +35,7 @@
    </div>
 @endsection
 @section('script')
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const labels = {!! json_encode($data['city']) !!};
