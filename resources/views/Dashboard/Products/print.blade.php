@@ -33,7 +33,7 @@
             <div class="parent" style="width: fit-content; margin: 2mm auto">
                 @for ($i=0; $i<2; $i++)
                     <div class="barcode-card">
-                        <div style="text-align:center; text-overflow: ellipsis;">
+                        <div style="text-align:center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                             <p style="margin: 0px; font-size: 9px;">{{$variant->product->name}} - <bdi><span>({{$variant->name}})</span></bdi></p>
                         </div>
                         <div style="width: fit-content; margin: 1px auto;">

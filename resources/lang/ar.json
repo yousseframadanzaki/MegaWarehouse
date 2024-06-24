@@ -222,5 +222,6 @@
     "package_product_required": "يجب اختيار منتجات مع إدخال بياناتها كاملة",
 
     "WhatsappCampaign": "حملات الواتساب",
-    "stock_delete_success": "تم الحذف بنجاح"
+    "stock_delete_success": "تم الحذف بنجاح",
+    "variants_print_title": "طباعة متغيرات"
 }
