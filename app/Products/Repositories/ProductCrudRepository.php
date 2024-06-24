@@ -86,4 +86,7 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
         return Product::where(['id'=>$product_id])->update($product_details);
     }
 
+    public function delete_product($product_id) {
+        return Product::find($product_id)->delete();
+    }
 }

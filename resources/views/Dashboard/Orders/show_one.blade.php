@@ -276,10 +276,10 @@
                         <tbody>
                             @foreach ($order->stocks as $item)
                             <tr>
-                                <td>{{$item->variant->product->name}}</td>
-                                <td>{{$item->variant->name}}</td>
+                                <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->product->name??'تابع لمتغير موجود مسبقا'}}</td>
+                                <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->name??'متغير موجود مسبقا'}}</td>
                                 <td>{{$item->warehouse->name}}</td>
-                                <td>{{$item->variant->product->supplier->name}}</td>
+                                <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->product->supplier->name??'تابع لمتغير موجود مسبقا'}}</td>
                                 <td>{{$item->unit_price}}</td>
                                 <td>{{$item->unit_commission}}</td>
                                 <td>{{abs($item->quantity)}}</td>

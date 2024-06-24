@@ -175,7 +175,7 @@
             <div class="card p-3" style="background: #fff;">
                 <div class="row">
                     @foreach ($products as $product)
-                        <div class="mt-4 col-sm-6 col-md-4 col-lg-3">
+                        <div class="mt-4 col-sm-6 col-md-4 col-lg-3 product-container">
                             <div class="card border-secondary shadow card-hover @isset($product->images[1]) has-second @endisset text-black"
                                 style="transition:all 0.3s ease-in-out">
                                 <a href="{{ route('show_product', $product->id) }}">
@@ -233,10 +233,16 @@
                                                 </a>
                                             @endif
                                             <a class="btn btn-primary d-block mt-2 border-0" title="إضافة الى عربة"
-                                                style="width:48%;" data-id="{{ $product->id }}" data-bs-toggle="modal"
+                                               @can('delete_product', 'App\Models\Product') style="width:23%;" @else style="width:48%;" @endcan data-id="{{ $product->id }}" data-bs-toggle="modal"
                                                 data-bs-target="#addToCartModal">
                                                 <i class="bi bi-cart-plus"></i>
                                             </a>
+                                            @can('delete_product', 'App\Models\Product')
+                                            <a class="btn-delete btn btn-danger d-block mt-2 border-0" title="حذف المنتج"
+                                                style="width:23%;" data-id="{{ $product->id }}" data-name="{{ $product->name }}">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                            @endcan
                                         </div>
                                     @endcan
                                 </div>
@@ -406,5 +412,30 @@
                 }
             });
         }
+
+        $('.btn-delete').click(function() {
+            product_name = $(this).attr('data-name');
+            if (confirm(`هل أنت متأكد من حذف المنتج ( ${product_name} ) ؟`)) {
+                product_id = $(this).attr('data-id');
+                product_container = $(this).closest('.product-container');
+                product_container.find('.card').hide();
+                product_container.append('<p class="h-100 d-flex justify-content-center align-items-center text-danger fw-bold">جاري الحذف ...</p>');
+
+                $.ajax({
+                    url: `/api/product/${product_id}/delete`,
+                    method: 'POST',
+                    data: {
+                        product_id,
+                        _token: '@csrf'
+                    },
+                    success: function (response) {
+                        product_container.remove();
+                        setTimeout(() => {
+                            alert('تم حذف المنتج بنجاح');
+                        }, 500);
+                    }
+                })
+            }
+        })
     </script>
 @endsection

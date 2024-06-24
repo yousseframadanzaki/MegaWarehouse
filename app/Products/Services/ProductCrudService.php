@@ -4,6 +4,7 @@ namespace App\Products\Services;
 
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
+use App\Models\Product;
 use App\Products\Interfaces\ProductAttributesRepositoryInterface;
 use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Products\Interfaces\ProductPackageRepositoryInterface;
@@ -129,5 +130,13 @@ class ProductCrudService implements ProductCrudServiceInterface
         }
 
         return $package;
+    }
+
+    public function DeleteProduct($product_id) {
+        return $this->product_crud_repository->delete_product($product_id);
+    }
+
+    public function DeleteVariant($variant_id, $is_bundle) {
+        return $this->product_variants_repository->delete_variant($variant_id, $is_bundle);
     }
 }

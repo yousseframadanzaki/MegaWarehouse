@@ -10,4 +10,6 @@ interface ProductCrudServiceInterface{
     public function GetVariantPrint($variant_id);
     public function GetBulkVariantsPrint(array $variants_ids);
     public function AddPackage($company_id,array $data);
+    public function DeleteProduct($product_id);
+    public function DeleteVariant($variant_id, $is_bundle);
 }

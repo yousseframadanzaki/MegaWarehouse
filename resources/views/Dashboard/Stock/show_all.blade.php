@@ -240,10 +240,10 @@
                             <td>{{ __($operation->type) }}</td>
                             <td>{{ $operation->warehouse->name }}</td>
                             <td>{{ $operation->admin->name }}</td>
-                            <td @empty($operation->variant->product->name) class="text-danger" @endempty>{{ $operation->variant->product->name?? 'منتج كان موجود مسبقا' }}</td>
-                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->name?? 'متغير كان موجود مسبقا' }}</td>
-                            <td>{{ $operation->variant->shelf_num }}</td>
-                            <td>{{ $operation->variant->product->supplier->name }}</td>
+                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->product->name?? 'تابع لمتغير موجود مسبقا' }}</td>
+                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->name?? 'متغير موجود مسبقا' }}</td>
+                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->shelf_num??'تابع لمتغير موجود مسبقا' }}</td>
+                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->product->supplier->name??'تابع لمتغير موجود مسبقا' }}</td>
                             <td dir="ltr" class="text-end">
                                 @if ($operation->quantity < 0)
                                     <span class="text-danger fw-bolder">{{ $operation->quantity }}</span>
