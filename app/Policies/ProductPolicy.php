@@ -58,6 +58,24 @@ class ProductPolicy
         return true;
     }
 
+    public function delete_product(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','delete_product')){
+            return false;
+        }
+
+        return true;
+    }
+
+    public function delete_variant(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','delete_variant')){
+            return false;
+        }
+
+        return true;
+    }
+
     public function print(User $user, $variant_id): bool
     {
         $variant = Variant::findOrFail($variant_id);

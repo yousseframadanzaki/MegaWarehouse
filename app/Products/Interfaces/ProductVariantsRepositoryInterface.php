@@ -11,4 +11,5 @@ interface ProductVariantsRepositoryInterface{
     public function add_variant_stock_by_id($variant_id,$quantity);
     public function update_variant_shelf($variant_id, $shelf);
     public function get_variants(array $variants_ids);
+    public function delete_variant($variant_id, $is_bundle);
 }

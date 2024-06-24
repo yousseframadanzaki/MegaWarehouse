@@ -176,4 +176,14 @@ class ProductController extends Controller
         $request->session()->flash('success', 'new_product_added_successfully');
         return redirect()->route('show_product', ['product_id' => $package->id]);
     }
+
+    public function destroy(Request $request) {
+        return response()->json($this->ProductCrudService->DeleteProduct($request->product_id));
+    }
+
+    public function destroy_variant(Request $request) {
+        if ($this->ProductCrudService->DeleteVariant($request->variant_id, $request->is_bundle)) {
+            return response()->json($request->is_bundle == 1 ? 'تم حذف المتغير من الباكيدج بنجاح' : 'تم حذف المتغير بنجاح');
+        }
+    }
 }

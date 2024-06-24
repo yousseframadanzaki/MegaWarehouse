@@ -8,6 +8,7 @@ use App\Models\Variant;
 use App\Models\Company;
 use App\Models\OrderStatus;
 use App\Models\OrderNotes;
+use App\Models\Stock;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -218,6 +219,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function delete_order($order_id)
     {
         $order = Order::findOrFail($order_id);
+        if ($order->status_id != 45)
+            Stock::where('order_id', $order->id)->delete();
+
         OrderNotes::where('order_id', $order->id)->delete();
         $deleted = $order->delete();
         return $deleted;

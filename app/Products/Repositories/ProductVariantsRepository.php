@@ -6,6 +6,8 @@ use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Models\Variant;
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
+use App\Models\Bundle;
+
 class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
 
     public function __construct(
@@ -104,4 +106,11 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         return Variant::with('product')->whereIn('sku',$sku)->get();
     }
 
+    public function delete_variant($variant_id, $is_bundle) {
+        if ($is_bundle == 0) {
+            return Variant::find($variant_id)->delete();
+        } else {
+            return Bundle::where('variant_id', $variant_id)->delete();
+        }
+    }
 }

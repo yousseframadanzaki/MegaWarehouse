@@ -12,6 +12,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingStatusController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\OrderNotesController;
@@ -83,5 +84,8 @@ Route::get('campaign/get_qr_code/{instance_id}',[WhatsappController::class, 'get
 Route::post('campaign/{device_id}/delete_device',[WhatsappController::class, 'delete_device']);
 Route::POST('campaign/{campaign_id}/edit_status', [WhatsappController::class, 'edit_status']);
 Route::get('shipping_company/orders', [ShippingCompanyController::class, 'get_orders_by_status_id']);
+
 Route::post('order/{id}/delete', [OrderController::class, 'destroy']);
+Route::post('product/{id}/delete', [ProductController::class, 'destroy']);
+Route::post('variant/{id}/delete', [ProductController::class, 'destroy_variant']);
 

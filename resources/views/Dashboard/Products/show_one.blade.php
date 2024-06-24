@@ -58,7 +58,7 @@
     <ul class="breadcrumb">
         <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
         <li><a href="{{ route('all_products') }}">المنتجات</a></li>
-        <li><a class="link-dark" ">{{$product->name}}</a></li>
+        <li><a class="link-dark">{{$product->name}}</a></li>
     </ul>
 </div>
 
@@ -144,6 +144,9 @@
                             <th scope="col">sku</th>
                             @if ($product->is_bundle == 0)<th scope="col">رقم الرف</th>@endif
                             <th scope="col">طباعة</th>
+                            @canany(['delete_variant'], 'App\Models\Product')
+                            <th scope="col">إجراءات</th>
+                            @endcanany
                         </tr>
                     </thead>
                     <tbody>
@@ -156,6 +159,13 @@
                                 <td>{{ $variant->sku }}</td>
                                 @if ($product->is_bundle == 0)<td>{{ $variant->shelf_num }}</td>@endif
                                 <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
+                                @canany(['delete_variant'], 'App\Models\Product')
+                                    @can('delete_variant', 'App\Models\Product')
+                                    <td>
+                                        <i class="btn-delete bi bi-trash text-danger" style="font-size: 18px; cursor: pointer;" data-id="{{ $variant->id }}" data-name="{{ $variant->name }}" data-is_bundle="{{ $product->is_bundle }}"></i>
+                                    </td>
+                                    @endcan
+                                @endcanany
                             </tr>
                         @empty
                         @endforelse
@@ -239,6 +249,33 @@ $('.print_label').click(function(e){
 
     $("#print_label").submit();
 });
+
+$('.btn-delete').click(function() {
+    variant_name = $(this).attr('data-name');
+    is_bundle = $(this).attr('data-is_bundle');
+
+    if (confirm(`هل أنت متأكد من حذف المتغير ( ${variant_name} ) ${ is_bundle == 1 ? 'من الباكيدج' : ''} ؟`)) {
+        variant_id = $(this).attr('data-id');
+        tr = $(this).closest('tr');
+
+        $.ajax({
+            url: `/api/variant/${variant_id}/delete`,
+            method: 'POST',
+            data: {
+                variant_id,
+                is_bundle,
+                _token: '@csrf'
+            },
+            success: function (response) {
+                console.log(response)
+                tr.remove();
+                setTimeout(() => {
+                    alert(response);
+                }, 500);
+            }
+        })
+    }
+})
 
 </script>
 
