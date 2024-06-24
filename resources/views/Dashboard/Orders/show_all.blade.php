@@ -790,6 +790,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                                 <td class="order_notes" data-id="${value.id}">
                                     <span class="btn btn-primary" style="border-radius: 50px">${value.order_notes.length}</span>
                                 </td>
+                                @can('delete_order', 'App\Models\Order')
+                                    <td>
+                                        <i class="bi bi-trash text-danger delete-button" style="font-size: 20px; cursor: pointer;" data-id="${value.id}" data-code="${value.order_code}"></i>
+                                    </td>
+                                @endcan
                             </tr>
                         `;
 
@@ -823,7 +828,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             return formattedDate;
         }
 
-        $('.delete-button').click(function() {
+        $(document).on('click', '.delete-button', function() {
             order_code = $(this).attr('data-code');
             if (confirm(`هل أنت متأكد من حذف الأوردر ( ${order_code} ) ؟`)) {
                 order_id = $(this).attr('data-id');
