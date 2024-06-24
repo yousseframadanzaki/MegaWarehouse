@@ -563,23 +563,25 @@
             var show_quantity = $(this).find('option:selected').data("show");
             var hide = $(this).find('option:selected').data("hide");
 
-            $.ajax({
-                url: `/api/variants/${variant_id}/stock`,
-                method: "GET",
-                dataType: "text",
-            }).then(response => {
-                data = JSON.parse(response);
-                if(show_quantity == '0'){
-                    add_cart_stock(data);
-                } else {
-                    add_cart_stockk(data);
-                }
-                if(hide == '1'){
-                    add_cart_stockk(data);
-                }
+            if (variant_id != '') {
+                $.ajax({
+                    url: `/api/variants/${variant_id}/stock`,
+                    method: "GET",
+                    dataType: "text",
+                }).then(response => {
+                    data = JSON.parse(response);
+                    if(show_quantity == '0'){
+                        add_cart_stock(data);
+                    } else {
+                        add_cart_stockk(data);
+                    }
+                    if(hide == '1'){
+                        add_cart_stockk(data);
+                    }
 
+                })
+            }
         })
-    })
 
     function add_cart_stock(params) {
         $("#cart_stock").html("");

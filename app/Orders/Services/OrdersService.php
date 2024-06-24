@@ -114,15 +114,17 @@ class OrdersService implements OrdersServiceInterface{
                 //         'shipping_company_id'=>$data['shipping_company_id'],
                 //     )
                 // );
-            } else if ($data['status_id'] == '45') {
-            $this->TransactionService->AddTransaction(array(
-                'order_id' => $order->id,
-                'value' => $order->total_after_sale,
-                'company_id' => $order->company_id,
-                'commission' => $order->total_marketer_commission,
-                'delivery_cost' => $order->delivery_cost,
-                'payment_type_id' => 2,
-            ));
+            }
+            
+            if(!$shipment){
+                return false;
+            }
+            $this->orders_crud_repository->update_order($order_id,
+                array(
+                    'waybill'=>$shipment['waybill'],
+                    'shipping_company_id'=>$data['shipping_company_id'],
+                )
+            );
         }
 
         $id = $this->orders_crud_repository->change_order_status($order_id,$data);
@@ -156,19 +158,6 @@ class OrdersService implements OrdersServiceInterface{
                         'shipping_company_id'=>$data['shipping_company_id'],
                     )
                 );
-            }
-        } else if ($data['status_id'] == '45') {
-            foreach ($data['orders_ids'] as $order_id) {
-                $order = $this->orders_crud_repository->get_order_by_id($order_id);
-
-                $this->TransactionService->AddTransaction(array(
-                    'order_id' => $order->id,
-                    'value' => $order->total_after_sale,
-                    'company_id' => $order->company_id,
-                    'commission' => $order->total_marketer_commission,
-                    'delivery_cost' => $order->delivery_cost,
-                    'payment_type_id' => 2,
-                ));
             }
         }
 

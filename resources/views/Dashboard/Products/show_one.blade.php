@@ -138,7 +138,7 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
-                            <th scope="col">اسم</th>
+                            <th scope="col">اسم المتغير</th>
                             <th scope="col">السعر</th>
                             @if ($product->is_bundle == 0)<th scope="col">الكمية</th>@endif
                             <th scope="col">sku</th>
