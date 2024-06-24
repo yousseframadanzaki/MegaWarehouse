@@ -95,22 +95,26 @@ class OrdersService implements OrdersServiceInterface{
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
 
         if($data['status_id'] == '30'){
-            if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
-                $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
-            } else {
-                $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
-            }
-            
-            if(!$shipment){
-                return false;
-            }
-            $this->orders_crud_repository->update_order($order_id,
-                array(
-                    'waybill'=>$shipment['waybill'],
-                    'shipping_company_id'=>$data['shipping_company_id'],
-                )
-            );
-        } else if ($data['status_id'] == '45') {
+            if($data['status_id'] == '30'){
+                if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
+                    $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
+                    $this->orders_crud_repository->update_order($order_id,
+                        array('shipping_company_id'=>$data['shipping_company_id'],)
+                    );
+                } else {
+                    $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+                }
+                
+                // if(!$shipment){
+                //     return false;
+                // }
+                // $this->orders_crud_repository->update_order($order_id,
+                //     array(
+                //         'waybill'=>$shipment['waybill'],
+                //         'shipping_company_id'=>$data['shipping_company_id'],
+                //     )
+                // );
+            } else if ($data['status_id'] == '45') {
             $this->TransactionService->AddTransaction(array(
                 'order_id' => $order->id,
                 'value' => $order->total_after_sale,
