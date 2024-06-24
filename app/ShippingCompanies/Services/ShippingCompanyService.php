@@ -73,7 +73,25 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         }
         return $this->shipping_company_repository->update_shipping_company_by_id($shipping_company_id,$data);
     }
+    public function UpdateShipment($order,$shipping_company_id){
+        $shipping_company = $this->GetShippingCompany($shipping_company_id);
 
+        $shipment = $this->ShipmentInfoFromOrder($order,$shipping_company_id);
+
+        if(!$shipment){
+            return false;
+        }
+
+        $shipment_info = $this->MegaApiService
+        ->UpdateShipment(
+            $shipping_company->username,
+            $shipping_company->password,
+            $shipping_company->url,
+            $shipment
+        );
+        
+        return $shipment_info;
+    }
     public function SendShipment($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
 

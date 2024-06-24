@@ -64,9 +64,9 @@
                             <label class="form-label">الحالة</label>
                             <select id="status_id" name="status_id" style="width: 100%">
                                 <option value="">اختار الحالة</option>
-                                @foreach ($statuses as $status)
-                                <option value="{{ $status->id }}">{{ $status->name }}</option>
-                                @endforeach
+                                    @foreach ($statuses as $status)
+                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                    @endforeach
                             </select>
                         </div>
                     </div>
@@ -75,9 +75,10 @@
                             <label class="form-label">شركة الشحن</label>
                             <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
                                 <option value="">اختار شركة الشحن</option>
-                                @foreach ($shipping_companies as $shipping_company)
-                                <option value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
-                                @endforeach
+                                    @foreach ($shipping_companies as $shipping_company)
+                                        <option @if ($shipping_company->id == $order->area->shipping_company->id) selected @endif
+                                        value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                    @endforeach
                             </select>
                         </div>
                     </div>

@@ -92,12 +92,15 @@ class OrdersService implements OrdersServiceInterface{
     }
 
     public function ChangeOrderStatus($order_id,$data){
-
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
 
         if($data['status_id'] == '30'){
-            $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
-
+            if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
+                $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
+            } else {
+                $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+            }
+            
             if(!$shipment){
                 return false;
             }
@@ -134,7 +137,11 @@ class OrdersService implements OrdersServiceInterface{
         if($data['status_id'] == '30'){
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
-                $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+                if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
+                    $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
+                } else {
+                    $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+                }
 
                 if(!$shipment){
                     return false;
