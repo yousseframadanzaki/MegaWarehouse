@@ -31,8 +31,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $sale_note = $order_data['total'] - $order_data['total_after_sale'];
         $order = Order::create($order_data);
 
-        $note = 'تم اضافة خصم على الأوردر (اجمالى الخصم ' . $sale_note . ')';
-        $order_note = $this->add_order_note($order->id,$note,$data['admin_id'],$data['company_id']);
+        if ($sale_note > 0) {
+            $note = 'تم اضافة خصم على الأوردر (اجمالى الخصم ' . $sale_note . ')';
+            $this->add_order_note($order->id,$note,$data['admin_id'],$data['company_id']);
+        }
 
         // $order->items()->sync($data['items']);
         $order->order_status()->sync([$order_data['status_id'] => ['admin_id' => $order_data['admin_id'],'note'=>'','current'=>true]]);
