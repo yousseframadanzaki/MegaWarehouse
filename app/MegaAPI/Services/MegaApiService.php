@@ -23,4 +23,7 @@ class MegaApiService implements MegaApiServiceInterface{
     public function CreateNewShipment($name,$password,$url,$shipment){
         return $this->mega_api_repository->create_new_shipment($name,$password,$url,$shipment);
     }
+    public function CreateNewShipmentV2($name,$password,$url,$shipment){
+        return $this->mega_api_repository->create_new_shipment($name,$password,$url,$shipment);
+    }
 }

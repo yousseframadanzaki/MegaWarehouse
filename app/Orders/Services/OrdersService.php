@@ -54,6 +54,17 @@ class OrdersService implements OrdersServiceInterface{
         $note = $order_details['client']['note'];
         unset($order_details['client']['note']);
         $order = $this->orders_crud_repository->create_order($order_details);
+        $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+        $shipment = $this->ShippingCompanyService->SendShipmentV2($order,$data);
+        if(!$shipment){
+            return false;
+        }
+        $this->orders_crud_repository->update_order($order->id,
+            array(
+                'waybill'=>$shipment['waybill'],
+                'shipping_company_id'=>$data['shipping_company_id'],
+            )
+        );
         if (!empty($note)) {
             $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
         }

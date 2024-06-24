@@ -8,6 +8,7 @@ use App\Models\Variant;
 use App\Models\Company;
 use App\Models\OrderStatus;
 use App\Models\OrderNotes;
+use App\Models\Area;
 use App\Models\Stock;
 
 class OrdersRepository implements OrdersRepositoryInterface{
@@ -225,5 +226,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
         OrderNotes::where('order_id', $order->id)->delete();
         $deleted = $order->delete();
         return $deleted;
+    }
+    public function get_shipping_company_id($area_id){
+        $area = Area::find($area_id);
+        return $area->shipping_company_id;
     }
 }
