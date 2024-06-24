@@ -45,5 +45,16 @@ class MegaApiRepository implements MegaApiRepositoryInterface{
         $data = $response->json();
         return $data;
     }
+    public function update_shipment($name,$password,$url,$shipment){
+        $response = Http::get($url.'/megawarehouse/update_shipment.php',
+            array(
+               'shipment' => $shipment,
+               'user'=>$name,
+               'password'=>$password
+            )
+        );
+        $data = $response->json();
+        return $data;
+    }
     
 }
