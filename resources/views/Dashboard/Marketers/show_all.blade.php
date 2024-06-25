@@ -18,6 +18,9 @@
                     <tr>
                         <th scope="col">اسم المسوق</th>
                         <th scope="col"> رقم التليفون </th>
+                        <th scope="col"> عدد الطلبات </th>
+                        <th scope="col"> العمولات </th>
+                        <th scope="col"> الرصيد </th>
                         <th scope="col"> اسم الصفحة</th>
                         <th scope="col"> لينكات</th>
                         <th scope="col">actions</th>
@@ -28,6 +31,9 @@
                         <tr class="">
                             <td>{{ $marketer->name }}</td>
                             <td>{{ $marketer->phone_number }}</td>
+                            <td>{{ $marketer->orders->count() }}</td>
+                            <td>{{ $marketer->orders->sum('total_marketer_commission') }}</td>
+                            <td></td>
                             <td>{{ $marketer->page_name }}</td>
                             <td>
                                 @isset($marketer->links)
@@ -37,12 +43,12 @@
                                 @endisset
                             </td>
                             <td>
-                               
+
                             <a  href="{{route('edit_marketer',$marketer->id)}}" class="link-primary"
                                 title="تعديل بيانات المسوق">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            
+
                             </td>
                         </tr>
                     @empty

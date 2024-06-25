@@ -4,7 +4,7 @@ namespace App\CommonData\Interfaces;
 
 interface CommonDataServiceInterface{
     public function GetCompanyRoles($company_id);
-    public function GetRolesByType($company_id,$type);
+    public function GetRolesByType($company_id,$user_type_id);
     public function GetCompanyCategories($company_id);
     public function GetCompanySuppliers($company_id);
     public function GetCompanyBrands($company_id);

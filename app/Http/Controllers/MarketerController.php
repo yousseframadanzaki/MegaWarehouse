@@ -28,7 +28,8 @@ class MarketerController extends Controller
     public function create()
     {
         $company_id = $this->company_id();
-        $roles = $this->CommonDataService->GetRolesByType($company_id,'marketer');
+        $user_type_id = 3;
+        $roles = $this->CommonDataService->GetRolesByType($company_id,$user_type_id);
         return view('Dashboard.Marketers.add')->with('roles',$roles);
     }
 

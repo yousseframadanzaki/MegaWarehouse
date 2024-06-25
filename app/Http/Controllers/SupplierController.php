@@ -26,7 +26,8 @@ class SupplierController extends Controller
 
     public function create() {
         $company_id = $this->company_id();
-        $roles = $this->CommonDataService->GetRolesByType($company_id,'supplier');
+        $user_type_id = 2;
+        $roles = $this->CommonDataService->GetRolesByType($company_id, $user_type_id);
         return view('Dashboard.Suppliers.add')->with('roles',$roles);
     }
 

@@ -16,4 +16,8 @@ class Marketer extends Model
         'company_id',
         'user_id',
     ];
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
 }

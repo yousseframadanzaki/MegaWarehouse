@@ -49,7 +49,8 @@ class ShippingCompanyController extends Controller
     public function create()
     {
         $company_id = $this->company_id();
-        $roles = $this->CommonDataService->GetRolesByType($company_id,'shipping_company');
+        $user_type_id = 4;
+        $roles = $this->CommonDataService->GetRolesByType($company_id, $user_type_id);
         return view('Dashboard.ShippingCompanies.add')->with('roles',$roles);
     }
 
