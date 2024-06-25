@@ -77,7 +77,8 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
 
         $shipment = $this->ShipmentInfoFromOrder($order,$shipping_company_id);
-
+        $shipment['waybill'] = $order->waybill;
+        
         if(!$shipment){
             return false;
         }
