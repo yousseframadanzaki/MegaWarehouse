@@ -11,7 +11,6 @@ use App\Products\Requests\CreateProductRequest;
 use App\Products\Requests\CreatePackageRequest;
 use App\Products\Interfaces\ProductCrudServiceInterface;
 use App\Products\Filters\ProductFilters;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 
 class ProductController extends Controller
@@ -185,5 +184,11 @@ class ProductController extends Controller
         if ($this->ProductCrudService->DeleteVariant($request->variant_id, $request->is_bundle)) {
             return response()->json($request->is_bundle == 1 ? 'تم حذف المتغير من الباكيدج بنجاح' : 'تم حذف المتغير بنجاح');
         }
+    }
+
+    public function get_variant_shelf_data(Request $request) {
+        $data = json_decode($request->shelf_data, true);
+        $new_data = $this->ProductCrudService->GetVariantShelfData($data);
+        return response()->json($new_data);
     }
 }

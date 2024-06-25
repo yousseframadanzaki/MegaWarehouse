@@ -12,4 +12,5 @@ interface ProductCrudServiceInterface{
     public function AddPackage($company_id,array $data);
     public function DeleteProduct($product_id);
     public function DeleteVariant($variant_id, $is_bundle);
+    public function GetVariantShelfData(array $data);
 }

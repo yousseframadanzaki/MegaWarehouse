@@ -139,4 +139,8 @@ class ProductCrudService implements ProductCrudServiceInterface
     public function DeleteVariant($variant_id, $is_bundle) {
         return $this->product_variants_repository->delete_variant($variant_id, $is_bundle);
     }
+
+    public function GetVariantShelfData(array $data) {
+        return $this->product_variants_repository->get_variant_shelf_data($data);
+    }
 }

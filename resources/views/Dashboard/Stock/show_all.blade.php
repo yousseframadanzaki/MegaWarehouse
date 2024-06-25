@@ -40,6 +40,28 @@
         </div>
     </div>
 
+    <div class="modal fade" id="shelfData" tabindex="-1" aria-labelledby="shelfDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-body text-center">
+                    <table class="table hover-table">
+                        <thead>
+                            <tr>
+                                <th>اسم المخزن</th>
+                                <th>رقم الرف</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
@@ -206,7 +228,7 @@
                 <div class="fs-2" style="margin-right:20px" title="نقل مخزون "><a href="{{route('move_stock')}}"><i class="text-primary bi bi bi-shift"></i></a></div>
             @endcan
             @can('delete','App\\Models\Stock')
-                <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
+                <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a href="" data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
             @endcan
         </div>
         @endcanany
@@ -242,7 +264,7 @@
                             <td>{{ $operation->admin->name }}</td>
                             <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->product->name?? 'تابع لمتغير موجود مسبقا' }}</td>
                             <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->name?? 'متغير موجود مسبقا' }}</td>
-                            <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->shelf_num??'تابع لمتغير موجود مسبقا' }}</td>
+                            <td @empty($operation->variant->name) class="text-danger" @endempty> @if(empty($operation->variant->name)) تابع لمتغير موجود مسبقا @elseif(!empty($operation->variant->shelf_num))<a href="" class="shelf_data_link" style="text-decoration: underline;" data-shelf_num="{{ $operation->variant->shelf_num }}" data-bs-toggle="modal" data-bs-target="#shelfData">عرض الرف</a>@endif</td>
                             <td @empty($operation->variant->name) class="text-danger" @endempty>{{ $operation->variant->product->supplier->name??'تابع لمتغير موجود مسبقا' }}</td>
                             <td dir="ltr" class="text-end">
                                 @if ($operation->quantity < 0)
@@ -373,6 +395,29 @@
 
         $('#deleteModal').on('hidden.bs.modal', function () {
             $('.error-message').hide();
+        })
+
+        old_shelf_data = '';
+        $('#shelfData').on('show.bs.modal', function(e) {
+            shelf_data = $(e.relatedTarget).attr('data-shelf_num');
+            if (shelf_data != old_shelf_data) {
+                $(this).find('tbody').html(''); // delete previous data from modal.
+
+                old_shelf_data = shelf_data;
+                tbody = $(this).find('tbody');
+                $.ajax({
+                    url: '/api/variant/shelf-data',
+                    method: 'GET',
+                    data: {
+                        shelf_data
+                    },
+                    success: function(response) {
+                        $.each(response, function(key, value) {
+                            tbody.append(`<tr><td>${key}</td><td>${value}</td></tr>`);
+                        })
+                    }
+                })
+            }
         })
     </script>
 @endsection

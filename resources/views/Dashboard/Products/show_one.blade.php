@@ -35,6 +35,7 @@
         <div class="modal-content">
 
             <div class="modal-body text-center">
+                <h5 class="mb-3 fw-bold title"></h5>
                 <table class="table hover-table">
                     <thead>
                         <tr>
@@ -43,6 +44,29 @@
                         </tr>
                     </thead>
                     <tbody id="stock">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="shelfData" tabindex="-1" aria-labelledby="shelfDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-body text-center">
+                <h5 class="mb-3 fw-bold title"></h5>
+                <table class="table hover-table">
+                    <thead>
+                        <tr>
+                            <th>اسم المخزن</th>
+                            <th>رقم الرف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
                     </tbody>
                 </table>
@@ -155,9 +179,9 @@
                                 <td><input type="checkbox" class="variant_id form-check-input" value="{{$variant->id}}"></td>
                                 <td>{{ $variant->name }}</td>
                                 <td>{{ ($product->is_bundle == 0) ? $variant->price : $variant->pivot->price }}</td>
-                                @if ($product->is_bundle == 0)<td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->total_stock_quantity }}</a></td>@endif
+                                @if ($product->is_bundle == 0)<td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->total_stock_quantity }}</a></td>@endif
                                 <td>{{ $variant->sku }}</td>
-                                @if ($product->is_bundle == 0)<td>{{ $variant->shelf_num }}</td>@endif
+                                @if ($product->is_bundle == 0)<td>@if(!empty($variant->shelf_num))<a href="" class="shelf_data_link" data-shelf_num="{{ $variant->shelf_num }}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#shelfData">عرض الرف</a>@endif</td>@endif
                                 <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
                                 @canany(['delete_variant'], 'App\Models\Product')
                                     @can('delete_variant', 'App\Models\Product')
@@ -188,22 +212,27 @@ $(".small-image").hover(function () {
     $(".main_image").attr('src',url);
 })
 
+old_id = 0;
 $("#quantities").on('show.bs.modal',function (e) {
     var id = $(e.relatedTarget).attr('data-id');
+    if (id != old_id) {
+        old_id = id;
 
-    $.ajax({
+        $("#stock").html("");
+        $("#quantities .title").text($(e.relatedTarget).attr('data-name'));
+        $.ajax({
         url:`/api/variants/${id}/stock`,
         method:"GET",
         dataType: "text",
-    }).then(response => {
-        data = JSON.parse(response);
-        // console.log(data);
-        add_data(data);
-    })
+        }).then(response => {
+            data = JSON.parse(response);
+            // console.log(data);
+            add_data(data);
+        })
+    }
 })
 
 function add_data(data) {
-    $("#stock").html("");
     data.forEach(element => {
         if(element.sum != "0"){
             var template = `
@@ -272,6 +301,31 @@ $('.btn-delete').click(function() {
                 setTimeout(() => {
                     alert(response);
                 }, 500);
+            }
+        })
+    }
+})
+
+old_shelf_data = '';
+$('#shelfData').on('show.bs.modal', function(e) {
+    shelf_data = $(e.relatedTarget).attr('data-shelf_num');
+    if (shelf_data != old_shelf_data) {
+        old_shelf_data = shelf_data;
+
+        tbody = $(this).find('tbody');
+        tbody.html(''); // delete previous data from modal.
+        $("#shelfData .title").text($(e.relatedTarget).attr('data-name'));
+
+        $.ajax({
+            url: '/api/variant/shelf-data',
+            method: 'GET',
+            data: {
+                shelf_data
+            },
+            success: function(response) {
+                $.each(response, function(key, value) {
+                    tbody.append(`<tr><td>${key}</td><td>${value}</td></tr>`);
+                })
             }
         })
     }

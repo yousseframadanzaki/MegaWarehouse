@@ -4,9 +4,10 @@ namespace App\Products\Repositories;
 
 use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Models\Variant;
+use App\Models\Bundle;
+use App\Models\Warehouse;
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
-use App\Models\Bundle;
 
 class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
 
@@ -112,5 +113,14 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         } else {
             return Bundle::where('variant_id', $variant_id)->delete();
         }
+    }
+
+    public function get_variant_shelf_data(array $data) {
+        $new_data = [];
+        foreach($data as $key => $value) {
+            $key = Warehouse::find($key)->name;
+            $new_data[$key] = $value;
+        }
+        return $new_data;
     }
 }
