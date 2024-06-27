@@ -741,7 +741,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#mess').fadeIn();
             }
         }
-        $('input[type=checkbox]').change(function() {
+        $(document).on('change', 'input[type=checkbox]', function() {
             if($(this).is(':checked'))
                 $('#whatsappForm').append(`<input type="hidden" name="orders_ids[]" value=${ $(this).val() }>`)
             else
