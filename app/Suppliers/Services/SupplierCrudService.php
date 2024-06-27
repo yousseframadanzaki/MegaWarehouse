@@ -5,14 +5,18 @@ namespace App\Suppliers\Services;
 use App\Suppliers\Interfaces\SupplierCrudRepositoryInterface;
 use App\Suppliers\Interfaces\SupplierCrudServiceInterface;
 use App\Users\Interfaces\UserCrudServiceInterface;
+use App\FileUpload\Interfaces\UploadServiceInterface;
+use App\Media\Interfaces\MediaCrudServiceInterface;
 
 class SupplierCrudService implements SupplierCrudServiceInterface{
 
-    
+
 
     public function __construct(
         protected readonly SupplierCrudRepositoryInterface $supplier_crud_repository,
-        protected readonly UserCrudServiceInterface $UserCrudService
+        protected readonly UserCrudServiceInterface $UserCrudService,
+        protected readonly UploadServiceInterface $FileUploadService,
+        protected readonly MediaCrudServiceInterface $MediaCrudService
     ) {}
 
     public function CreateSupplier($company_id,array $details){
@@ -32,6 +36,10 @@ class SupplierCrudService implements SupplierCrudServiceInterface{
             'company_id'=>$company_id,
         );
         $supplier = $this->supplier_crud_repository->add_supplier($supplier_details);
+        if (!empty($details['images'])) {
+            $image = $this->FileUploadService->handle($details['images'],'supplier',$company_id,$supplier->id);
+            $this->MediaCrudService->save($image);
+        }
         return $supplier;
     }
 
@@ -40,13 +48,13 @@ class SupplierCrudService implements SupplierCrudServiceInterface{
     }
 
     public function GetCompanySuppliers($company_id){
-        return $this->supplier_crud_repository->get_company_suppliers($company_id);       
+        return $this->supplier_crud_repository->get_company_suppliers($company_id);
     }
 
     public function GetSupplier($id){
         return $this->supplier_crud_repository->get_supplier_by_id($id);
     }
-    
+
     public function GetSupplierWithProducts($id){
         return $this->supplier_crud_repository->get_supplier_with_products($id);
     }

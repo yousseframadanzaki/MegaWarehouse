@@ -37,7 +37,7 @@ class MarketerController extends Controller
     {
         $company_id = $this->company_id();
         // dd($request->all());
-        $marketer = $this->MarketerCrudService->CreateMarketer($company_id,$request->validated());
+        $marketer = $this->MarketerCrudService->CreateMarketer($company_id,$request->except('token'));
         if($marketer){
             return back()->with('success','marketer_created_success');
         }
@@ -52,9 +52,14 @@ class MarketerController extends Controller
 
     public function update(UpdateMarketerRequest $request, $marketer_id)
     {
-        if(!$this->MarketerCrudService->UpdateMarketer($marketer_id,$request->validated())){
+        if(!$this->MarketerCrudService->UpdateMarketer($marketer_id,$request->except('token'))){
             return back()->with('error','marketer_updated_error');
         }
         return back()->with('success','marketer_updated_success');
+    }
+
+    public function show($marketer_id) {
+        $marketer = $this->MarketerCrudService->GetMarketer($marketer_id);
+        return view("Dashboard.Marketers.show_one", compact('marketer'));
     }
 }

@@ -4,7 +4,7 @@ namespace App\Products\Services;
 
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
-use App\Models\Product;
+
 use App\Products\Interfaces\ProductAttributesRepositoryInterface;
 use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Products\Interfaces\ProductPackageRepositoryInterface;
@@ -86,7 +86,7 @@ class ProductCrudService implements ProductCrudServiceInterface
     private function add_images($product, $images)
     {
         foreach ($images as $image) {
-            $file = $this->FileUploadService->product($image, $product->company_id, $product->id);
+            $file = $this->FileUploadService->handle($image, 'product', $product->company_id, $product->id);
             $this->MediaService->save($file);
         }
     }

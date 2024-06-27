@@ -55,7 +55,7 @@
                             <td><div class="product-main" style="background-image: url('{{asset($product->main_image->path ?? '')}}')"></div></td>
                             <td><a  href="{{route('show_product',$product->id)}}" class="link-primary"
                                 title="مشاهدة المنتج">{{ $product->name }}</a></td>
-                            <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name }}</td>
+                            <td><a href="{{ route('show_supplier',$product->supplier_id) }}">{{ $product->supplier->name??'' }}</td>
                             <td><a href="{{ route('show_category',$product->category_id) }}">{{ $product->category->parents_names }}</a></td>
                             <td><a href="{{ route('show_brand',$product->brand_id) }}">{{ $product->brand->name }}</a></td>
                             <td>{{ $product->price }}</td>

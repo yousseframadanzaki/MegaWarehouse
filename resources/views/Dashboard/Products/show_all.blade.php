@@ -207,7 +207,7 @@
                                         @if ($product->is_bundle == 0)
                                             <div class="d-flex justify-content-between mb-2">
                                                 <span>المورد</span><span><a class=""
-                                                        href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name }}</a></span>
+                                                        href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name??'' }}</a></span>
                                             </div>
                                         @endif
                                         <div class="d-flex justify-content-between" style="font-s">

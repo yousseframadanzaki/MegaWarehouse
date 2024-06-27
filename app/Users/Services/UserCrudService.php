@@ -10,7 +10,7 @@ use App\Models\User;
 
 
 class UserCrudService implements UserCrudServiceInterface{
-    
+
     protected UserCrudRepositoryInterface $user_crud_repository;
     protected UploadServiceInterface $FileUploadService;
     protected MediaCrudServiceInterface $MediaCrudService;
@@ -40,7 +40,7 @@ class UserCrudService implements UserCrudServiceInterface{
         $image_file = $user_details['image'];
         unset($user_details['image']);
         $user = $this->user_crud_repository->add_user($user_details);
-        $image = $this->FileUploadService->avatar($image_file,$company_id,$user->id);
+        $image = $this->FileUploadService->handle($image_file, 'avatar',$company_id,$user->id);
         $this->MediaCrudService->save($image);
         return $user;
     }
@@ -52,7 +52,7 @@ class UserCrudService implements UserCrudServiceInterface{
     public function GetUser($company_id,$user_id) {
         return $this->user_crud_repository->get_user_by_id($company_id,$user_id);
     }
-    
+
     public function UpdateUserCompanyId($company_id,$user_id){
         return $this->user_crud_repository->update_where(
             ['id'=> $user_id ],
@@ -71,7 +71,7 @@ class UserCrudService implements UserCrudServiceInterface{
     public function checkMaxUsers($company_id)
     {
         return $this->user_crud_repository->check_max_users($company_id);
-        
+
     }
 
 }

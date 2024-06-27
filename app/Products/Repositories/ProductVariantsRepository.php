@@ -36,7 +36,7 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         }
         $created_variant = Variant::create($variant_info);
         if(!empty($variant_info['photo'])){
-            $file = $this->FileUploadService->varient($variant_info['photo'],$created_variant->product->company_id,$created_variant->id);
+            $file = $this->FileUploadService->handle($variant_info['photo'],'variant',$created_variant->product->company_id,$created_variant->id);
             $this->MediaService->save($file);
         }
         if(empty($variant_info['sku'])){

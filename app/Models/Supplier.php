@@ -23,4 +23,15 @@ class Supplier extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function invoices() {
+        return $this->hasMany(Invoice::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function image() {
+        return $this->belongsTo(Media::class,'collection_id')->where('collection', 'supplier');
+    }
 }

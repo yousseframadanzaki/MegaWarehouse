@@ -20,4 +20,12 @@ class Marketer extends Model
     public function orders() {
         return $this->hasMany(Order::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function image() {
+        return $this->belongsTo(Media::class);
+    }
 }

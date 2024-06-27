@@ -29,11 +29,11 @@
                 <tbody>
                     @forelse ($marketers as $marketer)
                         <tr class="">
-                            <td>{{ $marketer->name }}</td>
+                            <td><a href="{{ route('show_marketer', ['marketer_id' => $marketer->id]) }}">{{ $marketer->name }}</a></td>
                             <td>{{ $marketer->phone_number }}</td>
-                            <td>{{ $marketer->orders->count() }}</td>
-                            <td>{{ $marketer->orders->sum('total_marketer_commission') }}</td>
-                            <td></td>
+                            <td>{{ $marketer->orders_count }}</td>
+                            <td>{{ $marketer->total_commission - 0 }}</td>
+                            <td>{{ $marketer->total_commission - $marketer->user->total_transactions }}</td>
                             <td>{{ $marketer->page_name }}</td>
                             <td>
                                 @isset($marketer->links)

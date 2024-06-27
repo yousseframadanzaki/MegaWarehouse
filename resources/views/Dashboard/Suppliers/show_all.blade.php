@@ -19,15 +19,17 @@
                         <th scope="col">اسم المورد</th>
                         <th scope="col"> رقم التليفون </th>
                         <th scope="col"> العنوان</th>
+                        <th scope="col"> الرصيد</th>
                         <th scope="col">actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($suppliers as $supplier)
                         <tr class="">
-                            <td><a href="{{ route('all_products',['supplier_id'=>$supplier->id])}}">{{ $supplier->name }}</a></td>
+                            <td><a href="{{ route('show_supplier',['supplier_id'=>$supplier->id])}}">{{ $supplier->name??'' }}</a></td>
                             <td>{{ $supplier->phone }}</td>
                             <td>{{ $supplier->address }}</td>
+                            <td>{{ $supplier->total_invoices - $supplier->user->total_transactions }}</td>
                             <td>
                                 @can('edit','App\Models\Supplier')
                                     <a  href="{{route('edit_supplier',$supplier->id)}}" class="link-primary"

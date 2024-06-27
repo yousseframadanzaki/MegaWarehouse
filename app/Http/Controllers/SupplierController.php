@@ -33,7 +33,7 @@ class SupplierController extends Controller
 
     public function store(CreateSupplierRequest $request) {
         $company_id = $this->company_id();
-        $supplier = $this->SupplierCrudService->CreateSupplier($company_id,$request->validated());
+        $supplier = $this->SupplierCrudService->CreateSupplier($company_id,$request->except('token'));
         if(!$supplier){
             return back()->with('error','supplier_created_error');
         }
@@ -54,8 +54,8 @@ class SupplierController extends Controller
     }
 
     public function show($supplier_id) {
-        $data = $this->SupplierCrudService->GetSupplierWithProducts($supplier_id);
-        return view("Dashboard.Suppliers.show_one")->with('data',$data);
+        $supplier = $this->SupplierCrudService->GetSupplier($supplier_id);
+        return view("Dashboard.Suppliers.show_one", compact('supplier'));
     }
 
 }

@@ -74,7 +74,7 @@ class StockOperationService implements StockOperationServiceInterface{
 
 
         if(isset($details['image']) && count($ids) > 0){
-            $file = $this->FileUploadService->stock($details['image'],$user->company_id);
+            $file = $this->FileUploadService->handle($details['image'],'stock',$user->company_id);
             foreach ($ids as $id) {
                 $file->collection_id = $id;
                 $this->MediaService->save($file);
@@ -108,7 +108,7 @@ class StockOperationService implements StockOperationServiceInterface{
         }
 
         if(isset($details['image']) && count($ids) > 0){
-            $file = $this->FileUploadService->stock($details['image'],$user->company_id);
+            $file = $this->FileUploadService->handle($details['image'],'stock',$user->company_id);
             foreach ($ids as $id) {
                 $file->collection_id = $id;
                 $this->MediaService->save($file);

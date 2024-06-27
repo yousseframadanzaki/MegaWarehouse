@@ -104,7 +104,7 @@ class OrdersService implements OrdersServiceInterface{
                 } else {
                     $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
                 }
-                
+
                 // if(!$shipment){
                 //     return false;
                 // }
@@ -115,7 +115,7 @@ class OrdersService implements OrdersServiceInterface{
                 //     )
                 // );
             }
-            
+
             if(!$shipment){
                 return false;
             }
@@ -131,7 +131,7 @@ class OrdersService implements OrdersServiceInterface{
 
         if(isset($data['status_images'])){
             foreach ($data['status_images'] as $image) {
-                $file = $this->FileUploadService->status($image,$data['company_id'],$id);
+                $file = $this->FileUploadService->handle($image,'status',$data['company_id'],$id);
                 $this->MediaService->save($file);
             }
         }
@@ -164,7 +164,7 @@ class OrdersService implements OrdersServiceInterface{
         $ids =  $this->orders_crud_repository->change_order_status_bulk($data);
         if(isset($data['status_images'])){
             foreach ($data['status_images'] as $image) {
-                $file = $this->FileUploadService->status($image,$data['company_id']);
+                $file = $this->FileUploadService->handle($image,'status',$data['company_id']);
                 foreach ($ids as $id) {
                     $file->collection_id = $id;
                     $this->MediaService->save($file);

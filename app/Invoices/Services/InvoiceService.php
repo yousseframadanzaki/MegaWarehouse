@@ -43,7 +43,7 @@ class InvoiceService implements InvoiceServiceInterface{
         if(isset($data['image']) && !empty($data['image'])){
             $image_file = $data['image'];
             unset($data['image']);
-            $image = $this->FileUploadService->transaction($image_file,$invoice->company_id,$invoice->id);
+            $image = $this->FileUploadService->handle($image_file,'transaction',$invoice->company_id,$invoice->id);
             $this->MediaCrudService->save($image);
         }
         return $this->TransactionService->AddInvoiceTransaction($transaction_data);

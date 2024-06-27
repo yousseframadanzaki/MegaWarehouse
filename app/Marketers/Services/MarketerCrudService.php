@@ -5,12 +5,16 @@ namespace App\Marketers\Services;
 use App\Marketers\Interfaces\MarketerCrudRepositoryInterface;
 use App\Marketers\Interfaces\MarketerCrudServiceInterface;
 use App\Users\Interfaces\UserCrudServiceInterface;
+use App\FileUpload\Interfaces\UploadServiceInterface;
+use App\Media\Interfaces\MediaCrudServiceInterface;
 
 class MarketerCrudService implements MarketerCrudServiceInterface{
 
     public function __construct(
         protected readonly MarketerCrudRepositoryInterface $marketer_crud_repository,
-        protected readonly UserCrudServiceInterface $UserCrudService
+        protected readonly UserCrudServiceInterface $UserCrudService,
+        protected readonly UploadServiceInterface $FileUploadService,
+        protected readonly MediaCrudServiceInterface $MediaCrudService
     ) {}
 
     public function CreateMarketer($company_id,array $details){
@@ -37,6 +41,10 @@ class MarketerCrudService implements MarketerCrudServiceInterface{
         );
 
         $marketer = $this->marketer_crud_repository->create_marketer($marketer_details);
+        if (!empty($details['images'])) {
+            $image = $this->FileUploadService->handle($details['images'],'marketer',$company_id,$marketer->id);
+            $this->MediaCrudService->save($image);
+        }
         return $marketer;
     }
 
@@ -45,11 +53,12 @@ class MarketerCrudService implements MarketerCrudServiceInterface{
     }
 
     public function GetCompanyMarketers($company_id){
-        return $this->marketer_crud_repository->get_marketers_by_company_id($company_id);       
+        return $this->marketer_crud_repository->get_marketers_by_company_id($company_id);
     }
 
     public function GetMarketer($id){
-        return $this->marketer_crud_repository->get_marketer_by_id($id);
+
+       return $this->marketer_crud_repository->get_marketer_by_id($id);
     }
-    
+
 }

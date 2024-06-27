@@ -60,7 +60,7 @@ class User extends Authenticatable
     public function role() {
         return $this->belongsTo(Role::class);
     }
-    
+
     public function warehouse() {
         return $this->belongsTo(Warehouse::class);
     }
@@ -78,4 +78,13 @@ class User extends Authenticatable
         return $filters->apply($query);
     }
 
+    public function from_transactions()
+    {
+        return $this->hasMany(Transaction::class, 'from');
+    }
+
+    public function to_transactions()
+    {
+        return $this->hasMany(Transaction::class, 'to');
+    }
 }

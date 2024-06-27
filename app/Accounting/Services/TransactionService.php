@@ -45,7 +45,7 @@ class TransactionService implements TransactionServiceInterface{
     private function add_images($transaction, $images)
     {
         foreach ($images as $image) {
-            $file = $this->FileUploadService->transaction($image, $transaction->company_id, $transaction->id);
+            $file = $this->FileUploadService->handle($image, 'transaction', $transaction->company_id, $transaction->id);
             $this->MediaService->save($file);
         }
     }

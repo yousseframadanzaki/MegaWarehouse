@@ -414,7 +414,7 @@
                                             <td>{{$order->total}}</td>
                                             <td>@date_format($order->created_at)</td>
                                             <td class="order_notes" data-id="{{$order->id}}">
-                                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes->count() }}</span>
+                                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
                                             </td>
                                             @can('delete_order', 'App\Models\Order')
                                                 <td>

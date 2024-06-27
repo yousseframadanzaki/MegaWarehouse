@@ -14,10 +14,10 @@
                 </ul>
         </div>
 
-        <form class="row  needs-validation" novalidate action="{{ route('store_supplier') }}" method="POST">
+        <form class="row  needs-validation" action="{{ route('store_supplier') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card p-5 shadow-sm">
-                <h1 class="text-center">أضافة مورد جديد</h1>
+                <h1 class="text-center">إضافة مورد جديد</h1>
                 <div class="row mb-3 mt-3">
                     <div class="col-md-6">
                         <label class="form-label">الاسم <span class="text-danger">*</span></label>
@@ -88,9 +88,53 @@
                         @enderror
                     </div>
                 </div>
-                <button class="btn btn-lg btn-primary mt-3 shadow-sm">أضافة مورد <i
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-warning my-3 rounded" style="cursor: pointer;" id="addImage">
+                            أضف صورة للمورد
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                    <div class="input-images">
+                        <input type="file" id="image-input" name="images" accept="image/*" style="display:none;">
+                        <div id="image-container"></div>
+                    </div>
+                </div>
+                <button class="btn btn-lg btn-primary mt-3 shadow-sm">إضافة مورد <i
                         class="bi bi-person-fill-add"></i></button>
             </div>
         </form>
     </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript" src="{{url('/static/js/image-uploader.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#addImage').on('click', function() {
+                $('#image-input').click();
+            });
+
+            $('#image-input').on('change', function(event) {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // Clear any existing images
+                        $('#image-container').empty();
+
+                        // Create new image element
+                        const img = $('<img>').attr('src', e.target.result).css('max-width', '100%');
+
+                        // Add the new image to the container
+                        $('#image-container').append(img);
+                    };
+
+                    // Read the first file only
+                    reader.readAsDataURL(files[0]);
+                }
+            });
+        });
+    </script>
 @endsection
