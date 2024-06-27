@@ -33,7 +33,7 @@ class SupplierController extends Controller
 
     public function store(CreateSupplierRequest $request) {
         $company_id = $this->company_id();
-        $supplier = $this->SupplierCrudService->CreateSupplier($company_id,$request->except('token'));
+        $supplier = $this->SupplierCrudService->CreateSupplier($company_id,$request->except('_token'));
         if(!$supplier){
             return back()->with('error','supplier_created_error');
         }
@@ -46,7 +46,7 @@ class SupplierController extends Controller
     }
 
     public function update(UpdateSupplierRequest $request,$supplier_id) {
-        $supplier = $this->SupplierCrudService->UpdateSupplier($supplier_id,$request->validated());
+        $supplier = $this->SupplierCrudService->UpdateSupplier($supplier_id,$request->except('_token'));
         if(!$supplier){
             return back()->with('error','supplier_updated_error');
         }

@@ -20,7 +20,9 @@
                         <th scope="col"> رقم التليفون </th>
                         <th scope="col"> العنوان</th>
                         <th scope="col"> الرصيد</th>
-                        <th scope="col">actions</th>
+                        @can('edit','App\Models\Supplier')
+                            <th scope="col">actions</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -30,14 +32,14 @@
                             <td>{{ $supplier->phone }}</td>
                             <td>{{ $supplier->address }}</td>
                             <td>{{ $supplier->total_invoices - $supplier->user->total_transactions }}</td>
-                            <td>
-                                @can('edit','App\Models\Supplier')
+                            @can('edit','App\Models\Supplier')
+                                <td>
                                     <a  href="{{route('edit_supplier',$supplier->id)}}" class="link-primary"
                                         title="تعديل بيانات المورد">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                @endcan
-                            </td>
+                                </td>
+                            @endcan
                         </tr>
                     @empty
                     @endforelse

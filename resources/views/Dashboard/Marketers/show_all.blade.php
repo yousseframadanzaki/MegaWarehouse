@@ -23,7 +23,9 @@
                         <th scope="col"> الرصيد </th>
                         <th scope="col"> اسم الصفحة</th>
                         <th scope="col"> لينكات</th>
-                        <th scope="col">actions</th>
+                        @can('edit', 'App\\Models\Marketer')
+                            <th scope="col">actions</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -42,14 +44,14 @@
                                     @endforeach
                                 @endisset
                             </td>
-                            <td>
-
-                            <a  href="{{route('edit_marketer',$marketer->id)}}" class="link-primary"
-                                title="تعديل بيانات المسوق">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-
-                            </td>
+                            @can('edit', 'App\\Models\Marketer')
+                                <td>
+                                    <a  href="{{route('edit_marketer',$marketer->id)}}" class="link-primary"
+                                        title="تعديل بيانات المسوق">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </td>
+                            @endcan
                         </tr>
                     @empty
                     @endforelse

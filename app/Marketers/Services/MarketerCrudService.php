@@ -49,6 +49,8 @@ class MarketerCrudService implements MarketerCrudServiceInterface{
     }
 
     public function UpdateMarketer($marketer_id,array $details){
+        $user_id = $this->GetMarketer($marketer_id)->user_id;
+        $this->UserCrudService->UpdateUser($user_id, ['name'=>$details['name'], 'phone_1'=>$details['phone']]);
         return $this->marketer_crud_repository->update_marketer($marketer_id,$details);
     }
 

@@ -14,7 +14,7 @@
                 </ul>
         </div>
 
-        <form class="row  needs-validation" novalidate action="{{ route('update_supplier',$supplier->id) }}" method="POST">
+        <form class="row  needs-validation" action="{{ route('update_supplier',$supplier->id) }}" method="POST">
             @csrf
             <div class="card p-5 shadow-sm">
                 <h1 class="text-center">تعديل مورد </h1>

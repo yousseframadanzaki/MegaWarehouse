@@ -304,7 +304,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('/suppliers/{supplier_id}/edit', [SupplierController::class,'edit'])
     ->name('edit_supplier')
-    ->can('update',['App\Models\Supplier','supplier_id']);
+    ->can('edit',['App\Models\Supplier','supplier_id']);
 
     Route::post('/suppliers/{supplier_id}/edit', [SupplierController::class,'update'])
     ->name('update_supplier')
@@ -348,7 +348,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('show_marketer');
 
     Route::get('/marketers/{maeketer_id}/edit', [MarketerController::class,'edit'])
-    ->name('edit_marketer');
+    ->name('edit_marketer')
+    ->can('edit', 'App\\Models\Marketer');
 
     Route::post('/marketers/{maeketer_id}/edit', [MarketerController::class,'update'])
     ->name('update_marketer')

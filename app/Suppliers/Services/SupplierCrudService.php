@@ -44,6 +44,8 @@ class SupplierCrudService implements SupplierCrudServiceInterface{
     }
 
     public function UpdateSupplier($supplier_id,array $details){
+        $user_id = $this->GetSupplier($supplier_id)->user_id;
+        $this->UserCrudService->UpdateUser($user_id, ['name'=>$details['name'], 'phone_1'=>$details['phone']]);
         return $this->supplier_crud_repository->update_supplier_by_id($supplier_id,$details);
     }
 
