@@ -150,7 +150,7 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
 
     public function get_users_by_role_type($company_id,$role_type){
         return User::whereHas('role',function($query) use($role_type) {
-            $query->where('type',$role_type);
+            $query->where('user_type_id',$role_type);
         })->where(['company_id'=>$company_id])->get();
     }
 
