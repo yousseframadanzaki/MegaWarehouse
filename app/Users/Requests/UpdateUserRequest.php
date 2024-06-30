@@ -24,7 +24,7 @@ class UpdateUserRequest extends FormRequest
     {
         $user_id = $this->route()->parameter('user_id');
         return [
-            'name' => 'required|min:6',
+            'name' => 'required',
             'phone_1' => [
                 'required',
                 'min:11',

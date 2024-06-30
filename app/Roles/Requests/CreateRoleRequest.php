@@ -23,7 +23,7 @@ class CreateRoleRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'type' => 'required|in:manager,supplier,marketer,shipping_company',
+            'user_type_id' => 'required',
             'permissions' => 'required|array',
         ];
     }

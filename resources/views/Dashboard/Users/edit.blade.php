@@ -1,5 +1,5 @@
 @extends('layouts.app')
- 
+
 @section('title')
     {{ __('edit_user_title') }}
 @endsection
@@ -60,7 +60,7 @@
             </div>
          </div>
          <div class="row mb-3">
-            @can('edit_roles','App/Models/User')
+            {{-- @can('edit_roles','App/Models/User') --}}
                <div class="col-md-6">
                   <label  class="form-label">الادارة</label>
                   <select class="form-select" aria-label="Default select example" name="role_id">
@@ -74,7 +74,7 @@
                      </div>
                   @enderror
                </div>
-            @endcan
+            {{-- @endcan --}}
             <div class="col-md-6">
                <label  class="form-label">المخزن</label>
                <select class="form-select" aria-label="Default select example" name="warehouse_id">

@@ -30,12 +30,12 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">نوع الادارة</label>
-                        <select class="form-select form-select @error('type')is-invalid @enderror" name="type" id="">
+                        <select class="form-select form-select @error('type')is-invalid @enderror" name="user_type_id" id="">
                             <option selected>اختار نوع</option>
-                            <option @if(old('type') == 'manager') selected @endif value="manager">أعضاء ادارة</option>
-                            <option @if(old('type') == 'supplier') selected @endif value="supplier">موردين</option>
-                            <option @if(old('type') == 'marketer') selected @endif value="marketer">مسوقين</option>
-                            <option @if(old('type') == 'shipping_company') selected @endif value="shipping_company">شركة شحن</option>
+                            <option @if(old('type') == '1') selected @endif value="1">أعضاء ادارة</option>
+                            <option @if(old('type') == '2') selected @endif value="2">موردين</option>
+                            <option @if(old('type') == '3') selected @endif value="3">مسوقين</option>
+                            <option @if(old('type') == '4') selected @endif value="4">شركة شحن</option>
                         </select>
                         @error('type')
                             <div class="invalid-feedback">
