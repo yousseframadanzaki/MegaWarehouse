@@ -46,6 +46,15 @@ class ProductPolicy
         return true;
     }
 
+    public function edit_variant(User $user): bool
+    {
+        if(!$user->role->permissions->contains('slug','edit_variant')){
+            return false;
+        }
+        return true;
+    }
+
+
     public function update(User $user, $product_id): bool
     {
         if(!$user->role->permissions->contains('slug','edit_products')){

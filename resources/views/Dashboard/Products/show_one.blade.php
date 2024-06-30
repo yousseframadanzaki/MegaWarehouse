@@ -213,7 +213,9 @@
                                 @if ($product->is_bundle == 0)<td>@if(!empty($variant->shelf_num))<a href="" class="shelf_data_link" data-shelf_num="{{ $variant->shelf_num }}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#shelfData">عرض الرف</a>@endif</td>@endif
                                 <td>
                                     <a title="طباعة" class="ms-3" href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a>
+                                    @can('edit_variant', 'App\Models\Product')
                                     <i title="تعديل متغير" class="btn-edit bi bi-pencil-square text-primary ms-3" style="font-size: 18px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editVariant" data-id="{{ $variant->id }}" data-name="{{ $variant->name }}" data-price="{{ $variant->price }}" data-sku="{{ $variant->sku }}" data-is_bundle="{{ $product->is_bundle }}"></i>
+                                    @endcan
                                     @can('delete_variant', 'App\Models\Product')
                                     <i title="حذف متغير" class="btn-delete bi bi-trash text-danger ms-3" style="font-size: 18px; cursor: pointer;" data-id="{{ $variant->id }}" data-name="{{ $variant->name }}" data-is_bundle="{{ $product->is_bundle }}"></i>
                                     @endcan
