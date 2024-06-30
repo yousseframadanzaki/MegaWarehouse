@@ -92,13 +92,13 @@
                             <select name="warehouse_id" id="warehouse_id" class="form-select" style="padding: 0.375rem 0.75rem;width:100%">
                                 <option value="">اختار المخزن</option>
                                 @foreach ($warehouses as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                                <option value="{{ $id }}" @if($id == auth()->user()->warehouse_id) selected @endif>{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-12 mt-2">
                             <label class="form-label">الكمية</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control">
+                            <input type="number" name="quantity" value="1" id="quantity" class="form-control">
                         </div>
                         <div class="col-md-12 mt-2">
                             <table class="table hover-table">
@@ -427,7 +427,7 @@
             data = JSON.parse(response);
             $('#area-select').html('<option value="">-- اختار المنطقة --</option>');
             $.each(data, function(key, value) {
-                $("#area-select").append('<option value="' + value.id + '">' + value.name + ' - ( ' + value.keywords + ' )</option>');
+                $("#area-select").append(`<option value="${value.id}"> ${value.name} ${value.keywords !== null ? `- ( ${value.keywords} )` : '' }</option>`);
             });
         })
     })
@@ -469,7 +469,12 @@
                 if (is_bundle == 0) {
                     $("#variant_id").append(`<option value="">اختار المتغير</option>`)
                     data.forEach(element => {
-                        $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                        if (data.length == 1) { // if only one option add selected attribute and call ajax function.
+                            $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                            variant_select_change($("#variant_id"));
+                        } else {
+                            $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name}</option>`)
+                        }
                     })
                     $('#variant_id').select2({
                         dropdownParent: $('#addToCartModal')
@@ -558,30 +563,32 @@
         }, 1500);
     });
 
-        $('#variant_id').change(function () {
-            var variant_id = $(this).val();
-            var show_quantity = $(this).find('option:selected').data("show");
-            var hide = $(this).find('option:selected').data("hide");
+    $('#variant_id').change(variant_select_change($('#variant_id')));
 
-            if (variant_id != '') {
-                $.ajax({
-                    url: `/api/variants/${variant_id}/stock`,
-                    method: "GET",
-                    dataType: "text",
-                }).then(response => {
-                    data = JSON.parse(response);
-                    if(show_quantity == '0'){
-                        add_cart_stock(data);
-                    } else {
-                        add_cart_stockk(data);
-                    }
-                    if(hide == '1'){
-                        add_cart_stockk(data);
-                    }
+    function variant_select_change(variant_select) {
+        var variant_id = variant_select.val();
+        var show_quantity = variant_select.find('option:selected').data("show");
+        var hide = variant_select.find('option:selected').data("hide");
 
-                })
-            }
-        })
+        if (variant_id != '') {
+            $.ajax({
+                url: `/api/variants/${variant_id}/stock`,
+                method: "GET",
+                dataType: "text",
+            }).then(response => {
+                data = JSON.parse(response);
+                if(show_quantity == '0'){
+                    add_cart_stock(data);
+                } else {
+                    add_cart_stockk(data);
+                }
+                if(hide == '1'){
+                    add_cart_stockk(data);
+                }
+
+            })
+        }
+    }
 
     function add_cart_stock(params) {
         $("#cart_stock").html("");
@@ -663,8 +670,8 @@
         }).then(data => {
             if (data) {
                 $("#addToCartModal").modal('hide');
-                show_success('تمت الاضافة بنجاح');
-                $(window).scrollTop(0);
+                // show_success('تمت الاضافة بنجاح');
+                // $(window).scrollTop(0);
                 add_cart_items(data);
             }
         })
