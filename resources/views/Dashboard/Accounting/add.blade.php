@@ -134,7 +134,6 @@
 
         function payment_category() {
             category = $('#payment_category').val();
-            role_type = 'default';
 
             $('#payment_type_id option:not([value=""])').remove();
             $('#from option:not([value=""])').remove();
@@ -142,7 +141,6 @@
 
             if (category != '') {
                 if (category == 'Expense') {
-                    role_type = 'manager';
                     $("#to").attr('disabled', 'disabled');
                     $("#to").parent().hide();
                 } else {
@@ -161,7 +159,7 @@
                 })
 
                 $.ajax({
-                    url: `/api/users/company/role_type/${role_type}`,
+                    url: `/api/users/${role_type}`,
                     method: 'get',
                     success: function(response) {
                         $.each(response, function(key, value) {
