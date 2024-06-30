@@ -7,6 +7,7 @@ interface ProductCrudServiceInterface{
     public function GetCompanyProducts($company_id,$filters);
     public function GetProduct($product_id);
     public function UpdateProduct($product_id,array $data);
+    public function UpdateVariant($variant_id,array $data);
     public function GetVariantPrint($variant_id);
     public function GetBulkVariantsPrint(array $variants_ids);
     public function AddPackage($company_id,array $data);

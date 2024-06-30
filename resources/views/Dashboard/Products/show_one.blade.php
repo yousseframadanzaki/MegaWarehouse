@@ -76,6 +76,36 @@
     </div>
 </div>
 
+<div class="modal fade" id="editVariant" tabindex="-1" aria-labelledby="EditVariantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="mb-3 fw-bold title text-center"></h5>
+                <form action="{{ route('variant.update') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="variant_id" id="variant_id">
+                    <div class="form-group mb-3">
+                        <label class="fw-bold mb-2">اسم المتغير</label>
+                        <input type="text" class="form-control" name="name" id="variant_name" placeholder="اسم المتغير">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold mb-2">السعر</label>
+                        <input type="number" class="form-control" name="price" id="variant_price" placeholder="السعر">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="fw-bold mb-2">SKU</label>
+                        <input type="text" class="form-control" name="sku" id="variant_sku" placeholder="SKU">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">تعديل</button>
+                        <p class="error-message text-danger mt-3 mb-0" style="display: none;">هناك بعض الحقول فارغة</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="p-3">
 
 <div class="row">
@@ -167,7 +197,6 @@
                             @if ($product->is_bundle == 0)<th scope="col">الكمية</th>@endif
                             <th scope="col">sku</th>
                             @if ($product->is_bundle == 0)<th scope="col">رقم الرف</th>@endif
-                            <th scope="col">طباعة</th>
                             @canany(['delete_variant'], 'App\Models\Product')
                             <th scope="col">إجراءات</th>
                             @endcanany
@@ -182,14 +211,13 @@
                                 @if ($product->is_bundle == 0)<td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->total_stock_quantity }}</a></td>@endif
                                 <td>{{ $variant->sku }}</td>
                                 @if ($product->is_bundle == 0)<td>@if(!empty($variant->shelf_num))<a href="" class="shelf_data_link" data-shelf_num="{{ $variant->shelf_num }}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#shelfData">عرض الرف</a>@endif</td>@endif
-                                <td><a href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a></td>
-                                @canany(['delete_variant'], 'App\Models\Product')
+                                <td>
+                                    <a title="طباعة" class="ms-3" href="{{route('print_variant',$variant->id)}}" target="_blank"><i class="bi bi-printer-fill"></i></a>
+                                    <i title="تعديل متغير" class="btn-edit bi bi-pencil-square text-primary ms-3" style="font-size: 18px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editVariant" data-id="{{ $variant->id }}" data-name="{{ $variant->name }}" data-price="{{ $variant->price }}" data-sku="{{ $variant->sku }}" data-is_bundle="{{ $product->is_bundle }}"></i>
                                     @can('delete_variant', 'App\Models\Product')
-                                    <td>
-                                        <i class="btn-delete bi bi-trash text-danger" style="font-size: 18px; cursor: pointer;" data-id="{{ $variant->id }}" data-name="{{ $variant->name }}" data-is_bundle="{{ $product->is_bundle }}"></i>
-                                    </td>
+                                    <i title="حذف متغير" class="btn-delete bi bi-trash text-danger ms-3" style="font-size: 18px; cursor: pointer;" data-id="{{ $variant->id }}" data-name="{{ $variant->name }}" data-is_bundle="{{ $product->is_bundle }}"></i>
                                     @endcan
-                                @endcanany
+                                </td>
                             </tr>
                         @empty
                         @endforelse
@@ -328,6 +356,41 @@ $('#shelfData').on('show.bs.modal', function(e) {
                 })
             }
         })
+    }
+})
+
+$('#editVariant').on('show.bs.modal', function(e) {
+    id = $(e.relatedTarget).attr('data-id');
+    name = $(e.relatedTarget).attr('data-name');
+    price = $(e.relatedTarget).attr('data-price');
+    sku = $(e.relatedTarget).attr('data-sku');
+
+    $('#editVariant h5').text(name)
+    $('#variant_id').val(id);
+    $('#variant_name').val(name);
+    $('#variant_price').val(price);
+    $('#variant_sku').val(sku);
+})
+
+$('#editVariant').on('hidden.bs.modal', function(e) {
+    $('.error-message').hide();
+    $('#editVariant h5').text('');
+    $(this).find('input:not[type=submit]').val('');
+    $('.error-message').hide();
+})
+
+$('#editVariant form').on('submit', function(e) {
+    e.preventDefault();
+
+    name = $('#variant_name').val();
+    price = $('#variant_price').val();
+    sku = $('#variant_sku').val();
+
+    if (name == "" || price == "" || sku == "")
+        $('.error-message').show();
+    else {
+        $('.error-message').hide();
+        this.submit();
     }
 })
 

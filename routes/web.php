@@ -264,6 +264,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('print_bulk_variants')
     ->can('print_bulk_variants',['App\Models\Product','id']);
 
+    Route::post('/product/variant/update', [ProductController::class,'update_variant'])
+    ->name('variant.update');
+
     Route::get('/warehouses', [WarehouseController::class,'all'])
     ->name('all_warehouses')
     ->can('view','App\Models\Warehouse');

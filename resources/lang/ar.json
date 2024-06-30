@@ -226,5 +226,6 @@
 
     "WhatsappCampaign": "حملات الواتساب",
     "stock_delete_success": "تم الحذف بنجاح",
-    "variants_print_title": "طباعة متغيرات"
+    "variants_print_title": "طباعة متغيرات",
+    "variant_updated_success": "تم تعديل المتغير بنجاح"
 }

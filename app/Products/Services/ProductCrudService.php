@@ -83,6 +83,11 @@ class ProductCrudService implements ProductCrudServiceInterface
         return $product;
     }
 
+    public function UpdateVariant($variant_id, $data)
+    {
+        return $this->product_variants_repository->update_variant_by_id($variant_id, $data);
+    }
+
     private function add_images($product, $images)
     {
         foreach ($images as $image) {
