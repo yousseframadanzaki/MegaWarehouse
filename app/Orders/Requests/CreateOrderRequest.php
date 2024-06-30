@@ -25,7 +25,7 @@ class CreateOrderRequest extends FormRequest
         return [
             'client.name'=>'required|min:3',
             'client.phone_1'=>'required|min:11',
-            'client.phone_2'=>'nullable|min:11',
+            'client.phone_2'=>'nullable',
             'client.address'=>'required|min:10',
             'client.country_id'=>'required|exists:countries,id',
             'client.city_id'=>'required|exists:cities,id',
