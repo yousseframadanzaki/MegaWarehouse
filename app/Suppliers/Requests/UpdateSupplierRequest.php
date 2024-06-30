@@ -26,15 +26,14 @@ class UpdateSupplierRequest extends FormRequest
         return [
             'name'=>[
                 'required',
-                'min:3',
                 Rule::unique('suppliers', 'name')
                 ->where('company_id', auth()->user()->company_id)
                 ->ignore($supplier_id,'id')
             ],
-            'address' => 'required|min:10',    
-            'phone' => 'required|min:11',    
-            'payment_methods' => 'nullable',    
-            'contacts' => 'nullable',  
+            'address' => 'required|min:10',
+            'phone' => 'required|min:11',
+            'payment_methods' => 'nullable',
+            'contacts' => 'nullable',
         ];
     }
 
@@ -43,10 +42,10 @@ class UpdateSupplierRequest extends FormRequest
         return [
             'name.required' => 'supplier_name_required',
             'name.min' => 'supplier_name_min',
-            'address.required' => 'address_required',    
-            'address.min' => 'address_min',    
-            'phone.required' => 'phone_required',    
-            'phone.min' => 'phone_min', 
+            'address.required' => 'address_required',
+            'address.min' => 'address_min',
+            'phone.required' => 'phone_required',
+            'phone.min' => 'phone_min',
         ];
     }
 
