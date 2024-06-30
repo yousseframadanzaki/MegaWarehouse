@@ -261,8 +261,7 @@
                     <h3>{{ $order->companies->name }}</h3>
                 </div>
                 <div style="display: flex;justify-content:center;margin-top: 10px">
-                    <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">اجمالى {{$order->total}}</div>
-                    <div style="margin-right: 5px;;background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">سعر الشحن {{$order->delivery_cost}}</div>
+                    <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">الاجمالي شامل الشحن:  {{$order->total}}</div>
                 </div>
             </div>
             <div class="column">
@@ -305,7 +304,7 @@
                 <tbody>
                     <tr style="height: 30px;direction: ltr;text-align: center;">
                         <center>
-                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->name}}</span> - {{$item->variant->product->name}}</td>
+                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</td>
                         </center>
                     </tr>
                 </tbody>
@@ -347,7 +346,7 @@
                         <table style="margin-right:10px;">
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px;"><span>{{$item->variant->name}}</span> - {{$item->variant->product->name}}</span></td>
+                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
@@ -361,7 +360,7 @@
                         <table>
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px;"><span>{{$item->variant->name}}</span> - {{$item->variant->product->name}}</span></td>
+                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
@@ -373,6 +372,8 @@
                 </div>
             </div>
         @endif
+        <div style="width: fit-content;font-size: 14px;font-weight: bold;margin: 30px;background:#eeee;border:2px solid #000;padding:5px;border-radius:5px">سعر الشحن:  {{$order->delivery_cost}}</div>
+
         <div class="footer">
             <div>
                 <h3>{{ json_decode($order->companies->data)->facebook }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
