@@ -36,6 +36,7 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users','email')->ignore($user_id)
             ],
             'password' => 'nullable|min:6',
+            'password2' => 'required_with:password|same:password|min:6',
             'role_id' => 'required|integer|exists:roles,id',
             'warehouse_id' => 'required|integer|exists:warehouses,id',
         ];

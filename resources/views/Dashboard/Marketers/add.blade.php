@@ -52,20 +52,6 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label  class="form-label">الادارة</label>
-                        <select class="form-select @error('role_id') is-invalid @enderror" aria-label="Default select example" name="role_id">
-                           <option value="">أختار الاداره</option>
-                           @foreach ($roles as $id => $name)
-                              <option value="{{$id}}">{{$name}}</option>
-                           @endforeach
-                        </select>
-                        @error('role_id')
-                           <div class="invalid-feedback">
-                                 {{__($message)}}
-                           </div>
-                        @enderror
-                    </div>
-                    <div class="col-md-4">
                         <label class="form-label">الايميل <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
                             value="{{ old('email') }}">
@@ -85,8 +71,31 @@
                             </div>
                         @enderror
                     </div>
+                    <div class="col-md-4">
+                        <label  class="form-label">تأكيد كلمة السر </label>
+                        <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2" value="{{old('password2')}}">
+                        @error('password2')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label  class="form-label">الادارة</label>
+                        <select class="form-select @error('role_id') is-invalid @enderror" aria-label="Default select example" name="role_id">
+                           <option value="">أختار الاداره</option>
+                           @foreach ($roles as $id => $name)
+                              <option value="{{$id}}">{{$name}}</option>
+                           @endforeach
+                        </select>
+                        @error('role_id')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                    </div>
                     <div class="col-md-4">
                         <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                         <input type="text" class="form-control" name="links[facebook]"
@@ -97,6 +106,8 @@
                         <input type="text" class="form-control" name="links[instagram]"
                             value="{{ old('links[instagram]') }}">
                     </div>
+                </div>
+                <div class="row mb-3">
                     <div class="col-md-4">
                         <label class="form-label">لينك تيك توك <i class="bi bi-tiktok"> </i></label>
                         <input type="text" class="form-control" name="links[tiktok]" value="{{ old('links[tiktok]') }}">

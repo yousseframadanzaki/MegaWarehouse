@@ -74,6 +74,17 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        <label  class="form-label">تأكيد كلمة السر </label>
+                        <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2" value="{{old('password2')}}">
+                        @error('password2')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                     </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
                         <label  class="form-label">الادارة</label>
                         <select class="form-select" aria-label="Default select example" name="role_id">
                            <option value="">أختار الاداره</option>

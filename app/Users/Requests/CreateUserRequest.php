@@ -27,6 +27,7 @@ class CreateUserRequest extends FormRequest
             'phone_1' => 'required|min:11|unique:users,phone_1',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+            'password2' => 'required_with:password|same:password|min:6',
             'role_id' => 'required|integer|exists:roles,id',
             'warehouse_id' => 'required|integer|exists:warehouses,id',
             'image'=>'file|max:10240|mimes:jpg,bmp,png'
