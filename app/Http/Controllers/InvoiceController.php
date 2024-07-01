@@ -39,7 +39,7 @@ class InvoiceController extends Controller
     {
         $invoice = $this->InvoiceService->GetInvoice($invoice_id);
 
-        $users = $this->CommonDataService->GetUsersByRoleType($this->company_id(),'manager');
+        $users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 1);
         return view('Dashboard.Invoices.show_one')->with(['invoice'=>$invoice,'users'=>$users]);
     }
 

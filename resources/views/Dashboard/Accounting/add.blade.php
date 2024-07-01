@@ -133,14 +133,15 @@
         $('#payment_category').on('change', payment_category);
 
         function payment_category() {
-            category = $('#payment_category').val();
+            payment_category = $('#payment_category').val();
 
-            $('#payment_type_id option:not([value=""])').remove();
-            $('#from option:not([value=""])').remove();
-            $('#to option:not([value=""])').remove();
+            $('#payment_type_id option:not([value=""]), #from option:not([value=""]), #to option:not([value=""])').remove();
+            $('#payment_type_id option[value=""], #from option[value=""], #to option[value=""]').text('جاري التحميل ...');
+            $('#payment_type_id, #from, #to').prop('disabled', true);
+            $('#payment_type_id, #from, #to').select2();
 
-            if (category != '') {
-                if (category == 'Expense') {
+            if (payment_category != '') {
+                if (payment_category == 'Expense') {
                     $("#to").attr('disabled', 'disabled');
                     $("#to").parent().hide();
                 } else {
@@ -149,23 +150,25 @@
                 }
 
                 $.ajax({
-                    url: `/api/category/${category}/payment_types`,
+                    url: `/api/payment_category/${payment_category}/data`,
                     method: 'get',
                     success: function(response) {
-                        $.each(response, function(key, value) {
-                            $('#payment_type_id').append(`<option value="${key}" ${ ('{{old("payment_type_id")}}' == key) ? 'selected' : '' }>${value}</option>`)
-                        })
-                    }
-                })
+                        $('#payment_type_id option[value=""]').text('اختار نوع العملية ...');
+                        $('#from option[value=""]').text('من ...');
+                        $('#to option[value=""]').text('إلي ...');
 
-                $.ajax({
-                    url: `/api/users/${role_type}`,
-                    method: 'get',
-                    success: function(response) {
-                        $.each(response, function(key, value) {
-                            $('#from').append(`<option value="${key}" ${ ('{{old("from")}}' == key) ? 'selected' : '' }>${value}</option>`)
-                            $('#to').append(`<option value="${key}" ${ ('{{old("to")}}' == key) ? 'selected' : '' }>${value}</option>`)
-                        })
+                        $.each(response.payment_types, function(key, value) {
+                            $('#payment_type_id').append(`<option value="${key}" ${ ('{{old("payment_type_id")}}' == key) ? 'selected' : '' }>${value}</option>`);
+                        });
+                        $.each(response.from_users, function(key, value) {
+                            $('#from').append(`<option value="${key}" ${ ('{{old("from")}}' == key) ? 'selected' : '' }>${value}</option>`);
+                        });
+                        $.each(response.to_users, function(key, value) {
+                            $('#to').append(`<option value="${key}" ${ ('{{old("to")}}' == key) ? 'selected' : '' }>${value}</option>`);
+                        });
+
+                        $('#payment_type_id, #from, #to').prop('disabled', false);
+                        $('#payment_type_id, #from, #to').select2();
                     }
                 })
             }
