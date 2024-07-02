@@ -129,6 +129,15 @@ class OrdersRepository implements OrdersRepositoryInterface{
                     ->where('status_id', $data['status_id'])
                     ->firstOrFail();
         $status->delete();
+
+        $previous_status = OrderStatus::where('order_id', $order_id)->latest()->firstOrFail();
+        $previous_status->update([
+            'current' => 1
+        ]);
+
+        Order::findOrFail($order_id)->update([
+            'status_id' => $previous_status->status_id
+        ]);
     }
 
     public function change_order_status_bulk($data)
