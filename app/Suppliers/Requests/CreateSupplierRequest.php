@@ -33,7 +33,7 @@ class CreateSupplierRequest extends FormRequest
             'contacts' => 'nullable',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'password2' => 'required_with:password|same:password|min:6',
+            'password2' => 'nullable|required_with:password|same:password|min:6',
             'role_id' => 'required|integer|exists:roles,id',
         ];
     }

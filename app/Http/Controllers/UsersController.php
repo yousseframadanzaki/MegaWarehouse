@@ -36,7 +36,7 @@ class UsersController extends Controller
         // dd($roles);
         return view('Dashboard.Users.add')->with(['roles'=>$roles,'warehouses'=>$warehouses]);
     }
-    
+
     public function store(CreateUserRequest $request) {
         $company_id = $this->company_id();
         $user = $this->UserCrudService->CreateUser($request->validated(),$company_id);
@@ -91,7 +91,9 @@ class UsersController extends Controller
         ]);
     }
     public function update(UpdateUserRequest $request,$user_id) {
-        if(!$this->UserCrudService->UpdateUser($user_id,$request->validated())){
+        $validatedData = $request->validated();
+        unset($validatedData['password2']);
+        if(!$this->UserCrudService->UpdateUser($user_id, $validatedData)){
             return back()->with('error','user_updated_error');
         }
         return back()->with('success','user_updated_success');

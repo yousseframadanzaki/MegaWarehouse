@@ -28,7 +28,7 @@ class CreateMarketerRequest extends FormRequest
             'links'=>'nullable',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'password2' => 'required_with:password|same:password|min:6',
+            'password2' => 'nullable|required_with:password|same:password|min:6',
             'role_id' => 'required|integer|exists:roles,id',
         ];
     }
@@ -49,5 +49,5 @@ class CreateMarketerRequest extends FormRequest
             'password.min' => 'password_min',
             'role_id' => 'required|integer|exists:roles,id',
         ];
-    }   
+    }
 }

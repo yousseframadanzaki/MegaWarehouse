@@ -68,7 +68,7 @@
          <div class="row mb-3">
             <div class="col-md-6">
                <label  class="form-label">كلمة السر</label>
-               <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{old('password')}}">
+               <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
                @error('password')
                   <div class="invalid-feedback">
                         {{__($message)}}
@@ -77,7 +77,7 @@
             </div>
             <div class="col-md-6">
                 <label  class="form-label">تأكيد كلمة السر </label>
-                <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2" value="{{old('password2')}}">
+                <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2">
                 @error('password2')
                    <div class="invalid-feedback">
                          {{__($message)}}

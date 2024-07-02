@@ -25,6 +25,7 @@ class UpdateShippingCompanyRequest extends FormRequest
             'name' => 'required|min:3',
             'username' => 'required|min:3',
             'password' => 'required|min:3',
+            'password2' => 'nullable|required_with:password|same:password|min:3',
             'url' => 'required|min:8',
         ];
     }
@@ -32,7 +33,7 @@ class UpdateShippingCompanyRequest extends FormRequest
     public function messages()
     {
         return [
-            
+
         ];
     }
 
