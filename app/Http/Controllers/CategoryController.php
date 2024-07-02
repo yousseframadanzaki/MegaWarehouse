@@ -53,9 +53,9 @@ class CategoryController extends Controller
         $company_id = $this->company_id();
         $category = $this->CategoryCrudService->CreateCategory($company_id,$request->validated());
         if($category){
-            return back()->with('success','category_created_success');
+            return back()->with('success','created_success');
         }
-        return back()->with('error','category_created_error');
+        return back()->with('error','created_error');
     }
 
     public function edit($category_id)
@@ -69,9 +69,9 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request,$category_id)
     {
         if(!$this->CategoryCrudService->UpdateCategory($category_id,$request->validated())){
-            return back()->with('error','category_updated_error');
+            return back()->with('error','updated_error');
         }
-        return back()->with('success','category_updated_success');
+        return back()->with('success','updated_success');
     }
 
     public function show($category_id) {

@@ -12,7 +12,7 @@ use App\Warehouses\Requests\UpdateWarehouseRequest;
 
 class WarehouseController extends Controller
 {
-    
+
     private WarehouseCrudServiceInterface $WarehouseCrudService;
 
     public function __construct(WarehouseCrudServiceInterface $WarehouseCrudService){
@@ -36,9 +36,9 @@ class WarehouseController extends Controller
         $company_id = $this->company_id();
         $warehouse = $this->WarehouseCrudService->CreateWarehouse($company_id,$request->validated());
         if(!$warehouse){
-            return back()->with('error','warehouse_created_error');
+            return back()->with('error','created_error');
         }
-        return back()->with('success','warehouse_created_success');
+        return back()->with('success','created_success');
     }
 
     public function edit($warehouse_id)
@@ -51,9 +51,9 @@ class WarehouseController extends Controller
     {
         $warehouse = $this->WarehouseCrudService->UpdateWarehouse($warehouse_id,$request->validated());
         if(!$warehouse){
-            return back()->with('error','warehouse_updated_error');
+            return back()->with('error','updated_error');
         }
-        return back()->with('success','warehouse_updated_success');
+        return back()->with('success','updated_success');
     }
 
 }

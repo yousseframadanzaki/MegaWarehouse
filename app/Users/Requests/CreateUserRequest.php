@@ -33,23 +33,4 @@ class CreateUserRequest extends FormRequest
             'image'=>'file|max:10240|mimes:jpg,bmp,png'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'user_name_required',
-            'name.min' => 'user_name_min',
-            'phone_1.required' => 'user_phone_1_required',
-            'phone_1.min' => 'user_phone_1_min',
-            'phone_1.unique' => 'user_phone_1_unique',
-            'email.required' => 'user_email_required',
-            'email.email' => 'user_email_email',
-            'email.unique' => 'user_email_unique',
-            'password.required' => 'password_required',
-            'password.min' => 'password_min',
-            'image.mimes'=>'image_type_error',
-            'image.max' => 'image_size_error'
-        ];
-    }
-
 }

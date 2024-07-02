@@ -75,7 +75,5 @@ class UserCrudService implements UserCrudServiceInterface{
     public function checkMaxUsers($company_id)
     {
         return $this->user_crud_repository->check_max_users($company_id);
-
     }
-
 }

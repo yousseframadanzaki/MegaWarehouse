@@ -47,7 +47,7 @@ class AccountingController extends Controller
         $transactionData = $request->except('_token');
         $transactionData['company_id'] = $this->company_id();
         $this->TransactionService->AddTransaction($transactionData);
-        return redirect()->route('all_transactions')->with('success', 'Transaction_added_successfully');
+        return redirect()->route('all_transactions')->with('success', 'created_success');
     }
 
     public function get_payment_category_data($payment_category)
@@ -65,12 +65,12 @@ class AccountingController extends Controller
 
         return response()->json([
             'payment_types' => $payment_types,
-            'from_users' => $from_users, 
+            'from_users' => $from_users,
             'to_users' => $to_users
         ]);
     }
 
     public function get_company_users_by_user_type($payment_category) {
-        
+
     }
 }

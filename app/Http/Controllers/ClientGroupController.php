@@ -32,30 +32,30 @@ class ClientGroupController extends Controller
         return view('Dashboard.ClientGroups.add');
     }
 
-    
+
     public function store(CreateClientGroupRequest $request)
     {
         $company_id = $this->company_id();
         $client_group = $this->ClientGroupCrudService->CreateClientGroup($company_id,$request->validated());
         if($client_group){
-            return back()->with('success','client_group_created_success');
+            return back()->with('success','created_success');
         }
-        return back()->with('error','client_group_created_error');
+        return back()->with('error','created_error');
     }
 
-    
+
     public function edit($client_group_id)
     {
         $client_group = $this->ClientGroupCrudService->GetClientGroup($client_group_id);
         return view('Dashboard.ClientGroups.edit')->with('client_group',$client_group);
     }
 
-    
+
     public function update(UpdateClientGroupRequest $request,$client_group_id)
     {
         if(!$this->ClientGroupCrudService->UpdateClientGroup($client_group_id,$request->validated())){
-            return back()->with('error','client_group_updated_error');
+            return back()->with('error','updated_error');
         }
-        return back()->with('success','client_group_updated_success');
+        return back()->with('success','updated_success');
     }
 }
