@@ -124,11 +124,20 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $id = $order->order_status()->get()[0]->pivot->id;
         return $id;
     }
-    public function delete_order_status($order_id,$data){
+   public function delete_order_status($order_id,$data){
         $status = OrderStatus::where('order_id', $order_id)
                     ->where('status_id', $data['status_id'])
                     ->firstOrFail();
         $status->delete();
+
+        $previous_status = OrderStatus::where('order_id', $order_id)->latest()->firstOrFail();
+        $previous_status->update([
+            'current' => 1
+        ]);
+
+        Order::findOrFail($order_id)->update([
+            'status_id' => $previous_status->status_id
+        ]);
     }
 
     public function change_order_status_bulk($data)
