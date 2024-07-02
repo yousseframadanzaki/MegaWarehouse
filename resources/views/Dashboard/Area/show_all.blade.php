@@ -50,7 +50,7 @@
             <li><a class="link-dark" href="{{ route('all_sectors') }}">مناطق الشحن</a></li>
         </ul>
         @can('add', 'App\Models\Area')
-        <div class="mt-2">
+        <div class="mt-2 mb-3">
             <a href="{{ route('add_sector') }}"><button class="btn btn-primary">أضافة منطقة <i class="bi bi-map"></i></button></a>
         </div>
         @endcan
