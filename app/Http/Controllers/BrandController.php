@@ -31,9 +31,9 @@ class BrandController extends Controller
         $company_id = $this->company_id();
         $brand = $this->BrandCrudService->CreateBrand($company_id,$request->validated());
         if($brand){
-            return back()->with('success','created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
     public function edit($brand_id) {
@@ -43,9 +43,9 @@ class BrandController extends Controller
 
     public function update(UpdateBrandRequest $request,$brand_id){
         if(!$this->BrandCrudService->UpdateBrand($brand_id,$request->validated())){
-            return back()->with('error','updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 
     public function show($brand_id) {

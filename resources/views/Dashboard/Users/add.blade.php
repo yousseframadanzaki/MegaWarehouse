@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_user_title') }}
+    {{ __('global.add_user_title') }}
 @endsection
 
 @section('content')

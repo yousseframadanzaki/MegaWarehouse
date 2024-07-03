@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('areas_title') }}
+    {{ __('global.areas_title') }}
 @endsection
 
 @section('content')
@@ -88,8 +88,8 @@
                     <select @cannot('edit_area', 'App\Models\Area' ) disabled @endcannot class="form-select @error('shipping_company_id') is-invalid @enderror area_shipping_company" data-id="{{ $sector->id }}" id="shipping_company_{{ $sector->id }}" aria-label="Default select example" name="shipping_company_id">
                         <option value="">اختار</option>
                         @foreach ($shipping_companies as $shipping)
-                        <option @if ($shipping->id == $sector->shipping_company->id)
-                            selected
+                        <option @if (!empty($sector->shipping_company->id) && $shipping->id == $sector->shipping_company->id)
+                             selected
                             @endif value="{{ $shipping->id }}">{{ $shipping->name }}</option>
                         @endforeach
                     </select>

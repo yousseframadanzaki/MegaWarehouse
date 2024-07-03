@@ -41,9 +41,9 @@ class UsersController extends Controller
         $company_id = $this->company_id();
         $user = $this->UserCrudService->CreateUser($request->validated(),$company_id);
         if($user){
-            return back()->with('success','created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
     public function all(UserFilters $filter) {
@@ -94,8 +94,8 @@ class UsersController extends Controller
         $validatedData = $request->validated();
         unset($validatedData['password2']);
         if(!$this->UserCrudService->UpdateUser($user_id, $validatedData)){
-            return back()->with('error','updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 }

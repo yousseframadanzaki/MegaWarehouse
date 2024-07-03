@@ -38,9 +38,9 @@ class ClientGroupController extends Controller
         $company_id = $this->company_id();
         $client_group = $this->ClientGroupCrudService->CreateClientGroup($company_id,$request->validated());
         if($client_group){
-            return back()->with('success','created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
 
@@ -54,8 +54,8 @@ class ClientGroupController extends Controller
     public function update(UpdateClientGroupRequest $request,$client_group_id)
     {
         if(!$this->ClientGroupCrudService->UpdateClientGroup($client_group_id,$request->validated())){
-            return back()->with('error','updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 }

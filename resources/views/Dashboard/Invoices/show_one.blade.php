@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    @lang('show_invoice_title')
+    @lang('global.show_invoice_title')
 @endsection
 
 @section('content')

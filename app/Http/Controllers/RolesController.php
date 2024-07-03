@@ -32,9 +32,9 @@ class RolesController extends Controller
         $company_id = $this->company_id();
         $role = $this->RoleCrudService->CreateRole($company_id,$request->validated());
         if(!$role){
-            return back()->with('error','created_error');
+            return back()->with('error',trans('global.created_error'));
         }
-        return back()->with('success','created_success');
+        return back()->with('success',trans('global.created_success'));
     }
 
     public function edit($role_id) {
@@ -48,9 +48,9 @@ class RolesController extends Controller
     public function update(UpdateRoleRequest $request,$role_id) {
         $role = $this->RoleCrudService->UpdateRole($role_id,$request->validated());
         if(!$role){
-            return back()->with('error','updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 
 }

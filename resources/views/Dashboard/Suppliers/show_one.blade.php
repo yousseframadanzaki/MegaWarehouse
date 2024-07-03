@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('show_supplier_title') }}
+    {{ __('global.show_supplier_title') }}
 @endsection
 
 <style>

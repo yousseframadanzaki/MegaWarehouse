@@ -20,6 +20,7 @@ use App\Models\Status;
 use App\Models\ShippingCompany;
 use App\Models\Marketer;
 use App\CommonData\Interfaces\CommonDataRepositoryInterface;
+use App\Models\Order;
 use App\Models\PaymentType;
 use App\Policies\OrderPolicy;
 use App\Policies\StockPolicy;

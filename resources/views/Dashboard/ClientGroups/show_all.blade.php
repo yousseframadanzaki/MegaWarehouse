@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('client_groups_title') }}
+    {{ __('global.client_groups_title') }}
 @endsection
 
 @section('content')

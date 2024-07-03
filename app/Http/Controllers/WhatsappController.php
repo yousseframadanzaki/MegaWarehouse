@@ -49,10 +49,10 @@ class WhatsappController extends Controller
         $data['expire_date'] = Carbon::now()->addDays(30);
 
         if( $this->WhatsappService->AddPoints($data) ){
-            $request->session()->flash('success', 'created_success');
+            $request->session()->flash('success', trans('global.created_success'));
             return redirect()->back();
         }
-        return redirect()->back()->with(['error'=>'created_error','old_data'=>($request->except('token'))])->withInput();
+        return redirect()->back()->with(['error'=>trans('global.created_error'),'old_data'=>($request->except('token'))])->withInput();
     }
     public function show_campaign(Request $request) {
         $orders = $this->OrdersService->GetOrders($request->orders_ids);
@@ -111,7 +111,7 @@ class WhatsappController extends Controller
         $whatsapp_messages = $this->WhatsappService->AddPoints($details);
         if($campaign_id && $whatsapp_messages){
             return redirect()->route('whatsapp_campaigns')
-            ->with('success', 'created_success');
+            ->with('success', trans('global.created_success'));
         }
     }
     public function add_device(Request $request) {
@@ -142,10 +142,10 @@ class WhatsappController extends Controller
         $data['instance_id'] = $instance_id;
 
         if( $this->WhatsappService->AddDevice($data)){
-            $request->session()->flash('success', 'created_success');
+            $request->session()->flash('success', trans('global.created_success'));
             return redirect()->back();
         }
-        return redirect()->back()->with(['error'=>'created_error','old_data'=>($request->except('token'))])->withInput();
+        return redirect()->back()->with(['error'=>trans('global.created_error'),'old_data'=>($request->except('token'))])->withInput();
     }
     function delete_device($device_id) {
         $device = $this->WhatsappService->DeleteDevice($device_id);

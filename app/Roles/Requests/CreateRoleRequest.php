@@ -27,14 +27,4 @@ class CreateRoleRequest extends FormRequest
             'permissions' => 'required|array',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'role_name_required',
-            'name.min' => 'role_name_min',
-            'permissions.required'=>'role_permissions_required'
-        ];
-    }
-
 }

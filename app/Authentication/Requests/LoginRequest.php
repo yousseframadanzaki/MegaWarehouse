@@ -26,16 +26,4 @@ class LoginRequest extends FormRequest
             'password' => 'required|min:6'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'identity.required' => 'identity_required',
-            'identity.min' => 'identity_min',
-            'password.required' => 'password_required',
-            'password.min' => 'password_min',
-        ];
-    }
-
-
 }

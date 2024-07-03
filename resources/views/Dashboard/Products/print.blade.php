@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@lang('variants_print_title')</title>
+    <title>@lang('global.variants_print_title')</title>
     <style>
         .container{
             direction: rtl;

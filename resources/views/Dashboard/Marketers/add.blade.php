@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_marketer_title') }}
+    {{ __('global.add_marketer_title') }}
 @endsection
 
 @section('content')

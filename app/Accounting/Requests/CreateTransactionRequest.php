@@ -27,15 +27,4 @@ class CreateTransactionRequest extends FormRequest
             'payment_type_id' => 'required',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'value.required' => 'value_required_min',
-            'value.min' => 'value_required_min',
-            'payment_category.required' => 'payment_category_required',
-            'payment_type_id.required' => 'payment_type_id_required',
-        ];
-    }
-
 }

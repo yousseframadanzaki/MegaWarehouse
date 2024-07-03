@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('stock_title') }}
+    {{ __('global.stock_title') }}
 @endsection
 
 @section('content')
@@ -146,9 +146,9 @@
                         <select class="form-select product_info" aria-label="Default  select example" name="type"
                             style="padding: 0.375rem 0.75rem;">
                             <option value="">اختار نوع العملية</option>
-                            <option value="move">{{ __('move') }}</option>
-                            <option value="buy">{{ __('buy') }}</option>
-                            <option value="sell">{{ __('sell') }}</option>
+                            <option value="move">{{ __('global.move') }}</option>
+                            <option value="buy">{{ __('global.buy') }}</option>
+                            <option value="sell">{{ __('global.sell') }}</option>
                         </select>
 
                         <div class="invalid-feedback name">

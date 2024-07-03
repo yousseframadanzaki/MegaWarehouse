@@ -57,7 +57,7 @@ class OrderController extends Controller
     public function show($order_id) {
         $order = $this->OrdersService->GetOrder($order_id);
         $templates = $this->TemplateService->GetTextFromOrdersTemplates($order);
-        $statuses = $this->CommonDataService->GetCompanyStatuses();
+        $statuses = $order->status->getRelatedStatuses();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
         return view('Dashboard.Orders.show_one',compact('order','statuses','shipping_companies','templates'));
     }
@@ -74,10 +74,10 @@ class OrderController extends Controller
 
     public function store(CreateOrderRequest $request){
         if( $this->OrdersService->AddOrder(auth()->user(),$request->all()) ){
-            $request->session()->flash('success', 'created_success');
+            $request->session()->flash('success', trans('global.created_success'));
             return redirect()->back();
         }
-        return redirect()->back()->with(['error'=>'created_error','old_data'=>($request->except('token'))])->withInput();
+        return redirect()->back()->with(['error'=>trans('global.created_error'),'old_data'=>($request->except('token'))])->withInput();
     }
     public function edit($order_id){
         $company_id = $this->company_id();

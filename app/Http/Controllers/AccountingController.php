@@ -47,7 +47,7 @@ class AccountingController extends Controller
         $transactionData = $request->except('_token');
         $transactionData['company_id'] = $this->company_id();
         $this->TransactionService->AddTransaction($transactionData);
-        return redirect()->route('all_transactions')->with('success', 'created_success');
+        return redirect()->route('all_transactions')->with('success', trans('global.created_success'));
     }
 
     public function get_payment_category_data($payment_category)

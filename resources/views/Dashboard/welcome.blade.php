@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('homepage_title') }}
+    {{ __('global.homepage_title') }}
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@
     <div class="col-lg-5">
         <div class="card shadow-sm bg-white">
           <div class="card-body">
-            <center><h4 class="card-title">@lang('orders_pie_chart') ( {{ array_sum($data['count']) }} )</h4></center>
+            <center><h4 class="card-title">@lang('global.orders_pie_chart') ( {{ array_sum($data['count']) }} )</h4></center>
             <hr class="mb-2 mt-3">
             <div id="chart-container">
                 <canvas id="pieChart"></canvas>

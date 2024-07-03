@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_whatsapp_points_title') }}
+    {{ __('global.add_whatsapp_points_title') }}
 @endsection
 
 @section('content')

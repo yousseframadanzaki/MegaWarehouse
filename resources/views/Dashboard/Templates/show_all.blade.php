@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('templates_title') }}
+    {{ __('global.templates_title') }}
 @endsection
 
 @section('content')
