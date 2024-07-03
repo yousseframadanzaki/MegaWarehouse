@@ -35,13 +35,4 @@ class CreateAreaRequest extends FormRequest
             ]
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'arae_name_required',
-            'price.required' => 'arae_price_required',
-            'city_id.required' => 'city_id_name_required',
-        ];
-    }
 }

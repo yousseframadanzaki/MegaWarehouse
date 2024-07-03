@@ -96,7 +96,7 @@ class ProductController extends Controller
             return response()->json();
         }
 
-        $request->session()->flash('success', 'new_product_added_successfully');
+        $request->session()->flash('success', trans('global.created_success'));
         return redirect()->route('show_product', ['product_id' => $product->id]);
     }
 
@@ -137,11 +137,11 @@ class ProductController extends Controller
 
         $product = $this->ProductCrudService->UpdateProduct($product_id, $data);
         if (!$product) {
-            $request->session()->flash('erroe', 'product_updated_error');
+            $request->session()->flash('erroe', trans('global.updated_error'));
             return redirect()->back();
         }
 
-        $request->session()->flash('success', 'product_updated_success');
+        $request->session()->flash('success', trans('global.updated_success'));
         return redirect()->route('show_product', $product_id);
     }
 
@@ -149,9 +149,9 @@ class ProductController extends Controller
     {
         $variant = $this->ProductCrudService->UpdateVariant($request->variant_id, $request->except('_token'));
         if (!$variant)
-            return redirect()->back()->with('error', 'variant_updated_error');
+            return redirect()->back()->with('error', trans('global.updated_error'));
 
-        return redirect()->back()->with('success', 'variant_updated_success');
+        return redirect()->back()->with('success', trans('global.updated_success'));
     }
 
     public function print($variant_id)
@@ -181,7 +181,7 @@ class ProductController extends Controller
 
     public function store_package(CreatePackageRequest $request) {
         $package = $this->ProductCrudService->AddPackage($this->company_id(), $request->all());
-        $request->session()->flash('success', 'new_product_added_successfully');
+        $request->session()->flash('success', trans('global.created_success'));
         return redirect()->route('show_product', ['product_id' => $package->id]);
     }
 

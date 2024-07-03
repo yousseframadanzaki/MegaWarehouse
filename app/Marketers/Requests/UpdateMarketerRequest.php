@@ -28,16 +28,4 @@ class UpdateMarketerRequest extends FormRequest
             'links'=>'nullable',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required'=>'name_required',
-            'name.min'=>'name_required',
-            'page_name.required'=>'page_name_required',
-            'page_name.min'=>'page_name_required',
-            'phone_number.required'=>'phone_number_required',
-            'phone_number.min'=>'phone_number_min'
-        ];
-    }   
 }

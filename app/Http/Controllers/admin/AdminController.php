@@ -18,7 +18,7 @@ class AdminController extends Controller
     public function login_as_user(Request $request)
     {
         if(!$this->LoginService->LoginUserById($request->input('user_id'))){
-            return redirect()->back()->withErrors(['error' => 'login_error']);
+            return redirect()->back()->withErrors(['error' => trans('global.login_error')]);
         }
         if(!auth()->user()->is_admin){
             return redirect()->intended('dashboard');

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_user_title') }}
+    {{ __('global.add_user_title') }}
 @endsection
 
 @section('content')
@@ -55,29 +55,38 @@
                @enderror
             </div>
             <div class="col-md-6 mb-3">
-               <label  class="form-label">كلمة السر</label>
-               <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{old('password')}}">
-               @error('password')
-                  <div class="invalid-feedback">
-                        {{__($message)}}
-                  </div>
-               @enderror
+                <label  class="form-label">الادارة</label>
+                <select class="form-select" aria-label="Default select example" name="role_id">
+                   <option value="">أختار الاداره</option>
+                   @foreach ($roles as $id => $name)
+                      <option value="{{$id}}">{{$name}}</option>
+                   @endforeach
+                </select>
+                @error('role')
+                   <div class="invalid-feedback">
+                         {{__($message)}}
+                   </div>
+                @enderror
             </div>
          </div>
          <div class="row my-0">
             <div class="col-md-6 mb-3">
-               <label  class="form-label">الادارة</label>
-               <select class="form-select" aria-label="Default select example" name="role_id">
-                  <option value="">أختار الاداره</option>
-                  @foreach ($roles as $id => $name)
-                     <option value="{{$id}}">{{$name}}</option>
-                  @endforeach
-               </select>
-               @error('role')
-                  <div class="invalid-feedback">
-                        {{__($message)}}
-                  </div>
-               @enderror
+                <label  class="form-label">كلمة السر</label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
+                @error('password')
+                   <div class="invalid-feedback">
+                         {{__($message)}}
+                   </div>
+                @enderror
+            </div>
+            <div class="col-md-6 mb-3">
+                <label  class="form-label">تأكيد كلمة السر </label>
+                <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2">
+                @error('password2')
+                   <div class="invalid-feedback">
+                         {{__($message)}}
+                   </div>
+                @enderror
             </div>
             <div class="col-md-6 mb-3">
                <label  class="form-label">المخزن</label>
@@ -108,7 +117,7 @@
          </div>
          <div class="w-50 text-center mx-auto">
             <button class="btn btn-lg btn-primary my-3 shadow-sm">إضافة عضو <i class="bi bi-person-fill-add"></i></button>
-         </div>  
+         </div>
      </div>
    </form>
 </div>

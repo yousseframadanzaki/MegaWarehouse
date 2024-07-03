@@ -39,9 +39,9 @@ class MarketerController extends Controller
         // dd($request->all());
         $marketer = $this->MarketerCrudService->CreateMarketer($company_id,$request->except('_token'));
         if($marketer){
-            return back()->with('success','marketer_created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','marketer_created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
     public function edit($marketer_id)
@@ -53,9 +53,9 @@ class MarketerController extends Controller
     public function update(UpdateMarketerRequest $request, $marketer_id)
     {
         if(!$this->MarketerCrudService->UpdateMarketer($marketer_id,$request->except('_token'))){
-            return back()->with('error','marketer_updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','marketer_updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 
     public function show($marketer_id) {

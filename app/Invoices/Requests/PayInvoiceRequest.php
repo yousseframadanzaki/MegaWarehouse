@@ -28,13 +28,4 @@ class PayInvoiceRequest extends FormRequest
             // 'image'=>'file|max:10240|mimes:jpg,bmp,png'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'from.required'=>'transaction_from_required',
-            'value.required'=>'transaction_value_required',
-            'value.gt'=>'transaction_value_gt_0',
-        ];
-    }
 }

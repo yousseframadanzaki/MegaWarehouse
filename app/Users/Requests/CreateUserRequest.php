@@ -27,28 +27,10 @@ class CreateUserRequest extends FormRequest
             'phone_1' => 'required|min:11|unique:users,phone_1',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
+            'password2' => 'nullable|required_with:password|same:password|min:6',
             'role_id' => 'required|integer|exists:roles,id',
             'warehouse_id' => 'required|integer|exists:warehouses,id',
             'image'=>'file|max:10240|mimes:jpg,bmp,png'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'user_name_required',
-            'name.min' => 'user_name_min',
-            'phone_1.required' => 'user_phone_1_required',
-            'phone_1.min' => 'user_phone_1_min',
-            'phone_1.unique' => 'user_phone_1_unique',
-            'email.required' => 'user_email_required',
-            'email.email' => 'user_email_email',
-            'email.unique' => 'user_email_unique',
-            'password.required' => 'password_required',
-            'password.min' => 'password_min',
-            'image.mimes'=>'image_type_error',
-            'image.max' => 'image_size_error'
-        ];
-    }
-
 }

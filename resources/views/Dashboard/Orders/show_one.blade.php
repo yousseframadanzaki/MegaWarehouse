@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('show_order_title') }}
+    {{ __('global.show_order_title') }}
 @endsection
 
 @section('content')
@@ -65,7 +65,7 @@
                             <select id="status_id" name="status_id" style="width: 100%">
                                 <option value="">اختار الحالة</option>
                                     @foreach ($statuses as $status)
-                                        <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                        <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
                                     @endforeach
                             </select>
                         </div>
@@ -239,6 +239,26 @@
                     @isset($order->shipping_company->name)
                     <label>{{$order->shipping_company->name}}</label>
                     @endisset
+                </div>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> نوع العميل :</label>
+                    <label>
+                        @if (empty($order->order_data) || $order->order_data->client_type == 'standard')
+                        standard
+                        @else
+                        <span class="text-primary fw-bold">{{ $order->order_data->client_type }}</span>
+                        @endif
+                    </label>
+                </div>
+                <div class="col-md-4 fs-5">
+                    <label class="fw-bold"> نوع الخدمة :</label>
+                    <label>
+                        @empty($order->order_data)
+                        تسليم و تحصيل
+                        @else
+                        {{ $order->order_data->service_type }}
+                        @endif
+                    </label>
                 </div>
             </div>
             <div class="row mt-5">

@@ -6,6 +6,7 @@ use App\Users\Interfaces\UserCrudServiceInterface;
 use App\Users\Interfaces\UserCrudRepositoryInterface;
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 
@@ -62,7 +63,10 @@ class UserCrudService implements UserCrudServiceInterface{
     public function UpdateUser($user_id,array $user_details) {
         if(empty($user_details['password'])) {
             unset($user_details['password']);
+        } else {
+            $user_details['password'] = Hash::make($user_details['password']);
         }
+
         return $this->user_crud_repository->update_where(
             ['id'=> $user_id ],
             $user_details,
@@ -71,7 +75,5 @@ class UserCrudService implements UserCrudServiceInterface{
     public function checkMaxUsers($company_id)
     {
         return $this->user_crud_repository->check_max_users($company_id);
-
     }
-
 }

@@ -30,12 +30,4 @@ class DeleteStockRequest extends FormRequest
 
         ];
     }
-
-    public function messages()
-    {
-        return [
-
-        ];
-    }
-
 }

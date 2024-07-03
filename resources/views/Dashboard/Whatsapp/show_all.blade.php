@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
 @section('title')
-    @lang('all_campaign')
+    @lang('global.all_campaign')
 @endsection
 @section('content')
 <div class="p-3">
     <div class="row">
         <ul class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}">@lang('dashboard')</a></li>
-            <li><a class="link-dark" href="{{ route('whatsapp_campaigns') }}">@lang('all_campaign')</a></li>
+            <li><a href="{{ route('dashboard') }}">@lang('global.dashboard')</a></li>
+            <li><a class="link-dark" href="{{ route('whatsapp_campaigns') }}">@lang('global.all_campaign')</a></li>
         </ul>
     </div>
     <div id="message" style="display: none"></div>
     <table class="table table-hover">
         <thead>
-            <th>@lang('campaign_id')</th>
-            <th>@lang('campaign_name')</th>
-            <th>@lang('campaign_user')</th>
-            <th>@lang('campaign_time')</th>
-            <th>@lang('campaign_orders')</th>
-            <th>@lang('campaign_status')</th>
+            <th>@lang('global.campaign_id')</th>
+            <th>@lang('global.campaign_name')</th>
+            <th>@lang('global.campaign_user')</th>
+            <th>@lang('global.campaign_time')</th>
+            <th>@lang('global.campaign_orders')</th>
+            <th>@lang('global.campaign_status')</th>
         </thead>
         <tbody>
             @foreach ($campaigns as $campaign)
@@ -41,10 +41,10 @@
                 </td>
                 <td>
                     <select name="status" id="status_{{ $campaign->id }}" class="status">
-                        <option value="pending" {{ $campaign->status == 'pending' ? 'selected' : '' }}>@lang('pending')</option>
-                        <option value="not sent" {{ $campaign->status == 'not sent' ? 'selected' : '' }}>@lang('not sent')</option>
-                        <option value="hold" {{ $campaign->status == 'hold' ? 'selected' : '' }}>@lang('hold')</option>
-                        <option value="finished" {{ $campaign->status == 'finished' ? 'selected' : '' }}>@lang('finished')</option>
+                        <option value="pending" {{ $campaign->status == 'pending' ? 'selected' : '' }}>@lang('global.pending')</option>
+                        <option value="not sent" {{ $campaign->status == 'not sent' ? 'selected' : '' }}>@lang('global.not sent')</option>
+                        <option value="hold" {{ $campaign->status == 'hold' ? 'selected' : '' }}>@lang('global.hold')</option>
+                        <option value="finished" {{ $campaign->status == 'finished' ? 'selected' : '' }}>@lang('global.finished')</option>
                     </select>
                 </td>
             </tr>

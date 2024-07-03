@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('edit_shipping_company_title') }}
+    {{ __('global.edit_shipping_company_title') }}
 @endsection
 
 @section('content')
@@ -52,6 +52,17 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
+                        <label  class="form-label">تأكيد كلمة السر </label>
+                        <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2" value="{{ $shipping_company->password }}">
+                        @error('password2')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
                         <label class="form-label">لينك الشركة</label>
                         <input type="text" class="form-control @error('url') is-invalid @enderror"
                             name="url" placeholder="ex: shipping-express.com" value="{{ $shipping_company->url }}">
@@ -62,7 +73,7 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <button class="btn btn-lg btn-primary mt-3 shadow-sm">تعديل شركة الشحن <i
                         class="bi bi-truck"></i></button>
             </div>

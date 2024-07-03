@@ -47,20 +47,30 @@ class AccountingController extends Controller
         $transactionData = $request->except('_token');
         $transactionData['company_id'] = $this->company_id();
         $this->TransactionService->AddTransaction($transactionData);
-        return redirect()->route('all_transactions')->with('success', 'Transaction_added_successfully');
+        return redirect()->route('all_transactions')->with('success', trans('global.created_success'));
     }
 
-    public function get_payments($category)
+    public function get_payment_category_data($payment_category)
     {
-        return $this->CommonDataService->GetPaymentTypesByCategory($category);
+        $payment_types = $this->CommonDataService->GetPaymentTypesByCategory($payment_category);
+
+        $user_type = [
+            "Transfer" => 1,
+            "Commissions" => 3,
+            "Invoices" => 2
+        ];
+
+        $from_users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 1)->pluck('name', 'id');
+        $to_users = ($payment_category != "Expense") ? $this->CommonDataService->GetUsersByRoleType($this->company_id(), $user_type[$payment_category])->pluck('name', 'id') : [];
+
+        return response()->json([
+            'payment_types' => $payment_types,
+            'from_users' => $from_users,
+            'to_users' => $to_users
+        ]);
     }
 
-    public function get_company_users_by_role_type($role_type) {
-        if ($role_type == 'default')
-            $users = $this->CommonDataService->GetCompanyUsers($this->company_id());
-        else
-            $users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), $role_type)->pluck('name', 'id');
+    public function get_company_users_by_user_type($payment_category) {
 
-        return $users;
     }
 }

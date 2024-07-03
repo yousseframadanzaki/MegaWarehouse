@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_package_title') }}
+    {{ __('global.add_package_title') }}
 @endsection
 
 @section('content')
@@ -110,7 +110,7 @@
                             <button class="btn btn-primary mt-3 is-invalid" id="add_option_btn">إضافة منتج</button>
                             @if ($errors->has('package') || $errors->has('package.*.price') || $errors->has('package.*.variant_id'))
                                 <div class="invalid-feedback">
-                                    {{ __('package_product_required') }}
+                                    {{ __('global.package_product_required') }}
                                 </div>
                             @endif
                         </div>

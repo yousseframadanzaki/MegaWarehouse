@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_area_title') }}
+    {{ __('global.add_area_title') }}
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
         </ul>
     </div>
     <div id="message" style="display: none"></div>
-    <form class="row  needs-validation" novalidate action="{{ route('store_sector') }}" method="POST" enctype="multipart/form-data">
+    <form class="row  needs-validation" action="{{ route('store_sector') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="card p-5 shadow-sm">
             <h1 class="text-center">أضافة منطقة جديدة</h1>
@@ -151,7 +151,8 @@
 
     $('form').on('submit', function(e) {
         e.preventDefault();
-        $('input[name=keywords]').val(Object.values(form_options_values)[0].join(" - "));
+        if (Object.values(form_options_values).length > 0)
+            $('input[name=keywords]').val(Object.values(form_options_values)[0].join(" - "));
         this.submit();
     })
 </script>

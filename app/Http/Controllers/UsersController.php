@@ -36,14 +36,14 @@ class UsersController extends Controller
         // dd($roles);
         return view('Dashboard.Users.add')->with(['roles'=>$roles,'warehouses'=>$warehouses]);
     }
-    
+
     public function store(CreateUserRequest $request) {
         $company_id = $this->company_id();
         $user = $this->UserCrudService->CreateUser($request->validated(),$company_id);
         if($user){
-            return back()->with('success','user_created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','user_created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
     public function all(UserFilters $filter) {
@@ -91,9 +91,11 @@ class UsersController extends Controller
         ]);
     }
     public function update(UpdateUserRequest $request,$user_id) {
-        if(!$this->UserCrudService->UpdateUser($user_id,$request->validated())){
-            return back()->with('error','user_updated_error');
+        $validatedData = $request->validated();
+        unset($validatedData['password2']);
+        if(!$this->UserCrudService->UpdateUser($user_id, $validatedData)){
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','user_updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 }

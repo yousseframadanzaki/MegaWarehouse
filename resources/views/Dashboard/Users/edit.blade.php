@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('edit_user_title') }}
+    {{ __('global.edit_user_title') }}
 @endsection
 
 @section('content')
@@ -49,6 +49,23 @@
                   </div>
                @enderror
             </div>
+            {{-- @can('edit_roles','App/Models/User') --}}
+            <div class="col-md-6">
+                <label  class="form-label">الادارة</label>
+                <select class="form-select" aria-label="Default select example" name="role_id">
+                   @foreach ($roles as $id => $name)
+                      <option @if($user->role_id === $id) selected @endif value="{{$id}}">{{$name}}</option>
+                   @endforeach
+                </select>
+                @error('role')
+                   <div class="invalid-feedback">
+                         {{__($message)}}
+                   </div>
+                @enderror
+             </div>
+            {{-- @endcan --}}
+         </div>
+         <div class="row mb-3">
             <div class="col-md-6">
                <label  class="form-label">كلمة السر</label>
                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
@@ -58,23 +75,17 @@
                   </div>
                @enderror
             </div>
+            <div class="col-md-6">
+                <label  class="form-label">تأكيد كلمة السر </label>
+                <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2">
+                @error('password2')
+                   <div class="invalid-feedback">
+                         {{__($message)}}
+                   </div>
+                @enderror
+            </div>
          </div>
          <div class="row mb-3">
-            {{-- @can('edit_roles','App/Models/User') --}}
-               <div class="col-md-6">
-                  <label  class="form-label">الادارة</label>
-                  <select class="form-select" aria-label="Default select example" name="role_id">
-                     @foreach ($roles as $id => $name)
-                        <option @if($user->role_id === $id) selected @endif value="{{$id}}">{{$name}}</option>
-                     @endforeach
-                  </select>
-                  @error('role')
-                     <div class="invalid-feedback">
-                           {{__($message)}}
-                     </div>
-                  @enderror
-               </div>
-            {{-- @endcan --}}
             <div class="col-md-6">
                <label  class="form-label">المخزن</label>
                <select class="form-select" aria-label="Default select example" name="warehouse_id">
@@ -88,8 +99,6 @@
                   </div>
                @enderror
             </div>
-         </div>
-         <div class="row mb-3">
             <div class="col-md-6">
                <div class="mb-3">
                   <label for="formFile" class="form-label">صورة العضو</label>

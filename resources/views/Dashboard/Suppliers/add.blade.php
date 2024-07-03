@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ __('add_supplier_title') }}
+    {{ __('global.add_supplier_title') }}
 @endsection
 
 @section('content')
@@ -65,14 +65,24 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">كلمة السر <span class="text-danger">*</span></label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password"
-                            value="{{ old('password') }}">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
                         @error('password')
                             <div class="invalid-feedback">
                                 {{ __($message) }}
                             </div>
                         @enderror
                     </div>
+                    <div class="col-md-6">
+                        <label  class="form-label">تأكيد كلمة السر </label>
+                        <input type="password" class="form-control @error('password2') is-invalid @enderror" name="password2">
+                        @error('password2')
+                           <div class="invalid-feedback">
+                                 {{__($message)}}
+                           </div>
+                        @enderror
+                     </div>
+                </div>
+                <div class="row mb-3">
                     <div class="col-md-6">
                         <label  class="form-label">الادارة</label>
                         <select class="form-select" aria-label="Default select example" name="role_id">

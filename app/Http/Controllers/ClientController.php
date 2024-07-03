@@ -44,9 +44,9 @@ class ClientController extends Controller
         $company_id = $this->company_id();
         $client = $this->ClientCrudService->CreateClient($company_id,$request->validated());
         if($client){
-            return back()->with('success','client_created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','client_created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
     public function edit($client_id)
@@ -70,9 +70,9 @@ class ClientController extends Controller
     public function update(UpdateClientRequest $request, $client_id)
     {
         if(!$this->ClientCrudService->UpdateClient($client_id,$request->except('_token'))){
-            return back()->with('error','client_updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','client_updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 
     public function get_client_by_phone($phone) {

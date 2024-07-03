@@ -70,7 +70,7 @@ class ShippingCompanyController extends Controller
 
     public function update(UpdateShippingCompanyRequest $request,$shipping_company_id)
     {
-        if(!$this->ShippingCompanyService->UpdateShippingCompany($shipping_company_id,$request->except('_token'))){
+        if(!$this->ShippingCompanyService->UpdateShippingCompany($shipping_company_id,$request->except(['_token', 'password2']))){
             return redirect()->back()->with('error','update_shipping_company_error');
         }
         return redirect()->back()->with('success','update_shipping_company_success');

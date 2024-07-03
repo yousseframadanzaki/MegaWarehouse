@@ -35,9 +35,9 @@ class CompnayController extends Controller
     function store(CreateCompanyRequest $request) {
         $company_id = $this->CompanyCrudService->CreateCompany($request->validated());
         if($company_id){
-            return back()->with('success','company_created_success');
+            return back()->with('success',trans('global.created_success'));
         }
-        return back()->with('error','company_created_error');
+        return back()->with('error',trans('global.created_error'));
     }
 
     function edit($company_id) {
@@ -51,9 +51,9 @@ class CompnayController extends Controller
     function update(UpdateCompanyRequest $request,$company_id) {
         $company = $this->CompanyCrudService->UpdateCompany($company_id,$request->validated());
         if(!$company){
-            return back()->with('error','company_updated_error');
+            return back()->with('error',trans('global.updated_error'));
         }
-        return back()->with('success','company_updated_success');
+        return back()->with('success',trans('global.updated_success'));
     }
 
     function activate($company_id) {

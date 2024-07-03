@@ -24,23 +24,10 @@ class CreateStockRequest extends FormRequest
     {
         return [
             'warehouse_id' => 'required|exists:warehouses,id',
-            'type' => 'required|in:buy,sell,move',    
+            'type' => 'required|in:buy,sell,move',
             'product_variants' => 'required|array|min:1',
             'product_variants.id' => 'exists:variants,id',
             'warehouse_to_id'=>'exclude_unless:type,move|required|different:warehouse_id'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'warehouse_id.required' => 'warehouse_id_required',
-            'warehouse_id.exists' => 'warehouse_id_exists',
-            'type.required' => 'type_required',
-            'product_variants.required' => 'product_variants_required',
-            'warehouse_to_id.required_if' => 'warehouse_to_id_required_if',
-            'warehouse_to_id.different' => 'warehouse_to_id_different',
-        ];
-    }
-
 }
