@@ -201,6 +201,10 @@ return [
     "package_product_required"=> "يجب اختيار منتجات مع إدخال بياناتها كاملة",
     "WhatsappCampaign"=> "حملات الواتساب",
     "stock_delete_success"=> "تم الحذف بنجاح",
-    "variants_print_title"=> "طباعة متغيرات"
+    "variants_print_title"=> "طباعة متغيرات",
+    "upload_products_csv"=>"رفع المنتجات CSV",
+    "upload"=>"رفع",
+    "category"=>"تصنيف",
+    "add_products"=>"إضافة المنتجات",
 ]
 ?>
