@@ -230,6 +230,7 @@ class ProductController extends Controller
         $products = [];
 
         foreach ($data['items'] as $productData) {
+            $productData['product_info']['confirm_order'] = "on";
             $product = $this->ProductCrudService->AddProduct($company_id, $productData);
             if ($product) {
                 $products[] = $product;
@@ -240,6 +241,6 @@ class ProductController extends Controller
             return redirect()->route('all_products')->with('success', trans('global.created_success'));
         }
     }
-    
+
 
 }

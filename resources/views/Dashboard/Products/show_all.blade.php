@@ -205,8 +205,10 @@
                                         </h5>
                                         @if ($product->is_bundle == 0)
                                             @isset($product->brand_id)
-                                            <a class="text-break my-2 d-inline-block"
-                                            href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
+                                                <a class="text-break my-2 d-inline-block"
+                                                href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
+                                            @else
+                                                <div style="height: 35px"></div>
                                             @endisset
                                         @else
                                             <div style="height: 70px"></div>
@@ -214,11 +216,13 @@
                                     </div>
                                     <div>
                                         @if ($product->is_bundle == 0)
-                                        @isset($product->supplier_id)
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <span>المورد</span><span><a class=""
-                                                        href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name??'' }}</a></span>
-                                            </div>  
+                                            @isset($product->supplier_id)
+                                                <div class="d-flex justify-content-between mb-2">
+                                                    <span>المورد</span><span><a class=""
+                                                            href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name??'' }}</a></span>
+                                                </div>
+                                            @else
+                                                <div style="height: 35px"></div>
                                             @endisset
                                         @endif
                                         <div class="d-flex justify-content-between" style="font-s">
