@@ -124,7 +124,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $id = $order->order_status()->get()[0]->pivot->id;
         return $id;
     }
-    public function delete_order_status($order_id,$data){
+   public function delete_order_status($order_id,$data){
         $status = OrderStatus::where('order_id', $order_id)
                     ->where('status_id', $data['status_id'])
                     ->firstOrFail();
