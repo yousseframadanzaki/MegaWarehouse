@@ -28,17 +28,4 @@ class UpdateCompanyRequest extends FormRequest
             'max_orders' => 'required|Integer',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' =>'company_name_required',
-            'name.min' =>'company_name_min',
-            'company_type.required' =>'company_type_required',
-            'max_users.required' =>'max_users_required',
-            'max_users.integer' =>'max_users_Integer',
-            'max_orders.required' =>'max_orders_required',
-            'max_orders.integer' =>'max_orders_Integer',
-        ];
-    }
 }

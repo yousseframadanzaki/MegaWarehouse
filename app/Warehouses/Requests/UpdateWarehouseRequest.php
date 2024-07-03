@@ -33,13 +33,4 @@ class UpdateWarehouseRequest extends FormRequest
             ],
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required'=>'warehouse_name_required',
-            'name.min'=>'warehouse_name_min',
-            'name.unique'=>'warehouse_name_unique',
-        ];
-    }   
 }

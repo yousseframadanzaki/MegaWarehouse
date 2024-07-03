@@ -27,15 +27,4 @@ class UpdateTemplateRequest extends FormRequest
             'text' =>'required|min:6'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'type.required' => 'supplier_type_required',
-            'type.min' => 'supplier_type_min',
-            'text.required' => 'supplier_text_required',
-            'text.min' => 'supplier_text_min'
-        ];
-    }
-
 }

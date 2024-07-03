@@ -23,17 +23,7 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
-            'permissions' => 'required|array',    
+            'permissions' => 'required|array',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'role_name_required',
-            'name.min' => 'role_name_min',
-            'permissions.required'=>'role_permissions_required'
-        ];
-    }
-
 }

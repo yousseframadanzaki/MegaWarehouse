@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ ($data['product']->is_bundle == 0) ? __('edit_product_title') : __('edit_package_title') }}
+    {{ ($data['product']->is_bundle == 0) ? __('global.edit_product_title') : __('global.edit_package_title') }}
 @endsection
 
 @section('content')

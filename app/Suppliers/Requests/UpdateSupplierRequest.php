@@ -36,17 +36,4 @@ class UpdateSupplierRequest extends FormRequest
             'contacts' => 'nullable',
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'supplier_name_required',
-            'name.min' => 'supplier_name_min',
-            'address.required' => 'address_required',
-            'address.min' => 'address_min',
-            'phone.required' => 'phone_required',
-            'phone.min' => 'phone_min',
-        ];
-    }
-
 }

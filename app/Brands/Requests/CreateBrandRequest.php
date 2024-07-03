@@ -32,14 +32,4 @@ class CreateBrandRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'name.required' => 'brand_name_required',
-            'name.min' => 'brand_name_min',
-            'logo.required' => 'brand_logo_required',
-            'logo.max' => 'brand_logo_max',
-            'logo.mimes' => 'brand_logo_mimes',
-        ];
-    }
 }

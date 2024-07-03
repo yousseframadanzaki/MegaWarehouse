@@ -36,12 +36,4 @@ class CreateOrderRequest extends FormRequest
             'items.*.quantity'=>'required|numeric|gt:0',
         ];
     }
-
-    public function messages()
-    {
-        return [
-
-        ];
-    }
-
 }

@@ -35,30 +35,5 @@ class CreateCompanyRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'company.name.required' =>'company_name_required',
-            'company.name.min' =>'company_name_min',
-            'company.company_type.required' =>'company_type_required',
-            'company.max_users.required' =>'max_users_required',
-            'company.max_users.integer' =>'max_users_Integer',
-            'company.max_orders.required' =>'max_orders_required',
-            'company.max_orders.integer' =>'max_orders_Integer',
-            'warehouse.name.required' =>'warehouse_name_required',
-            'warehouse.name.min' =>'warehouse_name_min',
-            'user.name.required' => 'user_name_required',
-            'user.name.min' => 'user_name_min',
-            'user.phone_1.required' => 'user_phone_1_required',
-            'user.phone_1.min' => 'user_phone_1_min',
-            'user.phone_1.unique' => 'user_phone_1_unique',
-            'user.email.required' => 'user_email_required',
-            'user.email.email' => 'user_email_email',
-            'user.email.unique' => 'user_email_unique',
-            'user.password.required' => 'password_required',
-            'user.password.min' => 'password_min',
-        ];
-    }
-
 
 }

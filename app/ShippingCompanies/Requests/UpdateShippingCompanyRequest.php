@@ -29,13 +29,4 @@ class UpdateShippingCompanyRequest extends FormRequest
             'url' => 'required|min:8',
         ];
     }
-
-    public function messages()
-    {
-        return [
-
-        ];
-    }
-
-
 }

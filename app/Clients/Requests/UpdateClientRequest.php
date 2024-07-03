@@ -33,23 +33,4 @@ class UpdateClientRequest extends FormRequest
             'client_groups'=>'nullable|exists:client_groups,id'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required'=>'name_required',
-            'name.min'=>'name_required',
-            'phone_1.required'=>'phone_1_required',
-            'phone_1.min'=>'phone_1_min',
-            'phone_2.min'=>'phone_2_min',
-            'address.required'=>'address_required',
-            'country_id.required'=>'country_id_required',
-            'country_id.exists'=>'country_id_exists',
-            'city_id.required'=>'city_id_required',
-            'city_id.exists'=>'city_id_exists',
-            'area_id.required'=>'area_id_required',
-            'area_id.exists'=>'area_id_exists',
-            'client_groups.exists'=>'client_groups_exists',
-        ];
-    }
 }

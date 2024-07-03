@@ -32,13 +32,4 @@ class CreateShippingCompanyRequest extends FormRequest
             'phone'=>'required|min:8'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            
-        ];
-    }
-
-
 }

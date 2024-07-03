@@ -30,13 +30,4 @@ class CreateCategoryRequest extends FormRequest
             'parent_id'=>'nullable|exists:categories,id'
         ];
     }
-
-    public function messages()
-    {
-        return [
-            'name.required' => 'category_name_required',
-            'name.min' => 'category_name_min',
-            'parent_id.exists' => 'category_id_doesnt_exist',
-        ];
-    }
 }
