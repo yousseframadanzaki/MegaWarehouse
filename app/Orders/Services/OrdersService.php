@@ -54,6 +54,15 @@ class OrdersService implements OrdersServiceInterface{
         $note = $order_details['client']['note'];
         unset($order_details['client']['note']);
         $order = $this->orders_crud_repository->create_order($order_details);
+        if ($order_details['client_type'] != 'standard' || $order_details['service_type'] != 'تسليم و تحصيل')
+        {
+            $order->order_data()->create([
+                'client_type' => $order_details['client_type'],
+                'service_type' => $order_details['service_type'],
+                'order_id' => $order->id,
+            ]);
+        }
+
         $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
         $shipment = $this->ShippingCompanyService->SendShipmentV2($order,$data);
         if(!$shipment){

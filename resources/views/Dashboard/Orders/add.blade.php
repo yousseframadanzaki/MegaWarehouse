@@ -244,6 +244,21 @@
                         <label class="form-label">سعر الشحن</label>
                         <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost" name="client[delivery_cost]" value="{{ old('client.delivery_cost') }}">
                     </div>
+                    <div class="col-md-4 mt-3">
+                        <label class="form-label">نوع العميل </label>
+                        <select id="client-type" class="form-select @error('client.city_id') is-invalid @enderror" aria-label="Default select example" name="client_type">
+                            <option value="standard">Standard</option>
+                            <option value="VIP">VIP</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mt-3">
+                        <label class="form-label">نوع الخدمة </label>
+                        <select id="service-type" class="form-select @error('client.city_id') is-invalid @enderror" aria-label="Default select example" name="service_type">
+                            <option value="تسليم و تحصيل">تسليم و تحصيل</option>
+                            <option value="استبدال">استبدال</option>
+                            <option value="جلب مرتجع">جلب مرتجع</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="row mt-5">
                     <h4>المسوق</h4>
@@ -563,7 +578,7 @@
         }, 1500);
     });
 
-    $('#variant_id').change(variant_select_change($('#variant_id')));
+    $(document).on('change', '#variant_id',function(){variant_select_change($(this))});
 
     function variant_select_change(variant_select) {
         var variant_id = variant_select.val();

@@ -112,5 +112,8 @@ class Order extends Model
     {
         return $this->hasMany(OrderNotes::class, 'order_id');
     }
-
+    public function order_data()
+    {
+        return $this->hasOne(OrderData::class);
+    }
 }
