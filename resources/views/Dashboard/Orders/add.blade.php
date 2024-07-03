@@ -246,14 +246,14 @@
                     </div>
                     <div class="col-md-4 mt-3">
                         <label class="form-label">نوع العميل </label>
-                        <select id="client-type" class="form-select @error('client.city_id') is-invalid @enderror" aria-label="Default select example" name="client_type">
+                        <select id="client-type" class="form-select" aria-label="Default select example" name="client_type">
                             <option value="standard">Standard</option>
                             <option value="VIP">VIP</option>
                         </select>
                     </div>
                     <div class="col-md-4 mt-3">
                         <label class="form-label">نوع الخدمة </label>
-                        <select id="service-type" class="form-select @error('client.city_id') is-invalid @enderror" aria-label="Default select example" name="service_type">
+                        <select id="service-type" class="form-select" aria-label="Default select example" name="service_type">
                             <option value="تسليم و تحصيل">تسليم و تحصيل</option>
                             <option value="استبدال">استبدال</option>
                             <option value="جلب مرتجع">جلب مرتجع</option>

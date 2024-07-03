@@ -181,7 +181,7 @@ return [
     */
 
     'attributes' => [
-
+        'password' => 'كلمة السر'
     ],
 
 ];
