@@ -200,4 +200,46 @@ class ProductController extends Controller
         $new_data = $this->ProductCrudService->GetVariantShelfData($data);
         return response()->json($new_data);
     }
+    public function upload_products(){
+        return view('Dashboard.Products.upload');
+    }
+    public function processCsvUpload(Request $request)
+    {
+        $company_id = $this->company_id();
+        $categories = $this->CommonDataService->GetCompanyCategories($company_id);
+
+        $request->validate([
+            'csv' => 'required|mimes:csv,txt'
+        ]);
+
+        $file = $request->file('csv');
+        $csvData = array_map('str_getcsv', file($file->getRealPath()));
+        $csvData[0][0] = preg_replace('/^\xEF\xBB\xBF/', '', $csvData[0][0]);
+        foreach ($csvData as $key => $row) {
+            if ($key === 0) {
+                $csvData[$key][] = 'category_id';
+                continue;
+            }
+        }
+
+        return view('Dashboard.Products.upload', compact('csvData', 'categories'));
+    }
+    public function store_uploaded_products(Request $request){
+        $data = $request->except('_token','category_id');
+        $company_id = $this->company_id();
+        $products = [];
+
+        foreach ($data['items'] as $productData) {
+            $product = $this->ProductCrudService->AddProduct($company_id, $productData);
+            if ($product) {
+                $products[] = $product;
+            }
+        }
+
+        if (!empty($products)) {
+            return redirect()->route('all_products')->with('success', trans('global.created_success'));
+        }
+    }
+    
+
 }

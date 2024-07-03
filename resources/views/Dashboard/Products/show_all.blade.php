@@ -86,6 +86,13 @@
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a class="link-dark" href="{{ route('all_products') }}">المنتجات</a></li>
             </ul>
+            <div class="text-end p-1">
+                <div class="btn btn-primary">
+                    <a href="{{ route('upload_products') }}" class="text-white text-decoration-none">
+                        @lang('upload_products_csv') <i class="bi bi-filetype-csv"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="card shadow-sm p-3">
@@ -197,18 +204,22 @@
                                                 href="{{ route('show_product', $product->id) }}">{{ $product->name }}</a>
                                         </h5>
                                         @if ($product->is_bundle == 0)
+                                            @isset($product->brand_id)
                                             <a class="text-break my-2 d-inline-block"
-                                                href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
+                                            href="{{ route('show_brand', $product->brand_id) }}">{{ $product->brand->name }}</a>
+                                            @endisset
                                         @else
                                             <div style="height: 70px"></div>
                                         @endif
                                     </div>
                                     <div>
                                         @if ($product->is_bundle == 0)
+                                        @isset($product->supplier_id)
                                             <div class="d-flex justify-content-between mb-2">
                                                 <span>المورد</span><span><a class=""
                                                         href="{{ route('show_supplier', $product->supplier_id) }}">{{ $product->supplier->name??'' }}</a></span>
-                                            </div>
+                                            </div>  
+                                            @endisset
                                         @endif
                                         <div class="d-flex justify-content-between" style="font-s">
                                             <span>التصنيف</span><span><a class=""
@@ -262,9 +273,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
-        integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
             $('select.product_info').select2({

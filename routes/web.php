@@ -260,6 +260,15 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('print_variant')
     ->can('print',['App\Models\Product','variant_id']);
 
+    Route::get('/upload/products', [ProductController::class,'upload_products'])
+    ->name('upload_products');
+
+    Route::post('/upload/products', [ProductController::class, 'processCsvUpload'])
+    ->name('process_csv_upload');
+
+    Route::post('/upload/store/products',[ProductController::class, 'store_uploaded_products'])
+    ->name('add_csv_products');
+
     Route::get('/product/{id}/bulk/variants/print', [ProductController::class,'print_bulk_variants'])
     ->name('print_bulk_variants')
     ->can('print_bulk_variants',['App\Models\Product','id']);
