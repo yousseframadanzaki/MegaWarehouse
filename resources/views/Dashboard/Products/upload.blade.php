@@ -8,7 +8,7 @@
 <div class="p-3">
     <div class="row">
         <ul class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}">@lang('dashboard')</a></li>
+            <li><a href="{{ route('dashboard') }}">@lang('global.dashboard')</a></li>
             <li><a class="link-dark" href="{{ route('upload_products') }}">@lang('global.upload_products_csv')</a></li>
         </ul>
     </div>
