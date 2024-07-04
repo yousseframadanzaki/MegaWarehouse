@@ -62,9 +62,9 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="form-label">الحالة</label>
+                                <label class="form-label">@lang('global.status_id')</label>
                                 <select id="status_id" name="status_id" style="width: 100%">
-                                    <option value="">اختار الحالة</option>
+                                    <option value="">@lang('global.select_status')</option>
                                     @foreach ($statuses as $status)
                                         <option  value="{{ $status->id }}">{{ $status->name }}</option>
                                     @endforeach
@@ -73,9 +73,9 @@
                         </div>
                         <div class="row mt-4" style="display: none;" id="shipping_company_select">
                             <div class="col-md-12">
-                                <label class="form-label">شركة الشحن</label>
+                                <label class="form-label">@lang('global.shipping_company_id')</label>
                                 <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
-                                    <option value="">اختار شركة الشحن</option>
+                                    <option value="">@lang('global.select_shipping_company')</option>
                                     @foreach ($shipping_companies as $shipping_company)
                                         <option  value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
                                     @endforeach
@@ -84,20 +84,20 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <label class="form-label">ملاحظة</label>
+                                <label class="form-label">@lang('global.note')</label>
                                 <textarea class="form-control" name="note" id="note" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <button class="btn btn-primary add_image">إضافة صورة</button>
+                            <button class="btn btn-primary add_image">@lang('global.add_image')</button>
                         </div>
                         <div id="images" class="mt-4">
 
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary change_status">تعديل</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
+                        <button type="submit" class="btn btn-primary change_status">@lang('global.button_update')</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@lang('global.button_close')</button>
                     </div>
             </form>
         </div>
@@ -111,17 +111,17 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="form-label">طباعة بوليصة</label>
+                                <label class="form-label">@lang('global.way_bill_print')</label>
                                 <select id="print_id" class="form-select" name="print_id" style="width: 100%">
-                                    <option selected> --اختار-- </option>
-                                    <option value="1"> 1 بوليصة فى الصفحة </option>
-                                    <option value="2"> 2 بوليصة فى الصفحة </option>
+                                    <option selected> @lang('global.choose')</option>
+                                    <option value="1"> @lang('global.way_bill_type_1')</option>
+                                    <option value="2"> @lang('global.way_bill_type_2')</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary print">طباعة</button>
+                        <button type="submit" class="btn btn-primary print">@lang('global.button_print')</button>
                     </div>
             </form>
         </div>
@@ -133,15 +133,15 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <h5 class="text-center mb-3">البحث عن أوردر أو أكثر</h5>
+                        <h5 class="text-center mb-3">@lang('global.search_orders')</h5>
                     </div>
                     <div class="col-12">
-                        <textarea name="" id="searchData" class="w-100 form-control" rows="10" placeholder="ابحث برقم الأوردر أو رقم البوليصة"></textarea>
+                        <textarea name="" id="searchData" class="w-100 form-control" rows="10" placeholder="@lang('global.placeholder_order_search')"></textarea>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">بحث</button>
+                <button type="submit" class="btn btn-primary">@lang('global.button_search')</button>
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@
     <div class="modal-dialog" style="width:60%;">
             <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
                 <div class="modal-header">
-                    <h3 class="modal-title mx-auto">ملاحظات الطلب</h3>
+                    <h3 class="modal-title mx-auto">@lang('global.order_notes')</h3>
                 </div>
                 <div class="modal-body" style="min-height:150px ; overflow: auto;font-size:14px">
                     <div class="comment-main-level clearfix" style="margin-bottom:10px">
@@ -160,7 +160,7 @@
                                 <div class="comment-head"
                                 style="border:none;background: none;padding: 0px;">
                                 <textarea class=" col-md-12 form-control input-circle recordNots"
-                                            placeholder="اضافة ملاحظة ..."
+                                            placeholder="@lang('global.placeholder_add_note')"
                                                 rows="4"></textarea>
                                         <div class="col-md-6 " style="margin-top:25px">
                                         <div class="add_notes_btn" style="">
@@ -174,7 +174,7 @@
                     <div class="row">
                         <div style="border: 1px solid #ddd">
                             <h4 style="padding: 15px 10px;background: #eee;margin: 0">
-                                الملاحظات السابقة</h4>
+                                @lang('global.previous_notes')</h4>
                         <div class="notes-list">
                     </div>
                 </div>
@@ -189,8 +189,8 @@
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
-                <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-                <li><a class="link-dark" href="{{ route('all_orders') }}">الأوردرات</a></li>
+                <li><a href="{{ route('dashboard') }}">@lang('global.dashboard')</a></li>
+                <li><a class="link-dark" href="{{ route('all_orders') }}">@lang('global.Orders')</a></li>
             </ul>
         </div>
         <div class="row">
@@ -198,17 +198,17 @@
                 <form method="GET" action="{{route('all_orders')}}" id="search">
                     <div class="row">
                         <div class="col-12 my-4">
-                            <h3 class="text-center">البحث عن أوردرات</h3>
+                            <h3 class="text-center">@lang('global.search_orders')</h3>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">رقم الأوردر</label>
+                            <label class="form-label">@lang('global.order_code')</label>
                             <input class="form-control" name="order_code" id=""
                                 value="{{ Request::get('order_code') }}">
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">العميل</label>
+                            <label class="form-label">@lang('global.client_id')</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
-                                <option value="">اختار العميل</option>
+                                <option value="">@lang('global.select_client')</option>
                                 @foreach ($clients as $client)
                                     <option @if(Request::get('client_id') == $client->id) selected @endif value="{{ $client->id }}">{{ $client->name }}</option>
                                 @endforeach
@@ -218,9 +218,9 @@
                             </div>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">رقم التليفون</label>
+                            <label class="form-label">@lang('global.phone_1')</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
-                                <option value="">اختار رقم التليفون</option>
+                                <option value="">@lang('global.select_phone_1')</option>
                                 @foreach ($clients as $client)
                                     <option  value="{{ $client->id }}">{{ $client->phone_1 }}</option>
                                 @endforeach
@@ -233,27 +233,27 @@
                         </div>
 
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">المدينة</label>
+                            <label class="form-label">@lang('global.city_id')</label>
                             <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id"
                                 id="city_id">
-                                <option value="">اختار المدينة </option>
+                                <option value="">@lang('global.select_city') </option>
                                 @foreach ($cities as $id => $name)
                                     <option @if(Request::get('city_id') == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">المنطقة</label>
+                            <label class="form-label">@lang('global.area_id')</label>
                             <select class="form-select product_info"  name="area_id"
                                 id="area_id">
-                                <option value="">اختار المنطقة </option>
+                                <option value="">@lang('global.select_area')</option>
 
                             </select>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">الحالة</label>
+                            <label class="form-label">@lang('global.status_id')</label>
                             <select class="form-select product_info js-example-basic-multiple" name="status_id" multiple="multiple">
-                                <option value="">اختار الحالة</option>
+                                <option value="">@lang('global.select_status')</option>
                                 @foreach ($statuses as $status)
                                     <option @if(in_array($status->id, explode(',', Request::get('status_id', '')))) selected @endif value="{{ $status->id }}">{{ $status->name }}</option>
                                 @endforeach
@@ -265,27 +265,27 @@
                         </div>
 
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">المسوق</label>
+                            <label class="form-label">@lang('global.marketer_id')</label>
                             <select class="form-select product_info" name="marketer_id">
-                                <option value="">اختار المسوق</option>
+                                <option value="">@lang('global.select_marketer')</option>
                                 @foreach ($marketers as $marketer)
                                     <option  @if(Request::get('marketer_id') == $marketer->id) selected @endif value="{{ $marketer->id }}">{{ $marketer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">المنتج</label>
+                            <label class="form-label">@lang('global.product_id')</label>
                             <select class="form-select product_info" name="product_id" id="product_id">
-                                <option value="">اختار المنتج</option>
+                                <option value="">@lang('global.select_product')</option>
                                 @foreach ($products as $id => $name)
                                     <option  @if(Request::get('product_id') == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">المتغير</label>
+                            <label class="form-label">@lang('global.variant_id')</label>
                             <select class="form-select product_info" name="variant_id" id="variant_id">
-                                <option value="">اختار المتغير</option>
+                                <option value="">@lang('global.select_variant')</option>
                             </select>
 
                             <div class="invalid-feedback supplier_id">
@@ -293,33 +293,33 @@
                             </div>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">تاريخ من</label>
+                            <label class="form-label">@lang('global.date_from')</label>
                             <input class="form-control datetimeplugin" name="date_from" id=""
                                 value="{{ Request::get('date_from') }}">
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">تاريخ الى</label>
+                            <label class="form-label">@lang('global.date_to')</label>
                             <input class="form-control datetimeplugin" name="date_to" id=""
                                 value="{{ Request::get('date_to') }}">
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">شركة الشحن</label>
+                            <label class="form-label">@lang('global.shipping_company_id')</label>
                             <select class="form-select product_info" name="shipping_company_id">
-                                <option value="">اختار شركة الشحن</option>
+                                <option value="">@lang('global.select_shipping_company')</option>
                                 @foreach ($shipping_companies as $shipping_company)
                                     <option  @if(Request::get('shipping_company_id') == $shipping_company->id) selected @endif value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mt-3">
-                            <label class="form-label">رقم البوليصة</label>
+                            <label class="form-label">@lang('global.way_bill')</label>
                             <input class="form-control" name="waybill" id=""
                                 value="{{ Request::get('waybill') }}">
                         </div>
                     </div>
                     <div class="d-flex my-4 justify-content-center">
                         <button type="submit" class="btn btn-primary">
-                            بحث
+                            @lang('global.button_search')
                         </button>
                     </div>
                 </form>
@@ -327,7 +327,7 @@
 
             @if($filters)
                 <h5 class="my-3">
-                    عدد نتائج البحث: {{ count($orders) }}
+                    @lang('global.search_results_number') {{ count($orders) }}
                 </h5>
                 <div class="card shadow-sm p-3 mb-4">
                     <div class="d-flex justify-content-start">
@@ -343,25 +343,25 @@
                 <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-wrap flex-row align-items-center">
                     @can('edit_change_status','App\\Models\Order')
                     <div class="me-2 my-1">
-                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> تعديل الحالة <i class="bi bi-pencil-fill"></i></div>
+                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> @lang('global.update_status') <i class="bi bi-pencil-fill"></i></div>
                     </div>
                     @endcan
                     <div class="me-2 my-1">
-                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> طباعة بوليصة <i class="bi bi-printer-fill"></i></div>
+                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> @lang('global.way_bill_print') <i class="bi bi-printer-fill"></i></div>
                     </div>
                     <div class="me-2 my-1">
                         <form method="POST" action="{{route('print_labels')}}" id="print_label">
                             @csrf
-                        <div class="btn btn-warning print_label"> طباعة ليبل <i class="bi bi-printer"></i></div>
+                        <div class="btn btn-warning print_label"> @lang('global.label_print') <i class="bi bi-printer"></i></div>
                         </form>
                     </div>
                     <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
-                        <div class="btn btn-warning"> تصدير الأوردارات اكسل <i class="bi bi-file-excel-fill"></i></div>
+                        <div class="btn btn-warning"> @lang('global.export_orders_excel') <i class="bi bi-file-excel-fill"></i></div>
                     </div>
                     @can('whatsapp_order', ['App\\Models\WhatsappCampaign'])
                     <div class="me-2 my-1">
                         <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
-                            <button type="submit" disabled class="btn btn-warning"> واتساب <i class="bi bi-whatsapp"></i></div>
+                            <button type="submit" disabled class="btn btn-warning"> @lang('global.whatsapp') <i class="bi bi-whatsapp"></i></div>
                         </form>
                     </div>
                     @endcan
@@ -370,27 +370,27 @@
                 <div class="row">
                     <div class="card p-3 shadow-sm">
                         <div>
-                            <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">ابحث عن أوردر أو أكثر</button>
+                            <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">@lang('global.button_search_orders')</button>
                         </div>
                         <div class="table-responsive px-0">
                             <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
-                                        <th>رقم الأوردر</th>
-                                        <th>رقم البوليصة</th>
-                                        <th>الادمن</th>
-                                        <th>المسوق</th>
-                                        <th>الحالة</th>
-                                        <th>اسم العميل</th>
-                                        <th>رقم التليفون</th>
-                                        <th>العنوان</th>
-                                        <th>المنطقة</th>
-                                        <th>الاجمالى</th>
-                                        <th>تاريخ الاضافة</th>
-                                        <th>ملاحظات الطلب</th>
+                                        <th>@lang('global.order_code')</th>
+                                        <th>@lang('global.way_bill')</th>
+                                        <th>@lang('global.admin_id')</th>
+                                        <th>@lang('global.marketer_id')</th>
+                                        <th>@lang('global.status_id')</th>
+                                        <th>@lang('global.client_id')</th>
+                                        <th>@lang('global.phone_1')</th>
+                                        <th>@lang('global.address')</th>
+                                        <th>@lang('global.area_id')</th>
+                                        <th>@lang('global.total')</th>
+                                        <th>@lang('global.created_at')</th>
+                                        <th>@lang('global.order_notes')</th>
                                         @can('delete_order', 'App\Models\Order')
-                                            <th>حذف الطلب</th>
+                                            <th>@lang('global.actions')</th>
                                         @endcan
                                     </tr>
                                 </thead>
@@ -474,7 +474,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     dataType: "text",
                 }).then((response)=>{
                     data = JSON.parse(response);
-                    $('#area_id').html('<option value="">-- اختار المنطقة --</option>');
+                    $('#area_id').html('<option value="">@lang("global.select_area")</option>');
                     $.each(data, function (key,value) {
                         $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
@@ -493,7 +493,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     dataType: "text",
                 }).then((response)=>{
                     data = JSON.parse(response);
-                    $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                    $('#variant_id').html('<option value="">@lang("global.select_variant")</option>');
                     $.each(data, function (key,value) {
                         $("#variant_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
@@ -513,7 +513,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 dataType: "text",
             }).then((response)=>{
                 data = JSON.parse(response);
-                $('#area_id').html('<option value="">-- اختار المنطقة --</option>');
+                $('#area_id').html('<option value="">@lang("global.select_area")</option>');
                 $.each(data, function (key, value) {
                     $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
@@ -528,7 +528,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 dataType: "text",
             }).then((response)=>{
                 data = JSON.parse(response);
-                $('#variant_id').html('<option value="">-- اختار المتغير --</option>');
+                $('#variant_id').html('<option value="">@lang("global.select_variant")</option>');
                 $.each(data, function (key, value) {
                     $("#variant_id").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
@@ -597,11 +597,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             var status_id = $('#status_id').val();
             console.log(ids);
             if(!status_id){
-                alert('برجاء اختيار الحالة');
+                alert('@lang("global.alert_status_required")');
                 return;
             }
             if(ids.length < 1){
-                alert('برجاء اختيار شحنة واحدة على الاقل');
+                alert('@lang("global.alert_shipping_min")');
                 return;
             }
 
@@ -617,7 +617,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             var selectedValue = $('#print_id').val();
 
             if(ids.length < 1){
-                alert('برجاء اختيار شحنة واحدة على الاقل');
+                alert('@lang("global.alert_shipping_min")');
                 return;
             }
 
@@ -634,7 +634,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             var OneValue = '2';
 
             if(ids.length < 1){
-                alert('برجاء اختيار شحنة واحدة على الاقل');
+                alert('@lang("global.alert_shipping_min")');
                 return;
             }
             if(ids.length == 1) {
@@ -686,7 +686,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 				<button type="button" class="btn btn-warning"
 					style="margin-top:16px"
 					onclick="recordYourNotes(${order_id});">
-					 إضافة ملاحظة<i class="bi bi-plus-circle"></i>
+					 @lang("global.note_addition")<i class="bi bi-plus-circle"></i>
                 </button>
 			</div>
 			`
@@ -727,7 +727,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 data = JSON.parse(response);
                 if (data) {
                     $(".recordNots").html('');
-                    show_success('تمت اضافة الملاحظة بنجاح');
+                    show_success('@lang("global.alert_note_success")');
                 }
             });
             function show_success(message) {
@@ -775,7 +775,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                             <tr>
                                 <td><input type="checkbox" class="order_id form-check-input" value="${value.id}"></td>
                                 <td><a href="orders/${value.id}" target="_blank">${value.order_code}</a></td>
-                                <td>${value.waybill ? value.waybill : 'لا يوجد'}</td>
+                                <td>${value.waybill ? value.waybill : '@lang("global.not_found")'}</td>
                                 <td>${value.admin.name}</td>
                                 <td>
                                     ${(value.marketer == null) ? '' : value.marketer.name}
@@ -830,7 +830,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         $(document).on('click', '.delete-button', function() {
             order_code = $(this).attr('data-code');
-            if (confirm(`هل أنت متأكد من حذف الأوردر ( ${order_code} ) ؟`)) {
+            if (confirm(`@lang("global.confirm_delete_order") ( ${order_code} ) ؟`)) {
                 order_id = $(this).attr('data-id');
                 tr = $(this).closest('tr');
                 $.ajax({
@@ -843,7 +843,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                     success: function (response) {
                         tr.remove();
                         setTimeout(() => {
-                            alert('تم حذف الأوردر بنجاح');
+                            alert('@lang("global.alert_order_deleted_success")');
                         }, 500);
                     }
                 })
