@@ -89,7 +89,7 @@
             <div class="text-end p-1">
                 <div class="btn btn-primary">
                     <a href="{{ route('upload_products') }}" class="text-white text-decoration-none">
-                        @lang('upload_products_csv') <i class="bi bi-filetype-csv"></i>
+                        @lang('global.upload_products_csv') <i class="bi bi-filetype-csv"></i>
                     </a>
                 </div>
             </div>

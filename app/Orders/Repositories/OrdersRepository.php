@@ -141,6 +141,12 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'status_id' => $previous_status->status_id
         ]);
     }
+    public function update_shipping_co_cost($data) {
+        $order = $this->get_order_by_waybill($data['waybill']);
+        if (empty($order))
+            return false;
+        return $order->update($data);
+    }
 
     public function change_order_status_bulk($data)
     {

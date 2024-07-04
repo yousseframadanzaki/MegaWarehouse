@@ -144,6 +144,12 @@ class OrderController extends Controller
         $id = $this->OrdersService->DeleteOrderStatusCallback($request->all());
         return response()->json($id, 200);
     }
+    public function mega_cost(Request $request) {
+        if ($this->OrdersService->UpdateShippingCoCostCallback($request->all()))
+            return response()->json(true, 200);
+        else
+            return response()->json(false, 400);
+    }
     public function print_order(Request $request ,$order_id){
         $data = $request->all();
         $selected_option = 1;

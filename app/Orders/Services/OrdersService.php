@@ -211,6 +211,10 @@ class OrdersService implements OrdersServiceInterface{
         $id = $this->orders_crud_repository->delete_order_status($order->id,$status_data);
         return $id;
     }
+    public function UpdateShippingCoCostCallback($data)
+    {
+        return $this->orders_crud_repository->update_shipping_co_cost($data);
+    }
     public function checkMaxOrders($company_id)
     {
         return $this->orders_crud_repository->check_max_orders($company_id);
