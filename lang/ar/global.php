@@ -177,6 +177,8 @@ return [
 
     // edit user page
 
+    'edit_user' => 'تعديل عضو',
+
     // show_all orders
 
     "select_status" => "اختار الحالة",
@@ -220,7 +222,7 @@ return [
 
     // add order page
 
-    "" => "",
+    "quantity" => "الكمية",
     "" => "",
     "" => "",
     "" => "",
