@@ -153,6 +153,16 @@
 
                         </div>
                     </div>
+                    <div class="col-md-4 col-lg-3 mt-4">
+                        <label class="form-label">SKU</label>
+                        <input type="text" class="form-control product_info @error('sku') is-invalid @enderror"
+                            name="sku" value="{{ Request::get('sku') }}">
+
+                        <div class="invalid-feedback sku">
+
+                        </div>
+
+                    </div>
                     <div class="col-12 my-4">
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">
@@ -170,7 +180,7 @@
                     @foreach ($data['filters'] as $key => $value)
                         <div class="col-md-4 col-lg-3">
                             <div class=" sidebar-bg p-2 m-1" style="color: white">
-                                {{ __($key) }}: {{ $value }}
+                                {{ __('global.' . $key) }}: {{ $value }}
                             </div>
                         </div>
                     @endforeach

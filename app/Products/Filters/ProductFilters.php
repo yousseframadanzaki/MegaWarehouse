@@ -6,6 +6,7 @@ use App\Products\Filters\CategoryFilter;
 use App\Products\Filters\BrandFilter;
 use App\Products\Filters\NameFilter;
 use App\Products\Filters\SupplierFilter;
+use App\Products\Filters\SkuFilter;
 
 use App\Models\Category;
 use App\Models\Brand;
@@ -19,6 +20,7 @@ class ProductFilters
         'brand_id' => BrandFilter::class,
         'name' => NameFilter::class,
         'supplier_id' => SupplierFilter::class,
+        'sku' => SkuFilter::class,
     ];
 
 
