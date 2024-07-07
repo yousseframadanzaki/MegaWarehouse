@@ -83,6 +83,10 @@ class WhatsappController extends Controller
             curl_close($ch);
         }
         $user_points = $this->WhatsappService->GetUserPoints($user->id);
+        if(empty($user_points)){
+            return redirect()->route('all_orders')
+            ->with('error', 'لا يوجد نقاط لعمل الحملة');
+        }
         return view('Dashboard.Orders.campaign', compact('orders','user_points','devices'));
     }
     public function store_campaign(Request $request){

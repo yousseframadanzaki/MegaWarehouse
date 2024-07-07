@@ -45,10 +45,14 @@ class WhatsappRepository implements WhatsappRepositoryInterface
         $campaign->save();
         return true;
     }
-    public function get_user_points($user_id){
+    public function get_user_points($user_id) {
         return DB::table('whatsapp_user_points')
-            ->selectRaw('(SELECT points FROM whatsapp_user_points WHERE user_id = ? AND type = ?) - (SELECT SUM(messages) FROM whatsapp_user_points WHERE user_id = ? AND type = ?) AS points', [$user_id, 'add_ponits', $user_id, 'send_message'])
-            ->selectRaw('(SELECT expire_date FROM whatsapp_user_points WHERE user_id = ? AND type = ?) AS expire_date', [$user_id, 'add_ponits'])
+            ->selectRaw(
+                '(COALESCE((SELECT points FROM whatsapp_user_points WHERE user_id = ? AND type = ?), 0) -
+                  COALESCE((SELECT SUM(messages) FROM whatsapp_user_points WHERE user_id = ? AND type = ?), 0)) AS points,
+                 (SELECT expire_date FROM whatsapp_user_points WHERE user_id = ? AND type = ?) AS expire_date',
+                [$user_id, 'add_ponits', $user_id, 'send_message', $user_id, 'add_ponits']
+            )
             ->first();
     }
     public function get_devices($user_id){
