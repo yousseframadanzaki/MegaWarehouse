@@ -33,6 +33,7 @@ return [
     "buy"=>"شراء",
     "sell"=>"بيع",
     "move"=>"نقل",
+    "sku"=>"sku",
     "client_id"=>"العميل",
     "city_id"=>"المدينة",
     "area_id"=>"المنطقة",
