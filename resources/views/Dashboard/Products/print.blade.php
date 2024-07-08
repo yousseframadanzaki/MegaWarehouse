@@ -38,7 +38,7 @@
                 margin: 0 auto;
             }
             .barcode-container {
-                transform: scale(0.7);
+                transform: scale(0.88);
             }
         }
     </style>
