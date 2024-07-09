@@ -100,10 +100,10 @@
                 <div class="row">
                     <div class="col-md-4 col-lg-3 mt-4">
                         <label class="form-label">اسم المنتج</label>
-                        <input type="text" class="form-control product_info @error('name') is-invalid @enderror"
-                            name="name" value="{{ Request::get('name') }}">
+                        <input type="text" class="form-control product_info @error('product_name') is-invalid @enderror"
+                            name="product_name" value="{{ Request::get('product_name') }}">
 
-                        <div class="invalid-feedback name">
+                        <div class="invalid-feedback product_name">
 
                         </div>
 

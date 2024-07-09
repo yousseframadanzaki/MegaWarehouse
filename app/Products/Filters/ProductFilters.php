@@ -18,7 +18,7 @@ class ProductFilters
     protected $filters = [
         'category_id' => CategoryFilter::class,
         'brand_id' => BrandFilter::class,
-        'name' => NameFilter::class,
+        'product_name' => NameFilter::class,
         'supplier_id' => SupplierFilter::class,
         'sku' => SkuFilter::class,
     ];
