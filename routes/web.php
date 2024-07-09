@@ -43,6 +43,7 @@ Route::group(['prefix' => 'auth', 'middleware' => ['guest']],function () {
 });
 
 Route::post('/logout', [AuthenticationController::class,'logout'])->name('logout');
+Route::get('/logout', [AuthenticationController::class,'logout']);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function () {
 
@@ -470,6 +471,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/users/add', [UsersController::class,'store'])
     ->name('store_user')
     ->can('add','App\Models\User');
+
+    Route::get('/users/{user_id}', [UsersController::class,'show'])
+    ->name('show_user');
 
     Route::get('/users/{user_id}/activate', [UsersController::class,'activate'])
     ->name('activate_user')
