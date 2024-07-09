@@ -304,7 +304,7 @@
                 <tbody>
                     <tr style="height: 30px;direction: ltr;text-align: center;">
                         <center>
-                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</td>
+                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}} @endif</td>
                         </center>
                     </tr>
                 </tbody>

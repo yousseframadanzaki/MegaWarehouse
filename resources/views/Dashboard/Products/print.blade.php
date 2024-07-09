@@ -53,7 +53,7 @@
                 @for ($i=0; $i<2; $i++)
                     <div class="barcode-card">
                         <div style="text-align:center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-                            <p style="margin: 0px; font-size: 9px;">{{$variant->product->name}} - <bdi><span>({{$variant->name}})</span></bdi></p>
+                            <p style="margin: 0px; font-size: 9px;">{{$variant->product->name}} @if($variant->product->name != $variant->name) - <bdi><span>({{$variant->name}})</span></bdi> @endif</p>
                         </div>
                         <div class="barcode-container" style="width: fit-content; margin: 1px auto;">
                             {!! DNS1D::getBarcodeHTML($variant->sku, 'C128',1,20) !!}
