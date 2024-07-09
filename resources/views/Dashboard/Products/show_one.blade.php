@@ -108,6 +108,13 @@
 
 <div class="p-3">
 
+@error ('sku')
+<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+    <strong>{{__($message)}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@enderror
+
 <div class="row">
     <ul class="breadcrumb">
         <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>

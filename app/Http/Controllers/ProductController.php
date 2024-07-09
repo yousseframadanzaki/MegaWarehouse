@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Products\Requests\CreateProductRequest;
 use App\Products\Requests\CreatePackageRequest;
+use App\Products\Requests\UpdateVariantRequest;
 use App\Products\Interfaces\ProductCrudServiceInterface;
 use App\Products\Filters\ProductFilters;
 
@@ -145,7 +146,7 @@ class ProductController extends Controller
         return redirect()->route('show_product', $product_id);
     }
 
-    public function update_variant(Request $request)
+    public function update_variant(UpdateVariantRequest $request)
     {
         $variant = $this->ProductCrudService->UpdateVariant($request->variant_id, $request->except('_token'));
         if (!$variant)
