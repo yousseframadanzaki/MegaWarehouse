@@ -19,6 +19,7 @@ class Transaction extends Model
         'value',
         'delivery_cost',
         'payment_type_id',
+        'admin_id',
     ];
 
     /**
@@ -48,5 +49,10 @@ class Transaction extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class);
     }
 }

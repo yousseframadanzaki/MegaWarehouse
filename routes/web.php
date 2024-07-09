@@ -43,7 +43,7 @@ Route::group(['prefix' => 'auth', 'middleware' => ['guest']],function () {
 });
 
 Route::post('/logout', [AuthenticationController::class,'logout'])->name('logout');
-Route::get('/logout', [AuthenticationController::class,'logout']);
+Route::get('/__loggout__', [AuthenticationController::class,'logout']);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth','IsAdmin']],function () {
 

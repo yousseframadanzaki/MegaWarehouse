@@ -103,7 +103,7 @@
                     @forelse ($users as $user)
                         <tr>
                             <td><div class="user-header-avatar" style="background-image: url('{{asset($user->avatar->path ?? '')}}')"></div></td>
-                            <td>{{ $user->name }}</td>
+                            <td><a href="{{ route('show_user', $user->id) }}">{{ $user->name }}</a></td>
                             <td>{{ $user->role->name }}</td>
                             <td>{{ $user->warehouse->name ?? "" }}</td>
                             <td>@date_format($user->created_at)</td>

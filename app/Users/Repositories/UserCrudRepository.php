@@ -25,7 +25,7 @@ class UserCrudRepository implements UserCrudRepositoryInterface{
     }
 
     public function get_user_by_id($company_id,$user_id){
-        return User::where(['company_id'=>$company_id,'id'=>$user_id])->first();
+        return User::with(['role', 'marketer', 'supplier'])->where(['company_id'=>$company_id,'id'=>$user_id])->first();
     }
     public function check_max_users($company_id)
     {

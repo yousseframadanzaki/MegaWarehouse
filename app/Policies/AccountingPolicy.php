@@ -17,7 +17,7 @@ class AccountingPolicy
 
     public function add_transaction(User $user): bool
     {
-        if(!$user->role->permissions->contains('slug','add_transaction')){
+        if(!$user->role->permissions->contains('slug','add_transaction') || $user->role->user_type_id != 1){
             return false;
         }
 

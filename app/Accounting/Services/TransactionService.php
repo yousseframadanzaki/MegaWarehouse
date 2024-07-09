@@ -49,4 +49,9 @@ class TransactionService implements TransactionServiceInterface{
             $this->MediaService->save($file);
         }
     }
+
+    public function getUserTransactions($company_id, $user_id)
+    {
+        return $this->transaction_repository->get_transactions_by_user_id($company_id, $user_id);
+    }
 }

@@ -30,8 +30,4 @@ class Supplier extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
-
-    public function image() {
-        return $this->belongsTo(Media::class,'collection_id')->where('collection', 'supplier');
-    }
 }

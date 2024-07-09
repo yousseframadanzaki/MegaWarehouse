@@ -7,4 +7,5 @@ interface TransactionServiceInterface{
     public function AddInvoiceTransaction($transaction_data);
     public function GetCompanyTransactions($company_id, $filters);
     public function AddTransaction($transaction_data);
+    public function getUserTransactions($company_id, $user_id);
 }

@@ -23,7 +23,7 @@
         <div class="row">
             <div class="card p-5 shadow-sm">
                 <h1 class="text-center mt-3">
-                    <img src="{{ asset($supplier->image->path ?? '') }}" class="rounded" style="width: 100px; height: 100px;">
+                    <img src="{{ asset($supplier->user->avatar->path ?? '') }}" class="rounded" style="width: 100px; height: 100px;">
                 </h1>
                 <div class="row mb-3 mt-4">
                     <div class="col-md-4">

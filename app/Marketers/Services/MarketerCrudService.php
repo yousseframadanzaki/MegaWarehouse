@@ -42,7 +42,7 @@ class MarketerCrudService implements MarketerCrudServiceInterface{
 
         $marketer = $this->marketer_crud_repository->create_marketer($marketer_details);
         if (!empty($details['images'])) {
-            $image = $this->FileUploadService->handle($details['images'],'marketer',$company_id,$marketer->id);
+            $image = $this->FileUploadService->handle($details['images'],'avatar',$company_id,$marketer->user->id);
             $this->MediaCrudService->save($image);
         }
         return $marketer;

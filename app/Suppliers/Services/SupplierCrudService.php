@@ -37,7 +37,7 @@ class SupplierCrudService implements SupplierCrudServiceInterface{
         );
         $supplier = $this->supplier_crud_repository->add_supplier($supplier_details);
         if (!empty($details['images'])) {
-            $image = $this->FileUploadService->handle($details['images'],'supplier',$company_id,$supplier->id);
+            $image = $this->FileUploadService->handle($details['images'],'avatar',$company_id,$supplier->user->id);
             $this->MediaCrudService->save($image);
         }
         return $supplier;

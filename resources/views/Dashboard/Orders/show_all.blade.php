@@ -376,7 +376,7 @@
                             <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
+                                        <th class="del_from_excel"><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
                                         <th>@lang('global.order_code')</th>
                                         <th>@lang('global.way_bill')</th>
                                         <th>@lang('global.admin_id')</th>
@@ -390,14 +390,14 @@
                                         <th>@lang('global.created_at')</th>
                                         <th>@lang('global.order_notes')</th>
                                         @can('delete_order', 'App\Models\Order')
-                                            <th>@lang('global.actions')</th>
+                                            <th class="del_from_excel">@lang('global.actions')</th>
                                         @endcan
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($orders as $order)
                                         <tr>
-                                            <td><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
+                                            <td class="del_from_excel"><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
                                             <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
                                             <td>{{ $order->waybill?? 'لا يوجد' }}</td>
                                             <td>{{$order->admin->name}}</td>
@@ -417,7 +417,7 @@
                                                 <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
                                             </td>
                                             @can('delete_order', 'App\Models\Order')
-                                                <td>
+                                                <td class="del_from_excel">
                                                     <i class="bi bi-trash text-danger delete-button" style="font-size: 20px; cursor: pointer;" data-id="{{$order->id}}" data-code="{{$order->order_code}}"></i>
                                                 </td>
                                             @endcan
@@ -659,6 +659,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         });
         function exportTableToExcel(orders, filename = '') {
             var table = document.getElementById(orders);
+            var table2 = table;
+            $(table2).find('.del_from_excel').remove();
+            console.log(table2)
             var wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"});
             var wbout = XLSX.write(wb, {bookType: 'xlsx', type: 'binary'});
 

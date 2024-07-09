@@ -16,8 +16,6 @@ class UploadService implements UploadServiceInterface{
         'transaction'  => ['folder' => 'transaction',  'collection' => 'transaction'],
         'status'       => ['folder' => 'status',       'collection' => 'order_status'],
         'variant'      => ['folder' => 'varient',      'collection' => 'varient'],
-        'supplier'     => ['folder' => 'supplier',     'collection' => 'supplier'],
-        'marketer'     => ['folder' => 'marketer',     'collection' => 'marketer'],
     ];
 
     public function handle($file,$type,$company_id,$collection_id=NULL): File

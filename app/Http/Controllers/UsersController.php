@@ -11,22 +11,27 @@ use App\Users\Interfaces\UserActionsServiceInterface;
 use App\Users\Requests\CreateUserRequest;
 use App\Users\Requests\UpdateUserRequest;
 use App\Users\Filters\UserFilters;
+use App\Accounting\Filters\TransactionsFilters;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Accounting\Interfaces\TransactionServiceInterface;
 
 class UsersController extends Controller
 {
     private UserCrudServiceInterface $UserCrudService;
     private UserActionsServiceInterface $UserActionsService;
     private CommonDataServiceInterface $CommonDataService;
+    private TransactionServiceInterface $TransactionService;
 
     public function __construct(
         UserCrudServiceInterface $UserCrudService,
         UserActionsServiceInterface $UserActionsService,
-        CommonDataServiceInterface $CommonDataService
+        CommonDataServiceInterface $CommonDataService,
+        TransactionServiceInterface $TransactionService
     ){
         $this->UserCrudService = $UserCrudService;
         $this->UserActionsService = $UserActionsService;
         $this->CommonDataService = $CommonDataService;
+        $this->TransactionService = $TransactionService;
     }
 
     public function create() {
@@ -97,5 +102,22 @@ class UsersController extends Controller
             return back()->with('error',trans('global.updated_error'));
         }
         return back()->with('success',trans('global.updated_success'));
+    }
+    public function show($user_id) {
+        $company_id = $this->company_id();
+        $user = $this->UserCrudService->GetUser($company_id, $user_id);
+        $transactions = $this->TransactionService->GetUserTransactions($company_id, $user->id);
+        if (!empty($user->marketer)) {
+            $total_commission = $user->marketer->orders()->sum('total_marketer_commission');
+            $total_marketer_transactions = $transactions->where('to', $user->id)->sum('value');
+            $balance = $total_commission - $total_marketer_transactions;
+        } else if (!empty($user->supplier)) {
+            $total_invoices = $user->supplier->invoices()->sum('total_cost');
+            $total_supplier_transactions = $transactions->where('to', $user->id)->sum('value');
+            $balance = $total_invoices - $total_supplier_transactions;
+        } else {
+            $balance = $transactions->where('to', $user->id)->sum('value') - $transactions->where('from', $user->id)->sum('value');
+        }
+        return view("Dashboard.Users.show_one", compact('user', 'transactions', 'balance'));
     }
 }
