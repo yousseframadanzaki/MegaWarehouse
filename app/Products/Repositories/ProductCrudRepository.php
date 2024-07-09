@@ -23,7 +23,7 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
         ->where('company_id',$company_id)
         ->orderBy('id', 'desc')
         ->filter($filters)
-        ->paginate(10);
+        ->paginate(16);
     }
 
     public function get_product_by_id($product_id){
