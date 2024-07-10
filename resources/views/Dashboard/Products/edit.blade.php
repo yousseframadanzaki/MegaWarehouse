@@ -44,17 +44,19 @@
                     <div class="row">
                         <div class="col-md-4 mt-4">
                             <label class="form-label">اسم المنتج <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control product_info @error('name') is-invalid @enderror"
+                            <input type="text" class="form-control product_info @error('product_info.name') is-invalid @enderror"
                                 name="product_info[name]" value="{{ $data['product']->name }}">
 
-                            <div class="invalid-feedback name">
-
-                            </div>
+                            @error('product_info.name')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                            @enderror
 
                         </div>
                         <div class="col-md-4 mt-4">
                             <label class="form-label">ماركة المنتج<span class="text-danger">*</span></label>
-                            <select class="form-control product_info" aria-label="Default  select example" name="product_info[brand_id]"
+                            <select class="form-control product_info @error('product_info.brand_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[brand_id]"
                                 style="padding: 0.375rem 0.75rem;">
                                 <option value="">اختار الماركة</option>
                                 @foreach ($data['brands'] as $id => $name)
@@ -63,19 +65,23 @@
                                 @endforeach
                             </select>
 
-                            <div class="invalid-feedback brand_id">
-
+                            @error('product_info.brand_id')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
                             </div>
+                            @enderror
 
                         </div>
                         <div class="col-md-4 mt-4">
                             <label class="form-label">السعر <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control product_info @error('price') is-invalid @enderror"
+                            <input type="number" class="form-control product_info @error('product_info.price') is-invalid @enderror"
                                 name="product_info[price]" value="{{ $data['product']->price }}">
 
-                            <div class="invalid-feedback price">
-
+                            @error('product_info.price')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
                             </div>
+                            @enderror
 
                         </div>
                     </div>
@@ -84,23 +90,27 @@
                         <div class="col-md-4 mt-4">
                             <label class="form-label">السعر قبل الخصم</label>
                             <input type="number"
-                                class="form-control product_info @error('before_sale_price') is-invalid @enderror"
+                                class="form-control product_info @error('product_info.before_sale_price') is-invalid @enderror"
                                 name="product_info[before_sale_price]" value="{{ $data['product']->before_sale_price }}">
-                            <div class="invalid-feedback before_sale_price">
-
+                            @error('product_info.before_sale_price')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
                             </div>
+                            @enderror
                         </div>
                         <div class="col-md-4 mt-4">
                             <label class="form-label">تكلفة المنتج <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control product_info @error('cost') is-invalid @enderror"
+                            <input type="number" class="form-control product_info @error('product_info.cost') is-invalid @enderror"
                                 name="product_info[cost]" value="{{ $data['product']->cost }}">
-                            <div class="invalid-feedback cost">
-
-                            </div>
+                                @error('product_info.cost')
+                                <div class="invalid-feedback">
+                                    {{ __($message) }}
+                                </div>
+                                @enderror
                         </div>
                         <div class="col-md-4 mt-4">
                             <label class="form-label">المورد <span class="text-danger">*</span></label>
-                            <select class="form-control product_info" aria-label="Default select example" name="product_info[supplier_id]">
+                            <select class="form-control product_info @error('product_info.supplier_id') is-invalid @enderror" aria-label="Default select example" name="product_info[supplier_id]">
                                 <option value="">اختار المورد</option>
                                 @foreach ($data['suppliers'] as $id => $name)
                                     <option @if ($data['product']->supplier_id == $id) selected @endif value="{{ $id }}">
@@ -108,15 +118,17 @@
                                 @endforeach
                             </select>
 
-                            <div class="invalid-feedback supplier_id">
-
+                            @error('product_info.supplier_id')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
                             </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="form-label">تصنيف<span class="text-danger">*</span></label>
-                            <select class="form-control product_info" aria-label="Default  select example" name="product_info[category_id]"
+                            <select class="form-control product_info @error('product_info.category_id') is-invalid @enderror" aria-label="Default  select example" name="product_info[category_id]"
                                 id="category_id">
                                 <option value="">اختار تصنيف </option>
                                 @foreach ($data['categories'] as $cat)
@@ -125,9 +137,11 @@
                                 @endforeach
                             </select>
 
-                            <div class="invalid-feedback category_id">
-
+                            @error('product_info.category_id')
+                            <div class="invalid-feedback">
+                                {{ __($message) }}
                             </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="row mb-3 mt-5">
