@@ -36,4 +36,8 @@ class StatusRepository implements StatusRepositoryInterface{
             return true;
         }
     }
+
+    public function update_status_color($data) {
+        return Status::where(['id'=>$data['id']])->update(['color' => $data['color']]);
+    }
 }

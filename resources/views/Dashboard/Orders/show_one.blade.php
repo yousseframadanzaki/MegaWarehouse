@@ -226,7 +226,7 @@
                 </div>
                 <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> حالة :</label>
-                    <label>{{$order->status->name}}</label>
+                    <label class="p-1 text-white" style="background-color: {{ $order->status->color }};">{{$order->status->name}}</label>
                 </div>
                 <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> رقم البوليصة :</label>

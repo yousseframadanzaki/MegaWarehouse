@@ -40,6 +40,7 @@
     <table class="table table-hover">
         <thead>
             <th>الحالة</th>
+            <th>لون الحالة</th>
             <th>السماح بتعديل الأوردر</th>
             <th class="text-center"> قيد الشحن </th>
             <th>الحالات التابعة</th>
@@ -48,6 +49,7 @@
             @foreach ($statuses as $status)
             <tr>
                 <td>{{ $status->name }}</td>
+                <td class="text-center"><input type="color" style="cursor: pointer" value="{{ $status->color }}" data-id="{{ $status->id }}"></td>
                 <td style="width: 145px;">
                     <div class="form-check" style="margin-left: 50px;">
                         <input data-id="{{ $status->id }}" style="width: 20px;height: 20px;" class="form-check-input edit_btn" type="checkbox" name="edit_order" {{ $status->edit_order == 1 ? 'checked' : '' }}>
@@ -166,6 +168,22 @@
                     var td = $(`td[data-id='${status_id}']`);
                     var badge = td.find(`div:has(i[data-status='${related_status}'])`);
                     badge.remove();
+                }
+            });
+        });
+        $('input[type=color]').on('change', function() {
+            _token = $('#token').val();
+            color = $(this).val();
+            id = $(this).attr('data-id');
+
+            $.ajax({
+                type: 'POST',
+                url: `/api/statuses/${id}/color`,
+                dataType: "text",
+                data: { _token, color, id},
+            }).then((response) => {
+                if (response) {
+                    show_success('تم تعديل الحالة بنجاح');
                 }
             });
         });

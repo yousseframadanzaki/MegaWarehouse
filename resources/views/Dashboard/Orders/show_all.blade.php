@@ -410,7 +410,7 @@
                                                     {{$order->marketer->name}}
                                                 @endisset
                                             </td>
-                                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
+                                            <td style="background-color: {{ $order->status->color }}; color: white;" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
                                             <td>{{$order->name}}</td>
                                             <td>{{$order->phone_1}}</td>
                                             <td>{{$order->address}}</td>
@@ -447,14 +447,6 @@ integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4T
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("td[data-status]").each(function() {
-                var status = $(this).data("status");
-                if (status == 5) {
-                    $(this).css({"background-color": "#bb4141","color": "white"});
-                }
-            });
-        });
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
         });
