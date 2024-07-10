@@ -57,6 +57,7 @@ Route::post('/shipping_status/map', [ShippingStatusController::class, 'map'])->n
 Route::post('/status_callback/{mega_company_code}', [OrderController::class, 'status_callback'])->name('status_callback');
 Route::post('/status_callback_delete/{mega_company_code}', [OrderController::class, 'status_callback_delete'])->name('status_callback_delete');
 Route::post('/cost_callback/{mega_company_code}', [OrderController::class, 'mega_cost'])->name('mega_cost');
+Route::post('/payment_callback/{mega_company_code}', [OrderController::class, 'mega_payment'])->name('mega_payment');
 
 Route::post('/shipping_area/map', [ShippingAreaController::class, 'map'])->name('map_area');
 

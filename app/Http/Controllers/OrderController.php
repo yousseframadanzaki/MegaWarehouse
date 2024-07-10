@@ -150,6 +150,10 @@ class OrderController extends Controller
         else
             return response()->json(false, 400);
     }
+    public function mega_payment(Request $request){
+        $id = $this->OrdersService->SendOrderPaymentCallback($request->all());
+        return response()->json($id, 200);
+    }
     public function print_order(Request $request ,$order_id){
         $data = $request->all();
         $selected_option = 1;

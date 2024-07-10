@@ -10,6 +10,7 @@ interface OrdersServiceInterface{
     public function ChangeOrderStatus($order_id,$data);
     public function ChangeOrderStatusCallback($data);
     public function DeleteOrderStatusCallback($data);
+    public function SendOrderPaymentCallback($data);
     public function UpdateOrder($order_id,$data);
     public function AddStock($user ,$order_id ,$new_items);
     public function get_scan_items($ids);
