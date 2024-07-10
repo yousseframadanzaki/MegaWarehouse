@@ -261,7 +261,7 @@
                     <h3>{{ $order->companies->name }}</h3>
                 </div>
                 <div style="display: flex;justify-content:center;margin-top: 10px">
-                    <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">الاجمالي شامل الشحن:  {{$order->total}}</div>
+                    <div style="background:#eeee;border:2px solid #000;padding:7px;font-weight:600;border-radius:5px">الاجمالي شامل الشحن:  {{$order->total_after_sale}}</div>
                 </div>
             </div>
             <div class="column">

@@ -372,6 +372,10 @@
                         <div>
                             <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">@lang('global.button_search_orders')</button>
                         </div>
+                        <div class="d-flex flex-wrap justify-content-between mt-3">
+                            <label>عدد المحدد : <span id="selection-number">0</span></label>
+                            <label>يتم عرض 50 عنصر في كل صفحة</label>
+                        </div>
                         <div class="table-responsive px-0">
                             <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
                                 <thead>
@@ -406,12 +410,12 @@
                                                     {{$order->marketer->name}}
                                                 @endisset
                                             </td>
-                                            <td data-status="{{$order->status->id}}">{{$order->status->name}}</td>
+                                            <td style="background-color: {{ $order->status->color }}; color: white;" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
                                             <td>{{$order->name}}</td>
                                             <td>{{$order->phone_1}}</td>
                                             <td>{{$order->address}}</td>
                                             <td>{{$order->city->name}} - {{$order->area->name}}</td>
-                                            <td>{{$order->total}}</td>
+                                            <td>{{$order->total_after_sale}}</td>
                                             <td>@date_format($order->created_at)</td>
                                             <td class="order_notes" data-id="{{$order->id}}">
                                                 <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
@@ -426,8 +430,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div dir="ltr" class="d-flex justify-content-center mt-4">
-                            {!! $orders->appends($_GET)->links() !!}
+                        <div dir="ltr" class="mt-4">
+                            <div class="mx-auto" style="width: fit-content;">{!! $orders->links() !!}</div>
+                            <p class="text-center">يتم عرض 50 عنصر في كل صفحة</p>
                         </div>
                     </div>
                 </div>
@@ -442,14 +447,6 @@ integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4T
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("td[data-status]").each(function() {
-                var status = $(this).data("status");
-                if (status == 5) {
-                    $(this).css({"background-color": "#bb4141","color": "white"});
-                }
-            });
-        });
         $(document).ready(function() {
             $('.js-example-basic-multiple').select2();
         });
@@ -745,6 +742,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             }
         }
         $(document).on('change', 'input[type=checkbox]', function() {
+            $('#selection-number').text($('table input:not(:first):checked').length);
+
             if($(this).is(':checked'))
                 $('#whatsappForm').append(`<input type="hidden" name="orders_ids[]" value=${ $(this).val() }>`)
             else

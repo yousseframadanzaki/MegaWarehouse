@@ -24,4 +24,7 @@ class StatusService implements StatusServiceInterface{
     public function RemoveRelatedStatus($related_status, $status_id){
         return $this->status_crud_repository->remove_related_status($related_status, $status_id);
     }
+    public function UpdateStatusColor($data){
+        return $this->status_crud_repository->update_status_color($data);
+    }
 }

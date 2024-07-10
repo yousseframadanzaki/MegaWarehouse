@@ -194,7 +194,7 @@ return [
     "way_bill_type_1" => "1 بوليصة فى الصفحة",
     "way_bill_type_2" => "2 بوليصة فى الصفحة",
     "button_print" => "طباعة",
-    "button_search_orders" => "ابحث عن أوردر أو أكثر",
+    "button_search_orders" => "بحث مجمع",
     "placeholder_order_search" => "ابحث برقم الأوردر أو رقم البوليصة",
     "order_notes" => "ملاحظات الطلب",
     "placeholder_add_note" => "اضافة ملاحظة ...",
