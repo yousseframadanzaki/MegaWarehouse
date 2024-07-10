@@ -411,7 +411,7 @@
                                             <td>{{$order->phone_1}}</td>
                                             <td>{{$order->address}}</td>
                                             <td>{{$order->city->name}} - {{$order->area->name}}</td>
-                                            <td>{{$order->total}}</td>
+                                            <td>{{$order->total_after_sale}}</td>
                                             <td>@date_format($order->created_at)</td>
                                             <td class="order_notes" data-id="{{$order->id}}">
                                                 <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
