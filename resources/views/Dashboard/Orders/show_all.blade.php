@@ -372,6 +372,10 @@
                         <div>
                             <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">@lang('global.button_search_orders')</button>
                         </div>
+                        <div class="d-flex flex-wrap justify-content-between mt-3">
+                            <label>عدد المحدد : <span id="selection-number">0</span></label>
+                            <label>يتم عرض 50 عنصر في كل صفحة</label>
+                        </div>
                         <div class="table-responsive px-0">
                             <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
                                 <thead>
@@ -426,8 +430,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div dir="ltr" class="d-flex justify-content-center mt-4">
-                            {!! $orders->appends($_GET)->links() !!}
+                        <div dir="ltr" class="mt-4">
+                            <div class="mx-auto" style="width: fit-content;">{!! $orders->links() !!}</div>
+                            <p class="text-center">يتم عرض 50 عنصر في كل صفحة</p>
                         </div>
                     </div>
                 </div>
@@ -745,6 +750,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             }
         }
         $(document).on('change', 'input[type=checkbox]', function() {
+            $('#selection-number').text($('table input:not(:first):checked').length);
+
             if($(this).is(':checked'))
                 $('#whatsappForm').append(`<input type="hidden" name="orders_ids[]" value=${ $(this).val() }>`)
             else
