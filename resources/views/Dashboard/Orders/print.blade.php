@@ -300,11 +300,11 @@
         </h3>
         @foreach ($order->stocks as $item)
         <div class="body" style="align-items: center;width: 65%;margin-right: 235px;">
-            <table style="width: 40%;margin-left:5px;">
+            <table style="width: 100%;margin-left:5px;">
                 <tbody>
                     <tr style="height: 30px;direction: ltr;text-align: center;">
                         <center>
-                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}} @endif</td>
+                        <td colspan="3" style="font-size: 14px;"><span>{{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->name??'متغير موجود مسبقا'}} @endif</td>
                         </center>
                     </tr>
                 </tbody>
@@ -340,30 +340,30 @@
                 <span style="margin-right: 40px;">الاجمالى</span>
                 </h3>
             <div class="body" style="align-items: center;width: 100%;">
-                <div style="display: flex; justify-content: space-between;">
-                    <div style="width: 100%;">
+                <div style="display: flex; justify-content: space-between;width: 100%;">
+                    <div style="width: 50%;">
                         @foreach ($order->stocks->take(7) as $item)
-                        <table style="margin-right:10px;">
+                        <table style="width: 100%;">
                             <tbody>
-                                <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px; text-align: center;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}} @endif</td>
-                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}}</b></center></td>
-                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}}</b></center></td>
-                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
+                                <tr>
+                                    <td colspan="3" style="direction: rtl;font-size: 14px;text-align: center;"><p style="width: 250px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><span>{{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->name??'متغير موجود مسبقا'}} @endif</p></td>
+                                    <td colspan="3" style="font-size: 14px;width: 60px;"><center>{{abs($item->quantity)}}</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 60px;"><center>{{abs($item->unit_price)}}</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 60px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
                                 </tr>
                             </tbody>
                         </table>
                         @endforeach
                     </div>
-                    <div style="width: 100%;margin-left: 10px;">
+                    <div style="width: 50%;margin-left: 10px;">
                         @foreach ($order->stocks->slice(7) as $item)
-                        <table>
+                        <table style="margin-right:10px;width: 100%;">
                             <tbody>
-                                <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px; text-align: center;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}} @endif</td>
-                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}}</b></center></td>
-                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}}</b></center></td>
-                                    <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
+                                <tr>
+                                    <td colspan="3" style="direction: rtl;font-size: 14px;text-align: center;"><p style="width: 250px;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><span>{{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->name??'متغير موجود مسبقا'}} @endif</p></td>
+                                    <td colspan="3" style="font-size: 14px;width: 60px;"><center>{{abs($item->quantity)}}</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 60px;"><center>{{abs($item->unit_price)}}</b></center></td>
+                                    <td colspan="3" style="font-size: 14px;width: 60px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -372,7 +372,7 @@
                 </div>
             </div>
         @endif
-        <div style="width: fit-content;font-size: 14px;font-weight: bold;margin: 30px;background:#eeee;border:2px solid #000;padding:5px;border-radius:5px">سعر الشحن:  {{$order->delivery_cost}}</div>
+        <div style="width: fit-content;font-size: 14px;font-weight: bold;margin: 10px 0px;background:#eeee;border:2px solid #000;padding:5px;border-radius:5px">سعر الشحن:  {{$order->delivery_cost}}</div>
 
         <div class="footer">
             <div>
