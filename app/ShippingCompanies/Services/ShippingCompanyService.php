@@ -76,7 +76,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     public function UpdateShipment($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
 
-        $shipment = $this->ShipmentInfoFromOrder($order,$shipping_company_id);
+        $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
         $shipment['waybill'] = $order->waybill;
         
         if(!$shipment){
@@ -95,10 +95,12 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     }
     public function SendShipment($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
-
         $shipment = $this->ShipmentInfoFromOrder($order,$shipping_company_id);
-
-        // dd($shipment);
+        foreach ($shipping_company as $company) {
+            $username = $company->username;
+            $password = $company->password;
+            $url = $company->url; 
+        }
 
         if(!$shipment){
             return false;
@@ -106,9 +108,9 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
 
         $shipment_info = $this->MegaApiService
         ->CreateNewShipment(
-            $shipping_company->username,
-            $shipping_company->password,
-            $shipping_company->url,
+            $username,
+            $password,
+            $url,
             $shipment
         );
         
