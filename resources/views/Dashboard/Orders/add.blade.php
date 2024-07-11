@@ -399,9 +399,10 @@
         $("#phone_2").val(data.client.phone_2);
         $("#address").val(data.client.address);
         $("#country-select").val(data.client.country_id);
-        $("#city-select").val(data.client.city_id);
+        $("#city-select").val(data.client.area.city_id);
         $("#area-select").val(data.client.area_id);
         $("#order_form #client_id").attr('value', data.client.id);
+        $("#city-select, #area-select").select2();
     }
 
     function remove_data() {

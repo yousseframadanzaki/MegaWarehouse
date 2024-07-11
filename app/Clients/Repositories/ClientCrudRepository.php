@@ -24,7 +24,7 @@ class ClientCrudRepository implements ClientCrudRepositoryInterface{
     }
 
     public function get_client_where($filter) {
-        return Client::where($filter)->first();
+        return Client::with('area')->where($filter)->first();
     }
 
 }

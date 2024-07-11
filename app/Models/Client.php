@@ -32,4 +32,7 @@ class Client extends Model
         return $this->belongsTo(ClientGroup::class);
     }
 
+    public function area() {
+        return $this->belongsTo(Area::class);
+    }
 }

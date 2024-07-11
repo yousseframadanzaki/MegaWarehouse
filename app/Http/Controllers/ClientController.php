@@ -81,7 +81,7 @@ class ClientController extends Controller
             return response([],404);
         }
         $citites = $this->CommonDataService->GetCities($client->country_id);
-        $areas = $this->CommonDataService->GetAreas($client->city_id);
+        $areas = $this->CommonDataService->GetAreas($client->area->city_id);
         return response()->json(array('client'=>$client,'areas'=>$areas,'citites'=>$citites));
     }
 
