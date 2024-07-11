@@ -10,6 +10,7 @@ use App\Models\OrderStatus;
 use App\Models\OrderNotes;
 use App\Models\Area;
 use App\Models\Stock;
+use App\Models\Transaction;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -146,6 +147,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order = $this->get_order_by_waybill($data['waybill']);
         if (empty($order))
             return false;
+        return $order->update($data);
+    }
+    public function send_order_payment($data){
+        $order = $this->get_order_by_waybill($data['waybill']);
         return $order->update($data);
     }
 
