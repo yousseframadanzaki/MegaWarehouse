@@ -64,7 +64,7 @@ class OrdersService implements OrdersServiceInterface{
         }
 
         $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
-        $shipment = $this->ShippingCompanyService->SendShipmentV2($order,$data);
+        $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
         if(!$shipment){
             return false;
         }
@@ -130,17 +130,6 @@ class OrdersService implements OrdersServiceInterface{
             }
         }
 
-        $id = $this->orders_crud_repository->change_order_status($order_id,$data);
-
-        if(isset($data['status_images'])){
-            foreach ($data['status_images'] as $image) {
-                $file = $this->FileUploadService->handle($image,'status',$data['company_id'],$id);
-                $this->MediaService->save($file);
-            }
-        }
-        return $id;
-    }
-
     public function ChangeOrderStatusBulk($data)
     {
         if($data['status_id'] == '30'){
@@ -155,12 +144,12 @@ class OrdersService implements OrdersServiceInterface{
                 if(!$shipment){
                     return false;
                 }
-                $this->orders_crud_repository->update_order($order_id,
-                    array(
-                        'waybill'=>$shipment['waybill'],
-                        'shipping_company_id'=>$data['shipping_company_id'],
-                    )
-                );
+                // $this->orders_crud_repository->update_order($order_id,
+                //     array(
+                //         'waybill'=>$shipment['waybill'],
+                //         'shipping_company_id'=>$data['shipping_company_id'],
+                //     )
+                // );
             }
         }
 
