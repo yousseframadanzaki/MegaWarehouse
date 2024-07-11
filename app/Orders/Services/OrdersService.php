@@ -84,7 +84,7 @@ class OrdersService implements OrdersServiceInterface{
 
         $this->CartService->EmptyCart();
 
-        return true;
+        return $order;
 
     }
 

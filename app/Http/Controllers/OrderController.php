@@ -74,7 +74,7 @@ class OrderController extends Controller
 
     public function store(CreateOrderRequest $request){
         $order = $this->OrdersService->AddOrder(auth()->user(),$request->all());
-        if($order){
+        if(!empty($order->id)){
             $request->session()->flash('success', trans('global.created_success'));
             return redirect()->route('show_order', $order->id);
         }

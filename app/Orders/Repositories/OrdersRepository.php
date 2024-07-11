@@ -70,8 +70,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
 
     public function get_order_code($company_id){
-        $order_code  = Company::find($company_id)->code;
-        $order_code .= Order::where('company_id',$company_id)->count() + 1;
+        $company_code  = Company::find($company_id)->code;
+        $last_order_code = Order::where('company_id',$company_id)->latest()->first()->order_code;
+        $order_code = $company_code . ((int)str_replace($company_code, "", $last_order_code) + 1);
         return $order_code;
     }
 
