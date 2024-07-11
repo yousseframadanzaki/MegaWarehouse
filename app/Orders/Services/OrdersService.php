@@ -129,6 +129,7 @@ class OrdersService implements OrdersServiceInterface{
                 return false;
             }
         }
+    }
 
     public function ChangeOrderStatusBulk($data)
     {
