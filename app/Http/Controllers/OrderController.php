@@ -73,9 +73,10 @@ class OrderController extends Controller
     }
 
     public function store(CreateOrderRequest $request){
-        if( $this->OrdersService->AddOrder(auth()->user(),$request->all()) ){
+        $order = $this->OrdersService->AddOrder(auth()->user(),$request->all());
+        if($order){
             $request->session()->flash('success', trans('global.created_success'));
-            return redirect()->back();
+            return redirect()->route('show_order', $order->id);
         }
         return redirect()->back()->with(['error'=>trans('global.created_error'),'old_data'=>($request->except('token'))])->withInput();
     }
