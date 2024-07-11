@@ -346,7 +346,7 @@
                         <table style="margin-right:10px;">
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span></td>
+                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px; text-align: center;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}} @endif</td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
@@ -360,7 +360,7 @@
                         <table>
                             <tbody>
                                 <tr style="height: 30px;width: 100px;">
-                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}}</span></td>
+                                    <td colspan="3" style="direction: ltr;font-size: 14px;width: 300px; text-align: center;"><span>{{$item->variant->name??'متغير موجود مسبقا'}}</span> @if(!empty($item->variant->name) && !empty($item->variant->product->name) && $item->variant->name != $item->variant->product->name) - {{$item->variant->product->name??'منتج لمتغير موجود مسبقا'}} @endif</td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->quantity)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price)}}</b></center></td>
                                     <td colspan="3" style="font-size: 14px;width: 100px;"><center>{{abs($item->unit_price * $item->quantity)}}</b></center></td>
