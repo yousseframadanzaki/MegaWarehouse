@@ -129,7 +129,9 @@ class OrdersService implements OrdersServiceInterface{
                 return false;
             }
         } else {
-            $this->orders_crud_repository->change_order_status($order_id,$data);
+            if($this->orders_crud_repository->change_order_status($order_id,$data)){
+                return true;
+            }
         }
     }
 
