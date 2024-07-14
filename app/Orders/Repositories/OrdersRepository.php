@@ -189,7 +189,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
     {
         return Order::where(['waybill'=>$waybill])->first();
     }
-    public function get_order_print($data ,$order_id) {
+    public function get_order_print($order_id) {
         $orders = [];
         $order = Order::with(['stocks','stocks.variant','stocks.variant.product','companies'])->find($order_id);
         $orders[] = $order;

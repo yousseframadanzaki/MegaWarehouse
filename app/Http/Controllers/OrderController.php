@@ -155,10 +155,9 @@ class OrderController extends Controller
         $id = $this->OrdersService->SendOrderPaymentCallback($request->all());
         return response()->json($id, 200);
     }
-    public function print_order(Request $request ,$order_id){
-        $data = $request->all();
+    public function print_order($order_id){
         $selected_option = 1;
-        $data = $this->OrdersService->GetOrderPrint($data ,$order_id);
+        $data = $this->OrdersService->GetOrderPrint($order_id);
         // dd($data);
         return view('Dashboard.Orders.print')->with(compact('data' ,'selected_option'));
     }
