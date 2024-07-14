@@ -62,21 +62,25 @@ class OrdersService implements OrdersServiceInterface{
                 'order_id' => $order->id,
             ]);
         }
-
-        $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
-        $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
-        if(!$shipment){
-            return false;
+    
+        if($_SERVER['SERVER_NAME'] != '127.0.0.1'){
+            $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+            $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
+            if(!$shipment){
+                return false;
+            }
+            $this->orders_crud_repository->update_order($order->id,
+                array(
+                    'waybill'=>$shipment['waybill'],
+                    'shipping_company_id'=>$data['shipping_company_id'],
+                )
+            );
         }
-        $this->orders_crud_repository->update_order($order->id,
-            array(
-                'waybill'=>$shipment['waybill'],
-                'shipping_company_id'=>$data['shipping_company_id'],
-            )
-        );
+
         if (!empty($note)) {
             $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
         }
+
         $order_details['type'] = 'sell';
         $order_details['order_id'] = $order->id;
 
@@ -129,6 +133,7 @@ class OrdersService implements OrdersServiceInterface{
                 return false;
             }
         }
+    }
 
     public function ChangeOrderStatusBulk($data)
     {

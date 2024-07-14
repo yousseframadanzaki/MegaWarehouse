@@ -347,6 +347,11 @@
 
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@if (!$errors->any())
+    @php
+        Session::forget('cart');
+    @endphp
+@endif
 <script>
     $(document).ready(function() {
         var items = {!!json_encode(Session::get('cart')) !!}
@@ -526,10 +531,10 @@
                             </select>
                         </td>
                         <td style="width:80px;">
-                            <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price}" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
+                            <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price} quantity" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
                         </td>
                         <td class="variant_total">${parseInt(variant.price) * parseInt(item.quantity)}</td>
-                        <td class="variant_total_after_sale" id="variant_total_after_sale-${variant.id}"></td>
+                        <td class="variant_total_after_sale" id="variant_total_after_sale-${variant.id}">${parseInt(variant.price) * parseInt(item.quantity)}</td>
                         <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant.id}"><i class="bi bi-trash3"></a></td>
                     </tr>
                     <input type="hidden" name="items[${i}][id]" value="${variant.id}" />
@@ -540,15 +545,10 @@
             }
             $(`#unit_sale-${variant.id}`).on('input', function() {
                 var price_after_sale = $(this).val();
-                var quantity = $(`#quantity-${variant.id}`).val();
+                var quantity = $(this).closest('tr').find('.quantity').val();
                 var totalAfterSale = price_after_sale * quantity;
                 $(this).closest('tr').find('.variant_total_after_sale').text(totalAfterSale);
             });
-            var price_after_sale = $(`#unit_sale-${variant.id}`).val();
-            var quantity = $(`#quantity-${variant.id}`).val();
-            var totalAfterSale = price_after_sale * quantity;
-            $(`#variant_total_after_sale-${variant.id}`).text(totalAfterSale);
-
         });
     }
     $(".total_order").click(function(e) {

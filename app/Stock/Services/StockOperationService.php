@@ -137,23 +137,21 @@ class StockOperationService implements StockOperationServiceInterface{
         $items = $this->GetVariantsUnitValues($details['items']);
 
 
-
         $ids = [];
+        $count = 0;
         foreach ($items as $item) {
             $operation['variant_id'] = $item['id'];
             $operation['warehouse_id'] = $map[$item['id']];
             $operation['quantity'] = $item['quantity'] * -1;
-            $operation['unit_price'] = $item['unit_price'] ;
-            foreach ($details['items'] as $key => $keys) {
-                $unitSale = $keys['unit_sale'];
-                $operation['unit_price_after_sale'] = $unitSale;
-            }
+            $operation['unit_price'] = $item['unit_price'];
+            $operation['unit_price_after_sale'] = $details['items'][$count++]['unit_sale'];
             $operation['unit_cost'] = $item['unit_cost'];
             $operation['unit_commission'] = $item['unit_commission'];
 
             $ids[]   = $this->stock_operation_repository->create($operation);
             $this->VariantStockService->UpdateStock($item['id'],$operation['quantity']);
         }
+        
         return $ids;
     }
 
