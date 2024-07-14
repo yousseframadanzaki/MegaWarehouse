@@ -132,6 +132,10 @@ class OrdersService implements OrdersServiceInterface{
             if(!$shipment){
                 return false;
             }
+        } else {
+            if($this->orders_crud_repository->change_order_status($order_id,$data)){
+                return true;
+            }
         }
     }
 

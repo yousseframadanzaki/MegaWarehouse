@@ -189,7 +189,7 @@ class OrderController extends Controller
         $res['company_id'] = $this->company_id();
         $res['status_id'] = '15';
             if($this->OrdersService->ChangeOrderStatus($order_id,$res)){
-                return redirect()->route('show_order', [$order_id])->with('success','confirm_order_success');
+                return redirect()->route('show_order', $order_id)->with('success','confirm_order_success');
             }
     }
     public function change_after_sale($order_id, Request $request){
