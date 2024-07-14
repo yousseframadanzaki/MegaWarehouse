@@ -333,7 +333,7 @@
         </div>
         @endforeach
         @endif
-        @if (count($order->stocks) > 7)
+        @if (count($order->stocks) >= 7)
             <h3 style="margin-top: 20px;margin-right:15px;">المنتجات
                 <span style="margin-right: 145px;">العدد</span>
                 <span style="margin-right: 38px;">السعر</span>
