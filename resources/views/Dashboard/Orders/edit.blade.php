@@ -283,9 +283,8 @@
                                     </td>
                                     <td class="total_price">{{abs($item->quantity) * $item->unit_price}}</td>
                                     <td class="total_price_after_sale">{{abs($item->quantity) * $item->unit_price_after_sale}}</td>
-                                    <td class="fs-5 text-danger"><a data-id="{{ $item->variant->id }}" onclick="remove_variant({{ $item->variant->id }})" style="cursor: pointer;"><i class="bi bi-trash3"></i></a></td>
+                                    <td class="fs-5 text-danger"><a data-id="{{ $item->variant->id }}" onclick="remove_variant(this, {{ $item->id }})" style="cursor: pointer;"><i class="bi bi-trash3"></i></a></td>
                                 </tr>
-                                <input type="hidden" name="old_items[{{ $loop->index }}][id]" value="{{ $item->variant->id }}"/>
                             @endforeach
                         </tbody>
                     </table>
@@ -328,7 +327,7 @@
         });
     });
     $(document).ready(function() {
-        $(document).on('change', '.quantity',function() {
+        $(document).on('input', '.quantity',function() {
             var quantity = $(this).val();
             var price = $(this).data('price');
             var total = quantity * price;
@@ -397,7 +396,7 @@
                 $("#variants").fadeIn();
             })
         })
-        function remove_variant($id){
+        function remove_variant(el, $id){
             id = $id;
             if(confirm("هل تريد حذف المنتج؟")) {
             $.ajax({
@@ -406,7 +405,7 @@
                 dataType:'text'
             }).then(response =>{
                 data = JSON.parse(response);
-                $('tr[data-id="' + $id + '"]').remove();
+                $(el).closest('tr').remove();
             });
             } else {
                 return false;
@@ -442,7 +441,7 @@
                 var variantName = $("#variant_id option:selected").text();
                 var warehouseName = $("#warehouse_id option:selected").text();
                 var total = variant_price * quantity;
-                var index = $('#items tr').length;;
+                var index = $('#items tr').length;
                 var template = `
                     <tr id="${variant_id}">
                         <td>${productName}</td>
@@ -462,12 +461,11 @@
                         </td>
                         <td class="total_price">${total}</td>
                         <td class="total_price_after_sale">${total}</td>
-                        <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
+                        <td class="fs-5 text-danger"><a class="removee_variant" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
+                        <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
+                        <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
                     </tr>
-                    <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
-                    <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
                 `;
-                index++;
 
                 $("#items").append(template);
                 if(warehouse_id){
@@ -582,13 +580,8 @@
             $('#message').append(template);
             $('#message').fadeIn();
         }
-        $(document).on('click', '.remove_variant', function () {
-            var variant_id = $(this).attr('data-id');
-            $(`tr#${variant_id}`).fadeOut(300, function () {
-                var indexToRemove = $(this).index() - 1; // Subtract 1 to get the correct index
-                $(this).remove();
-                $(`input[name^="items[${indexToRemove}]"]`).remove(); // Remove hidden inputs with the same index
-            });
+        $(document).on('click', '.removee_variant', function () {
+            $(this).closest('tr').remove();
         });
         $(".total_order").click(function (e) {
             var total = 0;

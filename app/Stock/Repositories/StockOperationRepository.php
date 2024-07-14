@@ -5,6 +5,7 @@ namespace App\Stock\Repositories;
 use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Models\Stock;
 use App\Models\Variant;
+use App\Orders\Filters\VariantFilter;
 use App\Policies\StockPolicy;
 use App\Policies\OrderPolicy;
 
@@ -130,9 +131,13 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         }
         return $new_stocks;
     }
-    public function DeleteStock($variant_id){
-        return Stock::where('variant_id', $variant_id)->delete();
-        return true;
+    public function DeleteStock($id) {
+        $stock = Stock::find($id);
+        $variant = Variant::find($stock->variant_id);
+        $variant->update([
+            'quantity' => $variant->quantity + abs($stock->quantity)
+        ]);
+        return $stock->delete();
     }
 
 }

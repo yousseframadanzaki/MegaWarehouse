@@ -432,7 +432,7 @@
                         </div>
                         <div dir="ltr" class="mt-4">
                             <div class="mx-auto" style="width: fit-content;">{!! $orders->links() !!}</div>
-                            <p class="text-center">يتم عرض 50 عنصر في كل صفحة</p>
+                            <p class="text-center">يتم عرض {!! $orders->perPage() !!} عنصر في كل صفحة</p>
                         </div>
                     </div>
                 </div>

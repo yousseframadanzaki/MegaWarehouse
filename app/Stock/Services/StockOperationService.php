@@ -218,9 +218,9 @@ class StockOperationService implements StockOperationServiceInterface{
     {
         return $this->stock_operation_repository->update_stock($order_id ,$data);
     }
-    public function DeleteStock($variant_id)
+    public function DeleteStock($id)
     {
-        return $this->stock_operation_repository->DeleteStock($variant_id);
+        return $this->stock_operation_repository->DeleteStock($id);
     }
     public function AddStock($new_items)
     {
