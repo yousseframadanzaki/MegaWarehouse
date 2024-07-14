@@ -284,6 +284,8 @@
                                     <td class="total_price">{{abs($item->quantity) * $item->unit_price}}</td>
                                     <td class="total_price_after_sale">{{abs($item->quantity) * $item->unit_price_after_sale}}</td>
                                     <td class="fs-5 text-danger"><a data-id="{{ $item->variant->id }}" onclick="remove_variant(this, {{ $item->id }})" style="cursor: pointer;"><i class="bi bi-trash3"></i></a></td>
+
+                                    <input type="hidden" name="old_items[{{ $loop->index }}][id]" value="{{ $item->variant->id }}"/>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -399,14 +401,14 @@
         function remove_variant(el, $id){
             id = $id;
             if(confirm("هل تريد حذف المنتج؟")) {
-            $.ajax({
-                url:`/api/stock/${id}/remove`,
-                method:`POST`,
-                dataType:'text'
-            }).then(response =>{
-                data = JSON.parse(response);
-                $(el).closest('tr').remove();
-            });
+                $.ajax({
+                    url:`/api/stock/${id}/remove`,
+                    method:`POST`,
+                    dataType:'text'
+                }).then(response =>{
+                    data = JSON.parse(response);
+                    $(el).closest('tr').remove();
+                });
             } else {
                 return false;
             }
