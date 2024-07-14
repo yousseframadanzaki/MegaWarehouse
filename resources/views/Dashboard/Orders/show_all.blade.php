@@ -410,7 +410,7 @@
                                                     {{$order->marketer->name}}
                                                 @endisset
                                             </td>
-                                            <td style="background-color: {{ $order->status->color }}; color: white;" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
+                                            <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
                                             <td>{{$order->name}}</td>
                                             <td>{{$order->phone_1}}</td>
                                             <td>{{$order->address}}</td>
@@ -442,9 +442,7 @@
 @endsection
 
 @section('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
-integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         $(document).ready(function() {
