@@ -208,7 +208,7 @@
                         <select id="country-select" class="form-select @error('client.country_id') is-invalid @enderror" aria-label="Default select example" name="client[country_id]">
                             <option value="">اختار</option>
                             @foreach ($countries as $id => $name)
-                            <option value="{{ $id }}">{{ $name }}</option>
+                            <option value="{{ $id }}" @if ($name == "Egypt") selected @endif>{{ $name }}</option>
                             @endforeach
                         </select>
                         @error('client.country_id')
@@ -421,8 +421,11 @@
         $("#area-select").html("");
         $("#order_form #client_id").attr('value', '');
     }
-    $("#country-select").change(function() {
-        var country_id = $(this).val();
+    $(window).on('load', function() { country_select("#country-select") });
+    $("#country-select").change(function() { country_select("#country-select") })
+    
+    function country_select(el) {
+        var country_id = $(el).val();
         $("#city-select").html('');
         $.ajax({
             type: 'GET',
@@ -436,7 +439,8 @@
             });
 
         })
-    })
+    } 
+
     $("#city-select").change(function() {
         var city_id = this.value;
         $("#area-select").html('');
@@ -550,6 +554,7 @@
                 $(this).closest('tr').find('.variant_total_after_sale').text(totalAfterSale);
             });
         });
+        $("#quantity").val(1);
     }
     $(".total_order").click(function(e) {
         var total = 0;

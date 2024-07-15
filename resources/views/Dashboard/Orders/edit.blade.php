@@ -68,7 +68,7 @@
                         </div>
                         <div class="col-md-12 mt-2">
                             <label class="form-label">الكمية</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control">
+                            <input type="number" name="quantity" id="quantity" value="1" class="form-control">
                         </div>
                         <div class="col-md-12 mt-2">
                             <table class="table hover-table">
@@ -478,7 +478,9 @@
                 // $("#product_id").val('');
                 // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
                 // $("#warehouse_id").val('');
-                // $("#quantity").val('');
+                $("#quantity").val(1);
+
+                $("#product_id").select2();
             } else {
                 alert('يرجى ملء جميع الحقول');
             }
