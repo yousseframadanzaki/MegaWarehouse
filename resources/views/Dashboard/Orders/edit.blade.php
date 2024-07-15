@@ -560,15 +560,13 @@
         function add_stock(data) {
             $("#stock").html("");
             data.forEach(element => {
-                if(element.sum != "0"){
-                    var template = `
-                    <tr>
-                        <td>${element.warehouse.name}</td>
-                        <td>${element.sum}</td>
-                    </tr>
-                    `;
-                    $("#stock").append(template);
-                }
+                var template = `
+                <tr>
+                    <td>${element.warehouse.name}</td>
+                    <td>${element.sum}</td>
+                </tr>
+                `;
+                $("#stock").append(template);
             });
         }
 
