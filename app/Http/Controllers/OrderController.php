@@ -32,12 +32,13 @@ class OrderController extends Controller
         $this->OrderNotesService = $OrderNotesService;
     }
 
-    public function all(OrdersFilters $filters) {
+    public function all(OrdersFilters $filters, Request $request) {
+        // dd($request->all());
         $clients = $this->CommonDataService->GetCompanyClients($this->company_id());
         $cities = $this->CommonDataService->GetCities();
         $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
         $marketers = $this->CommonDataService->GetCompanyMarketers($this->company_id());
-        $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters);
+        $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters, $request->all());
         $products = $this->CommonDataService->GetCompanyProducts($this->company_id(),$filters);
         $filters = $filters->get_values();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());

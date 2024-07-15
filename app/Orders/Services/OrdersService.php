@@ -92,8 +92,8 @@ class OrdersService implements OrdersServiceInterface{
 
     }
 
-    public function GetCompanyOrders($company_id,$filters) {
-        return $this->orders_crud_repository->get_company_orders($company_id,$filters);
+    public function GetCompanyOrders($company_id,$filters, $request = []) {
+        return $this->orders_crud_repository->get_company_orders($company_id,$filters, $request);
     }
 
     public function GetOrder($order_id){

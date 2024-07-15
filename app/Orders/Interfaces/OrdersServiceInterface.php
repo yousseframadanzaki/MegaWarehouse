@@ -4,7 +4,7 @@ namespace App\Orders\Interfaces;
 
 interface OrdersServiceInterface{
     public function AddOrder($user ,array $data);
-    public function GetCompanyOrders($company_id,$filters);
+    public function GetCompanyOrders($company_id,$filters, $request = []);
     public function GetOrder($order_id);
     public function GetOrders($orders_ids);
     public function ChangeOrderStatus($order_id,$data);

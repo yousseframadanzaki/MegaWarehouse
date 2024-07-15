@@ -74,7 +74,7 @@
                         <div class="row mt-4" style="display: none;" id="shipping_company_select">
                             <div class="col-md-12">
                                 <label class="form-label">@lang('global.shipping_company_id')</label>
-                                <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
+                                <select id="shipping_company_id" name="shipping_company_id" style="width: 100%" required>
                                     <option value="">@lang('global.select_shipping_company')</option>
                                     @foreach ($shipping_companies as $shipping_company)
                                         <option  value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
@@ -316,6 +316,7 @@
                             <input class="form-control" name="waybill" id=""
                                 value="{{ Request::get('waybill') }}">
                         </div>
+                        <input type="hidden" name="page_orders_num" value="{!! $orders->perPage() !!}">
                     </div>
                     <div class="d-flex my-4 justify-content-center">
                         <button type="submit" class="btn btn-primary">
@@ -327,13 +328,13 @@
 
             @if($filters)
                 <h5 class="my-3">
-                    @lang('global.search_results_number') {{ count($orders) }}
+                    @lang('global.search_results_number') {!! $orders->total() !!}
                 </h5>
                 <div class="card shadow-sm p-3 mb-4">
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
                             <div class=" sidebar-bg d-flex align-items-center 1 m-1" style="color: white;padding: 6px;border-radius: 6px;">
-                                {{ __($key) }}: {{$value}}
+                                {{ __('global.' . $key) }}: {{$value}}
                             </div>
                         @endforeach
                     </div>
@@ -374,8 +375,19 @@
                         </div>
                         <div class="d-flex flex-wrap justify-content-between mt-3">
                             <label>عدد المحدد : <span id="selection-number">0</span></label>
-                            <label>يتم عرض 50 عنصر في كل صفحة</label>
+                            <label>عدد النتائج : {!! $orders->total() !!}</label>
                         </div>
+                        <form action="{{ route('all_orders') }}" method="GET" style="width: fit-content">  
+                            <div class="d-none" id="searchData">
+
+                            </div>
+                            <select name="page_orders_num" class="py-1 mt-4 border border-gray rounded" style="outline: none;" id="page_orders_num_select">
+                                <option value="50" @if ($orders->perPage() == "50") selected @endif>50</option>
+                                <option value="250" @if ($orders->perPage() == "250") selected @endif>250</option>
+                                <option value="500" @if ($orders->perPage() == "500") selected @endif>500</option>
+                                <option value="1000" @if ($orders->perPage() == "1000") selected @endif>1000</option>
+                            </select>
+                        </form>
                         <div class="table-responsive px-0">
                             <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
                                 <thead>
@@ -848,6 +860,17 @@
                     }
                 })
             }
+        })
+
+        $('#page_orders_num_select').on('change', function() {
+            form = $(this).closest('form');
+            searchFormNotEmptyInputs = $('#search input:not([value=""]):not([name=page_orders_num])');
+            searchFormNotEmptySelects = $('#search select').filter(function() {
+                return $.trim($(this).val()) !== '';
+            });
+
+            form.find('#searchData').append([searchFormNotEmptyInputs, searchFormNotEmptySelects]);
+            form.submit();
         })
     </script>
 @endsection

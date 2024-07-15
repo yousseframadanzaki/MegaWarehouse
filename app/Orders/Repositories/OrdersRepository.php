@@ -66,8 +66,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
         return $data;
     }
 
-    public function get_company_orders($company_id,$filters){
-        return Order::with(['marketer','admin','status','city','area','order_notes', 'order_data'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate(250);
+    public function get_company_orders($company_id,$filters,$request){
+        $number = !empty($request['page_orders_num']) ? $request['page_orders_num'] : 50;
+        return Order::with(['marketer','admin','status','city','area','order_notes', 'order_data'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate($number)->appends($request);
     }
 
     public function get_order_code($company_id){
