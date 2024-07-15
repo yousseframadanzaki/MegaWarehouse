@@ -463,7 +463,7 @@
                         </td>
                         <td class="total_price">${total}</td>
                         <td class="total_price_after_sale">${total}</td>
-                        <td class="fs-5 text-danger"><a class="removee_variant" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
+                        <td class="fs-5"><a class="removee_variant text-danger" style="cursor: pointer" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
                         <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
                         <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
                     </tr>
@@ -477,10 +477,10 @@
                 var totalAfterSale = price_after_sale * quantity;
                 $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
 
-                $("#product_id").val('');
-                $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
-                $("#warehouse_id").val('');
-                $("#quantity").val('');
+                // $("#product_id").val('');
+                // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
+                // $("#warehouse_id").val('');
+                // $("#quantity").val('');
             } else {
                 alert('يرجى ملء جميع الحقول');
             }

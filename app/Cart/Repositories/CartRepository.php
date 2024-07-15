@@ -33,6 +33,7 @@ class CartRepository implements CartRepositoryInterface{
         if($index != -1){
             $cart[$index]['quantity'] = $item['quantity'];
             $cart[$index]['warehouse_id'] = $item['warehouse_id'];
+            $cart[$index]['price_after_sale'] = $item['price_after_sale'];
         }
 
         session(['cart' => $cart]);

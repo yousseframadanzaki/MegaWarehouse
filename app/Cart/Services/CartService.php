@@ -23,6 +23,7 @@ class CartService implements CartServiceInterface{
                 $variant['product']['name'] = $bundle->name;
                 $variant['product']['marketer_commission'] = $bundle->marketer_commission;
                 $item['variant'] = $variant;
+                $item['price_after_sale'] = $bundle->pivot->price; 
 
                 $result = $this->cart_repository->add_to_cart($item);
             }
@@ -30,6 +31,7 @@ class CartService implements CartServiceInterface{
         } else {
             $variant = $this->CommonDataService->GetVariant($item['variant_id']);
             $item['variant'] = $variant;
+            $item['price_after_sale'] = $variant->price;
             return $this->cart_repository->add_to_cart($item);
         }
     }

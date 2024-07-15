@@ -521,8 +521,8 @@
                         <td>${variant.name}</td>
                         <td>${variant.price}</td>
                         <td style="width:80px;">
-                            <input @cannot('add_discount', 'App\Models\Order') disabled  @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${variant.price}" data-id="${variant.id}" id="unit_sale-${variant.id}" />
-                            @cannot('add_discount', 'App\Models\Order') <input hidden type="number" name="items[${i}][unit_sale]" value="${variant.price}">  @endcannot
+                            <input @cannot('add_discount', 'App\Models\Order') disabled  @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${item.price_after_sale}" data-id="${variant.id}" id="unit_sale-${variant.id}" />
+                            @cannot('add_discount', 'App\Models\Order') <input hidden type="number" name="items[${i}][unit_sale]" value="${item.price_after_sale}">  @endcannot
                         </td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
                         <td>
@@ -534,7 +534,7 @@
                             <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price} quantity" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
                         </td>
                         <td class="variant_total">${parseInt(variant.price) * parseInt(item.quantity)}</td>
-                        <td class="variant_total_after_sale" id="variant_total_after_sale-${variant.id}">${parseInt(variant.price) * parseInt(item.quantity)}</td>
+                        <td class="variant_total_after_sale" id="variant_total_after_sale-${variant.id}">${parseInt(item.price_after_sale) * parseInt(item.quantity)}</td>
                         <td class="fs-5 text-danger"><a class="remove_variant" data-id="${variant.id}"><i class="bi bi-trash3"></a></td>
                     </tr>
                     <input type="hidden" name="items[${i}][id]" value="${variant.id}" />
@@ -716,9 +716,10 @@
 
     }
 
-    $(document).on('input', '.quantity', function(e) {
-        variant_id = $(this).attr('data-id');
-        quantity = parseInt($(this).val());
+    $(document).on('input', 'tr input', function(e) {
+        tr = $(this).closest('tr');
+        variant_id = tr.attr('id');
+        quantity = parseInt($(`tr#${variant_id} .quantity`).val());
         warehouse_id = $(`tr#${variant_id} .warehouse`).val();
         price_after_sale = $(`tr#${variant_id} .unit_sale`).val();
         $(`tr#${variant_id} .variant_total_after_sale`).html(quantity * price_after_sale);
@@ -730,6 +731,7 @@
             variant_id,
             quantity,
             warehouse_id,
+            price_after_sale,
         }
 
         $.ajax({
