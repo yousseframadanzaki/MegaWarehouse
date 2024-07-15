@@ -431,9 +431,7 @@
             var confirm_order = $('#variant_id option:selected').data("confirm");
             var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
             if(confirm_order == '0' && quantity > quantity_sum){
-                $("#addToCartModal").modal('hide');
-                show_error('لا يمكنك اضافة هذا المنتج');
-                $(window).scrollTop(0);
+                alert('لا يمكنك اضافة هذا المنتج');
                 return;
             }
 
