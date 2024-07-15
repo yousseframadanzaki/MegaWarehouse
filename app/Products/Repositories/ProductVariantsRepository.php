@@ -128,7 +128,7 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
 
     public function incomplete_orders_variants($company_id) {
         $orders_ids = Order::where('company_id', $company_id)->where('status_id', 5)->pluck('id');
-        return Variant::withWhereHas('stocks', function ($query) use ($company_id, $orders_ids) {
+        return Variant::where('quantity', '<=', 0)->withWhereHas('stock', function ($query) use ($company_id, $orders_ids) {
             $query->where('company_id', $company_id)
             ->whereIn('order_id', $orders_ids);
         })->get();
