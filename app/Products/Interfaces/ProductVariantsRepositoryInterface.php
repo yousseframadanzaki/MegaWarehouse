@@ -13,4 +13,5 @@ interface ProductVariantsRepositoryInterface{
     public function get_variants(array $variants_ids);
     public function delete_variant($variant_id, $is_bundle);
     public function get_variant_shelf_data(array $data);
+    public function incomplete_orders_variants($company_id);
 }

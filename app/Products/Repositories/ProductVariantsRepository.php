@@ -6,8 +6,10 @@ use App\Products\Interfaces\ProductVariantsRepositoryInterface;
 use App\Models\Variant;
 use App\Models\Bundle;
 use App\Models\Warehouse;
+use App\Models\Order;
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
+use Dotenv\Parser\Value;
 
 class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
 
@@ -122,5 +124,13 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
             $new_data[$key] = $value;
         }
         return $new_data;
+    }
+
+    public function incomplete_orders_variants($company_id) {
+        $orders_ids = Order::where('company_id', $company_id)->where('status_id', 5)->pluck('id');
+        return Variant::withWhereHas('stocks', function ($query) use ($company_id, $orders_ids) {
+            $query->where('company_id', $company_id)
+            ->whereIn('order_id', $orders_ids);
+        })->get();
     }
 }

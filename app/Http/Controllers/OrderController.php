@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Templates\Interfaces\TemplateServiceInterface;
+use App\Products\Interfaces\ProductCrudServiceInterface;
 use App\Orders\Requests\CreateOrderRequest;
 use App\Orders\Filters\OrdersFilters;
 use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
@@ -19,17 +20,21 @@ class OrderController extends Controller
     private OrdersServiceInterface $OrdersService;
     private TemplateServiceInterface $TemplateService;
     private OrderNotesServiceInterface $OrderNotesService;
+    private ProductCrudServiceInterface $ProductCrudService;
+
     public function __construct(
         CommonDataServiceInterface $CommonDataService,
         OrdersServiceInterface $OrdersService,
         TemplateServiceInterface $TemplateService,
         OrderNotesServiceInterface $OrderNotesService,
+        ProductCrudServiceInterface $ProductCrudService,
     )
     {
         $this->CommonDataService = $CommonDataService;
         $this->OrdersService = $OrdersService;
         $this->TemplateService = $TemplateService;
         $this->OrderNotesService = $OrderNotesService;
+        $this->ProductCrudService = $ProductCrudService;
     }
 
     public function all(OrdersFilters $filters, Request $request) {
@@ -211,5 +216,9 @@ class OrderController extends Controller
     }
     public function destroy(Request $request) {
         return response()->json($this->OrdersService->DeleteOrder($request->order_id));
+    }
+    public function incomplete_orders_variants() {
+        $variants = $this->ProductCrudService->IncompleteOrdersVariants($this->company_id());
+        return view('Dashboard.Orders.incomplete_orders', compact('variants'));
     }
 }

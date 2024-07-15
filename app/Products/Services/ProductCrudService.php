@@ -148,4 +148,8 @@ class ProductCrudService implements ProductCrudServiceInterface
     public function GetVariantShelfData(array $data) {
         return $this->product_variants_repository->get_variant_shelf_data($data);
     }
+
+    public function IncompleteOrdersVariants($company_id) {
+        return $this->product_variants_repository->incomplete_orders_variants($company_id);
+    }
 }
