@@ -203,6 +203,8 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('print_labels')
     ->can('print_labels',['App\Models\Order']);
 
+    Route::post('order/search', [OrderController::class, 'search_orders'])->name('search_orders');
+
     Route::get('/orders-incomplete', [OrderController::class, 'incomplete_orders_variants'])
     ->name('incomplete_orders');
 

@@ -7,17 +7,26 @@
 </style>
 @section('content')
 <div class="p-3">
-    <div class="row">
+    <div class="d-flex justify-content-between">
         <ul class="breadcrumb">
             <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-            <li><a class="link-dark" href="{{ route('all_orders') }}">الاوردرات</a></li>
+            <li><a href="{{ route('all_orders') }}">الاوردرات</a></li>
+            <li><a href="{{ route('show_order', $order->id) }}">{{ $order->order_code }}</a></li>
             <li><a class="link-dark" href="{{ route('scan_order',$order->id) }}">مراجعة أوردر {{$order->order_code}}</a></li>
         </ul>
+        <div>
+            <form action="{{ route('search_orders') }}" method="POST">
+                @csrf
+                <input type="hidden" name="scan" value="scan">
+                <input type="text" class="form-control bg-white border-secondary" name="search_data" placeholder="افحص أوردر اخر" required>
+                <small class="d-block text-secondary mt-1">ابحث برقم الأوردر أو البوليصة</small>
+            </form>
+        </div>
     </div>
     <div id="message" style="display: none"></div>
     <form method="POST" id="confirm_order" action="{{route('confirm_order',$order->id)}}">
         @csrf
-        <div class="row mt-4">
+        <div class="row mt-3">
             <input hidden name="id" value="{{$order->id}}">
             <h3>المنتجات</h3>
             <table class="table table-hover" id="variants_table">

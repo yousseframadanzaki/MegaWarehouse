@@ -195,7 +195,7 @@ class OrderController extends Controller
         $res['company_id'] = $this->company_id();
         $res['status_id'] = '15';
             if($this->OrdersService->ChangeOrderStatus($order_id,$res)){
-                return redirect()->route('show_order', $order_id)->with('success','confirm_order_success');
+                return redirect()->back()->with('success','confirm_order_success');
             }
     }
     public function change_after_sale($order_id, Request $request){
@@ -212,7 +212,15 @@ class OrderController extends Controller
     public function search_orders(Request $request) {
         $data = explode("\n", $request->search_data);
         $orders = $this->OrdersService->SearchOrders($this->company_id(), $data);
-        return response()->json($orders);
+
+        if ($request->ajax())
+            return response()->json($orders);
+        else if (!empty($request->scan)) {
+            if ($orders->count() > 0)
+                return redirect()->route('scan_order', $orders->first()->id);
+            else
+                return redirect()->back()->with('error', 'هذا الأوردر غير موجود');
+        } 
     }
     public function destroy(Request $request) {
         return response()->json($this->OrdersService->DeleteOrder($request->order_id));
