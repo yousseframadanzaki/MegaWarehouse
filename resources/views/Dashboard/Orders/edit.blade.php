@@ -390,7 +390,12 @@
                 data = JSON.parse(response);
                 $("#variant_id").append(`<option value="">اختار المتغير</option>`)
                 data.forEach(element => {
-                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name}</option>`)
+                    if (data.length == 1) { // if only one option add selected attribute and call ajax function.
+                        $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                        variant_select_change($("#variant_id"));
+                    } else {
+                        $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                    }
                 })
                 $('#variant_id').select2({
                     dropdownParent: $('#addToCartModal')
@@ -486,27 +491,32 @@
             }
         }
 
-        $('#variant_id').change(function () {
-            var variant_id = $(this).val();
-            var show_quantity = $(this).find('option:selected').data("show");
-            var hide = $(this).find('option:selected').data("hide");
+        $(document).on('change', '#variant_id',function(){variant_select_change($(this))});
 
-            $.ajax({
-                url: `/api/variants/${variant_id}/stock`,
-                method: "GET",
-                dataType: "text",
-            }).then(response => {
-                data = JSON.parse(response);
-                if(show_quantity == '0'){
-                    add_cart_stock(data);
-                } else {
-                    add_cart_stockk(data);
-                }
-                if(hide == '1'){
-                    add_cart_stockk(data);
-                }
-            })
-        })
+        function variant_select_change(variant_select) {
+            var variant_id = variant_select.val();
+            var show_quantity = variant_select.find('option:selected').data("show");
+            var hide = variant_select.find('option:selected').data("hide");
+
+            if (variant_id != '') {
+                $.ajax({
+                    url: `/api/variants/${variant_id}/stock`,
+                    method: "GET",
+                    dataType: "text",
+                }).then(response => {
+                    data = JSON.parse(response);
+                    if(show_quantity == '0'){
+                        add_cart_stock(data);
+                    } else {
+                        add_cart_stockk(data);
+                    }
+                    if(hide == '1'){
+                        add_cart_stockk(data);
+                    }
+
+                })
+            }
+        }
 
         function add_cart_stock(params) {
             $("#cart_stock").html("");
