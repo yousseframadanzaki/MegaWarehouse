@@ -547,12 +547,12 @@
             if (item.warehouse_id) {
                 $(`tr#${variant.id} .warehouse`).val(item.warehouse_id);
             }
-            $(`#unit_sale-${variant.id}`).on('input', function() {
-                var price_after_sale = $(this).val();
-                var quantity = $(this).closest('tr').find('.quantity').val();
-                var totalAfterSale = price_after_sale * quantity;
-                $(this).closest('tr').find('.variant_total_after_sale').text(totalAfterSale);
-            });
+            // $(`#unit_sale-${variant.id}`).on('input', function() {
+            //     var price_after_sale = $(this).val();
+            //     var quantity = $(this).closest('tr').find('.quantity').val();
+            //     var totalAfterSale = price_after_sale * quantity;
+            //     $(this).closest('tr').find('.variant_total_after_sale').text(totalAfterSale);
+            // });
         });
         $("#quantity").val(1);
     }
@@ -728,9 +728,11 @@
         warehouse_id = $(`tr#${variant_id} .warehouse`).val();
         price_after_sale = $(`tr#${variant_id} .unit_sale`).val();
         $(`tr#${variant_id} .variant_total_after_sale`).html(quantity * price_after_sale);
-        price = parseFloat($(this).attr('data-price'));
-
-        $(`tr#${variant_id} .variant_total`).html(quantity * price);
+        
+        if ($(this).hasClass('quantity')) {
+            price = parseFloat($(this).attr('data-price'));
+            $(`tr#${variant_id} .variant_total`).html(quantity * price);
+        }
 
         var item = {
             variant_id,

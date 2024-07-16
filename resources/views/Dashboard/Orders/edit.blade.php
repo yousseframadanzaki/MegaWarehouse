@@ -391,10 +391,10 @@
                 $("#variant_id").append(`<option value="">اختار المتغير</option>`)
                 data.forEach(element => {
                     if (data.length == 1) { // if only one option add selected attribute and call ajax function.
-                        $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                        $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
                         variant_select_change($("#variant_id"));
                     } else {
-                        $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                        $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
                     }
                 })
                 $('#variant_id').select2({
