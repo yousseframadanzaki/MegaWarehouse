@@ -62,7 +62,7 @@ class OrdersService implements OrdersServiceInterface{
                 'order_id' => $order->id,
             ]);
         }
-    
+
         if($_SERVER['SERVER_NAME'] != '127.0.0.1'){
             $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
@@ -277,6 +277,9 @@ class OrdersService implements OrdersServiceInterface{
     }
     public function DeleteOrder($order_id) {
         return $this->orders_crud_repository->delete_order($order_id);
+    }
+    public function UpdateIncompleteOrdersStatus() {
+        return $this->orders_crud_repository->update_incomplete_orders_status();
     }
 }
 

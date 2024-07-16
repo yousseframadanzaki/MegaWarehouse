@@ -19,4 +19,5 @@ interface OrdersRepositoryInterface{
     public function delete_order($order_id);
     public function get_shipping_company_id($area_id);
     public function update_shipping_co_cost(array $data);
+    public function update_incomplete_orders_status();
 }

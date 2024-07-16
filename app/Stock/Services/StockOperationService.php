@@ -6,10 +6,11 @@ use App\Stock\Interfaces\StockOperationRepositoryInterface;
 use App\Stock\Interfaces\StockOperationServiceInterface;
 use App\Products\Interfaces\VariantStockServiceInterface;
 use App\Invoices\Interfaces\InvoiceServiceInterface;
+use App\Orders\Interfaces\OrdersServiceInterface;
 
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
-
+use App\Models\Order;
 class StockOperationService implements StockOperationServiceInterface{
 
 
@@ -17,8 +18,9 @@ class StockOperationService implements StockOperationServiceInterface{
         protected readonly StockOperationRepositoryInterface $stock_operation_repository,
         protected readonly VariantStockServiceInterface $VariantStockService,
         protected readonly InvoiceServiceInterface $InvoiceService,
-        protected readonly  UploadServiceInterface $FileUploadService,
-        protected readonly  MediaCrudServiceInterface $MediaService,
+        protected readonly OrdersServiceInterface $OrdersService,
+        protected readonly UploadServiceInterface $FileUploadService,
+        protected readonly MediaCrudServiceInterface $MediaService,
     ){}
 
     public function CreateOperation($user,array $details){
@@ -118,6 +120,7 @@ class StockOperationService implements StockOperationServiceInterface{
         $invoice_info = $this->VariantStockService->GetInvoiceInfo($details['product_variants']);
         $invoice_id = $this->InvoiceService->AddInvoice($invoice_info);
         $this->stock_operation_repository->update_invoice_id($ids,$invoice_id);
+        $this->OrdersService->UpdateIncompleteOrdersStatus();
 
         return $ids;
     }
@@ -151,7 +154,7 @@ class StockOperationService implements StockOperationServiceInterface{
             $ids[]   = $this->stock_operation_repository->create($operation);
             $this->VariantStockService->UpdateStock($item['id'],$operation['quantity']);
         }
-        
+
         return $ids;
     }
 

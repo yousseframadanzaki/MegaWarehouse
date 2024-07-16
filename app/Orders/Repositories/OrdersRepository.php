@@ -257,4 +257,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $area = Area::find($area_id);
         return $area->shipping_company_id;
     }
+    public function update_incomplete_orders_status() {
+        return Order::where('company_id', auth()->user()->company_id)
+        ->where('status_id', 5)
+        ->whereHas('stocks', function ($query) {
+            $query->whereHas('variant', function ($query) {
+                $query->where('quantity', '>', 0);
+            });
+        })->update(['status_id' => 6]);
+    }
 }

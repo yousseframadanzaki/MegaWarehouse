@@ -18,4 +18,5 @@ interface OrdersServiceInterface{
     public function SearchOrders($company_id, array $data);
     public function DeleteOrder($order_id);
     public function UpdateShippingCoCostCallback(array $data);
+    public function UpdateIncompleteOrdersStatus();
 }
