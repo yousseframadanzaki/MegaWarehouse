@@ -124,7 +124,6 @@ class StockOperationService implements StockOperationServiceInterface{
     }
 
     function sell($user,$details) {
-        // dd($details);
         $operation['admin_id'] = $user->id;
         $operation['company_id'] = $user->company_id;
         $operation['type'] = $details['type'];
@@ -132,24 +131,24 @@ class StockOperationService implements StockOperationServiceInterface{
 
         $keys = array_column($details['items'],'id');
         $warehouses = array_column($details['items'],'warehouse_id');
-        $map = array_combine($keys,$warehouses);
+        $unit_sales = array_column($details['items'],'unit_sale');
 
+        $map_warehouses = array_combine($keys, $warehouses);
+        $map_unit_sales = array_combine($keys, $unit_sales);
 
         $items = $this->GetVariantsUnitValues($details['items']);
 
-
         $ids = [];
-        $count = 0;
         foreach ($items as $item) {
             $operation['variant_id'] = $item['id'];
-            $operation['warehouse_id'] = $map[$item['id']];
+            $operation['warehouse_id'] = $map_warehouses[$item['id']];
             $operation['quantity'] = $item['quantity'] * -1;
             $operation['unit_price'] = $item['unit_price'];
-            $operation['unit_price_after_sale'] = $details['items'][$count++]['unit_sale'];
+            $operation['unit_price_after_sale'] = $map_unit_sales[$item['id']];
             $operation['unit_cost'] = $item['unit_cost'];
             $operation['unit_commission'] = $item['unit_commission'];
 
-            $ids[]   = $this->stock_operation_repository->create($operation);
+            $ids[] = $this->stock_operation_repository->create($operation);
             $this->VariantStockService->UpdateStock($item['id'],$operation['quantity']);
         }
 
@@ -209,6 +208,7 @@ class StockOperationService implements StockOperationServiceInterface{
             $variants[$i]['unit_commission'] = $variant->product->marketer_commission;
             $i++;
         }
+
         return $variants;
     }
     public function ScanStock($data)
