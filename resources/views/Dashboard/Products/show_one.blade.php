@@ -215,7 +215,7 @@
                                 <td><input type="checkbox" class="variant_id form-check-input" value="{{$variant->id}}"></td>
                                 <td>{{ $variant->name }}</td>
                                 <td>{{ ($product->is_bundle == 0) ? $variant->price : $variant->pivot->price }}</td>
-                                @if ($product->is_bundle == 0)<td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->total_stock_quantity }}</a></td>@endif
+                                @if ($product->is_bundle == 0)<td><a class="link-primary" style="cursor: pointer" data-id="{{$variant->id}}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#quantities" >{{ $variant->quantity }}</a></td>@endif
                                 <td>{{ $variant->sku }}</td>
                                 @if ($product->is_bundle == 0)<td>@if(!empty($variant->shelf_num))<a href="" class="shelf_data_link" data-shelf_num="{{ $variant->shelf_num }}" data-name={{$variant->name}} data-bs-toggle="modal" data-bs-target="#shelfData">عرض الرف</a>@endif</td>@endif
                                 <td>

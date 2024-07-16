@@ -270,7 +270,7 @@
                                     <td style="width:80px;">
                                         <input style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" />
                                     </td>
-                                    <td><a data-id="{{ $item->variant->id }}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">{{abs($item->variant->quantity)}}</a></td>
+                                    <td><a data-id="{{ $item->variant->id }}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">{{$item->variant->quantity}}</a></td>
                                     <td>
                                         <select class="warehouse form-select" data-id="{{ $item->variant->id }}" name="old_items[{{ $loop->index }}][warehouse_id]">
                                             @foreach ($warehouses as $id => $name)
