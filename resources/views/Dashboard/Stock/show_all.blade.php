@@ -227,9 +227,11 @@
             @can('move','App\\Models\Stock')
                 <div class="fs-2" style="margin-right:20px" title="نقل مخزون "><a href="{{route('move_stock')}}"><i class="text-primary bi bi bi-shift"></i></a></div>
             @endcan
+            @if (false)
             @can('delete','App\\Models\Stock')
                 <div class="fs-2" style="margin-right:20px" title="حذف عمليات "><a href="" data-bs-toggle="modal" data-bs-target="#deleteModal" ><i class="text-danger bi bi-trash3-fill"></i></a></div>
             @endcan
+            @endif
         </div>
         @endcanany
 
