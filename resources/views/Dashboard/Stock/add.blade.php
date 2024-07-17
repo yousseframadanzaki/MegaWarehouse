@@ -204,7 +204,7 @@
     });
 
     old_warehouse_id = -1;
-    let item_index = 0
+    let loop_index = 0
     $(document).on('change', '.product_id, #warehouse_id', function() {
         var product_id = $(this).hasClass('product_id') ? $(this).val() : '';
         var product_name = $(this).hasClass('product_id') ? $(this).find(':selected').text() : '';
@@ -238,18 +238,18 @@
 
                     template += `
                         <div class="row mb-3" id="variant_${item.id}">
-                            <input type="hidden" name="product_variants[${item_index}][id]" value="${item.id}"/>
+                            <input type="hidden" name="product_variants[${loop_index}][id]" value="${item.id}"/>
                             <div class="col-md-4">
                                 ${ count == 1 ? '<h4 class="mb-3">اسم المتغير</h4>' : ''}
                                 <input type="text" id="variant_name" tabindex="-1" class="form-control " readonly value="${item.name}" />
                             </div>
                             <div class="col-md-4">
                                 ${ count == 1 ? '<h4 class="mb-3"> الكمية </h4>' : ''}
-                                <input type="number" id="variant_quantity" name="product_variants[${item_index}][quantity]" class="form-control" placeholder="الكمية"/>
+                                <input type="number" id="variant_quantity" name="product_variants[${loop_index}][quantity]" class="form-control" placeholder="الكمية"/>
                             </div>
                             <div class="col-md-4">
                                 ${ count++ == 1 ? '<h4 class="mb3"> رقم الرف </h4>' : ''}
-                                <input type="number" id="variant_shelf_num" name="product_variants[${item_index++}][shelf_num]" value="${shelf_data !== null ? shelf_data[warehouse_id] : ''}" readonly class="form-control w-75 d-inline-block ms-3" placeholder="رقم الرف"/>
+                                <input type="number" id="variant_shelf_num" name="product_variants[${loop_index++}][shelf_num]" value="${shelf_data !== null ? shelf_data[warehouse_id] : ''}" readonly class="form-control w-75 d-inline-block ms-3" placeholder="رقم الرف"/>
                                 <a href="" data-bs-target="#shelfModal" data-bs-toggle="modal" data-id="${item.id}" class="link-primary" title="تعديل الرف">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
