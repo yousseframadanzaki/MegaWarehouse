@@ -5,6 +5,37 @@
 @endsection
 
 @section('content')
+
+<style>
+    label {
+        font-weight: bold;
+    }
+
+    .accordion-button::after {
+        margin-left: 0px;
+        margin-right: auto;
+        background-color: white;
+        border-radius: 50%;
+        padding: 15px;
+        background-position: center;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+
+    .accordion {
+        --bs-accordion-border-color: #9163c5;
+    }
+
+    .accordion-button,
+    .accordion-button:not(.collapsed) {
+        background-color: #9163c5;
+        color: white;
+        font-weight: bold
+    }
+</style>
+
 <div class="p-3">
     <div class="row">
         <ul class="breadcrumb">
@@ -21,7 +52,7 @@
                 <input hidden value="buy" name="type">
                 <div class="col-md-4 @error('warehouse_id') has-error @enderror">
                     <label class="form-label">المخزن<span class="text-danger">*</span></label>
-                    <select class="form-select @error('warehouse_id') is-invalid @enderror product_info" aria-label="Default  select example" name="warehouse_id" id="warehouse_id">
+                    <select class="form-select @error('warehouse_id') is-invalid @enderror product_info" aria-label="Default  select example" name="warehouse_id" id="warehouse_id" required>
                         <option value="">اختار المخزن </option>
                         @foreach ($warehouses as $id => $name)
                         <option @if ($id==old('warehouse_id')) selected @endif value="{{ $id }}">{{ $name }}</option>
@@ -29,22 +60,7 @@
                     </select>
                     @error('warehouse_id')
                     <div class="invalid-feedback">
-                        {{__($message)}}
-                    </div>
-                    @enderror
-
-                </div>
-                <div class="col-md-4 @error('product_variants') has-error @enderror">
-                    <label class="form-label">المنتج<span class="text-danger">*</span></label>
-                    <select class="form-select @error('product_variants') is-invalid @enderror product_info" aria-label="Default  select example" id="product_id">
-                        <option value="">اختار المنتج </option>
-                        @foreach ($products as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
-                    </select>
-                    @error('product_variants')
-                    <div class="invalid-feedback">
-                        {{__($message)}}
+                        {{($message)}}
                     </div>
                     @enderror
 
@@ -58,59 +74,59 @@
                     </div>
                 </div>
 
+                {{-- <div class="col-md-4 @error('invoice_number') has-error @enderror">
+                    <label class="form-label">رقم الفاتورة<span class="text-danger">*</span></label>
+                    <input type="text" name="invoice_number" class="form-control @error('invoice_number') is-invalid @enderror" id="invoice_number">
+                    @error('invoice_number')
+                    <div class="invalid-feedback">
+                        {{($message)}}
+                    </div>
+                    @enderror
 
+                </div> --}}
 
-            </div>
-            <div class="row mt-3">
-
-                <div class="col-md-8">
+                <div class="col-md-4">
                     <label class="form-label">ملاحظة</label>
 
-                    <textarea rows="2" name="note" id="" class="form-control"></textarea>
+                    <textarea rows="1" name="note" id="" class="form-control"></textarea>
                     <div class="invalid-feedback product_id">
 
                     </div>
                 </div>
-            </div>
-            <!--<div class="row">
-                        <div class="col-md-4  @error('warehouse_to_id') has-error @enderror" >
-                            <label class="form-label" id="warehouse_to_label"
-                            @if (!$errors->has('warehouse_to_id') && 'move' !== old('type'))
-                                style="display:none"
-                            @endif>الى مخزن<span class="text-danger">*</span></label>
-                            <select   name="warehouse_to_id"
-                                id="warehouse_to_id"
-                                @if ($errors->has('warehouse_to_id') || 'move' === old('type'))
 
-                                    class="form-select is-invalid product_info"
-                                @else
-                                    class="form-select"
-                                    style="display:none"
-                                @endif
-                                >
-                                <option value="">اختار المخزن </option>
-                                @foreach ($warehouses as $id => $name)
-                                    <option @if ($id == old('warehouse_to_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                            @error('warehouse_to_id')
-                                <div class="invalid-feedback">
-                                    {{__($message)}}
-                                </div>
-                            @enderror
-                        </div>
-                    </div>-->
+            </div>
+
             <div class="row mt-3">
                 <div id="preview" style="display: none">
                     <img id="preview_img" style="width: 200px;height:200px;object-fit:contain" />
                 </div>
             </div>
-            <div class="row mt-3">
-                <div id="variants">
+
+            <div class="row mt-3 product_select">
+                <div class="col-md-4 @error('product_variants') has-error @enderror">
+                    <label class="form-label">إضافة منتج<span class="text-danger">*</span></label>
+                    <select class="form-select @error('product_variants') is-invalid @enderror product_id product_info" aria-label="Default  select example" id="product_id">
+                        <option value="">اختار المنتج </option>
+                        @foreach ($products as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
+                        @endforeach
+                    </select>
+                    @error('product_variants')
+                    <div class="invalid-feedback">
+                        {{($message)}}
+                    </div>
+                    @enderror
 
                 </div>
             </div>
-            <button class="btn col-md-12 btn-lg btn-primary mt-3">أضافة مخزون <i class="bi bi-plus"></i></button>
+
+            <div class="row mt-3">
+                <div id="variants">
+                    <div class="accordion mt-3" id="accordionExample">
+                    </div>
+                </div>
+            </div>
+            <button class="btn col-md-12 btn-lg btn-primary mt-4">أضافة مخزون <i class="bi bi-plus"></i></button>
         </form>
         <button class="btn col-md-12 btn-lg btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#scan">
             فحص <i class="bi bi-upc-scan"></i></button>
@@ -180,55 +196,77 @@
 
 @section('script')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <script>
     $('select.product_info').select2({
         padding: 'resolve',
     });
 
-    $('#product_id, #warehouse_id').change(function() {
-        var product_id = $('#product_id').val();
+    old_warehouse_id = -1;
+    let item_index = 0
+    $(document).on('change', '.product_id, #warehouse_id', function() {
+        var product_id = $(this).hasClass('product_id') ? $(this).val() : '';
+        var product_name = $(this).hasClass('product_id') ? $(this).find(':selected').text() : '';
         var warehouse_id = $('#warehouse_id').val();
 
-        if (product_id != '') {
-            $("#variants").html("");
+        if (warehouse_id != old_warehouse_id) {
+            old_warehouse_id = warehouse_id;
+            $('#variants #accordionExample').html('');
+        }
 
+        if (product_id != '') {
             $.ajax({
                 type: 'GET',
                 url: `/api/product/${product_id}/variants`,
                 dataType: "text",
             }).then((response) => {
                 data = JSON.parse(response);
-                count = 1;
+                let count = 1;
+                let template = `
+                    <div class="accordion-item rounded mt-3">
+                        <h2 class="accordion-header" id="panels-heading${product_id}">
+                            <button class="accordion-button rounded px-4 py-2 get_orders" type="button" data-bs-toggle="collapse" data-bs-target="#panels-collapse${product_id}" aria-expanded="true" aria-controls="panels-collapse${product_id}">
+                                ${product_name}
+                            </button>
+                        </h2>
+                        <div id="panels-collapse${product_id}" class="accordion-collapse collapse px-4 pt-4 pb-1" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+                `;
+
                 $.each(data, function(index, item) {
                     shelf_data = JSON.parse(item.shelf_num);
 
-                    var template = `
-                    <div class="row mt-3" id="variant_${item.id}">
-                        <input type="hidden" name="product_variants[${index}][id]" value="${item.id}"/>
-                        <div class="col-md-4">
-                            ${ count == 1 ? '<h4 class="mb-3">اسم المتغير</h4>' : ''}
-                            <input type="text" id="variant_name" tabindex="-1" class="form-control " readonly value="${item.name}" />
+                    template += `
+                        <div class="row mb-3" id="variant_${item.id}">
+                            <input type="hidden" name="product_variants[${item_index}][id]" value="${item.id}"/>
+                            <div class="col-md-4">
+                                ${ count == 1 ? '<h4 class="mb-3">اسم المتغير</h4>' : ''}
+                                <input type="text" id="variant_name" tabindex="-1" class="form-control " readonly value="${item.name}" />
+                            </div>
+                            <div class="col-md-4">
+                                ${ count == 1 ? '<h4 class="mb-3"> الكمية </h4>' : ''}
+                                <input type="number" id="variant_quantity" name="product_variants[${item_index}][quantity]" class="form-control" placeholder="الكمية"/>
+                            </div>
+                            <div class="col-md-4">
+                                ${ count++ == 1 ? '<h4 class="mb3"> رقم الرف </h4>' : ''}
+                                <input type="number" id="variant_shelf_num" name="product_variants[${item_index++}][shelf_num]" value="${shelf_data !== null ? shelf_data[warehouse_id] : ''}" readonly class="form-control w-75 d-inline-block ms-3" placeholder="رقم الرف"/>
+                                <a href="" data-bs-target="#shelfModal" data-bs-toggle="modal" data-id="${item.id}" class="link-primary" title="تعديل الرف">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            ${ count == 1 ? '<h4 class="mb-3"> الكمية </h4>' : ''}
-                            <input type="number" id="variant_quantity" name="product_variants[${index}][quantity]" class="form-control" placeholder="الكمية"/>
-                        </div>
-                        <div class="col-md-4">
-                            ${ count++ == 1 ? '<h4 class="mb-3"> رقم الرف </h4>' : ''}
-                            <input type="number" id="variant_shelf_num" name="product_variants[${index}][shelf_num]" value="${shelf_data !== null ? shelf_data[warehouse_id] : ''}" readonly class="form-control w-75 d-inline-block ms-3" placeholder="رقم الرف"/>
-                            <a href="" data-bs-target="#shelfModal" data-bs-toggle="modal" data-id="${item.id}" class="link-primary" title="تعديل الرف">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                        </div>
-                    </div>
+                    `;
+                });
+
+                template += `
+                    </div></div>
                 `;
 
-                    $("#variants").append(template);
-
+                $("#variants #accordionExample").append(template);
+                $('select').select2({
+                    padding: 'resolve',
                 });
-            })
+            });
         }
     })
 
@@ -332,7 +370,7 @@
     });
 
     function save_stock(item) {
-        var index = $('#variants').children().length;
+        var index = $('#variants #accordionExample').children().length;
 
         var template = `
                 <div class="row mt-3">
@@ -349,7 +387,7 @@
                 </div>
             `;
 
-        $("#variants").append(template);
+        $("#variants #accordionExample").append(template);
     }
 
     function show_success(message) {

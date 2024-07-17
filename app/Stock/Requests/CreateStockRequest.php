@@ -27,7 +27,8 @@ class CreateStockRequest extends FormRequest
             'type' => 'required|in:buy,sell,move',
             'product_variants' => 'required|array|min:1',
             'product_variants.id' => 'exists:variants,id',
-            'warehouse_to_id'=>'exclude_unless:type,move|required|different:warehouse_id'
+            'warehouse_to_id'=>'exclude_unless:type,move|required|different:warehouse_id',
+            // 'invoice_number' =>'required|unique:invoices,invoice_number',
         ];
     }
 }
