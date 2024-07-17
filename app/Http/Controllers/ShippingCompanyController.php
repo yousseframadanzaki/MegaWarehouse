@@ -99,8 +99,8 @@ class ShippingCompanyController extends Controller
 
     public function shipping_company_statues(Request $request) {
         $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
-        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id);
-        $statuses = $shipping_company->statues->where('related_shipping', 1);
+        $shipping_company = $shipping_companies->find($request->shipping_company_id);
+        $statuses = $shipping_company->statues->where('related_shipping', 1)->unique('id');
         $orders_number = $shipping_company->orders->whereIn('status_id', $statuses->pluck('id'))->count();
         return view('Dashboard.ShippingCompanies.shipping_orders', compact('shipping_companies', 'orders_number', 'shipping_company','statuses'));
     }
