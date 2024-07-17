@@ -56,7 +56,7 @@
                                 <td>{{ $variant->name }}</td>
                                 <td>{{ $variant->quantity}}</td>
                                 <td>{{ abs($variant->stock->sum('quantity')) }}</td>
-                                <td><a href="{{ route('all_orders') }}?status_id=5">{{ $variant->stock->count() }}</a></td>
+                                <td><a href="{{ route('all_orders') }}?status_id=5&product_id={{ $variant->product_id }}&variant_id={{ $variant->id }}">{{ $variant->stock->count() }}</a></td>
                             </tr>
                         @endforeach
                     </tbody>
