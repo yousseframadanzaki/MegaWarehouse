@@ -253,6 +253,8 @@
                         @endisset
                     </div>
                     </h3>
+                    <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
+                    <p style="font-size: 14px;"> @date_format($order->created_at)</p>
                 </div>
             </div>
             <div class="column">
@@ -273,8 +275,6 @@
                     <div style="font-weight: bold;">
                     {{$order->order_code}}
                     </div>
-                    <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
-                    <p style="font-size: 14px;"> @date_format($order->created_at)</p>
                 </div>
             </div>
         </div>

@@ -112,9 +112,9 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="form-label">@lang('global.way_bill_print')</label>
-                                <select id="print_id" class="form-select" name="print_id" style="width: 100%">
-                                    <option selected> @lang('global.choose')</option>
-                                    <option value="1"> @lang('global.way_bill_type_1')</option>
+                                <select id="print_id" class="form-select" name="print_id" style="width: 100%" required>
+                                    <option value=""> @lang('global.choose')</option>
+                                    <option value="1" selected> @lang('global.way_bill_type_1')</option>
                                     <option value="2"> @lang('global.way_bill_type_2')</option>
                                 </select>
                             </div>
