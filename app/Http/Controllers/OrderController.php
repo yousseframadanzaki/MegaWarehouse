@@ -220,7 +220,7 @@ class OrderController extends Controller
                 return redirect()->route('scan_order', $orders->first()->id);
             else
                 return redirect()->back()->with('error', 'هذا الأوردر غير موجود');
-        } 
+        }
     }
     public function destroy(Request $request) {
         return response()->json($this->OrdersService->DeleteOrder($request->order_id));

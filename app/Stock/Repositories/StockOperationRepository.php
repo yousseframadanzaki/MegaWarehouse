@@ -110,14 +110,17 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
     }
     public function update_stock($order_id ,$data){
         foreach ($data as $index => $stockData) {
-            Stock::where('order_id', $order_id)
-                 ->where('variant_id', $stockData['id'])
-                 ->update([
-                     'unit_price_after_sale' => $stockData['unit_sale'],
-                     'warehouse_id' => $stockData['warehouse_id'],
-                     'quantity' => $stockData['quantity'],
-                     'updated_at' => now()
-                 ]);
+            $stock = Stock::where('order_id', $order_id)
+                 ->where('variant_id', $stockData['id'])->first();
+
+            Variant::where('id', $stockData['id'])->increment('quantity', (abs($stock->quantity) - $stockData['quantity']));
+
+            $stock->update([
+                'unit_price_after_sale' => $stockData['unit_sale'],
+                'warehouse_id' => $stockData['warehouse_id'],
+                'quantity' => -1 * $stockData['quantity'],
+                'updated_at' => now()
+            ]);
         }
         return true;
     }
@@ -126,18 +129,21 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
         foreach ($new_items as $item) {
             $item['variant_id'] = $item['id'];
             unset($item['id']);
+            $item['quantity'] = -1 * $item['quantity'];
             $new_stock = Stock::create($item);
             $new_stocks[] = $new_stock;
+            Variant::where('id', $item['variant_id'])->increment('quantity', $item['quantity']);
         }
         return $new_stocks;
     }
     public function DeleteStock($id) {
         $stock = Stock::find($id);
-        $variant = Variant::find($stock->variant_id);
-        $variant->update([
-            'quantity' => $variant->quantity + abs($stock->quantity)
-        ]);
-        return $stock->delete();
+        if ($stock->delete()) {
+            Variant::where('id', $stock->variant_id)->increment('quantity', abs($stock->quantity));
+            return true;
+        }
+
+        return false;
     }
 
 }
