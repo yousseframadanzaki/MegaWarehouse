@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -34,7 +34,7 @@
                         <a data-bs-dismiss="modal" class="delete_btn btn btn-secondary">لا</a>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
 
         <div class="card shadow-sm p-3">
             <form method="GET" action="{{ route('all_invoices') }}" id="search">
-                <div class="row mt-2">                    
+                <div class="row mt-2">
                     <div class="col-md-4">
                         <label class="form-label">الموردين</label>
                         <select class="form-select product_info" aria-label="Default  select example" name="supplier_id"
@@ -84,14 +84,14 @@
                     </div>
                 </div>
                 <div class="row mt-2">
-                    
-                    
+
+
                     <div class="col-md-4">
                         <label class="form-label">تاريخ الى</label>
                         <input class="form-control datetimeplugin" name="date_to" id=""
                             value="{{ Request::get('date_to') }}">
                     </div>
-                    
+
                 </div>
 
                 <div class="d-flex mt-3 justify-content-end">
@@ -129,7 +129,7 @@
                     @foreach ($invoices as $invoice)
                         <tr>
                            <td><a href="{{route('show_invoice',$invoice->id)}}">{{$invoice->id}}</a></td>
-                           <td>{{$invoice->supplier->name}}</td>
+                           <td>{{$invoice->supplier->name??''}}</td>
                            <td>{{$invoice->total_cost}}</td>
                            <td>{{$invoice->total_cost - $invoice->paid_amount}}</td>
                            <td >@date_format($invoice->created_at)</td>
@@ -169,6 +169,6 @@
             let params = new URLSearchParams(query);
             window.location.search = params.toString();
         })
-        
+
     </script>
 @endsection
