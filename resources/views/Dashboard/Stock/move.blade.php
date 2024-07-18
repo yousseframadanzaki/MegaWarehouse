@@ -202,12 +202,13 @@ $('#product_id').change(function () {
                         ${product_name}
                     </button>
                 </h2>
-                <div id="panels-collapse${product_id}" class="accordion-collapse collapse px-4 pt-4 pb-1" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+                <div id="panels-collapse${product_id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+                    <div class="px-4 py-3">
         `;
 
         $.each(data, function (index,item) {
             template += `
-                <div class="row mt-3">
+                <div class="row my-2">
                     <input type="hidden" name="product_variants[${loop_index}][id]" value="${item.id}"/>
                     <div class="col-md-4">
                         <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
@@ -219,7 +220,7 @@ $('#product_id').change(function () {
             `;
         });
 
-        template += `</div></div>`;
+        template += `</div></div></div>`;
         $("#variants #accordionExample").append(template);
         $('#product_id :selected').prop('disabled', true);
     })

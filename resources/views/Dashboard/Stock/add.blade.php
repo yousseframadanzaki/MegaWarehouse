@@ -203,7 +203,7 @@
         padding: 'resolve',
     });
 
-    old_warehouse_id = -1;
+    old_warehouse_id = '';
     let loop_index = 0
     $(document).on('change', '.product_id, #warehouse_id', function() {
         var product_id = $(this).hasClass('product_id') ? $(this).val() : '';
@@ -213,7 +213,9 @@
         if (warehouse_id != old_warehouse_id) {
             old_warehouse_id = warehouse_id;
             $('#variants #accordionExample').html('');
-            $('#product_id :selected').prop('disabled', false);
+            $('#product_id option').prop('disabled', false);
+            $('#product_id').val('');
+            $('#product_id').select2();
         }
 
         if (product_id != '') {
@@ -231,14 +233,15 @@
                                 ${product_name}
                             </button>
                         </h2>
-                        <div id="panels-collapse${product_id}" class="accordion-collapse collapse px-4 pt-4 pb-1" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+                        <div id="panels-collapse${product_id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+                            <div class="px-4 py-3">
                 `;
 
                 $.each(data, function(index, item) {
                     shelf_data = JSON.parse(item.shelf_num);
 
                     template += `
-                        <div class="row mb-3" id="variant_${item.id}">
+                        <div class="row my-2" id="variant_${item.id}">
                             <input type="hidden" name="product_variants[${loop_index}][id]" value="${item.id}"/>
                             <div class="col-md-4">
                                 ${ count == 1 ? '<h4 class="mb-3">اسم المتغير</h4>' : ''}
@@ -259,9 +262,7 @@
                     `;
                 });
 
-                template += `
-                    </div></div>
-                `;
+                template += `</div></div></div>`;
 
                 $("#variants #accordionExample").append(template);
                 $('#product_id :selected').prop('disabled', true);
