@@ -250,7 +250,7 @@
                         <th scope="col">رقم الرف</th>
                         <th scope="col">المورد</th>
                         <th scope="col">الكمية</th>
-                        <th scope="col">الفاتورة</th>
+                        <th scope="col" class="text-center" style="width: 70px;">المستند</th>
                         <th scope="col">الاوردر</th>
                         <th scope="col">ملاحظة</th>
                         <th scope="col">صورة</th>
@@ -275,7 +275,7 @@
                                     <span class="text-success fw-bolder">{{ $operation->quantity }}</span>
                                 @endif
                             </td>
-                            <td><a href="{{route('show_invoice',$operation->invoice_id ?? '') }}">{{ $operation->invoice_id}}</a></td>
+                            <td><a href="{{route('show_invoice',$operation->invoice_id ?? '') }}" class="w-100 d-inline-block text-center">@if(!empty($operation->invoice_id) && $operation->type == 'buy') فاتورة @elseif(!empty($operation->invoice_id)) إذن نقل @endif <br> {{ $operation->invoice_id}}</a></td>
                             <td><a href="{{route('show_order',$operation->order_id ?? '')}}">{{ $operation->order->order_code ?? ''}}</a></td>
                             <td>{{ $operation->note }}</td>
                             <td>

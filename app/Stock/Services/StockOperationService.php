@@ -75,6 +75,8 @@ class StockOperationService implements StockOperationServiceInterface{
             }
         }
 
+        $invoice_id = $this->InvoiceService->AddInvoice(['company_id' => auth()->user()->company_id]);
+        $this->stock_operation_repository->update_invoice_id($ids,$invoice_id);
 
         if(isset($details['image']) && count($ids) > 0){
             $file = $this->FileUploadService->handle($details['image'],'stock',$user->company_id);

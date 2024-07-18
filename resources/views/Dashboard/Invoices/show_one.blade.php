@@ -103,114 +103,160 @@
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_invoices') }}">الفواتير</a></li>
-                <li><a class="link-dark">فاتوره رقم {{ $invoice->id }} </a></li>
+                @if (empty($invoice->total_cost) && empty($invoice->supplier_id))
+                    <li><a class="link-dark"> إذن نقل {{ $invoice->id }} </a></li>
+                @else
+                    <li><a class="link-dark">فاتوره رقم {{ $invoice->id }} </a></li>
+                @endif
             </ul>
 
-            <div class="card p-3 shadow-sm mt-3">
-                <div class="row">
-                    <h3>بيانات المورد</h3>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold">اسم المورد :</label>
-                        <label>{{ $invoice->supplier->name }}</label>
-                    </div>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold">رقم التليفون :</label>
-                        <label>{{ $invoice->supplier->phone }} @can('send_whatsapp', 'App\Models\Template')
-                                <i data-phone="{{ $invoice->supplier->phone }}" data-bs-toggle="modal"
-                                    data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;"
-                                    class="bi bi-whatsapp"></i>
-                            @endcan
-                        </label>
-                    </div>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold"> عنوان :</label>
-                        <label>{{ $invoice->supplier->address }}</label>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <h3>بيانات الفاتورة</h3>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold">رقم الفاتورة :</label>
-                        <label>{{ $invoice->id }}</label>
-                    </div>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold">قيمة الفاتورة :</label>
-                        <label>{{ $invoice->total_cost }}</label>
-                    </div>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold"> باقى لم يسدد :</label>
-                        <label>{{ $invoice->total_cost - $invoice->paid_amount }}</label>
-                        @if($invoice->total_cost - $invoice->paid_amount != 0)
-                        <button class="btn btn-primary btn-sm"
-                            data-value="{{ $invoice->total_cost - $invoice->paid_amount }}" data-bs-toggle="modal"
-                            data-bs-target="#payModal">تسديد</button>
-                        @endif
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold"> الادمن :</label>
-                        <label>{{ $invoice->stocks[0]->admin->name }}</label>
-                    </div>
-                    <div class="col-md-4 fs-5">
-                        <label class="fw-bold"> المخزن :</label>
-                        <label>{{ $invoice->stocks[0]->warehouse->name }}</label>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <h3>المحتويات</h3>
-                    <table class="table table-hover" id="variants_table">
-                        <thead>
-                            <tr>
-                                <th scope="col">المنتج</th>
-                                <th scope="col">المتغير</th>
-                                <th scope="col">الكمية</th>
-                                <th scope="col">تكلفة الوحدة</th>
-                                <th scope="col">اجمالى التكلفة</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($invoice->stocks as $stock)
+            @if (empty($invoice->total_cost) && empty($invoice->supplier_id))
+                <div class="card p-3 shadow-sm mt-3">
+                    <div class="row">
+                        <h3 class="text-center mb-4">عمليات إذن نقل {{ $invoice->id }}</h3>
+                        <table class="table table-hover" id="variants_table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $stock->variant->product->name }}</td>
-                                    <td>{{ $stock->variant->name }}</td>
-                                    <td>{{ $stock->quantity }}</td>
-                                    <td>{{ $stock->unit_cost }}</td>
-                                    <td>{{ $stock->unit_cost * $stock->quantity }}</td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">اسم المنتج</th>
+                                    <th scope="col">اسم المتغير</th>
+                                    <th scope="col">من مخزن</th>
+                                    <th scope="col">إلي مخزن</th>
+                                    <th scope="col">الكمية</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $count = 1;
+                                    $invoice_stocks = $invoice->stocks;
+                                    $from_warehouse = $invoice_stocks->where('quantity', '<', 0)->first()->warehouse->name;
+                                    $to_warehouse = $invoice_stocks->where('quantity', '>', 0)->first()->warehouse->name;
+                                @endphp
 
+                                @foreach ($invoice_stocks->sortBy('variant_id') as $stock)
+                                    @if ($loop->index % 2 == 0) 
+                                        <tr>
+                                            <td>{{$count}}</td>
+                                            <td>{{$stock->variant->product->name}}</td>
+                                            <td>{{$stock->variant->name}}</td>
+                                            <td>{{$from_warehouse}}</td>
+                                            <td>{{$to_warehouse}}</td>
+                                            <td>{{abs($stock->quantity)}}</td>
+                                            @php $count ++ @endphp
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="card p-3 shadow-sm mt-3">
-                <div class="row">
-                    <h3>الحسابات</h3>
-                    <table class="table table-hover" id="variants_table">
-                        <thead>
-                            <tr>
-                                <th scope="col">من</th>
-                                <th scope="col">الى</th>
-                                <th scope="col">القيمة</th>
-                                <th scope="col">ملاحظة</th>
-                                <th scope="col">تاريخ الاضافة</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($invoice->transactions as $transaction)
+            @else
+                <div class="card p-3 shadow-sm mt-3">
+                    <div class="row">
+                        <h3>بيانات المورد</h3>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold">اسم المورد :</label>
+                            <label>{{ $invoice->supplier->name }}</label>
+                        </div>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold">رقم التليفون :</label>
+                            <label>{{ $invoice->supplier->phone }} @can('send_whatsapp', 'App\Models\Template')
+                                    <i data-phone="{{ $invoice->supplier->phone }}" data-bs-toggle="modal"
+                                        data-bs-target="#whatsappModal" style="color: #25D366;cursor: pointer;"
+                                        class="bi bi-whatsapp"></i>
+                                @endcan
+                            </label>
+                        </div>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold"> عنوان :</label>
+                            <label>{{ $invoice->supplier->address }}</label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <h3>بيانات الفاتورة</h3>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold">رقم الفاتورة :</label>
+                            <label>{{ $invoice->id }}</label>
+                        </div>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold">قيمة الفاتورة :</label>
+                            <label>{{ $invoice->total_cost }}</label>
+                        </div>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold"> باقى لم يسدد :</label>
+                            <label>{{ $invoice->total_cost - $invoice->paid_amount }}</label>
+                            @if($invoice->total_cost - $invoice->paid_amount != 0)
+                            <button class="btn btn-primary btn-sm"
+                                data-value="{{ $invoice->total_cost - $invoice->paid_amount }}" data-bs-toggle="modal"
+                                data-bs-target="#payModal">تسديد</button>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold"> الادمن :</label>
+                            <label>{{ $invoice->stocks[0]->admin->name }}</label>
+                        </div>
+                        <div class="col-md-4 fs-5">
+                            <label class="fw-bold"> المخزن :</label>
+                            <label>{{ $invoice->stocks[0]->warehouse->name }}</label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <h3>المحتويات</h3>
+                        <table class="table table-hover" id="variants_table">
+                            <thead>
                                 <tr>
-                                    <td>{{$transaction->from_user->name}}</td>
-                                    <td>{{$transaction->to_user->name}}</td>
-                                    <td>{{$transaction->value}}</td>
-                                    <td>{{$transaction->note}}</td>
-                                    <td>@date_format($transaction->created_at)</td>
+                                    <th scope="col">المنتج</th>
+                                    <th scope="col">المتغير</th>
+                                    <th scope="col">الكمية</th>
+                                    <th scope="col">تكلفة الوحدة</th>
+                                    <th scope="col">اجمالى التكلفة</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($invoice->stocks as $stock)
+                                    <tr>
+                                        <td>{{ $stock->variant->product->name }}</td>
+                                        <td>{{ $stock->variant->name }}</td>
+                                        <td>{{ $stock->quantity }}</td>
+                                        <td>{{ $stock->unit_cost }}</td>
+                                        <td>{{ $stock->unit_cost * $stock->quantity }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
-            </div>
+                <div class="card p-3 shadow-sm mt-3">
+                    <div class="row">
+                        <h3>الحسابات</h3>
+                        <table class="table table-hover" id="variants_table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">من</th>
+                                    <th scope="col">الى</th>
+                                    <th scope="col">القيمة</th>
+                                    <th scope="col">ملاحظة</th>
+                                    <th scope="col">تاريخ الاضافة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($invoice->transactions as $transaction)
+                                    <tr>
+                                        <td>{{$transaction->from_user->name}}</td>
+                                        <td>{{$transaction->to_user->name}}</td>
+                                        <td>{{$transaction->value}}</td>
+                                        <td>{{$transaction->note}}</td>
+                                        <td>@date_format($transaction->created_at)</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
         </div>
 
 

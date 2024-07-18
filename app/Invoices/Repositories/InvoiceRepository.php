@@ -17,7 +17,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface{
         return Invoice::with([
             'supplier',
         ])->withSum('transactions as paid_amount','value')
-        ->where(['company_id'=>$company_id])
+        ->where(['company_id'=>$company_id])->whereNotNull('total_cost')
         ->filter($filters)
         ->orderBy('created_at','DESC')
         ->paginate(20);
