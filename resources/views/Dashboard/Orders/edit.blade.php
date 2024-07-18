@@ -484,8 +484,6 @@
                 // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
                 // $("#warehouse_id").val('');
                 $("#quantity").val(1);
-
-                $("#product_id").select2();
             } else {
                 alert('يرجى ملء جميع الحقول');
             }
