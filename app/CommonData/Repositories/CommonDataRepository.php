@@ -162,4 +162,8 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
     public function get_payment_types_by_category($category){
         return PaymentType::where('category', $category)->pluck('name', 'id');
     }
+
+    public function get_supplier_products($company_id, $supplier_id) {
+        return Product::where(['company_id' => $company_id, 'supplier_id' => $supplier_id])->pluck('name', 'id');
+    }
 }

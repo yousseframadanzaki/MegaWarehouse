@@ -91,4 +91,5 @@ Route::post('order/{id}/delete', [OrderController::class, 'destroy']);
 Route::post('product/{id}/delete', [ProductController::class, 'destroy']);
 Route::post('variant/{id}/delete', [ProductController::class, 'destroy_variant']);
 Route::get('variant/shelf-data', [ProductController::class, 'get_variant_shelf_data']);
+Route::get('supplier/{supplier_id}/products', [CommonDataController::class, 'get_supplier_products']);
 

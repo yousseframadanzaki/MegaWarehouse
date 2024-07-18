@@ -102,14 +102,27 @@
                 </div>
             </div>
 
-            <div class="row mt-3 product_select">
+            <div class="row mt-3">
+                <div class="col-md-4 @error('supplier_id') has-error @enderror">
+                    <label class="form-label">المورد<span class="text-danger">*</span></label>
+                    <select class="form-select @error('supplier_id') is-invalid @enderror product_info" aria-label="Default  select example" name="supplier_id" id="supplier_id" required>
+                        <option value="">اختار المورد </option>
+                        @foreach ($suppliers as $id => $name)
+                            <option value="{{ $id }}">{{ $name }}</option>
+                        @endforeach
+                    </select>
+                    @error('supplier_id')
+                        <div class="invalid-feedback">
+                            {{($message)}}
+                        </div>
+                    @enderror
+
+                </div>
+
                 <div class="col-md-4 @error('product_variants') has-error @enderror">
                     <label class="form-label">إضافة منتج<span class="text-danger">*</span></label>
                     <select class="form-select @error('product_variants') is-invalid @enderror product_id product_info" aria-label="Default  select example" id="product_id">
                         <option value="">اختار المنتج </option>
-                        @foreach ($products as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                        @endforeach
                     </select>
                     @error('product_variants')
                     <div class="invalid-feedback">
@@ -203,8 +216,28 @@
         padding: 'resolve',
     });
 
+    $('#supplier_id').change(function() {
+        $('#variants #accordionExample').html('');
+        $('#product_id').html('');
+
+        supplier_id = $(this).val();
+        $.ajax({
+            type: 'GET',
+            url: `/api/supplier/${supplier_id}/products`,
+            dataType: "text",
+            success: function(response) {
+                data = JSON.parse(response);
+                $('#product_id').append('<option value="">اختار المنتج </option>');
+                $.each(data, function(id, name) {
+                    $('#product_id').append(`<option value="${id}">${name}</option>`);
+                });
+                $('#product_id').select2();
+            }
+        })
+    })
+
     old_warehouse_id = '';
-    let loop_index = 0
+    let loop_index = 0;
     $(document).on('change', '.product_id, #warehouse_id', function() {
         var product_id = $(this).hasClass('product_id') ? $(this).val() : '';
         var product_name = $(this).hasClass('product_id') ? $(this).find(':selected').text() : '';

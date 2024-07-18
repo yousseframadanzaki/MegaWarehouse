@@ -118,7 +118,7 @@ class StockOperationService implements StockOperationServiceInterface{
             }
         }
 
-        $invoice_info = $this->VariantStockService->GetInvoiceInfo($details['product_variants']);
+        $invoice_info = $this->VariantStockService->GetInvoiceInfo($details['product_variants'], $details['supplier_id']);
         $invoice_id = $this->InvoiceService->AddInvoice($invoice_info);
         $this->stock_operation_repository->update_invoice_id($ids,$invoice_id);
         $this->OrdersRepository->update_incomplete_orders_status();

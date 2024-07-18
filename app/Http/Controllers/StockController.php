@@ -48,8 +48,8 @@ class StockController extends Controller
     {
         $company_id = $this->company_id();
         $warehouses = $this->CommonDataService->GetCompanyWarehouses($company_id);
-        $products   = $this->CommonDataService->GetCompanyProducts($company_id);
-        return view('Dashboard.Stock.add')->with(compact('warehouses', 'products'));
+        $suppliers   = $this->CommonDataService->GetCompanySuppliers($company_id);
+        return view('Dashboard.Stock.add')->with(compact('warehouses', 'suppliers'));
     }
     public function move()
     {

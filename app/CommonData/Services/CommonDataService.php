@@ -96,4 +96,8 @@ class CommonDataService implements CommonDataServiceInterface{
     public function GetPaymentTypesByCategory($category) {
         return $this->common_data_repository->get_payment_types_by_category($category);
     }
+
+    public function GetSupplierProducts($company_id, $supplier_id) {
+        return $this->common_data_repository->get_supplier_products($company_id, $supplier_id);
+    }
 }

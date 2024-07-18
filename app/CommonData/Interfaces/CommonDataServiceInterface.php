@@ -23,4 +23,5 @@ interface CommonDataServiceInterface{
     public function GetUsersByRoleType($company_id,$role_type);
     public function GetPaymentTypesCategories();
     public function GetPaymentTypesByCategory($category);
+    public function GetSupplierProducts($company_id, $supplier_id);
 }

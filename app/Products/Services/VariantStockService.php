@@ -18,14 +18,14 @@ class VariantStockService implements VariantStockServiceInterface{
         $this->product_variants_repository->add_variant_stock_by_id($variant_id,$quantity);
     }
 
-    public function GetInvoiceInfo($variants_data){
+    public function GetInvoiceInfo($variants_data, $supplier_id){
         $data = array();
         $variants_ids = array_column($variants_data,'id');
         $variants = $this->product_variants_repository->get_variants($variants_ids);
         $total_cost = $this->calculate_total_cost($variants,$variants_data);
 
         $data['total_cost'] = $total_cost;
-        $data['supplier_id'] = $variants[0]->product->supplier_id;
+        $data['supplier_id'] = $supplier_id;
         $data['company_id'] = $variants[0]->product->company_id;
 
         // var_dump($data);die;

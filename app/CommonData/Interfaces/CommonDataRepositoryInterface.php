@@ -23,4 +23,5 @@ interface CommonDataRepositoryInterface{
     public function get_users_by_role_type($company_id,$role_type);
     public function get_payment_types_categories();
     public function get_payment_types_by_category($category);
+    public function get_supplier_products($company_id, $supplier_id);
 }

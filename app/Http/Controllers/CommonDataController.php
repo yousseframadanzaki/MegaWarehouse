@@ -45,4 +45,7 @@ class CommonDataController extends Controller
         return response()->json($this->CommonDataService->GetVariant($variant_id));
     }
 
+    public function get_supplier_products($supplier_id) {
+        return $this->CommonDataService->GetSupplierProducts($this->company_id(), $supplier_id);
+    }
 }
