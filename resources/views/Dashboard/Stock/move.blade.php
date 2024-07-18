@@ -5,6 +5,36 @@
 @endsection
 
 @section('content')
+    <style>
+        label {
+            font-weight: bold;
+        }
+
+        .accordion-button::after {
+            margin-left: 0px;
+            margin-right: auto;
+            background-color: white;
+            border-radius: 50%;
+            padding: 15px;
+            background-position: center;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+
+        .accordion {
+            --bs-accordion-border-color: #9163c5;
+        }
+
+        .accordion-button,
+        .accordion-button:not(.collapsed) {
+            background-color: #9163c5;
+            color: white;
+            font-weight: bold
+        }
+    </style>
+
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
@@ -22,7 +52,7 @@
                     <div class="col-md-4 @error('warehouse_id') has-error @enderror">
                         <label class="form-label">المخزن<span class="text-danger">*</span></label>
                         <select class="form-select @error('warehouse_id') is-invalid @enderror product_info" aria-label="Default  select example" name="warehouse_id"
-                            id="warehouse_id">
+                            id="warehouse_id" required>
                             <option value="">اختار المخزن </option>
                             @foreach ($warehouses as $id => $name)
                                 <option @if ($id == old('warehouse_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
@@ -55,7 +85,7 @@
                     <div class="col-md-4  @error('warehouse_to_id') has-error @enderror" >
                         <label class="form-label" id="warehouse_to_label">
                             الى مخزن<span class="text-danger">*</span></label>
-                        <select   name="warehouse_to_id" id="warehouse_to_id" class="form-select is-invalid product_info">
+                        <select   name="warehouse_to_id" id="warehouse_to_id" class="form-select is-invalid product_info" required>
                             <option value="">اختار المخزن </option>
                             @foreach ($warehouses as $id => $name)
                                 <option @if ($id == old('warehouse_to_id')) selected  @endif value="{{ $id }}">{{ $name }}</option>
@@ -95,9 +125,10 @@
                             <img id="preview_img" style="width: 200px;height:200px;object-fit:contain"/>
                         </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="row my-3">
                         <div id="variants">
-
+                            <div class="accordion mt-3" id="accordionExample">
+                            </div>
                         </div>
                     </div>
                         <button class="btn col-md-12 btn-lg btn-primary mt-3">نقل مخزون <i
@@ -151,34 +182,46 @@ $('select.product_info').select2({
     padding: 'resolve',
 });
 
+let loop_index = 0;
 $('#product_id').change(function () {
-    var id = $(this).val();
+    var product_id = $(this).val();
+    var product_name = $(this).find('option:selected').text();
 
-    $("#variants").html("");
+    // $("#variants #accordionExample").html("");
 
     $.ajax({
         type:'GET',
-        url:`/api/product/${id}/variants`,
+        url:`/api/product/${product_id}/variants`,
         dataType: "text",
     }).then((response)=>{
         data = JSON.parse(response);
+        let template = `
+            <div class="accordion-item rounded mt-3">
+                <h2 class="accordion-header" id="panels-heading${product_id}">
+                    <button class="accordion-button rounded px-4 py-2 get_orders" type="button" data-bs-toggle="collapse" data-bs-target="#panels-collapse${product_id}" aria-expanded="true" aria-controls="panels-collapse${product_id}">
+                        ${product_name}
+                    </button>
+                </h2>
+                <div id="panels-collapse${product_id}" class="accordion-collapse collapse px-4 pt-4 pb-1" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+        `;
 
         $.each(data, function (index,item) {
-            var template = `
+            template += `
                 <div class="row mt-3">
-                    <input type="hidden" name="product_variants[${index}][id]" value="${item.id}"/>
+                    <input type="hidden" name="product_variants[${loop_index}][id]" value="${item.id}"/>
                     <div class="col-md-4">
                         <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
                     </div>
                     <div class="col-md-4">
-                        <input type="number" name="product_variants[${index}][quantity]" class="form-control" placeholder="الكمية"/>
+                        <input type="number" name="product_variants[${loop_index++}][quantity]" class="form-control" placeholder="الكمية"/>
                     </div>
                 </div>
             `;
-
-            $("#variants").append(template);
-
         });
+
+        template += `</div></div>`;
+        $("#variants #accordionExample").append(template);
+        $('#product_id :selected').prop('disabled', true);
     })
 })
 
@@ -240,7 +283,7 @@ $(".save_stock").click(function (){
     });
 });
 function save_stock(item){
-        var index = $('#variants').children().length;
+        var index = $('#variants #accordionExample').children().length;
 
             var template = `
                 <div class="row mt-3">
@@ -257,7 +300,7 @@ function save_stock(item){
                 </div>
             `;
 
-            $("#variants").append(template);
+            $("#variants #accordionExample").append(template);
 }
 </script>
 @endsection

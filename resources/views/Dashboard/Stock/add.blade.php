@@ -213,6 +213,7 @@
         if (warehouse_id != old_warehouse_id) {
             old_warehouse_id = warehouse_id;
             $('#variants #accordionExample').html('');
+            $('#product_id :selected').prop('disabled', false);
         }
 
         if (product_id != '') {
@@ -263,9 +264,7 @@
                 `;
 
                 $("#variants #accordionExample").append(template);
-                $('select').select2({
-                    padding: 'resolve',
-                });
+                $('#product_id :selected').prop('disabled', true);
             });
         }
     })

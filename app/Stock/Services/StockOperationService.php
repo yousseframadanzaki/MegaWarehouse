@@ -31,6 +31,9 @@ class StockOperationService implements StockOperationServiceInterface{
 
     function move($user,$details) {
         foreach ($details['product_variants'] as $variant) {
+            if (empty($variant['quantity']))
+                continue;
+
             $current_stock = $this->stock_operation_repository->get_variant_stock_in_warehouse($variant['id'],$details['warehouse_id']);
             if($current_stock < $variant['quantity']){
                 return false;
