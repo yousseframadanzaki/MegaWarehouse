@@ -15,9 +15,6 @@ class ShippingAreaController extends Controller
     public function map(Request $request)
     {
         $data = $this->ShippingAreaService->UpsertMapping($request->all());
-        if(!$data){
-            return response()->json('',404);
-        }
         return response()->json($data);
     }
 }

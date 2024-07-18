@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-md-4 fs-5">
                         <select class="area_select" style="width: 100%" data-shipping_area_id="{{ $shipping_area['id'] }}"
-                            data-area_mapping_id="{{ $shipping_area['area_mapping_id'] }}">
+                            data-area_mapping_id="{{ $shipping_area['area_mapping_id'] }}" data-area_id = {{ $shipping_area['area_id']??'' }}>
                             <option value="">اختار المنطقة</option>
                             @foreach ($areas as $area)
                                 <option @if ($area->id == $shipping_area['area_id']) selected @endif value="{{ $area->id }}">
@@ -137,14 +137,26 @@
                 dataType: 'json',
                 context:element
             }).then(response => {
-                console.log(response);
                 if (!response) {
-                    alert('حدث خطاء أثناء التعديل');
+                    alert('حدث خطأ أثناء التعديل');
+                    $(element).val($(element).attr('data-area_id'));
+                    $(element).select2();
                     return;
                 }
                 if(response.id){
-                    console.log(response.id)
                     $(element).attr('data-area_mapping_id',response.id);
+                    $(element).attr('data-area_id', $(element).val());
+                    return;
+                }
+                if (response.message == 'deleted') {
+                    $(element).removeAttr('data-area_mapping_id')
+                    return;
+                }
+                if (response.message != undefined) {
+                    alert(response.message);
+                    $(element).val($(element).attr('data-area_id'));
+                    $(element).select2();
+                    return;
                 }
             })
         }

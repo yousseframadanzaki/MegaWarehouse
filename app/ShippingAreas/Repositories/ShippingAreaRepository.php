@@ -11,17 +11,31 @@ class ShippingAreaRepository implements ShippingAreaRepositoryInterface{
     }
 
     public function upsert_mapping($data){
-        if(isset($data['area_mapping_id'])){
-            return ShippingArea::where('id',$data['area_mapping_id'])->update([
-                'shipping_company_sector_id' => $data['shipping_area_id'],
-                'area_id' => $data['area_id']
-            ]);
+        if (empty($data['area_id'])) {
+            ShippingArea::find($data['area_mapping_id'])->delete();
+            return ['message' => 'deleted'];
         }
-        return ShippingArea::create([
-            'shipping_company_sector_id' => $data['shipping_area_id'],
+        
+        $row = ShippingArea::where([
             'area_id' => $data['area_id'],
             'shipping_company_id' => $data['shipping_company_id']
-        ]);
+        ])->first();
+
+        if (empty($row)) {
+            if(!empty($data['area_mapping_id'])){
+                return ShippingArea::where('id',$data['area_mapping_id'])->update([
+                    'shipping_company_sector_id' => $data['shipping_area_id'],
+                    'area_id' => $data['area_id']
+                ]);
+            }
+            return ShippingArea::create([
+                'shipping_company_sector_id' => $data['shipping_area_id'],
+                'area_id' => $data['area_id'],
+                'shipping_company_id' => $data['shipping_company_id']
+            ]);
+        }
+        
+        return ['message' => 'فشل التسجيل هذه المنطقة مسجلة مسبقا'];
     }
     public function get_area_sector_id($area_id,$shipping_company_id){
         return ShippingArea::where(
