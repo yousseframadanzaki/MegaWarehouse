@@ -107,35 +107,29 @@ class OrdersService implements OrdersServiceInterface{
     public function ChangeOrderStatus($order_id,$data){
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
 
-        if($data['status_id'] == '30'){
-            if($data['status_id'] == '30'){
+        if($data['status_id'] == '30') {
+            if ($order->area->shipping_company->active == 1) {
                 if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
                     $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
-                    $this->orders_crud_repository->update_order($order_id,
-                        array('shipping_company_id'=>$data['shipping_company_id'],)
-                    );
                 } else {
                     $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
                 }
 
-                // if(!$shipment){
-                //     return false;
-                // }
-                // $this->orders_crud_repository->update_order($order_id,
-                //     array(
-                //         'waybill'=>$shipment['waybill'],
-                //         'shipping_company_id'=>$data['shipping_company_id'],
-                //     )
-                // );
+                if(!$shipment && $order->area->shipping_company->active != 2){
+                    return false;
+                }
             }
 
-            if(!$shipment){
-                return false;
-            }
-        } else {
-            if($this->orders_crud_repository->change_order_status($order_id,$data)){
-                return true;
-            }
+            $this->orders_crud_repository->update_order($order_id,
+                array(
+                    'waybill'=> !empty($shipment['waybill']) ? $shipment['waybill'] : null,
+                    'shipping_company_id'=>$data['shipping_company_id'],
+                )
+            );
+        }
+
+        if($this->orders_crud_repository->change_order_status($order_id,$data)){
+            return true;
         }
     }
 
@@ -144,21 +138,24 @@ class OrdersService implements OrdersServiceInterface{
         if($data['status_id'] == '30'){
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
-                if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
-                    $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
-                } else {
-                    $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+                if ($order->area->shipping_company->active == 1) {
+                    if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
+                        $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
+                    } else {
+                        $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
+                    }
+
+                    if(!$shipment){
+                        return false;
+                    }
                 }
 
-                if(!$shipment){
-                    return false;
-                }
-                // $this->orders_crud_repository->update_order($order_id,
-                //     array(
-                //         'waybill'=>$shipment['waybill'],
-                //         'shipping_company_id'=>$data['shipping_company_id'],
-                //     )
-                // );
+                $this->orders_crud_repository->update_order($order_id,
+                    array(
+                        'waybill'=> !empty($shipment['waybill']) ? $shipment['waybill'] : null,
+                        'shipping_company_id'=>$data['shipping_company_id'],
+                    )
+                );
             }
         }
 
@@ -244,8 +241,8 @@ class OrdersService implements OrdersServiceInterface{
             return false;
         }
 
-        if (!$this->StockService->CheckItemsAvailable($new_items)) {
-            $this->UpdateOrder($order_id, ['status_id' => 5]);
+        if(!$this->StockService->CheckItemsAvailable($new_items)){
+            return false;
         }
 
         foreach ($new_items as &$item) {
