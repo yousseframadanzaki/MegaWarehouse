@@ -306,7 +306,7 @@
                                 <td>{{$item->unit_commission}}</td>
                                 <td>{{abs($item->quantity)}}</td>
                                 <td>{{abs($item->quantity) * $item->unit_commission}}</td>
-                                <td>{{abs($item->quantity) * $item->unit_price}}</td>
+                                <td>{{abs($item->quantity) * $item->unit_price_after_sale}}</td>
                             </tr>
                             @endforeach
                         </tbody>

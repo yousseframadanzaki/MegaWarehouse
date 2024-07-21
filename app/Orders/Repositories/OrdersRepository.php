@@ -246,8 +246,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function delete_order($order_id)
     {
         $order = Order::findOrFail($order_id);
-        if ($order->status_id != 45)
-            Stock::where('order_id', $order->id)->delete();
+        if ($order->status_id != 45) {
+            $stocks = Stock::where('order_id', $order->id)->get();
+            foreach ($stocks as $stock) {
+                Variant::where('id', $stock->variant_id)->increment(abs($stock->quantity));
+            }
+            $stocks->delete();
+        }
 
         OrderNotes::where('order_id', $order->id)->delete();
         $deleted = $order->delete();
