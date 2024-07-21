@@ -10,6 +10,7 @@ use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
+use App\Status\Interfaces\StatusServiceInterface;
 
 use App\ShippingCompanies\Requests\CreateShippingCompanyRequest;
 use App\ShippingCompanies\Requests\UpdateShippingCompanyRequest;
@@ -23,7 +24,8 @@ class ShippingCompanyController extends Controller
        protected readonly ShippingStatusServiceInterface $ShippingStatusService,
        protected readonly ShippingAreaServiceInterface $ShippingAreaService,
        protected readonly CommonDataServiceInterface $CommonDataService,
-       protected readonly OrdersServiceInterface $OrdersService
+       protected readonly OrdersServiceInterface $OrdersService,
+       protected readonly StatusServiceInterface $StatusService,
     ) {}
 
     public function all()
@@ -100,7 +102,7 @@ class ShippingCompanyController extends Controller
     public function shipping_company_statues(Request $request) {
         $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
         $shipping_company = $shipping_companies->find($request->shipping_company_id);
-        $statuses = $shipping_company->statues->where('related_shipping', 1)->unique('id');
+        $statuses = $this->StatusService->GetStatues()->where('related_shipping', 1)->unique('id');
         $orders_number = $shipping_company->orders->whereIn('status_id', $statuses->pluck('id'))->count();
         return view('Dashboard.ShippingCompanies.shipping_orders', compact('shipping_companies', 'orders_number', 'shipping_company','statuses'));
     }

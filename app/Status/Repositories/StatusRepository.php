@@ -40,4 +40,8 @@ class StatusRepository implements StatusRepositoryInterface{
     public function update_status_color($data) {
         return Status::where(['id'=>$data['id']])->update(['color' => $data['color']]);
     }
+
+    public function get_statues() {
+        return Status::get();
+    }
 }

@@ -27,4 +27,8 @@ class StatusService implements StatusServiceInterface{
     public function UpdateStatusColor($data){
         return $this->status_crud_repository->update_status_color($data);
     }
+
+    public function GetStatues() {
+        return $this->status_crud_repository->get_statues();
+    }
 }
