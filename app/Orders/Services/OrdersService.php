@@ -245,9 +245,7 @@ class OrdersService implements OrdersServiceInterface{
         }
 
         if (!$this->StockService->CheckItemsAvailable($new_items)) {
-            $order_details['status_id'] = '5';
-        } else {
-            $order_details['status_id'] = '1';
+            $this->UpdateOrder($order_id, ['status_id' => 5]);
         }
 
         foreach ($new_items as &$item) {
