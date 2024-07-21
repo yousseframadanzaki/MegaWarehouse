@@ -287,6 +287,7 @@
                                 <th>المخزن</th>
                                 <th>المورد</th>
                                 <th>السعر</th>
+                                <th>السعر بعد الخصم</th>
                                 <th>عمولة المسوق</th>
                                 <th>الكمية</th>
                                 <th>اجمالى العمولة</th>
@@ -301,6 +302,7 @@
                                 <td>{{$item->warehouse->name}}</td>
                                 <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->product->supplier->name??'تابع لمتغير موجود مسبقا'}}</td>
                                 <td>{{$item->unit_price}}</td>
+                                <td>{{$item->unit_price_after_sale}}</td>
                                 <td>{{$item->unit_commission}}</td>
                                 <td>{{abs($item->quantity)}}</td>
                                 <td>{{abs($item->quantity) * $item->unit_commission}}</td>
