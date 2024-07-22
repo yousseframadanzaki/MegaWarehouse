@@ -63,7 +63,7 @@ class OrdersService implements OrdersServiceInterface{
             ]);
         }
 
-        if($_SERVER['SERVER_NAME'] != '127.0.0.1'){
+        if($_SERVER['SERVER_NAME'] != 'blackandwhite-eg.com' && $_SERVER['SERVER_NAME'] != '127.0.0.1'){
             $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
             if(!$shipment){
@@ -73,6 +73,12 @@ class OrdersService implements OrdersServiceInterface{
                 array(
                     'waybill'=>$shipment['waybill'],
                     'shipping_company_id'=>$data['shipping_company_id'],
+                )
+            );
+        } else {
+            $this->orders_crud_repository->update_order($order->id,
+                array(
+                    'shipping_company_id'=>$order->area->shipping_company_id,
                 )
             );
         }
