@@ -303,7 +303,7 @@
 
             </div>
             <div class="row p-3">
-                <button type="button" class="btn btn-primary btn-lg mt-3 add_order_btn">تعديل الأوردر <i class="bi bi-pencil-fill"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg mt-3">تعديل الأوردر <i class="bi bi-pencil-fill"></i></button>
             </div>
         </div>
     </form>
@@ -636,7 +636,8 @@
         }, 1500);
     });
 
-    $(document).on('click','.add_order_btn',function(e){
+    $("#order_form").on('submit', function(e) {
+        e.preventDefault();
         var total = 0;
         var totalAfterSale = 0;
 
@@ -654,11 +655,9 @@
 
         var formattedTotal = total.toLocaleString();
         var formattedTotalAfterSale = totalAfterSale.toLocaleString();
-        setTimeout(function() {
-            $('.total_input').val(formattedTotal);
-            $('.total_after_sale_input').val(formattedTotalAfterSale);
-            $("#order_form").submit();
-        }, 500);
+        $('.total_input').val(formattedTotal);
+        $('.total_after_sale_input').val(formattedTotalAfterSale);
+        this.submit();
     });
 </script>
 @endsection
