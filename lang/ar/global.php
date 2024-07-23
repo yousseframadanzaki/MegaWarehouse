@@ -43,6 +43,7 @@ return [
     "order_code"=>"رقم الاوردر",
     "warehouse_id"=>"المخزن",
     "date_to"=>"تاريخ الى",
+    "date_type"=>"التواريخ بناءا علي",
     "admin_id"=>"الادمن",
     "product_id"=>"المنتج",
     "variant_id"=>"المتغير",

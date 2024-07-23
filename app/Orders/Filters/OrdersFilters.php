@@ -40,13 +40,21 @@ class OrdersFilters
         'marketer_id'   => MarketerFilter::class,
         'shipping_company_id'   => ShippingCompanyFilter::class,
         'waybill'   => WaybillFilter::class,
+        'date_type' => '',
     ];
 
 
     public function apply($query)
     {
-        foreach ($this->receivedFilters() as $name => $value) {
+        $receivedFilters = $this->receivedFilters();
+        foreach ($receivedFilters as $name => $value) {
+            if ($name == 'date_type')
+                continue;
+
             $filterInstance = new $this->filters[$name];
+            if ($name == 'date_from' || $name == 'date_to')
+                $value .= ('|' . $receivedFilters['date_type']);
+
             $query = $filterInstance($query, $value);
         }
 

@@ -303,11 +303,18 @@
                                 value="{{ Request::get('date_to') }}">
                         </div>
                         <div class="col-md-4 mt-3">
+                            <label class="form-label">@lang('global.date_type')</label>
+                            <select class="form-select product_info" name="date_type">
+                                <option @if(Request::get('date_type') == 'الاوردرات') selected @endif value="الاوردرات">الاوردرات</option>
+                                <option @if(Request::get('date_type') == 'الحالات') selected @endif value="الحالات">الحالات</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.shipping_company_id')</label>
                             <select class="form-select product_info" name="shipping_company_id">
                                 <option value="">@lang('global.select_shipping_company')</option>
                                 @foreach ($shipping_companies as $shipping_company)
-                                    <option  @if(Request::get('shipping_company_id') == $shipping_company->id) selected @endif value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                    <option @if(Request::get('shipping_company_id') == $shipping_company->id) selected @endif value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -333,7 +340,7 @@
                 <div class="card shadow-sm p-3 mb-4">
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
-                            <div class=" sidebar-bg d-flex align-items-center 1 m-1" style="color: white;padding: 6px;border-radius: 6px;">
+                            <div class=" sidebar-bg d-flex align-items-center 1 m-1 @if ($key == 'date_type' && !array_key_exists('date_from', $filters) && !array_key_exists('date_to', $filters)) d-none @endif" style="color: white;padding: 6px;border-radius: 6px;">
                                 {{ __('global.' . $key) }}: {{$value}}
                             </div>
                         @endforeach
@@ -377,7 +384,7 @@
                             <label>عدد المحدد : <span id="selection-number">0</span></label>
                             <label>عدد النتائج : {!! $orders->total() !!}</label>
                         </div>
-                        <form action="{{ route('all_orders') }}" method="GET" style="width: fit-content">  
+                        <form action="{{ route('all_orders') }}" method="GET" style="width: fit-content">
                             <div class="d-none" id="searchData">
 
                             </div>
