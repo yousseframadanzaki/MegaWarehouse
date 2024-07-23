@@ -34,6 +34,7 @@ return [
     "sell"=>"بيع",
     "move"=>"نقل",
     "sku"=>"sku",
+    "waybill"=>"رقم البوليصة",
     "product_name"=>"اسم المنتج",
     "client_id"=>"العميل",
     "city_id"=>"المدينة",

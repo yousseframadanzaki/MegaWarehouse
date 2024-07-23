@@ -263,7 +263,7 @@
                         </thead>
                         <tbody id="items">
                             @foreach ($order->stocks as $item)
-                                <tr id="{{ $loop->index }}" data-id={{ $item->variant->id }}>
+                                <tr id="{{ $item->variant->id }}">
                                     <td>{{$item->variant->product->name}}</td>
                                     <td>{{$item->variant->name}}</td>
                                     <td>{{$item->unit_price}}</td>
@@ -440,42 +440,53 @@
                 return;
             }
 
-            if(product_id && variant_id && warehouse_id && quantity){
-                var warehouses_select = $("#warehouses_select").html();
-                var productName = $("#product_id option:selected").text();
-                var variantName = $("#variant_id option:selected").text();
-                var warehouseName = $("#warehouse_id option:selected").text();
-                var total = variant_price * quantity;
-                var index = $('#items tr').length;
-                var template = `
-                    <tr id="${variant_id}">
-                        <td>${productName}</td>
-                        <td>${variantName}</td>
-                        <td>${variant_price}</td>
-                        <td style="width:80px;">
-                            <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" />
-                        </td>
-                        <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
-                        <td>
-                            <select class="warehouse form-select" data-id="${variant_id}" name="items[${index}][warehouse_id]">
-                                ${warehouses_select}
-                            </select>
-                        </td>
-                        <td style="width:80px;">
-                            <input type="number" name="items[${index}][quantity]" class="form-control quantity" data-price="${variant_price}" value="${quantity}" min="1" data-id="${variant_id}" id="quantity-${variant_id}" />
-                        </td>
-                        <td class="total_price">${total}</td>
-                        <td class="total_price_after_sale">${total}</td>
-                        <td class="fs-5"><a class="removee_variant text-danger" style="cursor: pointer" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
-                        <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
-                        <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
-                    </tr>
-                `;
+            if(product_id && variant_id && warehouse_id && quantity) {
+                var variant_found = $(`#items tr#${variant_id}`); // check if the variant is already found.
+                
+                if (!variant_found) {
+                    var warehouses_select = $("#warehouses_select").html();
+                    var productName = $("#product_id option:selected").text();
+                    var variantName = $("#variant_id option:selected").text();
+                    var warehouseName = $("#warehouse_id option:selected").text();
+                    var total = variant_price * quantity;
+                    var index = $('#items tr').length;
 
-                $("#items").append(template);
-                if(warehouse_id){
-                    $(`tr#${variant_id} .warehouse`).val(warehouse_id);
+                    var template = `
+                        <tr id="${variant_id}">
+                            <td>${productName}</td>
+                            <td>${variantName}</td>
+                            <td>${variant_price}</td>
+                            <td style="width:80px;">
+                                <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" />
+                            </td>
+                            <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
+                            <td>
+                                <select class="warehouse form-select" data-id="${variant_id}" name="items[${index}][warehouse_id]">
+                                    ${warehouses_select}
+                                </select>
+                            </td>
+                            <td style="width:80px;">
+                                <input type="number" name="items[${index}][quantity]" class="form-control quantity" data-price="${variant_price}" value="${quantity}" min="1" data-id="${variant_id}" id="quantity-${variant_id}" />
+                            </td>
+                            <td class="total_price">${total}</td>
+                            <td class="total_price_after_sale">${total}</td>
+                            <td class="fs-5"><a class="removee_variant text-danger" style="cursor: pointer" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
+                            <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
+                            <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
+                        </tr>
+                    `;
+
+                    $("#items").append(template);
+                } else {
+
+                    variant_found.find('.warehouse').val(warehouse_id);
+                    variant_found.find('.quantity').val(quantity);
+                    variant_found.find('.total_price').text(variant_price * quantity);
+                    var price_after_sale = variant_found.find('.unit_sale').val();
+                    var totalAfterSale = price_after_sale * quantity;
+                    variant_found.find('.total_price_after_sale').text(totalAfterSale);
                 }
+
                 var price_after_sale = $(`#unit_sale-${variant_id}`).val();
                 var totalAfterSale = price_after_sale * quantity;
                 $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
