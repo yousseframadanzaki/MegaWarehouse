@@ -268,7 +268,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @for ($i=0; $i<=3; $i++)
                                 @foreach ($invoice->stocks as $stock)
                                     <tr>
                                         <td>{{ $stock->variant->product->name }}</td>
@@ -278,7 +277,6 @@
                                         <td>{{ $stock->unit_cost * $stock->quantity }}</td>
                                     </tr>
                                 @endforeach
-                                @endfor
                             </tbody>
                         </table>
 
