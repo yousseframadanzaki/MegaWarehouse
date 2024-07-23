@@ -78,7 +78,7 @@
 @endphp
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-bg">
+    <nav class="no-print navbar navbar-expand-lg navbar-dark navbar-bg">
         <div class="container-fluid">
             <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -124,9 +124,9 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="sidebar-layout d-md-none">
+            <div class="no-print sidebar-layout d-md-none">
             </div>
-            <div class="d-flex sidebar sidebar-bg flex-column flex-shrink-0 p-3 text-white sticky-top"
+            <div class="no-print d-flex sidebar sidebar-bg flex-column flex-shrink-0 p-3 text-white sticky-top"
                 style="height:100vh;">
                 <ul class="nav nav-pills flex-column mb-auto px-0 fs-5">
                     <li class="nav-item mb-2">
@@ -191,7 +191,9 @@
             </div>
             <div class="col " id="main">
                 @include('partials.flash-messages')
-                @yield('content')
+                <div class="main-content">
+                    @yield('content')
+                </div>
             </div>
         </div>
     </div>

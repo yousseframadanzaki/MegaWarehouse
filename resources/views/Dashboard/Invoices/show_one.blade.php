@@ -10,6 +10,34 @@
             background-color: var(--bs-primary) !important;
             color: white !important;
         }
+
+        @media print {
+            body, .card, table, td, th {
+                background-color: white !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .print-show {
+                display: block !important;
+            }
+
+            #main .main-content {
+                width: 95% !important;
+                margin: auto !important;
+            }
+
+            .card {
+                box-shadow: none !important;
+                border-top-width: 3px !important;
+                border-bottom-width: 3px !important;
+                border-right: none !important;
+                border-left: none !important;
+                border-radius: 20px;
+            }
+        }
     </style>
 
     <!-- Modal -->
@@ -100,7 +128,7 @@
 
     <div class="p-3">
         <div class="row">
-            <ul class="breadcrumb">
+            <ul class="breadcrumb no-print">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
                 <li><a href="{{ route('all_invoices') }}">الفواتير</a></li>
                 @if (empty($invoice->total_cost) && empty($invoice->supplier_id))
@@ -110,10 +138,29 @@
                 @endif
             </ul>
 
+            <div class="print-items p-0">
+                <button class="btn btn-primary no-print" style="cursor: pointer;" onclick="window.print()">
+                    طباعة
+                </button>
+                <div class="print-show d-none">
+                    <div class="d-flex justify-content-between align-items-center mt-5 mb-2">
+                        <img src="{{asset('/logo.png')}}" alt="Logo here" width="55" height="55">
+                        <h3 class="fw-bold">{{ $invoice->stocks[0]->company->name }}</h3>
+                    </div>
+                    <hr class="mb-5">
+
+                    <h5 class="my-4">اسم المستلم : -------------------------</h5>
+                    <h5 class="mb-5">التوقيع : -------------------------------</h5>
+                </div>
+            </div>
+
             @if (empty($invoice->total_cost) && empty($invoice->supplier_id))
-                <div class="card p-3 shadow-sm mt-3">
+                <h3 class="text-center mb-4"> إذن نقل {{ $invoice->id }}</h3>
+                <div class="card border border-secondary p-3 shadow-sm mt-3">
                     <div class="row">
-                        <h3 class="text-center mb-4">عمليات إذن نقل {{ $invoice->id }}</h3>
+                        <h5 class="my-3">الأدمن: {{ $invoice->stocks[0]->admin->name }}</h5>
+                        <h5 class="mb-3">التاريخ: {{ date_format($invoice->created_at, 'd-m-Y (h:i a)') }}</h5>
+                        <h5 class="text-center mb-3">عمليات إذن النقل</h5>
                         <table class="table table-hover" id="variants_table">
                             <thead>
                                 <tr>
@@ -151,14 +198,22 @@
                     </div>
                 </div>
             @else
-                <div class="card p-3 shadow-sm mt-3">
+                <h3 class="text-center mb-4 print-show d-none">فاتورة رقم {{ $invoice->id }}</h3>
+                <div class="card border border-secondary p-3 shadow-sm mt-3">
+                    <div class="row mt-3 print-show d-none">
+                        <div class="col-12">
+                            <h5 class="mb-3">الأدمن: {{ $invoice->stocks[0]->admin->name }}</h5>
+                            <h5 class="mb-3">التاريخ: {{ date_format($invoice->created_at, 'd-m-Y (h:i a)') }}</h5>
+                            <hr class="mb-3">
+                        </div>
+                    </div>
                     <div class="row">
-                        <h3>بيانات المورد</h3>
+                        <h3 class="mb-3">بيانات المورد</h3>
                         <div class="col-md-4 fs-5">
                             <label class="fw-bold">اسم المورد :</label>
                             <label>{{ $invoice->supplier->name }}</label>
                         </div>
-                        <div class="col-md-4 fs-5">
+                        <div class="col-md-4 fs-5 no-print">
                             <label class="fw-bold">رقم التليفون :</label>
                             <label>{{ $invoice->supplier->phone }} @can('send_whatsapp', 'App\Models\Template')
                                     <i data-phone="{{ $invoice->supplier->phone }}" data-bs-toggle="modal"
@@ -167,13 +222,13 @@
                                 @endcan
                             </label>
                         </div>
-                        <div class="col-md-4 fs-5">
+                        <div class="col-md-4 fs-5 no-print">
                             <label class="fw-bold"> عنوان :</label>
                             <label>{{ $invoice->supplier->address }}</label>
                         </div>
                     </div>
                     <div class="row mt-4">
-                        <h3>بيانات الفاتورة</h3>
+                        <h3 class="mb-3">بيانات الفاتورة</h3>
                         <div class="col-md-4 fs-5">
                             <label class="fw-bold">رقم الفاتورة :</label>
                             <label>{{ $invoice->id }}</label>
@@ -182,7 +237,7 @@
                             <label class="fw-bold">قيمة الفاتورة :</label>
                             <label>{{ $invoice->total_cost }}</label>
                         </div>
-                        <div class="col-md-4 fs-5">
+                        <div class="col-md-4 fs-5 no-print">
                             <label class="fw-bold"> باقى لم يسدد :</label>
                             <label>{{ $invoice->total_cost - $invoice->paid_amount }}</label>
                             @if($invoice->total_cost - $invoice->paid_amount != 0)
@@ -191,9 +246,7 @@
                                 data-bs-target="#payModal">تسديد</button>
                             @endif
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-4 fs-5">
+                        <div class="col-md-4 fs-5 no-print">
                             <label class="fw-bold"> الادمن :</label>
                             <label>{{ $invoice->stocks[0]->admin->name }}</label>
                         </div>
@@ -215,6 +268,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @for ($i=0; $i<=3; $i++)
                                 @foreach ($invoice->stocks as $stock)
                                     <tr>
                                         <td>{{ $stock->variant->product->name }}</td>
@@ -224,12 +278,13 @@
                                         <td>{{ $stock->unit_cost * $stock->quantity }}</td>
                                     </tr>
                                 @endforeach
+                                @endfor
                             </tbody>
                         </table>
 
                     </div>
                 </div>
-                <div class="card p-3 shadow-sm mt-3">
+                <div class="card p-3 border border-secondary shadow-sm mt-3 no-print">
                     <div class="row">
                         <h3>الحسابات</h3>
                         <table class="table table-hover" id="variants_table">
