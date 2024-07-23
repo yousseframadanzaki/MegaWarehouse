@@ -63,7 +63,7 @@ class OrdersService implements OrdersServiceInterface{
             ]);
         }
 
-        if(!in_array($_SERVER['SERVER_NAME'], ['127.0.0.1', 'blackandwhite-eg.com'])) {
+        if($_SERVER['SERVER_NAME'] != 'blackandwhite-eg.com' && $_SERVER['SERVER_NAME'] != '127.0.0.1'){
             $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
             if(!$shipment){
@@ -112,23 +112,24 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatus($order_id,$data){
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
+        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($data['shipping_company_id']);
 
         if($data['status_id'] == '30') {
-            if ($order->area->shipping_company->active == 1) {
+            if ($shipping_company->active == 1) {
                 if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
                     $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
                 } else {
                     $shipment = $this->ShippingCompanyService->SendShipment($order,$data['shipping_company_id']);
                 }
 
-                if(!$shipment && $order->area->shipping_company->active != 2){
+                if(!$shipment) {
                     return false;
                 }
             }
 
             $this->orders_crud_repository->update_order($order_id,
                 array(
-                    'waybill'=> !empty($shipment['waybill']) ? $shipment['waybill'] : null,
+                    'waybill'=> !empty($shipment['waybill']) ? $shipment['waybill'] : $order->waybill,
                     'shipping_company_id'=>$data['shipping_company_id'],
                 )
             );
@@ -141,10 +142,11 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatusBulk($data)
     {
-        if($data['status_id'] == '30'){
+        if($data['status_id'] == '30') {
+            $shipping_company = $this->ShippingCompanyService->GetShippingCompany($data['shipping_company_id']);
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
-                if ($order->area->shipping_company->active == 1) {
+                if ($shipping_company->active == 1) {
                     if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
                         $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
                     } else {
@@ -158,7 +160,7 @@ class OrdersService implements OrdersServiceInterface{
 
                 $this->orders_crud_repository->update_order($order_id,
                     array(
-                        'waybill'=> !empty($shipment['waybill']) ? $shipment['waybill'] : null,
+                        'waybill'=> !empty($shipment['waybill']) ? $shipment['waybill'] : $order->waybill,
                         'shipping_company_id'=>$data['shipping_company_id'],
                     )
                 );
