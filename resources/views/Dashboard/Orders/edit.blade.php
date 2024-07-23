@@ -268,18 +268,18 @@
                                     <td>{{$item->variant->name}}</td>
                                     <td>{{$item->unit_price}}</td>
                                     <td style="width:80px;">
-                                        <input style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" />
+                                        <input style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" required min="0"/>
                                     </td>
                                     <td><a data-id="{{ $item->variant->id }}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">{{$item->variant->quantity}}</a></td>
                                     <td>
-                                        <select class="warehouse form-select" data-id="{{ $item->variant->id }}" name="old_items[{{ $loop->index }}][warehouse_id]">
+                                        <select class="warehouse form-select" data-id="{{ $item->variant->id }}" name="old_items[{{ $loop->index }}][warehouse_id]" required>
                                             @foreach ($warehouses as $id => $name)
                                                 <option @if($item->warehouse->id == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td style="width:80px;">
-                                        <input type="number" name="old_items[{{ $loop->index }}][quantity]" class="form-control quantity" data-price="{{$item->variant->price}}" value="{{abs($item->quantity)}}" min="1" data-id="{{ $item->variant->id }}" id="quantity-{{ $item->variant->id }}" />
+                                        <input type="number" name="old_items[{{ $loop->index }}][quantity]" class="form-control quantity" data-price="{{$item->variant->price}}" value="{{abs($item->quantity)}}" min="1" data-id="{{ $item->variant->id }}" id="quantity-{{ $item->variant->id }}" required min="1"/>
                                     </td>
                                     <td class="total_price">{{abs($item->quantity) * $item->unit_price}}</td>
                                     <td class="total_price_after_sale">{{abs($item->quantity) * $item->unit_price_after_sale}}</td>
@@ -380,278 +380,285 @@
         })
     })
     $("#product_id").change(function () {
-            product_id = $(this).val();
-            $("#variant_id").html("");
+        product_id = $(this).val();
+        $("#variant_id").html("");
+        $.ajax({
+            url:`/api/product/${product_id}/variants`,
+            method:`GET`,
+            dataType:'text'
+        }).then(response =>{
+            data = JSON.parse(response);
+            $("#variant_id").append(`<option value="">اختار المتغير</option>`)
+            data.forEach(element => {
+                if (data.length == 1) { // if only one option add selected attribute and call ajax function.
+                    $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                    variant_select_change($("#variant_id"));
+                } else {
+                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                }
+            })
+            $('#variant_id').select2({
+                dropdownParent: $('#addToCartModal')
+            });
+            $("#variants").fadeIn();
+        })
+    })
+
+    function remove_variant(el, $id){
+        id = $id;
+        if(confirm("هل تريد حذف المنتج؟")) {
             $.ajax({
-                url:`/api/product/${product_id}/variants`,
-                method:`GET`,
+                url:`/api/stock/${id}/remove`,
+                method:`POST`,
                 dataType:'text'
             }).then(response =>{
                 data = JSON.parse(response);
-                $("#variant_id").append(`<option value="">اختار المتغير</option>`)
-                data.forEach(element => {
-                    if (data.length == 1) { // if only one option add selected attribute and call ajax function.
-                        $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
-                        variant_select_change($("#variant_id"));
-                    } else {
-                        $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
-                    }
-                })
-                $('#variant_id').select2({
-                    dropdownParent: $('#addToCartModal')
-                });
-                $("#variants").fadeIn();
-            })
-        })
-        function remove_variant(el, $id){
-            id = $id;
-            if(confirm("هل تريد حذف المنتج؟")) {
-                $.ajax({
-                    url:`/api/stock/${id}/remove`,
-                    method:`POST`,
-                    dataType:'text'
-                }).then(response =>{
-                    data = JSON.parse(response);
-                    $(el).closest('tr').remove();
-                });
-            } else {
-                return false;
-            }
+                $(el).closest('tr').remove();
+            });
+        } else {
+            return false;
         }
-        $(document).on('input', '.unit_sale', function(e) {
-            var price_after_sale = $(this).val();
-            var variant_id = $(this).data('id');
-            var quantity = $(`#quantity-${variant_id}`).val();
-            var totalAfterSale = price_after_sale * quantity;
-            $(this).closest('tr').find('.total_price_after_sale').text(totalAfterSale);
-            $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale); // Update the variant total after sale
-        });
-        function add_cart_items(){
-            var product_id = $("#product_id").val();
-            var variant_id = $("#variant_id").val();
-            var warehouse_id = $("#warehouse_id").val();
-            var quantity = $("#quantity").val();
-            var variant_price = $("#variant_id option:selected").attr("data-price");
-            var variant_quantity = $("#variant_id option:selected").attr("data-quantity");
-            var confirm_order = $('#variant_id option:selected').data("confirm");
-            var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
-            if(confirm_order == '0' && quantity > quantity_sum){
-                alert('لا يمكنك اضافة هذا المنتج');
-                return;
-            }
+    }
 
-            if(product_id && variant_id && warehouse_id && quantity) {
-                var variant_found = $(`#items tr#${variant_id}`); // check if the variant is already found.
-                
-                if (!variant_found) {
-                    var warehouses_select = $("#warehouses_select").html();
-                    var productName = $("#product_id option:selected").text();
-                    var variantName = $("#variant_id option:selected").text();
-                    var warehouseName = $("#warehouse_id option:selected").text();
-                    var total = variant_price * quantity;
-                    var index = $('#items tr').length;
+    $(document).on('input', '.unit_sale', function(e) {
+        var price_after_sale = $(this).val();
+        var variant_id = $(this).data('id');
+        var quantity = $(`#quantity-${variant_id}`).val();
+        var totalAfterSale = price_after_sale * quantity;
+        $(this).closest('tr').find('.total_price_after_sale').text(totalAfterSale);
+        // $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale); // Update the variant total after sale
+    });
 
-                    var template = `
-                        <tr id="${variant_id}">
-                            <td>${productName}</td>
-                            <td>${variantName}</td>
-                            <td>${variant_price}</td>
-                            <td style="width:80px;">
-                                <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" />
-                            </td>
-                            <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
-                            <td>
-                                <select class="warehouse form-select" data-id="${variant_id}" name="items[${index}][warehouse_id]">
-                                    ${warehouses_select}
-                                </select>
-                            </td>
-                            <td style="width:80px;">
-                                <input type="number" name="items[${index}][quantity]" class="form-control quantity" data-price="${variant_price}" value="${quantity}" min="1" data-id="${variant_id}" id="quantity-${variant_id}" />
-                            </td>
-                            <td class="total_price">${total}</td>
-                            <td class="total_price_after_sale">${total}</td>
-                            <td class="fs-5"><a class="removee_variant text-danger" style="cursor: pointer" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
-                            <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
-                            <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
-                        </tr>
-                    `;
+    function add_cart_items(){
+        var product_id = $("#product_id").val();
+        var variant_id = $("#variant_id").val();
+        var warehouse_id = $("#warehouse_id").val();
+        var quantity = $("#quantity").val();
+        var variant_price = $("#variant_id option:selected").attr("data-price");
+        var variant_quantity = $("#variant_id option:selected").attr("data-quantity");
+        var confirm_order = $('#variant_id option:selected').data("confirm");
+        var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
+        if(confirm_order == '0' && quantity > quantity_sum){
+            alert('لا يمكنك اضافة هذا المنتج');
+            return;
+        }
 
-                    $("#items").append(template);
-                } else {
+        if(product_id && variant_id && warehouse_id && quantity) {
+            var variant_found = $(`#items tr#${variant_id}`); // check if the variant is already found.
 
-                    variant_found.find('.warehouse').val(warehouse_id);
-                    variant_found.find('.quantity').val(quantity);
-                    variant_found.find('.total_price').text(variant_price * quantity);
-                    var price_after_sale = variant_found.find('.unit_sale').val();
-                    var totalAfterSale = price_after_sale * quantity;
-                    variant_found.find('.total_price_after_sale').text(totalAfterSale);
-                }
+            if (variant_found.length == 0) {    // new variant.
+                var warehouses_select = $("#warehouses_select").html();
+                var productName = $("#product_id option:selected").text();
+                var variantName = $("#variant_id option:selected").text();
+                var warehouseName = $("#warehouse_id option:selected").text();
+                var total = variant_price * quantity;
+                var index = $('#items tr').length;
 
-                var price_after_sale = $(`#unit_sale-${variant_id}`).val();
+                var template = `
+                    <tr id="${variant_id}">
+                        <td>${productName}</td>
+                        <td>${variantName}</td>
+                        <td>${variant_price}</td>
+                        <td style="width:80px;">
+                            <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" required min="0"/>
+                        </td>
+                        <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
+                        <td>
+                            <select class="warehouse form-select" data-id="${variant_id}" name="items[${index}][warehouse_id]" required>
+                                ${warehouses_select}
+                            </select>
+                        </td>
+                        <td style="width:80px;">
+                            <input type="number" name="items[${index}][quantity]" class="form-control quantity" data-price="${variant_price}" value="${quantity}" min="1" data-id="${variant_id}" id="quantity-${variant_id}" required min="1"/>
+                        </td>
+                        <td class="total_price">${total}</td>
+                        <td class="total_price_after_sale">${total}</td>
+                        <td class="fs-5"><a class="removee_variant text-danger" style="cursor: pointer" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
+                        <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
+                        <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
+                    </tr>
+                `;
+
+                $("#items").append(template);
+                $(`#items tr#${variant_id} .warehouse`).val(warehouse_id);
+            } else {    // exist old variant.
+                console.log(variant_id + '    ' + variant_found);
+                variant_found.find('.warehouse').val(warehouse_id);
+                variant_found.find('.quantity').val(quantity);
+                variant_found.find('.total_price').text(variant_price * quantity);
+                var price_after_sale = variant_found.find('.unit_sale').val();
                 var totalAfterSale = price_after_sale * quantity;
-                $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
-
-                // $("#product_id").val('');
-                // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
-                // $("#warehouse_id").val('');
-                $("#quantity").val(1);
-            } else {
-                alert('يرجى ملء جميع الحقول');
+                variant_found.find('.total_price_after_sale').text(totalAfterSale);
             }
+
+            // var price_after_sale = $(`#unit_sale-${variant_id}`).val();
+            // var totalAfterSale = price_after_sale * quantity;
+            // $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
+
+            // $("#product_id").val('');
+            // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
+            // $("#warehouse_id").val('');
+            $("#quantity").val(1);
+        } else {
+            alert('يرجى ملء جميع الحقول');
         }
+    }
 
-        $(document).on('change', '#variant_id',function(){variant_select_change($(this))});
+    $(document).on('change', '#variant_id',function(){variant_select_change($(this))});
 
-        function variant_select_change(variant_select) {
-            var variant_id = variant_select.val();
-            var show_quantity = variant_select.find('option:selected').data("show");
-            var hide = variant_select.find('option:selected').data("hide");
+    function variant_select_change(variant_select) {
+        var variant_id = variant_select.val();
+        var show_quantity = variant_select.find('option:selected').data("show");
+        var hide = variant_select.find('option:selected').data("hide");
 
-            if (variant_id != '') {
-                $.ajax({
-                    url: `/api/variants/${variant_id}/stock`,
-                    method: "GET",
-                    dataType: "text",
-                }).then(response => {
-                    data = JSON.parse(response);
-                    if(show_quantity == '0'){
-                        add_cart_stock(data);
-                    } else {
-                        add_cart_stockk(data);
-                    }
-                    if(hide == '1'){
-                        add_cart_stockk(data);
-                    }
-
-                })
-            }
-        }
-
-        function add_cart_stock(params) {
-            $("#cart_stock").html("");
-            data.forEach(element => {
-                    var template = `
-                    <tr>
-                        <td>${element.warehouse.name}</td>
-                        <td>${element.sum}</td>
-                    </tr>
-                    `;
-                    $("#cart_stock").append(template);
-            });
-        }
-
-        function add_cart_stockk(params) {
-            $("#cart_stock").html("");
-            data.forEach(element => {
-                if(element.sum > "0"){
-                    var template = `
-                    <tr>
-                        <td>${element.warehouse.name}</td>
-                        <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">متوفر</td>
-                    </tr>
-                    `;
-                    $("#cart_stock").append(template);
-                }
-                if(element.sum <= "0"){
-                    var template = `
-                    <tr>
-                        <td>${element.warehouse.name}</td>
-                        <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">غير متوفر</td>
-                    </tr>
-                    `;
-                    $("#cart_stock").append(template);
-                }
-            });
-        }
-
-        $("#quantities").on('show.bs.modal',function (e) {
-            var id = $(e.relatedTarget).attr('data-id');
-
+        if (variant_id != '') {
             $.ajax({
-                url:`/api/variants/${id}/stock`,
-                method:"GET",
+                url: `/api/variants/${variant_id}/stock`,
+                method: "GET",
                 dataType: "text",
             }).then(response => {
                 data = JSON.parse(response);
-                add_stock(data);
+                if(show_quantity == '0'){
+                    add_cart_stock(data);
+                } else {
+                    add_cart_stockk(data);
+                }
+                if(hide == '1'){
+                    add_cart_stockk(data);
+                }
+
             })
-        })
-        function add_stock(data) {
-            $("#stock").html("");
-            data.forEach(element => {
+        }
+    }
+
+    function add_cart_stock(params) {
+        $("#cart_stock").html("");
+        data.forEach(element => {
                 var template = `
                 <tr>
                     <td>${element.warehouse.name}</td>
                     <td>${element.sum}</td>
                 </tr>
                 `;
-                $("#stock").append(template);
-            });
-        }
+                $("#cart_stock").append(template);
+        });
+    }
 
-        function show_success(message) {
+    function add_cart_stockk(params) {
+        $("#cart_stock").html("");
+        data.forEach(element => {
+            if(element.sum > "0"){
+                var template = `
+                <tr>
+                    <td>${element.warehouse.name}</td>
+                    <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">متوفر</td>
+                </tr>
+                `;
+                $("#cart_stock").append(template);
+            }
+            if(element.sum <= "0"){
+                var template = `
+                <tr>
+                    <td>${element.warehouse.name}</td>
+                    <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">غير متوفر</td>
+                </tr>
+                `;
+                $("#cart_stock").append(template);
+            }
+        });
+    }
+
+    $("#quantities").on('show.bs.modal',function (e) {
+        var id = $(e.relatedTarget).attr('data-id');
+
+        $.ajax({
+            url:`/api/variants/${id}/stock`,
+            method:"GET",
+            dataType: "text",
+        }).then(response => {
+            data = JSON.parse(response);
+            add_stock(data);
+        })
+    })
+    function add_stock(data) {
+        $("#stock").html("");
+        data.forEach(element => {
             var template = `
-            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
-                <strong>${message}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            <tr>
+                <td>${element.warehouse.name}</td>
+                <td>${element.sum}</td>
+            </tr>
             `;
-            $('#message').append(template);
-            $('#message').fadeIn();
-        }
-        $(document).on('click', '.removee_variant', function () {
-            $(this).closest('tr').remove();
+            $("#stock").append(template);
         });
-        $(".total_order").click(function (e) {
-            var total = 0;
-            var totalAfterSale = 0;
-            $(".loader").show();
+    }
 
-            $('tr').each(function() {
-                var variantTotal = parseInt($(this).find('.total_price').text().trim());
-                var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
+    function show_success(message) {
+        var template = `
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            <strong>${message}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        `;
+        $('#message').append(template);
+        $('#message').fadeIn();
+    }
 
-                if (!isNaN(variantTotal)) {
-                    total += variantTotal;
-                }
-                if (!isNaN(variantTotalAfterSale)) {
-                    totalAfterSale += variantTotalAfterSale;
-                }
-            });
+    $(document).on('click', '.removee_variant', function () {
+        $(this).closest('tr').remove();
+    });
 
-            var formattedTotal = total.toLocaleString();
-            var formattedTotalAfterSale = totalAfterSale.toLocaleString();
-            setTimeout(function() {
-                $(".total_total").show();
-                $(".total_after_sale").show();
-                $('#total_total_1').text(formattedTotal);
-                $('#total_after_sale_1').text(formattedTotalAfterSale);
-                $(".loader").hide();
-            }, 1500);
+    $(".total_order").click(function (e) {
+        var total = 0;
+        var totalAfterSale = 0;
+        $(".loader").show();
+
+        $('tr').each(function() {
+            var variantTotal = parseInt($(this).find('.total_price').text().trim());
+            var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
+
+            if (!isNaN(variantTotal)) {
+                total += variantTotal;
+            }
+            if (!isNaN(variantTotalAfterSale)) {
+                totalAfterSale += variantTotalAfterSale;
+            }
         });
-        $(document).on('click','.add_order_btn',function(e){
-            var total = 0;
-            var totalAfterSale = 0;
 
-            $('tr').each(function() {
-                var variantTotal = parseInt($(this).find('.total_price').text().trim());
-                var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
+        var formattedTotal = total.toLocaleString();
+        var formattedTotalAfterSale = totalAfterSale.toLocaleString();
+        setTimeout(function() {
+            $(".total_total").show();
+            $(".total_after_sale").show();
+            $('#total_total_1').text(formattedTotal);
+            $('#total_after_sale_1').text(formattedTotalAfterSale);
+            $(".loader").hide();
+        }, 1500);
+    });
 
-                if (!isNaN(variantTotal)) {
-                    total += variantTotal;
-                }
-                if (!isNaN(variantTotalAfterSale)) {
-                    totalAfterSale += variantTotalAfterSale;
-                }
-            });
+    $(document).on('click','.add_order_btn',function(e){
+        var total = 0;
+        var totalAfterSale = 0;
 
-            var formattedTotal = total.toLocaleString();
-            var formattedTotalAfterSale = totalAfterSale.toLocaleString();
-            setTimeout(function() {
-                $('.total_input').val(formattedTotal);
-                $('.total_after_sale_input').val(formattedTotalAfterSale);
-                $("#order_form").submit();
-            }, 500);
+        $('tr').each(function() {
+            var variantTotal = parseInt($(this).find('.total_price').text().trim());
+            var variantTotalAfterSale = parseInt($(this).find('.total_price_after_sale').text().trim());
+
+            if (!isNaN(variantTotal)) {
+                total += variantTotal;
+            }
+            if (!isNaN(variantTotalAfterSale)) {
+                totalAfterSale += variantTotalAfterSale;
+            }
         });
+
+        var formattedTotal = total.toLocaleString();
+        var formattedTotalAfterSale = totalAfterSale.toLocaleString();
+        setTimeout(function() {
+            $('.total_input').val(formattedTotal);
+            $('.total_after_sale_input').val(formattedTotalAfterSale);
+            $("#order_form").submit();
+        }, 500);
+    });
 </script>
 @endsection

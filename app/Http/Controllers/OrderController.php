@@ -101,16 +101,11 @@ class OrderController extends Controller
 
     public function update_order($order_id, Request $request){
         $data = $request->all();
-        $client = $data['client'];
-        $old_items = isset($data['old_items']) ? $data['old_items'] : array() ;
-        $new_items = isset($data['items']) ? $data['items'] : array();
-        $order = $this->OrdersService->UpdateOrder($order_id, $client);
-        $old_stock = $this->OrdersService->UpdateStock($order_id, $old_items);
-        $new_stock = $this->OrdersService->AddStock(auth()->user() ,$order_id, $new_items);
+        $order = $this->OrdersService->UpdateOrder($order_id, $data);
         $note = 'تم تعديل بيانات الأوردر';
-        $order_note = $this->OrderNotesService->AddOrderNote($order_id,$note,auth()->user()->id,$this->company_id());
+        $order_note = $this->OrderNotesService->AddOrderNote($order_id, $note, auth()->user()->id, $this->company_id());
 
-        if($order || $old_stock || $new_stock){
+        if($order){
             return redirect()->route('show_order', [$order_id])->with('success','order_edited_success');
         }
     }

@@ -235,9 +235,23 @@ class OrdersService implements OrdersServiceInterface{
     {
         return $this->orders_crud_repository->get_bulk_labels_print($data);
     }
-    public function UpdateOrder($order_id ,$data)
+    public function UpdateOrder($order_id, $data)
     {
-        return $this->orders_crud_repository->update_order($order_id ,$data);
+        if(!$this->checkMaxOrders(auth()->user()->company_id)){
+            return false;
+        }
+
+        $old_items = isset($data['old_items']) ? $data['old_items'] : array();
+        $new_items = isset($data['items']) ? $data['items'] : array();
+
+        if (!$this->StockService->CheckItemsAvailable(array_merge($old_items, $new_items))) {
+            $data['client']['status_id'] = 5;
+        }
+
+        $this->UpdateStock($order_id, $old_items);
+        $this->AddStock(auth()->user(), $order_id, $new_items);
+
+        return $this->orders_crud_repository->update_order($order_id, $data['client']);
     }
     public function UpdateStock($order_id, $data)
     {
@@ -245,14 +259,6 @@ class OrdersService implements OrdersServiceInterface{
     }
     public function AddStock($user, $order_id, $new_items)
     {
-        if(!$this->checkMaxOrders($user->company_id)){
-            return false;
-        }
-
-        if(!$this->StockService->CheckItemsAvailable($new_items)){
-            return false;
-        }
-
         foreach ($new_items as &$item) {
             $item['admin_id'] = $user->id;
             $item['company_id'] = $user->company_id;
