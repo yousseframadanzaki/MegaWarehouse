@@ -324,7 +324,7 @@
                 </div>
             </div>
             <div class="row p-3 mt-5">
-                <button type="submit" class="btn btn-primary btn-lg mt-3 add_order_btn">إضافة الأوردر <i class="bi bi-plus"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg mt-3">إضافة الأوردر <i class="bi bi-plus"></i></button>
             </div>
         </form>
     </div>
@@ -525,7 +525,7 @@
                         <td>${variant.name}</td>
                         <td>${variant.price}</td>
                         <td style="width:80px;">
-                            <input @cannot('add_discount', 'App\Models\Order') disabled  @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${item.price_after_sale}" data-id="${variant.id}" id="unit_sale-${variant.id}" />
+                            <input @cannot('add_discount', 'App\Models\Order') disabled  @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${item.price_after_sale}" data-id="${variant.id}" id="unit_sale-${variant.id}" required min="0"/>
                             @cannot('add_discount', 'App\Models\Order') <input hidden type="number" name="items[${i}][unit_sale]" value="${item.price_after_sale}">  @endcannot
                         </td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
@@ -535,7 +535,7 @@
                             </select>
                         </td>
                         <td style="width:80px;">
-                            <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price} quantity" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" />
+                            <input type="number" name="items[${i}][quantity]" class="form-control quantity" data-price="${variant.price} quantity" value="${(item.quantity ? item.quantity : 1 )}" min="1" data-id="${variant.id}" id="quantity-${variant.id}" required min="1"/>
                         </td>
                         <td class="variant_total">${parseInt(variant.price) * parseInt(item.quantity)}</td>
                         <td class="variant_total_after_sale" id="variant_total_after_sale-${variant.id}">${parseInt(item.price_after_sale) * parseInt(item.quantity)}</td>
