@@ -268,7 +268,7 @@
                                     <td>{{$item->variant->name}}</td>
                                     <td>{{$item->unit_price}}</td>
                                     <td style="width:80px;">
-                                        <input style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" required min="0"/>
+                                        <input @cannot('add_discount', 'App\Models\Order') readonly @endcannot style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" required min="0"/>
                                     </td>
                                     <td><a data-id="{{ $item->variant->id }}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">{{$item->variant->quantity}}</a></td>
                                     <td>
@@ -461,7 +461,7 @@
                         <td>${variantName}</td>
                         <td>${variant_price}</td>
                         <td style="width:80px;">
-                            <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" required min="0"/>
+                            <input @cannot('add_discount', 'App\Models\Order') readonly @endcannot style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" required min="0"/>
                         </td>
                         <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
                         <td>

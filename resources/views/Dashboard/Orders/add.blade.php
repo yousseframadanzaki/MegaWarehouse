@@ -525,8 +525,7 @@
                         <td>${variant.name}</td>
                         <td>${variant.price}</td>
                         <td style="width:80px;">
-                            <input @cannot('add_discount', 'App\Models\Order') disabled  @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${item.price_after_sale}" data-id="${variant.id}" id="unit_sale-${variant.id}" required min="0"/>
-                            @cannot('add_discount', 'App\Models\Order') <input hidden type="number" name="items[${i}][unit_sale]" value="${item.price_after_sale}">  @endcannot
+                            <input @cannot('add_discount', 'App\Models\Order') readonly @endcannot style="width: inherit;" type="number" name="items[${i}][unit_sale]" class="form-control unit_sale" value="${item.price_after_sale}" data-id="${variant.id}" id="unit_sale-${variant.id}" required min="0"/>
                         </td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
                         <td>
