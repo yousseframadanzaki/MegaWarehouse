@@ -88,7 +88,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                <button type="button" class="btn btn-primary add_to_cart_btn" data-bs-dismiss="modal" onclick="add_cart_items()">أضافة</button>
+                <button type="button" class="btn btn-primary add_to_cart_btn" onclick="add_cart_items()">أضافة</button>
             </div>
         </div>
     </div>
@@ -426,7 +426,6 @@
         var quantity = $(`#quantity-${variant_id}`).val();
         var totalAfterSale = price_after_sale * quantity;
         $(this).closest('tr').find('.total_price_after_sale').text(totalAfterSale);
-        // $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale); // Update the variant total after sale
     });
 
     function add_cart_items(){
@@ -438,12 +437,14 @@
         var variant_quantity = $("#variant_id option:selected").attr("data-quantity");
         var confirm_order = $('#variant_id option:selected').data("confirm");
         var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
-        if(confirm_order == '0' && quantity > quantity_sum){
+        if(confirm_order == '0' && quantity > quantity_sum) {
             alert('لا يمكنك اضافة هذا المنتج');
             return;
         }
 
         if(product_id && variant_id && warehouse_id && quantity) {
+            $("#addToCartModal").modal('hide');
+            
             var variant_found = $(`#items tr#${variant_id}`); // check if the variant is already found.
 
             if (variant_found.length == 0) {    // new variant.
@@ -491,10 +492,6 @@
                 variant_found.find('.total_price_after_sale').text(totalAfterSale);
             }
 
-            // var price_after_sale = $(`#unit_sale-${variant_id}`).val();
-            // var totalAfterSale = price_after_sale * quantity;
-            // $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
-
             // $("#product_id").val('');
             // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
             // $("#warehouse_id").val('');
@@ -537,7 +534,7 @@
                 var template = `
                 <tr>
                     <td>${element.warehouse.name}</td>
-                    <td>${element.sum}</td>
+                    <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">${element.sum}</td>
                 </tr>
                 `;
                 $("#cart_stock").append(template);
