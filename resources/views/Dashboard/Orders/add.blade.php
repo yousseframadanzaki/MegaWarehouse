@@ -530,7 +530,7 @@
                         </td>
                         <td><a data-id="${variant.id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant.quantity}</a></td>
                         <td>
-                            <select class="warehouse form-select" data-id="${variant.id}" name="items[${i}][warehouse_id]">
+                            <select class="warehouse form-select" data-id="${variant.id}" name="items[${i}][warehouse_id]" required>
                                 ${warehouse_select}
                             </select>
                         </td>
