@@ -247,12 +247,15 @@
                     {!! DNS1D::getBarcodeHTML($order->waybill, 'C128',2,40) !!}
                     @endisset
                     <h3>
-                    <div style="font-weight: bold;">
-                        @isset($order->waybill)
-                        {{$order->waybill}}
-                        @endisset
-                    </div>
+                        <div style="font-weight: bold;">
+                            @isset($order->waybill)
+                            {{$order->waybill}}
+                            @endisset
+                        </div>
                     </h3>
+                    @if ($host != $hosts['zioot'])
+                        <small>( {{ $order->shipping_company->name }} )</small>
+                    @endif
                     <h3> {{$order->city->name}} - {{$order->area->name}}</h3>
                     <p style="font-size: 14px;"> @date_format($order->created_at)</p>
                 </div>
