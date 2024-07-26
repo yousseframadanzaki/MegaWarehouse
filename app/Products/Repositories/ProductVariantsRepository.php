@@ -86,8 +86,10 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
         return Variant::find($variant_id)->update($data);
     }
 
-    public function add_variant_stock_by_id($variant_id,$quantity){
-        return Variant::where('id',$variant_id)->increment('quantity',$quantity);
+    public function add_variant_stock_by_id($variant_id){
+        // return Variant::where('id',$variant_id)->increment('quantity',$quantity);
+        $variant = $this->get_variant_by_id($variant_id);
+        return $variant->update(['quantity' => $variant->stock()->sum('quantity')]);
     }
     public function update_variant_shelf($variant_id,$shelf){
         return Variant::where('id',$variant_id)->update(['shelf_num' => $shelf]);

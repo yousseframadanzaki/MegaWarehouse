@@ -62,7 +62,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label class="form-label">الحالة</label>
-                            <select id="status_id" name="status_id" style="width: 100%">
+                            <select id="status_id" name="status_id" style="width: 100%" required>
                                 <option value="">اختار الحالة</option>
                                     @foreach ($statuses as $status)
                                         <option value="{{ $status['id'] }}">{{ $status['name'] }}</option>
@@ -70,7 +70,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-4" style="display: none;" id="shipping_company_select">
+                    <div class="row mt-4" style="display: none;" id="shipping_company_select" required>
                         <div class="col-md-12">
                             <label class="form-label">شركة الشحن</label>
                             <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
@@ -295,7 +295,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($order->stocks as $item)
+                            @foreach ($order->stocks->where('type', 'sell') as $item)
                             <tr>
                                 <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->product->name??'تابع لمتغير موجود مسبقا'}}</td>
                                 <td class="@if(empty($item->variant->name)) text-danger @elseif ($item->variant->stock()->where('warehouse_id', $item->warehouse->id)->sum('quantity') <= 0 && $order->status_id == 5) bg-danger text-white @endif">{{$item->variant->name??'متغير موجود مسبقا'}}</td>

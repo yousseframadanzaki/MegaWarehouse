@@ -108,7 +108,7 @@ class StockOperationService implements StockOperationServiceInterface{
                 $operation['unit_cost'] = $variant['unit_cost'];
                 $operation['unit_commission'] = $variant['unit_commission'];
                 $ids[]   = $this->stock_operation_repository->create($operation);
-                $this->VariantStockService->UpdateStock($variant['id'],$variant['quantity']);
+                $this->VariantStockService->UpdateStock($variant['id']);
             }
         }
 
@@ -154,14 +154,28 @@ class StockOperationService implements StockOperationServiceInterface{
             $operation['unit_commission'] = $item['unit_commission'];
 
             $ids[] = $this->stock_operation_repository->create($operation);
-            $this->VariantStockService->UpdateStock($item['id'],$operation['quantity']);
+            $this->VariantStockService->UpdateStock($item['id']);
         }
 
         return $ids;
     }
 
-    function returned_orders($details) {
-
+    function returned_orders($user, $details) {
+        foreach ($details['order_stocks'] as $stock) {
+            $operation['admin_id'] = $user->id;
+            $operation['company_id'] = $user->company_id;
+            $operation['type'] = $details['type'];
+            $operation['variant_id'] = $stock['variant_id'];
+            $operation['warehouse_id'] = $stock['warehouse_id'];
+            $operation['quantity'] = abs($stock['quantity']);
+            $operation['unit_price'] = $stock['unit_price'];
+            $operation['unit_price_after_sale'] = $stock['unit_price_after_sale'];
+            $operation['unit_cost'] = $stock['unit_cost'];
+            $operation['unit_commission'] = $stock['unit_commission'];
+            $operation['order_id'] = $stock['order_id'];
+            $this->stock_operation_repository->create($operation);
+            $this->VariantStockService->UpdateStock($stock['variant_id']);
+        }
     }
 
     function returned_suppliers($details) {
@@ -171,8 +185,8 @@ class StockOperationService implements StockOperationServiceInterface{
     function DeleteOperations($operation_ids) {
         foreach ($operation_ids as $id) {
             $operation = $this->stock_operation_repository->get_operation_by_id($id);
-            $this->VariantStockService->UpdateStock($operation['variant_id'],$operation['quantity']*-1);
             $this->stock_operation_repository->delete_operation_by_id($id);
+            $this->VariantStockService->UpdateStock($operation['variant_id']);
         }
 
         return true;

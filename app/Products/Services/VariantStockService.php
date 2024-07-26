@@ -14,8 +14,8 @@ class VariantStockService implements VariantStockServiceInterface{
         protected readonly  ProductVariantsRepositoryInterface $product_variants_repository,
     ) {}
 
-    public function UpdateStock($variant_id,$quantity) {
-        $this->product_variants_repository->add_variant_stock_by_id($variant_id,$quantity);
+    public function UpdateStock($variant_id) {
+        $this->product_variants_repository->add_variant_stock_by_id($variant_id);
     }
 
     public function GetInvoiceInfo($variants_data, $supplier_id){

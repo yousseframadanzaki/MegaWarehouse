@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="form-label">@lang('global.status_id')</label>
-                                <select id="status_id" name="status_id" style="width: 100%">
+                                <select id="status_id" name="status_id" style="width: 100%" required>
                                     <option value="">@lang('global.select_status')</option>
                                     @foreach ($statuses as $status)
                                         <option  value="{{ $status->id }}">{{ $status->name }}</option>

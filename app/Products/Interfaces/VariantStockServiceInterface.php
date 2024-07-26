@@ -2,7 +2,7 @@
 namespace App\Products\Interfaces;
 
 interface VariantStockServiceInterface{
-    public function UpdateStock($variant_id,$quantity);
+    public function UpdateStock($variant_id);
     public function GetInvoiceInfo($variants, $supplier_id);
     public function GetUnitValues($variants);
     public function get_scan_items($ids);

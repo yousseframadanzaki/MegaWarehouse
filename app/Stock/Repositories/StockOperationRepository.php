@@ -113,14 +113,15 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
             $stock = Stock::where('order_id', $order_id)
                  ->where('variant_id', $stockData['id'])->first();
 
-            Variant::where('id', $stockData['id'])->increment('quantity', (abs($stock->quantity) - $stockData['quantity']));
-
             $stock->update([
                 'unit_price_after_sale' => $stockData['unit_sale'],
                 'warehouse_id' => $stockData['warehouse_id'],
                 'quantity' => -1 * $stockData['quantity'],
                 'updated_at' => now()
             ]);
+
+            $variant = Variant::find($stockData['id']);
+            $variant->update(['quantity' => $variant->stock()->sum('quantity')]);
         }
         return true;
     }
@@ -131,15 +132,19 @@ class StockOperationRepository implements StockOperationRepositoryInterface{
             unset($item['id']);
             $item['quantity'] = -1 * $item['quantity'];
             $new_stock = Stock::create($item);
+
+            $variant = Variant::find($item['variant_id']);
+            $variant->update(['quantity' => $variant->stock()->sum('quantity')]);
+
             $new_stocks[] = $new_stock;
-            Variant::where('id', $item['variant_id'])->increment('quantity', $item['quantity']);
         }
         return $new_stocks;
     }
     public function DeleteStock($id) {
         $stock = Stock::find($id);
         if ($stock->delete()) {
-            Variant::where('id', $stock->variant_id)->increment('quantity', abs($stock->quantity));
+            $variant = Variant::find($stock->variant_id);
+            $variant->update(['quantity' => $variant->stock()->sum('quantity')]);
             return true;
         }
 

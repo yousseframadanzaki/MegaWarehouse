@@ -112,9 +112,9 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatus($order_id,$data){
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
-        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($data['shipping_company_id']);
 
         if($data['status_id'] == '30') {
+            $shipping_company = $this->ShippingCompanyService->GetShippingCompany($data['shipping_company_id']);
             if ($shipping_company->active == 1) {
                 if ($data['shipping_company_id'] == $order->area->shipping_company_id) {
                     $shipment = $this->ShippingCompanyService->UpdateShipment($order,$data['shipping_company_id']);
@@ -133,6 +133,9 @@ class OrdersService implements OrdersServiceInterface{
                     'shipping_company_id'=>$data['shipping_company_id'],
                 )
             );
+        } if($data['status_id'] == '85') {
+            $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
+            $this->StockService->CreateOperation(auth()->user(), $details);
         }
 
         if($this->orders_crud_repository->change_order_status($order_id,$data)){
