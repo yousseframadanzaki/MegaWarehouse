@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,5 +22,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
+        View::composer('*', function ($view) {
+            $view->with([
+                'host' => request()->getHost(),
+                'hosts' => [
+                    "local" => "127.0.0.1",
+                    "zioot" => "zioot-hindi.com",
+                    "blackwhite" => "blackandwhite-eg.com",
+                ]
+            ]);
+        });
     }
 }

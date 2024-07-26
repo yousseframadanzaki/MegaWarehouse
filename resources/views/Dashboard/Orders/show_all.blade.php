@@ -193,6 +193,7 @@
                 <li><a class="link-dark" href="{{ route('all_orders') }}">@lang('global.Orders')</a></li>
             </ul>
         </div>
+
         <div class="row">
             <div class="card shadow-sm p-3" >
                 <form method="GET" action="{{route('all_orders')}}" id="search">
@@ -401,12 +402,18 @@
                                     <tr>
                                         <th class="del_from_excel"><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
                                         <th>@lang('global.order_code')</th>
+                                        @if ($host != $hosts['zioot'])
+                                            <th hidden>شركة الشحن</th>
+                                        @endif
                                         <th>@lang('global.way_bill')</th>
                                         <th>@lang('global.admin_id')</th>
                                         <th>@lang('global.marketer_id')</th>
                                         <th>@lang('global.status_id')</th>
                                         <th>@lang('global.client_id')</th>
                                         <th>@lang('global.phone_1')</th>
+                                        @if ($host != $hosts['zioot'])
+                                            <th hidden>رقم الهاتف 2</th>
+                                        @endif
                                         <th>@lang('global.address')</th>
                                         <th>@lang('global.area_id')</th>
                                         <th>@lang('global.total')</th>
@@ -422,6 +429,9 @@
                                         <tr>
                                             <td class="del_from_excel"><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
                                             <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
+                                            @if ($host != $hosts['zioot'])
+                                                <td hidden>{{ $order->shipping_company?->name }}</td>
+                                            @endif
                                             <td>{{ $order->waybill?? 'لا يوجد' }}</td>
                                             <td>{{$order->admin->name}}</td>
                                             <td>
@@ -432,6 +442,9 @@
                                             <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
                                             <td>{{$order->name}}</td>
                                             <td>{{$order->phone_1}}</td>
+                                            @if ($host != $hosts['zioot'])
+                                                <td hidden>{{$order->phone_2}}</td>
+                                            @endif
                                             <td>{{$order->address}}</td>
                                             <td>{{$order->city->name}} - {{$order->area->name}}</td>
                                             <td>{{$order->total_after_sale}}</td>
