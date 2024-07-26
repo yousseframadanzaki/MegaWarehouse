@@ -88,7 +88,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق</button>
-                <button type="button" class="btn btn-primary add_to_cart_btn" data-bs-dismiss="modal" onclick="add_cart_items()">أضافة</button>
+                <button type="button" class="btn btn-primary add_to_cart_btn" onclick="add_cart_items()">أضافة</button>
             </div>
         </div>
     </div>
@@ -268,7 +268,7 @@
                                     <td>{{$item->variant->name}}</td>
                                     <td>{{$item->unit_price}}</td>
                                     <td style="width:80px;">
-                                        <input style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" required min="0"/>
+                                        <input @cannot('add_discount', 'App\Models\Order') readonly @endcannot style="width: inherit;" type="number" name="old_items[{{ $loop->index }}][unit_sale]" class="form-control unit_sale" value="{{$item->unit_price_after_sale}}" data-id="{{ $item->variant->id }}" id="unit_sale-{{$item->variant->id}}" required min="0"/>
                                     </td>
                                     <td><a data-id="{{ $item->variant->id }}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">{{$item->variant->quantity}}</a></td>
                                     <td>
@@ -303,7 +303,7 @@
 
             </div>
             <div class="row p-3">
-                <button type="button" class="btn btn-primary btn-lg mt-3 add_order_btn">تعديل الأوردر <i class="bi bi-pencil-fill"></i></button>
+                <button type="submit" class="btn btn-primary btn-lg mt-3">تعديل الأوردر <i class="bi bi-pencil-fill"></i></button>
             </div>
         </div>
     </form>
@@ -426,7 +426,6 @@
         var quantity = $(`#quantity-${variant_id}`).val();
         var totalAfterSale = price_after_sale * quantity;
         $(this).closest('tr').find('.total_price_after_sale').text(totalAfterSale);
-        // $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale); // Update the variant total after sale
     });
 
     function add_cart_items(){
@@ -438,12 +437,14 @@
         var variant_quantity = $("#variant_id option:selected").attr("data-quantity");
         var confirm_order = $('#variant_id option:selected').data("confirm");
         var quantity_sum = $("#quantity_sum_" + warehouse_id).data("sum");
-        if(confirm_order == '0' && quantity > quantity_sum){
+        if(confirm_order == '0' && quantity > quantity_sum) {
             alert('لا يمكنك اضافة هذا المنتج');
             return;
         }
 
         if(product_id && variant_id && warehouse_id && quantity) {
+            $("#addToCartModal").modal('hide');
+            
             var variant_found = $(`#items tr#${variant_id}`); // check if the variant is already found.
 
             if (variant_found.length == 0) {    // new variant.
@@ -460,7 +461,7 @@
                         <td>${variantName}</td>
                         <td>${variant_price}</td>
                         <td style="width:80px;">
-                            <input style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" required min="0"/>
+                            <input @cannot('add_discount', 'App\Models\Order') readonly @endcannot style="width: inherit;" type="number" name="items[${index}][unit_price_after_sale]" class="form-control unit_sale" value="${variant_price}" data-id="${variant_id}" id="unit_sale-${variant_id}" required min="0"/>
                         </td>
                         <td><a data-id="${variant_id}" class="link-primary" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#quantities">${variant_quantity}</a></td>
                         <td>
@@ -490,10 +491,6 @@
                 var totalAfterSale = price_after_sale * quantity;
                 variant_found.find('.total_price_after_sale').text(totalAfterSale);
             }
-
-            // var price_after_sale = $(`#unit_sale-${variant_id}`).val();
-            // var totalAfterSale = price_after_sale * quantity;
-            // $(`#variant_total_after_sale-${variant_id}`).text(totalAfterSale);
 
             // $("#product_id").val('');
             // $("#variant_id").empty().append('<option value="">اختار المتغير</option>');
@@ -537,7 +534,7 @@
                 var template = `
                 <tr>
                     <td>${element.warehouse.name}</td>
-                    <td>${element.sum}</td>
+                    <td id="quantity_sum_${element.warehouse.id}" data-sum="${element.sum}">${element.sum}</td>
                 </tr>
                 `;
                 $("#cart_stock").append(template);
@@ -636,7 +633,8 @@
         }, 1500);
     });
 
-    $(document).on('click','.add_order_btn',function(e){
+    $("#order_form").on('submit', function(e) {
+        e.preventDefault();
         var total = 0;
         var totalAfterSale = 0;
 
@@ -654,11 +652,9 @@
 
         var formattedTotal = total.toLocaleString();
         var formattedTotalAfterSale = totalAfterSale.toLocaleString();
-        setTimeout(function() {
-            $('.total_input').val(formattedTotal);
-            $('.total_after_sale_input').val(formattedTotalAfterSale);
-            $("#order_form").submit();
-        }, 500);
+        $('.total_input').val(formattedTotal);
+        $('.total_after_sale_input').val(formattedTotalAfterSale);
+        this.submit();
     });
 </script>
 @endsection
