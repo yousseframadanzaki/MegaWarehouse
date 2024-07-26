@@ -297,9 +297,9 @@
                         <hr style="margin: 3px">
                         <p style="font-weight: bold;">العنوان: {{$order->address}}</p>
                         <hr style="margin: 3px">
-                        @if ($order->order_notes->count() > 0 && !empty($order->order_notes->first()->name))
+                        @if ($order->order_notes->count() > 0 && !empty($order->order_notes->first()->note))
                         <p style="font-size: 14px;">
-                            ملحوظة : {{ $order->order_notes->first()->name }}
+                            ملحوظة : {{ $order->order_notes->first()->note }}
                         </p>
                         @else
                         <p style="font-size: 14px;">لا توجد ملاحظات</p>
