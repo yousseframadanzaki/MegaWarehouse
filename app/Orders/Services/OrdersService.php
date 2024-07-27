@@ -133,7 +133,7 @@ class OrdersService implements OrdersServiceInterface{
                     'shipping_company_id'=>$data['shipping_company_id'],
                 )
             );
-        } elseif($data['status_id'] == '85') {
+        } elseif($data['status_id'] == '85' && $order->status_id != 85) {
             $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
             $this->StockService->CreateOperation(auth()->user(), $details);
         }
@@ -171,8 +171,10 @@ class OrdersService implements OrdersServiceInterface{
         } elseif($data['status_id'] == '85') {
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
-                $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
-                $this->StockService->CreateOperation(auth()->user(), $details);
+                if ($order->status_id != 85) {
+                    $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
+                    $this->StockService->CreateOperation(auth()->user(), $details);
+                }
             }
         }
 
