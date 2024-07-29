@@ -111,6 +111,7 @@ class OrdersService implements OrdersServiceInterface{
     }
 
     public function ChangeOrderStatus($order_id,$data){
+        // dd($data);
         $order = $this->orders_crud_repository->get_order_by_id($order_id);
 
         if($data['status_id'] == '30') {
@@ -136,15 +137,57 @@ class OrdersService implements OrdersServiceInterface{
         } elseif($data['status_id'] == '85' && $order->stocks()->where('type', 'returned_orders')->limit(1)->count() == 0) {
             $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
             $this->StockService->CreateOperation(auth()->user(), $details);
+        } elseif($data['status_id'] == '50') {
+            $stocks = $order->stocks->where('type', 'sell');
+            $flag = false;
+            foreach ($data['variants'] as $index => $variant) {
+                if ($variant['new_quantity'] != abs($stocks[$index]->quantity)) {
+                    $flag = true;
+                    break;
+                }
+            }
+            if ($flag == false)
+                return false;
+
+            $note = "تفاصيل التسليم الجزئي <br>";
+            $new_total = $order->total;
+            $new_total_after_sale = $order->total_after_sale;
+            foreach ($data['variants'] as $index => $variant) {
+                $variant_name = $stocks[$index]->variant->name;
+                $product_name = ($stocks[$index]->variant->product->name == $variant_name) ? '' : $stocks[$index]->variant->product->name . ' - ';
+                $stock_quantity = abs($stocks[$index]->quantity);
+                $note .= "المنتج ( {$product_name} {$variant_name} ): تم تسليم {$variant['new_quantity']} من {$stock_quantity} <br>";
+                $new_total -= ( ($stock_quantity - $variant['new_quantity']) * $stocks[$index]->unit_price );
+                $new_total_after_sale -= ( ($stock_quantity - $variant['new_quantity']) * $stocks[$index]->unit_price_after_sale );
+            }
+            $note .= "المبلغ السابق: {$order->total_after_sale} و المبلغ الحالي: {$new_total_after_sale} <br>";
+            $this->OrderNotesService->AddNote($order->id,$note,$data['admin_id'],$data['company_id']);
+            $order->update([
+                'total' => $new_total,
+                'total_after_sale' => $new_total_after_sale,
+            ]);
+        } elseif ($data['status_id'] == '25') {
+            $note = "محتوي الأوردر عند إلغاؤه نهائيا قبل الشحن <br>";
+            foreach ($order->stocks as $stock) {
+                $variant_name = $stock->variant->name;
+                $product_name = ($stock->variant->product->name == $variant_name) ? '' : $stock->variant->product->name  . ' - ';
+                $quantity = abs($stock->quantity);
+                $note .= "المنتج: ( {$product_name} {$variant_name} ) | الكمية: {$quantity} | السعر: {$stock->unit_price_after_sale} <br>";
+            }
+            $this->StockService->DeleteOperations($order->stocks->pluck('id'));
+            $this->OrderNotesService->AddNote($order->id,$note,$data['admin_id'],$data['company_id']);
         }
 
-        if($this->orders_crud_repository->change_order_status($order_id,$data)){
+        if ($this->orders_crud_repository->change_order_status($order_id,$data)){
             return true;
         }
     }
 
     public function ChangeOrderStatusBulk($data)
     {
+        if ($data['status_id'] == '50')
+            return false;
+
         if($data['status_id'] == '30') {
             $shipping_company = $this->ShippingCompanyService->GetShippingCompany($data['shipping_company_id']);
             foreach ($data['orders_ids'] as $order_id) {
@@ -172,10 +215,22 @@ class OrdersService implements OrdersServiceInterface{
             foreach ($data['orders_ids'] as $order_id) {
                 $order = $this->orders_crud_repository->get_order_by_id($order_id);
                 if ($order->stocks()->where('type', 'returned_orders')->limit(1)->count() == 0) {
-                    dd('ddd');
                     $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
                     $this->StockService->CreateOperation(auth()->user(), $details);
                 }
+            }
+        } elseif ($data['status_id'] == '25') {
+            foreach ($data['orders_ids'] as $order_id) {
+                $order = $this->orders_crud_repository->get_order_by_id($order_id);
+                $note = "محتوي الأوردر عند إلغاؤه نهائيا قبل الشحن <br>";
+                foreach ($order->stocks as $stock) {
+                    $variant_name = $stock->variant->name;
+                    $product_name = ($stock->variant->product->name == $variant_name) ? '' : $stock->variant->product->name  . ' - ';
+                    $quantity = abs($stock->quantity);
+                    $note .= "المنتج: ( {$product_name} {$variant_name} ) | الكمية: {$quantity} | السعر: {$stock->unit_price_after_sale} <br>";
+                }
+                $this->StockService->DeleteOperations($order->stocks->pluck('id'));
+                $this->OrderNotesService->AddNote($order->id,$note,$data['admin_id'],$data['company_id']);
             }
         }
 

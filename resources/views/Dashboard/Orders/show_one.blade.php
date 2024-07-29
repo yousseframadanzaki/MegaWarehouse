@@ -4,7 +4,7 @@
     {{ __('global.show_order_title') }}
 @endsection
 
-@section('content')
+@section('content') 
 
 <style>
     tr.current_status {
@@ -70,7 +70,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-4" style="display: none;" id="shipping_company_select" required>
+                    <div class="row mt-3" style="display: none;" id="shipping_company_select" required>
                         <div class="col-md-12">
                             <label class="form-label">شركة الشحن</label>
                             <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
@@ -82,7 +82,24 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row" style="display: none;" id="variant_inputs" required>
+                        <div class="col-md-9 mt-3">
+                            <label class="form-label">المتغير</label>
+                        </div>
+                        <div class="col-md-3 mt-3">
+                            <label class="form-label">الكمية</label>
+                        </div>
+                        @foreach ($order->stocks->where('type', 'sell') as $stock)
+                            <div class="col-md-9 mb-2 ps-0">
+                                <input type="hidden" name="variants[{{ $loop->index }}][id]" value="{{ $stock->variant_id }}" disabled>   
+                                <input type="text" class="form-control" name="variants[{{ $loop->index }}][name]" value="{{ $stock->variant->name }} | ( الكمية: {{ abs($stock->quantity) }} )" readonly disabled>
+                            </div>
+                            <div class="col-md-3 mb-2"> 
+                                <input type="number" class="form-control" id="variant_quantity" name="variants[{{ $loop->index }}][new_quantity]" value="" min="0" max="{{ abs($stock->quantity) }}" required disabled>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="row mt-3">
                         <div class="col-md-12">
                             <label class="form-label">ملاحظة</label>
                             <textarea class="form-control" name="note" id="note" rows="3"></textarea>
@@ -441,12 +458,15 @@
         $("#print_label_form").submit();
     });
     $(document).ready(function() {
-        $('#status_id').select2({
+        $('select').select2({
             dropdownParent: $('#statusModal')
         });
-        $('#shipping_company_id').select2({
-            dropdownParent: $('#statusModal')
-        });
+        // $('#status_id').select2({
+        //     dropdownParent: $('#statusModal')
+        // });
+        // $('select').select2({
+        //     dropdownParent: $('#statusModal')
+        // });
     })
     const uid = function() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -509,7 +529,17 @@
         var status_id = $(this).val();
         if (status_id == '30') {
             $("#shipping_company_select").fadeIn();
+        } else if (status_id == '50') {
+            $("#variant_inputs").fadeIn();
+            $("#variant_inputs select, #variant_inputs input").prop('disabled', false);
+        } else {
+            $("#shipping_company_select, #variant_inputs").hide();
+            $("#variant_inputs select, #variant_inputs input").prop('disabled', true);
         }
+    })
+    $('#variant_id').change(function() {
+        var quantity = $(this).val();
+
     })
 
     var whatsappModal = document.getElementById('whatsappModal');

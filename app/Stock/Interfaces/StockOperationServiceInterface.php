@@ -9,4 +9,5 @@ interface StockOperationServiceInterface{
     public function UpdateStock($order_id, $data);
     public function DeleteStock($id);
     public function AddStock($new_items);
+    public function DeleteOperations($operation_ids);
 }
