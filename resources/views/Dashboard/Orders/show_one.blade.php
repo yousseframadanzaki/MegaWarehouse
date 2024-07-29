@@ -95,7 +95,7 @@
                                 <input type="text" class="form-control" name="variants[{{ $loop->index }}][name]" value="{{ $stock->variant->name }} | ( الكمية: {{ abs($stock->quantity) }} )" readonly disabled>
                             </div>
                             <div class="col-md-3 mb-2"> 
-                                <input type="number" class="form-control" id="variant_quantity" name="variants[{{ $loop->index }}][new_quantity]" value="" min="0" max="{{ abs($stock->quantity) }}" required disabled>
+                                <input type="number" class="form-control variant_quantity" name="variants[{{ $loop->index }}][new_quantity]" value="" min="0" max="{{ abs($stock->quantity) }}" required disabled>
                             </div>
                         @endforeach
                     </div>
@@ -529,9 +529,12 @@
         var status_id = $(this).val();
         if (status_id == '30') {
             $("#shipping_company_select").fadeIn();
-        } else if (status_id == '50') {
+        } else if (status_id == '50' || status_id == '90') {
             $("#variant_inputs").fadeIn();
             $("#variant_inputs select, #variant_inputs input").prop('disabled', false);
+            if (status_id == '90') {
+                $("#variant_inputs .variant_quantity").val(0);
+            }
         } else {
             $("#shipping_company_select, #variant_inputs").hide();
             $("#variant_inputs select, #variant_inputs input").prop('disabled', true);
