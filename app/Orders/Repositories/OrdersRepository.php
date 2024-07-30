@@ -247,8 +247,8 @@ class OrdersRepository implements OrdersRepositoryInterface{
     {
         $order = Order::findOrFail($order_id);
         if ($order->status_id != 45) {
-            $stocks = Stock::where('order_id', $order->id)->get();
-            foreach ($stocks as $stock) {
+            $stocks = Stock::where('order_id', $order->id);
+            foreach ($stocks->get() as $stock) {
                 $variant = Variant::find($stock->variant_id);
                 $variant->update(['quantity' => $variant->stock()->where('id', '!=', $stock->id)->sum('quantity')]);
             }
