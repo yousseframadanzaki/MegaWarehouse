@@ -161,13 +161,13 @@ class StockOperationService implements StockOperationServiceInterface{
     }
 
     function returned_orders($user, $details) {
-        foreach ($details['order_stocks'] as $stock) {
+        foreach ($details['order_stocks'] as $index => $stock) {
             $operation['admin_id'] = $user->id;
             $operation['company_id'] = $user->company_id;
             $operation['type'] = $details['type'];
             $operation['variant_id'] = $stock['variant_id'];
             $operation['warehouse_id'] = $stock['warehouse_id'];
-            $operation['quantity'] = abs($stock['quantity']);
+            $operation['quantity'] = empty($details['new_quantities']) ? abs($stock['quantity']) : $details['new_quantities'][$index];
             $operation['unit_price'] = $stock['unit_price'];
             $operation['unit_price_after_sale'] = $stock['unit_price_after_sale'];
             $operation['unit_cost'] = $stock['unit_cost'];

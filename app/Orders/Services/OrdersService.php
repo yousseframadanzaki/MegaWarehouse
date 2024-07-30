@@ -134,10 +134,17 @@ class OrdersService implements OrdersServiceInterface{
                     'shipping_company_id'=>$data['shipping_company_id'],
                 )
             );
-        } elseif($data['status_id'] == '85' && $order->stocks()->where('type', 'returned_orders')->limit(1)->count() == 0) {
-            $details = array('type' => 'returned_orders', 'order_stocks' => $order->stocks);
-            $this->StockService->CreateOperation(auth()->user(), $details);
-        } elseif($data['status_id'] == '50') {
+        } elseif ($data['status_id'] == '25') {
+            $note = "محتوي الأوردر عند إلغاؤه نهائيا قبل الشحن <br>";
+            foreach ($order->stocks as $stock) {
+                $variant_name = $stock->variant->name;
+                $product_name = ($stock->variant->product->name == $variant_name) ? '' : "( {$stock->variant->product->name} )";
+                $quantity = abs($stock->quantity);
+                $note .= "المنتج: {$product_name} {$variant_name} | الكمية: {$quantity} | السعر: {$stock->unit_price_after_sale} <br>";
+            }
+            $this->StockService->DeleteOperations($order->stocks->pluck('id'));
+            $this->OrderNotesService->AddNote($order->id,$note,$data['admin_id'],$data['company_id']);
+        } elseif ($data['status_id'] == '50') {
             $stocks = $order->stocks->where('type', 'sell');
             $flag = false;
             foreach ($data['variants'] as $index => $variant) {
@@ -154,9 +161,9 @@ class OrdersService implements OrdersServiceInterface{
             $new_total_after_sale = $order->total_after_sale;
             foreach ($data['variants'] as $index => $variant) {
                 $variant_name = $stocks[$index]->variant->name;
-                $product_name = ($stocks[$index]->variant->product->name == $variant_name) ? '' : $stocks[$index]->variant->product->name . ' - ';
+                $product_name = ($stocks[$index]->variant->product->name == $variant_name) ? '' : "( {$stocks[$index]->variant->product->name} )";
                 $stock_quantity = abs($stocks[$index]->quantity);
-                $note .= "المنتج ( {$product_name} {$variant_name} ): تم تسليم {$variant['new_quantity']} من {$stock_quantity} <br>";
+                $note .= "المنتج {$product_name} {$variant_name}: تم تسليم {$variant['new_quantity']} من {$stock_quantity} <br>";
                 $new_total -= ( ($stock_quantity - $variant['new_quantity']) * $stocks[$index]->unit_price );
                 $new_total_after_sale -= ( ($stock_quantity - $variant['new_quantity']) * $stocks[$index]->unit_price_after_sale );
             }
@@ -166,16 +173,20 @@ class OrdersService implements OrdersServiceInterface{
                 'total' => $new_total,
                 'total_after_sale' => $new_total_after_sale,
             ]);
-        } elseif ($data['status_id'] == '25') {
-            $note = "محتوي الأوردر عند إلغاؤه نهائيا قبل الشحن <br>";
-            foreach ($order->stocks as $stock) {
-                $variant_name = $stock->variant->name;
-                $product_name = ($stock->variant->product->name == $variant_name) ? '' : $stock->variant->product->name  . ' - ';
-                $quantity = abs($stock->quantity);
-                $note .= "المنتج: ( {$product_name} {$variant_name} ) | الكمية: {$quantity} | السعر: {$stock->unit_price_after_sale} <br>";
-            }
-            $this->StockService->DeleteOperations($order->stocks->pluck('id'));
-            $this->OrderNotesService->AddNote($order->id,$note,$data['admin_id'],$data['company_id']);
+        } elseif($data['status_id'] == '85' && $order->stocks()->where('type', 'returned_orders')->limit(1)->count() == 0) {
+            $details = ['type' => 'returned_orders', 'order_stocks' => $order->stocks];
+            $this->StockService->CreateOperation(auth()->user(), $details);
+        } elseif($data['status_id'] == '90' && $order->stocks()->where('type', 'returned_orders')->limit(1)->count() == 0) {
+            $variants = collect($data['variants'])->filter(function ($item) {
+                return $item['new_quantity'] > 0;
+            })->values();
+
+            $details = [
+                'type' => 'returned_orders',
+                'order_stocks' => $order->stocks->whereIn('variant_id', $variants->pluck('id'))->values(),
+                'new_quantities' => $variants->pluck('new_quantity')
+            ];
+            $this->StockService->CreateOperation(auth()->user(), $details);
         }
 
         if ($this->orders_crud_repository->change_order_status($order_id,$data)){
@@ -185,7 +196,7 @@ class OrdersService implements OrdersServiceInterface{
 
     public function ChangeOrderStatusBulk($data)
     {
-        if ($data['status_id'] == '50')
+        if ($data['status_id'] == '50' || $data['status_id'] == '90')
             return false;
 
         if($data['status_id'] == '30') {

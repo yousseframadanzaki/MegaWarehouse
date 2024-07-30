@@ -4,7 +4,7 @@
     {{ __('global.show_order_title') }}
 @endsection
 
-@section('content') 
+@section('content')
 
 <style>
     tr.current_status {
@@ -90,11 +90,14 @@
                             <label class="form-label">الكمية</label>
                         </div>
                         @foreach ($order->stocks->where('type', 'sell') as $stock)
+                            @php
+                                $product_name = ($stock->variant->name == $stock->variant->product->name) ? '' : "( {$stock->variant->product->name} )";
+                            @endphp
                             <div class="col-md-9 mb-2 ps-0">
-                                <input type="hidden" name="variants[{{ $loop->index }}][id]" value="{{ $stock->variant_id }}" disabled>   
-                                <input type="text" class="form-control" name="variants[{{ $loop->index }}][name]" value="{{ $stock->variant->name }} | ( الكمية: {{ abs($stock->quantity) }} )" readonly disabled>
+                                <input type="hidden" name="variants[{{ $loop->index }}][id]" value="{{ $stock->variant_id }}" disabled>
+                                <input type="text" class="form-control" name="variants[{{ $loop->index }}][name]" value="{{ $product_name }} {{$stock->variant->name }} | ( الكمية: {{ abs($stock->quantity) }} )" readonly disabled>
                             </div>
-                            <div class="col-md-3 mb-2"> 
+                            <div class="col-md-3 mb-2">
                                 <input type="number" class="form-control variant_quantity" name="variants[{{ $loop->index }}][new_quantity]" value="" min="0" max="{{ abs($stock->quantity) }}" required disabled>
                             </div>
                         @endforeach
