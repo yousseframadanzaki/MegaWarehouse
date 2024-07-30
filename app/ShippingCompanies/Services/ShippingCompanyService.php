@@ -55,7 +55,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     public function GetCompanyShippingCompanies($company_id){
         return $this->shipping_company_repository->get_shipping_companies_by_company_id($company_id);
     }
-    
+
     public function GetShippingCompany($shipping_company_id){
         return $this->shipping_company_repository->get_shipping_company_by_id($shipping_company_id);
     }
@@ -78,7 +78,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
 
         $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
         $shipment['waybill'] = $order->waybill;
-        
+
         if(!$shipment){
             return false;
         }
@@ -90,17 +90,15 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
             $shipping_company->url,
             $shipment
         );
-        
+
         return $shipment_info;
     }
     public function SendShipment($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
-        $shipment = $this->ShipmentInfoFromOrder($order,$shipping_company_id);
-        foreach ($shipping_company as $company) {
-            $username = $company->username;
-            $password = $company->password;
-            $url = $company->url; 
-        }
+        $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
+        $username = $shipping_company ->username;
+        $password = $shipping_company ->password;
+        $url = $shipping_company ->url;
 
         if(!$shipment){
             return false;
@@ -113,17 +111,14 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
             $url,
             $shipment
         );
-        
         return $shipment_info;
     }
     public function SendShipmentV2($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
         $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
-        foreach ($shipping_company as $company) {
-            $username = $company->username;
-            $password = $company->password;
-            $url = $company->url; 
-        }
+        $username = $shipping_company ->username;
+        $password = $shipping_company ->password;
+        $url = $shipping_company ->url;
 
         if(!$shipment){
             return false;
@@ -136,18 +131,17 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
             $url,
             $shipment
         );
-        
+
         return $shipment_info;
     }
 
     private function ShipmentInfoFromOrder($order,$shipping_company_id)
     {
-        
         $sector_id = $this->ShippingAreaService->GetAreaSectorIdMapping($order->area_id,$shipping_company_id);
         if(!$sector_id){
             return false;
         }
-        
+
         $order_id = $order->order_code;
         $shipment = array(
             'sector_id' =>$sector_id,
@@ -157,7 +151,6 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     }
     private function ShipmentInfoFromOrderV2($order,$shipping_company_id)
     {
-        
         $sector_id = $this->ShippingAreaService->GetAreaSectorIdMapping($order->area_id,$shipping_company_id);
         if(!$sector_id){
             return false;
@@ -185,7 +178,6 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         return $shipment;
     }
 
-    
     public function Activate($shipping_company_id) {
         return $this->shipping_company_repository->update_shipping_company_by_id(
             ['id'=> $shipping_company_id ],
