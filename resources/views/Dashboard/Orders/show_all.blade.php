@@ -446,7 +446,7 @@
                                                 <td hidden>{{$order->phone_2}}</td>
                                             @endif
                                             <td>{{$order->address}}</td>
-                                            <td>{{$order->city->name}} - {{$order->area->name}}</td>
+                                            <td>{{$order->city?->name}} - {{$order->area?->name}}</td>
                                             <td>{{$order->total_after_sale}}</td>
                                             <td>@date_format($order->created_at)</td>
                                             <td class="order_notes" data-id="{{$order->id}}">
