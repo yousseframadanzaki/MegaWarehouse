@@ -63,7 +63,8 @@ class OrdersService implements OrdersServiceInterface{
             ]);
         }
 
-        $shipping_company = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+        $shipping_company_id = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($shipping_company_id);
         if($shipping_company->active == 1){
             $data['shipping_company_id'] = $shipping_company->id;
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
