@@ -96,9 +96,9 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     public function SendShipment($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
         $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
-        $username = $shipping_company ->username;
-        $password = $shipping_company ->password;
-        $url = $shipping_company ->url;
+        $username = $shipping_company[0]->username;
+        $password = $shipping_company[0]->password;
+        $url = $shipping_company[0]->url;
 
         if(!$shipment){
             return false;
@@ -116,9 +116,9 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     public function SendShipmentV2($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
         $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
-        $username = $shipping_company ->username;
-        $password = $shipping_company ->password;
-        $url = $shipping_company ->url;
+        $username = $shipping_company[0]->username;
+        $password = $shipping_company[0]->password;
+        $url = $shipping_company[0]->url;
 
         if(!$shipment){
             return false;
