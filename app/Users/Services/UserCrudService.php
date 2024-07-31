@@ -7,7 +7,6 @@ use App\Users\Interfaces\UserCrudRepositoryInterface;
 use App\FileUpload\Interfaces\UploadServiceInterface;
 use App\Media\Interfaces\MediaCrudServiceInterface;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 
 class UserCrudService implements UserCrudServiceInterface{
@@ -27,8 +26,7 @@ class UserCrudService implements UserCrudServiceInterface{
     }
 
     public function CreateUser(array $user_details,$company_id){
-
-        $user = User::find($company_id);
+        $user = auth()->user();
         if (!$this->checkMaxUsers($user->company_id)) {
             return false;
         }
