@@ -71,10 +71,14 @@ class OrdersRepository implements OrdersRepositoryInterface{
         return Order::with(['marketer','admin','status','city','area','order_notes', 'order_data'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC')->paginate($number)->appends($request);
     }
 
-    public function get_order_code($company_id){
-        $company_code  = Company::find($company_id)->code;
-        $last_order_code = Order::where('company_id',$company_id)->latest()->first()->order_code;
+    public function get_order_code($company_id) {
+        $company_code = Company::find($company_id)->code;
+
+        $last_order = Order::where('company_id', $company_id)->latest()->first();
+        $last_order_code = !empty($last_order) ? $last_order->order_code : $company_code . '0';
+
         $order_code = $company_code . ((int)str_replace($company_code, "", $last_order_code) + 1);
+
         return $order_code;
     }
 
