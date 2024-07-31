@@ -63,8 +63,9 @@ class OrdersService implements OrdersServiceInterface{
             ]);
         }
 
-        if($_SERVER['SERVER_NAME'] != 'blackandwhite-eg.com' && $_SERVER['SERVER_NAME'] != '127.0.0.1'){
-            $data['shipping_company_id'] = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+        $shipping_company = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+        if($shipping_company->active == 1){
+            $data['shipping_company_id'] = $shipping_company->id;
             $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
             if(!$shipment){
                 return false;
