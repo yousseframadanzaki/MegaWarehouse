@@ -5,6 +5,12 @@
 @endsection
 
 @section('content')
+    <style>
+        label {
+            font-weight: bold;
+        }
+    </style>
+
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
