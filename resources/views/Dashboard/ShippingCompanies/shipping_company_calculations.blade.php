@@ -217,7 +217,7 @@
                                                     <td>{{ $order->client->name }}</td>
                                                     <td>{{ $order->area->name }}</td>
                                                     <td></td>
-                                                    <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'text-dark' : 'text-white' }};">{{ $order->status->name }}</td>
+                                                    <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
                                                     <td>{{ $order->total_after_sale }}</td>
                                                     <td>{{ $order->shipping_co_cost }}</td>
                                                     <td></td>
