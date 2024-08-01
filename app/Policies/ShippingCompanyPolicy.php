@@ -52,4 +52,12 @@ class ShippingCompanyPolicy
 
         return true;
     }
+
+    public function view_calculations(User $user) {
+        if(!$user->role->permissions->contains('slug','view_calculations')){
+            return false;
+        }
+
+        return true;
+    }
 }

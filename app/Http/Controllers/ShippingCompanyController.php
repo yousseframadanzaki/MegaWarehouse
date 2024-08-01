@@ -101,10 +101,17 @@ class ShippingCompanyController extends Controller
 
     public function shipping_company_statues(Request $request) {
         $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
-        $shipping_company = $shipping_companies->find($request->shipping_company_id);
+        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id);
         $statuses = $this->StatusService->GetStatues()->where('related_shipping', 1)->unique('id');
         $orders_number = $shipping_company->orders->whereIn('status_id', $statuses->pluck('id'))->count();
         return view('Dashboard.ShippingCompanies.shipping_orders', compact('shipping_companies', 'orders_number', 'shipping_company','statuses'));
+    }
+
+    public function shipping_company_calculations(OrdersFilters $filters, Request $request) {
+        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
+        $shipping_company = !empty($request->shipping_company_id) ? $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id) : null;
+        $filteredOrders = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
+        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'filteredOrders'));
     }
 
     public function get_orders_by_status_id(OrdersFilters $filters) {

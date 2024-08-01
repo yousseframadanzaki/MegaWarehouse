@@ -147,6 +147,10 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::post('/shipping_orders', [ShippingCompanyController::class,'shipping_company_statues'])
     ->name('shipping_orders_results');
 
+    Route::get('/shipping_company_calculations', [ShippingCompanyController::class,'shipping_company_calculations'])
+    ->name('shipping_company_calculations')
+    ->can('view_calculations', 'App\Models\ShippingCompany');
+
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders')
     ->can('view','App\Models\Order');

@@ -15,12 +15,12 @@ class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
         return ShippingCompany::where(['company_id'=>$company_id])->get();
     }
     public function get_shipping_company_by_id($id){
-        return ShippingCompany::findOrFail($id);
+        return ShippingCompany::with('orders', 'orders.status')->findOrFail($id);
     }
     public function update_shipping_company_by_id($id,$data){
         return ShippingCompany::where(['id'=>$id])->update($data);
     }
 
-    
+
 
 }

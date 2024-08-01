@@ -53,7 +53,7 @@ class OrdersFilters
 
             $filterInstance = new $this->filters[$name];
             if ($name == 'date_from' || $name == 'date_to')
-                $value .= ('|' . $receivedFilters['date_type']);
+                $value .= ('|' . (!empty($receivedFilters['date_type']) ? $receivedFilters['date_type'] : 'الاوردرات'));
 
             $query = $filterInstance($query, $value);
         }
