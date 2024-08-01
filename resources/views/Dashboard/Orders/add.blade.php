@@ -144,7 +144,7 @@
                     <h4 class="mb-4">بيانات العميل</h4>
                     <div class="col-md-4 mt-3">
                         <label class="form-label">رقم التليفون</label>
-                        <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="@error('client.phone_1') is-invalid @enderror form-control" autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
+                        <input type="text" name="client[phone_1]" id="phone_1" list="phone_numbers" class="fixNumbers @error('client.phone_1') is-invalid @enderror form-control" autocomplete="off" placeholder="يمكنك البحث عن عميل برقم الهاتف" value="{{ old('client.phone_1') }}">
                         @error('client.phone_1')
                         <div class="invalid-feedback">
                             {{ __($message) }}
@@ -725,7 +725,7 @@
         warehouse_id = $(`tr#${variant_id} .warehouse`).val();
         price_after_sale = $(`tr#${variant_id} .unit_sale`).val();
         $(`tr#${variant_id} .variant_total_after_sale`).html(quantity * price_after_sale);
-        
+
         if ($(this).hasClass('quantity')) {
             price = parseFloat($(this).attr('data-price'));
             $(`tr#${variant_id} .variant_total`).html(quantity * price);
