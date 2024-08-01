@@ -5,80 +5,6 @@
 @endsection
 
 @section('content')
-<style>
-    #loading {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgb(0, 0, 0);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-      -webkit-animation: spin 1s ease-in-out infinite;
-    }
-    @keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
-    }
-    @-webkit-keyframes spin {
-      to { -webkit-transform: rotate(360deg); }
-    }
-    .loader {
-        width: 45px;
-        aspect-ratio: 1;
-        display: flex;
-        margin-right: 95%;
-        color: #582b8c;
-        border: 4px solid;
-        box-sizing: border-box;
-        border-radius: 50%;
-        background:
-            radial-gradient(circle 5px, currentColor 95%, #0000),
-            linear-gradient(currentColor 50%, #0000 0) 50%/4px 60% no-repeat;
-        animation: l1 2s infinite linear;
-    }
-
-    .loader:before {
-        content: "";
-        flex: 1;
-        background: linear-gradient(currentColor 50%, #0000 0) 50%/4px 80% no-repeat;
-        animation: inherit;
-    }
-
-    @keyframes l1 {
-        100% {
-            transform: rotate(1turn)
-        }
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    .accordion-button::after {
-        margin-left: 0px;
-        margin-right: auto;
-        background-color: white;
-        border-radius: 50%;
-        padding: 15px;
-        background-position: center;
-    }
-
-    .accordion-button:focus {
-        box-shadow: none;
-    }
-
-    .accordion {
-        --bs-accordion-border-color: #7245a4;
-    }
-
-    .accordion-button,
-    .accordion-button:not(.collapsed) {
-        background-color: #7245a4;
-        color: white;
-        font-weight: bold
-    }
-</style>
-
     <div class="p-3">
         <div class="row">
             <ul class="breadcrumb">
@@ -119,19 +45,19 @@
                                 <h1 class="text-center fw-bold">{{ $shipping_company->name }}</h1>
                             </div>
                             <div class="col-12 col-md-4 mt-3">
-                                <div class="card text-center text-white py-2" style="background-color: #582b8c !important">
+                                <div class="card text-center text-white py-2 btn-primary">
                                     <h6>الرصيد الحالي</h6>
                                     <p class="mb-0">---</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mt-3">
-                                <div class="card text-center text-white py-2" style="background-color: #582b8c !important">
+                                <div class="card text-center text-white py-2 btn-primary">
                                     <h6>أوردرات قيد الشحن</h6>
                                     <p class="mb-0">{{ $shipping_company->orders->where('status.related_shipping', 1)->count() }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mt-3">
-                                <div class="card text-center text-white py-2" style="background-color: #582b8c !important">
+                                <div class="card text-center text-white py-2 btn-primary">
                                     <h6>مرتجعات لم تصل</h6>
                                     <p class="mb-0">{{ $shipping_company->orders->where('status_id', 70)->count() }}</p>
                                 </div>
@@ -187,7 +113,7 @@
                                                 <td>{{ $success_orders }}</td>
                                                 <td>{{ $filteredOrders->sum('total_after_sale') }}</td>
                                                 <td>{{ $filteredOrders->sum('shipping_co_cost') }}</td>
-                                                <td>{{ $success_orders / (($total_orders > 0) ? $total_orders : 1) * 100 }} %</td>
+                                                <td>{{ number_format($success_orders / (($total_orders > 0) ? $total_orders : 1) * 100, 2, '.', '') }} %</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -240,4 +166,7 @@
 
 @section('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $('select').select2();
+    </script>
 @endsection
