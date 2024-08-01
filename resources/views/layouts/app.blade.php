@@ -218,6 +218,29 @@
         if (!$('table.table').parent().hasClass('table-responsive')) {
             $('table.table').wrap('<div class="table-responsive"></div>');
         }
+
+        $('.fixNumbers').on('input', function(e) {
+            const arabicNumbers = [
+                '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩',
+            ];
+
+            const numbers = [
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+            ];
+
+            const currentValue = this.value;
+            let newValue = '';
+
+            for (let i=0; i<currentValue.length; i++) {
+                let index = arabicNumbers.indexOf(currentValue[i]);
+                if (index !== -1)
+                    newValue += numbers[index];
+                else if (currentValue[i] != ' ')
+                    newValue += currentValue[i];
+            }
+
+            this.value = newValue;
+        });
     </script>
     @yield('script')
 </body>
