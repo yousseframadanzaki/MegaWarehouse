@@ -111,7 +111,9 @@ class ShippingCompanyController extends Controller
         $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
         $shipping_company = !empty($request->shipping_company_id) ? $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id) : null;
         $filteredOrders = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
-        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'filteredOrders'));
+        $request->merge(['no_paginate' => 'yes']);
+        $filteredOrdersNoPaginate = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
+        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'filteredOrders', 'filteredOrdersNoPaginate'));
     }
 
     public function get_orders_by_status_id(OrdersFilters $filters) {
