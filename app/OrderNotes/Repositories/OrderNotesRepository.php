@@ -2,6 +2,7 @@
 
 namespace App\OrderNotes\Repositories;
 
+use App\Models\Order;
 use App\OrderNotes\Interfaces\OrderNotesRepositoryInterface;
 use App\Models\OrderNotes;
 use Carbon\Carbon;
@@ -14,6 +15,7 @@ class OrderNotesRepository implements OrderNotesRepositoryInterface{
         $order_note->note = $note;
         $order_note->admin_id = $admin_id;
         $order_note->company_id = $company_id;
+        $order_note->active = 1;
         return $order_note->save();
     }
     public function get_order_notes($order_id){
@@ -26,9 +28,19 @@ class OrderNotesRepository implements OrderNotesRepositoryInterface{
     public function add_order_note($order_id,$note,$admin_id,$company_id){
         $order_note = new OrderNotes;
         $order_note->order_id = $order_id;
-        $order_note->note = $note;
+        $order_note->note = $note['note'];
         $order_note->admin_id = $admin_id;
         $order_note->company_id = $company_id;
+        $order_note->active = $note['active'];
         return $order_note->save();
+    }
+
+    public function get_order_note($note_id) {
+        return OrderNotes::with('admin')->find($note_id);
+    }
+
+    public function update_order_note($note_id, $details) {
+        $order_note = $this->get_order_note($note_id);
+        return $order_note->update($details);
     }
 }

@@ -437,6 +437,10 @@
                         <div class="notes-list"></div>
                         <br>
                         <textarea class=" col-md-12 form-control input-circle recordNots" placeholder="اضافة ملاحظة ..." rows="4"></textarea>
+                        <div class="my-2">
+                            <input type="checkbox" name="active" id="ActiveCheck">
+                            <label for="ActiveCheck" style="user-select: none;">تظهر في البوليصة</label>
+                        </div>
                         <div id="mess" style="display:none"> </div>
                         <div class="add_notes_btn"></div>
                     </div>
@@ -596,7 +600,17 @@
     function recordYourNotes($id) {
         id = $id;
         note = $(".recordNots").val();
+        active = $('#ActiveCheck').is(':checked') ? 1 : 0;
         token = $("#token").val();
+        if (note.trim() == '') {
+            $('.recordNots').css('border', '1px solid red');
+            $('<p class="text-danger my-2">يجب إدخال ملاحظة</p>').insertAfter($('.recordNots'));
+            setTimeout(() => {
+                $('.recordNots').css('border', '1px solid lightgray');
+                $('.recordNots').next().remove();
+            }, 5000);
+            return;
+        }
         $.ajax({
             type: 'POST',
             url: `/api/order/${id}/add_note`,
@@ -604,6 +618,7 @@
             data: {
                 order_id: id,
                 note: note,
+                active: active,
                 token: token
             }
         }).then((response) => {
@@ -611,6 +626,7 @@
             if (data) {
                 $(".recordNots").html('');
                 show_success('تمت اضافة الملاحظة بنجاح');
+                location.reload();
             }
         });
     };

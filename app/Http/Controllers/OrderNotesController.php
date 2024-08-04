@@ -22,7 +22,8 @@ class OrderNotesController extends Controller
     public function create_note(Request $request){
         $data = $request->all();
         $order_id = $data['order_id'];
-        $note = $data['note'];
+        unset($data['order_id']);
+        $note = $data;
         $admin_id = auth()->user()->id;
         $company_id = $this->company_id();
         $new_note = $this->OrderNotesService->AddOrderNote($order_id,$note,$admin_id,$company_id);
