@@ -276,7 +276,7 @@ class OrdersService implements OrdersServiceInterface{
         );
         $id = $this->orders_crud_repository->change_order_status($order->id,$status_data);
         if ($id && !empty($data['price'])) {
-            $this->orders_crud_repository->update_order($order->id, ['total_after_sale' => $data['price']]);
+            $this->orders_crud_repository->update_order($order->id, array('total_after_sale' => $data['price']));
             $note = "تم تغيير سعر إجمالي الاوردر بعد الخصم من {$order->total_after_sale} إلي {$data['price']}";
             $this->OrderNotesService->AddNote($order->id,$note,$order->shipping_company->user_id,$order->company_id);
         }
