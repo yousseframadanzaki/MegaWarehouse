@@ -95,7 +95,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     }
     public function SendShipment($order,$shipping_company_id){
         $shipping_company = $this->GetShippingCompany($shipping_company_id);
-        $shipment = $this->ShipmentInfoFromOrderV2($order,$shipping_company_id);
+        $shipment = $this->ShipmentInfoFromOrder($order,$shipping_company_id);
         $username = $shipping_company[0]->username;
         $password = $shipping_company[0]->password;
         $url = $shipping_company[0]->url;
@@ -144,7 +144,6 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
 
         $order_id = $order->order_code;
         $shipment = array(
-            'sector_id' =>$sector_id,
             'order_id' =>$order_id
         );
         return $shipment;
