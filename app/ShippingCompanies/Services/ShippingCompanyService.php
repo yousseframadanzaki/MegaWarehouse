@@ -151,6 +151,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
     private function ShipmentInfoFromOrderV2($order,$shipping_company_id)
     {
         $sector_id = $this->ShippingAreaService->GetAreaSectorIdMapping($order->area_id,$shipping_company_id);
+        $sector = $order->area->name;
         if(!$sector_id){
             return false;
         }
@@ -166,6 +167,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         $order_id = $order->order_code;
         $shipment = array(
             'sector_id' =>$sector_id,
+            'sector'=>$sector,
             'product_name' =>$product_name,
             'phone_1' =>$phone_1,
             'phone_2' =>$phone_2,
