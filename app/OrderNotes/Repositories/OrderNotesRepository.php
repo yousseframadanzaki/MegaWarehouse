@@ -28,10 +28,10 @@ class OrderNotesRepository implements OrderNotesRepositoryInterface{
     public function add_order_note($order_id,$note,$admin_id,$company_id){
         $order_note = new OrderNotes;
         $order_note->order_id = $order_id;
-        $order_note->note = $note['note'];
+        $order_note->note = is_array($note) ? $note['note'] : $note;
         $order_note->admin_id = $admin_id;
         $order_note->company_id = $company_id;
-        $order_note->active = $note['active'];
+        $order_note->active = is_array($note) ? $note['active'] : 0;
         return $order_note->save();
     }
 
