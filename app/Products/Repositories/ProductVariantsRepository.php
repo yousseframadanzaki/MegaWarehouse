@@ -97,6 +97,9 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
     public function get_variants($variants_ids){
         return Variant::with('product')->whereIn('id',$variants_ids)->get();
     }
+    public function get_all_variants($page) {
+        return Variant::with('product', 'product.brand', 'product.category')->paginate(50, ['*'], 'page', $page);
+    }
 
     public function get_variants_unit_values($variants_ids){
         return Variant::with(['product' => function ($query) {

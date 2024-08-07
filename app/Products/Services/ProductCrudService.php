@@ -137,6 +137,10 @@ class ProductCrudService implements ProductCrudServiceInterface
         return $package;
     }
 
+    public function GetAllVariants($page) {
+        return $this->product_variants_repository->get_all_variants($page);
+    }
+
     public function DeleteProduct($product_id) {
         return $this->product_crud_repository->delete_product($product_id);
     }

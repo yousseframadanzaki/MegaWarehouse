@@ -28,6 +28,7 @@ use App\Http\Controllers\CommonDataController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\store\StoreController;
 
 Route::get('/',function (){
     if(auth()->user()->is_admin){
@@ -539,4 +540,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::post('whatsapp/device/add', [WhatsappController::class,'add_device'])
     ->name('add_whatsapp_device');
+});
+
+Route::group(['prefix' => 'store'], function () {
+    Route::get('/',[StoreController::class,'index'])->name('store.index');
+    Route::view('/add_order', 'store.add_order')->name('store.add_order');
 });

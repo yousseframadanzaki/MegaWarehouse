@@ -15,4 +15,5 @@ interface ProductCrudServiceInterface{
     public function DeleteVariant($variant_id, $is_bundle);
     public function GetVariantShelfData(array $data);
     public function IncompleteOrdersVariants($company_id);
+    public function GetAllVariants($page);
 }

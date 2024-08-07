@@ -19,6 +19,7 @@ use App\Http\Controllers\OrderNotesController;
 use App\Http\Controllers\admin\CompnayController;
 use App\Http\Controllers\ShippingCompanyController;
 use App\Http\Controllers\WhatsappController;
+use App\Http\Controllers\store\StoreController;
 use App\Models\Order;
 
 /*
@@ -92,4 +93,8 @@ Route::post('product/{id}/delete', [ProductController::class, 'destroy']);
 Route::post('variant/{id}/delete', [ProductController::class, 'destroy_variant']);
 Route::get('variant/shelf-data', [ProductController::class, 'get_variant_shelf_data']);
 Route::get('supplier/{supplier_id}/products', [CommonDataController::class, 'get_supplier_products']);
+
+
+Route::get('get_variants', [StoreController::class, 'get_all_variants'])->name('variants_all');
+
 
