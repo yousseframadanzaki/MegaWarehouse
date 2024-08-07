@@ -174,6 +174,39 @@
             }
         }
 
+        $('#payment_type_id').on('change', payment_type);
+
+        function payment_type() {
+            payment_category = $('#payment_category').val();
+            payment_type_id = $('#payment_type_id').val();
+
+            if (payment_category == 'Shipping Accounting') {
+                $('#from option:not([value=""]), #to option:not([value=""])').remove();
+                $('#from option[value=""], #to option[value=""]').text('جاري التحميل ...');
+                $('#from, #to').prop('disabled', true);
+                $('#from, #to').select2();
+
+                $.ajax({
+                    url: `/api/payment_type/${payment_type_id}/userdata`,
+                    method: 'get',
+                    success: function(response) {
+                        $('#from option[value=""]').text('من ...');
+                        $('#to option[value=""]').text('إلي ...');
+
+                        $.each(response.from_users, function(key, value) {
+                            $('#from').append(`<option value="${key}" ${ ('{{old("from")}}' == key) ? 'selected' : '' }>${value}</option>`);
+                        });
+                        $.each(response.to_users, function(key, value) {
+                            $('#to').append(`<option value="${key}" ${ ('{{old("to")}}' == key) ? 'selected' : '' }>${value}</option>`);
+                        });
+
+                        $('#from, #to').prop('disabled', false);
+                        $('#from, #to').select2();
+                    }
+                })
+            }
+        }
+
         $('#from, #to').on('change', function() {
             if ($(this).val() == '') {
                 $('#to option').removeAttr('disabled');

@@ -55,9 +55,10 @@ class AccountingController extends Controller
         $payment_types = $this->CommonDataService->GetPaymentTypesByCategory($payment_category);
 
         $user_type = [
-            "Transfer" => 1,
-            "Commissions" => 3,
-            "Invoices" => 2
+            "Transfer" => 1, // 1 referes to manager
+            "Invoices" => 2, // 2 referes to supplier
+            "Commissions" => 3, // 3 referes to marketer
+            "Shipping Accounting" => 4, // 4 referes to shipping_company
         ];
 
         $from_users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 1)->pluck('name', 'id');
@@ -65,6 +66,21 @@ class AccountingController extends Controller
 
         return response()->json([
             'payment_types' => $payment_types,
+            'from_users' => $from_users,
+            'to_users' => $to_users
+        ]);
+    }
+
+    public function get_payment_type_userdata($payment_type_id) {
+        if ($payment_type_id == 9) {
+            $from_users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 4)->pluck('name', 'id');
+            $to_users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 1)->pluck('name', 'id');
+        } else {
+            $from_users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 1)->pluck('name', 'id');
+            $to_users = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 4)->pluck('name', 'id');
+        }
+
+        return response()->json([
             'from_users' => $from_users,
             'to_users' => $to_users
         ]);
