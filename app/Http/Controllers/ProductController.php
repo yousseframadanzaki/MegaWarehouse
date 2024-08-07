@@ -162,7 +162,7 @@ class ProductController extends Controller
     }
     public function print_bulk_variants(Request $request)
     {
-        $variants = $this->ProductCrudService->GetBulkVariantsPrint($request->ids);
+        $variants = $this->ProductCrudService->GetBulkVariantsData($request->ids);
         return view('Dashboard.Products.print')->with('variants', $variants);
     }
     public function create_package(){
@@ -243,5 +243,19 @@ class ProductController extends Controller
         }
     }
 
+    public function get_all_variants(Request $request) {
+        // Get the current page number from the request, default to 1 if not provided
+        $page = $request->input('page', 1);
+        $variants = $this->ProductCrudService->GetAllVariants($page);
+        return response()->json([
+            'variants' => $variants->items(), // Get the current page items
+            'nextPage' => $variants->hasMorePages() ? $page + 1 : null, // Determine if there is a next page
+        ]);
+    }
 
+    public function get_bulk_variants_data(Request $request) {
+        $variant_ids = json_decode($request->ids);
+        $variants = $this->ProductCrudService->GetBulkVariantsData($variant_ids);
+        return response()->json($variants);
+    }
 }

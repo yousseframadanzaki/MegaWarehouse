@@ -9,7 +9,7 @@ interface ProductCrudServiceInterface{
     public function UpdateProduct($product_id,array $data);
     public function UpdateVariant($variant_id,array $data);
     public function GetVariantPrint($variant_id);
-    public function GetBulkVariantsPrint(array $variants_ids);
+    public function GetBulkVariantsData(array $variants_ids);
     public function AddPackage($company_id,array $data);
     public function DeleteProduct($product_id);
     public function DeleteVariant($variant_id, $is_bundle);

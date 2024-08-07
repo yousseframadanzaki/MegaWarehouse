@@ -21,6 +21,7 @@ use App\Http\Controllers\ShippingCompanyController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\store\StoreController;
 use App\Models\Order;
+use App\Models\Product;
 
 /*
     |--------------------------------------------------------------------------
@@ -96,6 +97,7 @@ Route::get('variant/shelf-data', [ProductController::class, 'get_variant_shelf_d
 Route::get('supplier/{supplier_id}/products', [CommonDataController::class, 'get_supplier_products']);
 
 
-Route::get('get_variants', [StoreController::class, 'get_all_variants'])->name('variants_all');
+Route::get('get_all_variants', [ProductController::class, 'get_all_variants']);
+Route::get('get_bulk_variants_data', [ProductController::class, 'get_bulk_variants_data']);
 
 

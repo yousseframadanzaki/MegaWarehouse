@@ -101,7 +101,7 @@ class ProductCrudService implements ProductCrudServiceInterface
         return $this->product_variants_repository->get_variant_by_id($variant_id);
     }
 
-    public function GetBulkVariantsPrint($variants_ids)
+    public function GetBulkVariantsData($variants_ids)
     {
         return $this->product_variants_repository->get_variants($variants_ids);
     }

@@ -21,6 +21,13 @@
             background: white;
         }
 
+        nav {
+            width: 100% !important;
+            position: fixed !important;
+            top: 0px;
+            z-index: 1000;
+        }
+
         .sidebar {
             overflow-y: auto;
         }
@@ -63,13 +70,9 @@
                 <li class="nav-item mx-2">
                     <a class="nav-link  " href="{{ route('store.add_order') }}" >
                         <i class="bi bi-cart-fill position-relative" style="font-size: 16px">
-                            @if (Session::has('cart'))
-                                @if (count(Session::get('cart')) > 0)
-                                    <span style="font-size: 6px" class="badge bg-danger position-absolute translate-middle bottom-0 start-100">
-                                        {{ count(Session::get('cart')) }}
-                                    </span>
-                                @endif
-                            @endif
+                            <span style="font-size: 8px; display: none;" id="cartCount" class="badge bg-danger position-absolute translate-middle bottom-0 start-100">
+
+                            </span>
                         </i>
                     </a>
                 </li>
@@ -77,7 +80,7 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid mb-5" style="margin-top: 70px;">
         <div class="row">
             <div class="no-print sidebar-layout d-md-none">
             </div>
@@ -96,6 +99,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
     <script>
+        window.addEventListener('load', function() {
+            let cartCount = JSON.parse(sessionStorage.getItem('cartCount')) || 0;
+            if (cartCount > 0)
+                $('#cartCount').show().text(cartCount);
+        })
+
         $('.fixNumbers').on('input', function(e) {
             const arabicNumbers = [
                 '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩',
