@@ -34,9 +34,9 @@ class OrdersService implements OrdersServiceInterface{
 
     public function AddOrder($user,array $order_details){
 
-        if(!$this->checkMaxOrders($user->company_id)){
-            return false;
-        }
+        // if(!$this->checkMaxOrders($user->company_id)){
+        //     return false;
+        // }
         if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
             $order_details['status_id'] = '5';
         }else{
@@ -322,9 +322,9 @@ class OrdersService implements OrdersServiceInterface{
     }
     public function UpdateOrder($order_id, $data)
     {
-        if(!$this->checkMaxOrders(auth()->user()->company_id)){
-            return false;
-        }
+        // if(!$this->checkMaxOrders(auth()->user()->company_id)){
+        //     return false;
+        // }
 
         $old_items = isset($data['old_items']) ? $data['old_items'] : array();
         $new_items = isset($data['items']) ? $data['items'] : array();
