@@ -175,7 +175,7 @@
 
                     <div class="col-md-4 mt-3">
                         <label class="form-label">رقم التليفون 2 </label>
-                        <input type="text" class="form-control @error('client.phone_2') is-invalid @enderror" name="client[phone_2]" id="phone_2" value="{{ old('client.phone_2') }}">
+                        <input type="text" class="fixNumbers form-control @error('client.phone_2') is-invalid @enderror" name="client[phone_2]" id="phone_2" value="{{ old('client.phone_2') }}">
                         @error('client.phone_2')
                         <div class="invalid-feedback">
                             {{ __($message) }}
