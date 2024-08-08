@@ -318,7 +318,7 @@
                             @foreach ($order->stocks->where('type', 'sell') as $item)
                             <tr>
                                 <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->product->name??'تابع لمتغير موجود مسبقا'}}</td>
-                                <td class="@if(empty($item->variant->name)) text-danger @elseif ($item->variant->stock()->where('warehouse_id', $item->warehouse->id)->sum('quantity') <= 0 && $order->status_id == 5) bg-danger text-white @endif">{{$item->variant->name??'متغير موجود مسبقا'}}</td>
+                                <td class="@if(empty($item->variant->name)) text-danger @elseif ($item->variant->quantity < 0 && $order->status_id == 5) bg-danger text-white @endif">{{$item->variant->name??'متغير موجود مسبقا'}}</td>
                                 <td>{{$item->warehouse->name}}</td>
                                 <td @empty($item->variant->name) class="text-danger" @endempty>{{$item->variant->product->supplier->name??'تابع لمتغير موجود مسبقا'}}</td>
                                 <td>{{$item->unit_price}}</td>

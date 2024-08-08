@@ -274,10 +274,26 @@ class OrdersRepository implements OrdersRepositoryInterface{
         return $area->shipping_company_id;
     }
     public function update_incomplete_orders_status() {
-        return Order::where('company_id', auth()->user()->company_id)
+        $orders = Order::with(['stocks.variant'])
+        ->where('company_id', auth()->user()->company_id)
         ->where('status_id', 5)
-        ->whereHas('stocks.variant', function ($query) {
-            $query->where('quantity', '<', 0);
-        }, '=', 0)->update(['status_id' => 6]);
+        ->get();
+
+        $updated_ids = [];
+        foreach ($orders as $order) {
+            $flag = true;
+            foreach ($order->stocks as $stock) {
+                if ($stock->variant->quantity < 0) {
+                    $flag = false;
+                    break;
+                }
+            }
+
+            if ($flag) {
+                $updated_ids[] = $order->id;
+            }
+        }
+
+        return Order::whereIn('id', $updated_ids)->update(['status_id' => 6]);
     }
 }
