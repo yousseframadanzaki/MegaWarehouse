@@ -383,8 +383,12 @@
                 </div>
             </div>
         @endif
-        <div style="width: fit-content;font-size: 14px;font-weight: bold;margin: 10px 0px;background:#eeee;border:2px solid #000;padding:5px;border-radius:5px">سعر الشحن:  {{$order->delivery_cost}}</div>
-
+        <div style="display: flex;">
+            <div style="width: fit-content;font-size: 14px;font-weight: bold;margin: 10px 0px;background:#eeee;border:2px solid #000;padding:5px;border-radius:5px">سعر الشحن:  {{$order->delivery_cost}}</div>
+            @if (($order->total - $order->total_after_sale) > 0)
+                <div style="width: fit-content;font-size: 14px;font-weight: bold;margin: 10px 5px;background:#eeee;border:2px solid #000;padding:5px;border-radius:5px">قيمة الخصم:  {{$order->total - $order->total_after_sale}}</div>
+            @endif
+        </div>
         <div class="footer">
             <div>
                 <h3>{{ json_decode($order->companies->data)->facebook }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
