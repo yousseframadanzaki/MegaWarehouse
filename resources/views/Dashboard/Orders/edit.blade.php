@@ -133,6 +133,9 @@
         <div class="row">
             <div class="row">
                 <h4>بيانات العميل</h4>
+                @cannot('add_discount', 'App\\Models\Order')
+                    <input type="hidden" name="client[delivery_cost]" value="{{ $order->delivery_cost }}">
+                @endcannot
                 <div class="col-md-4">
                     <label class="form-label">الاسم </label>
                     <input type="text" class="form-control @error('client.name') is-invalid @enderror" name="client[name]"
@@ -230,8 +233,9 @@
                 </div>
                 <div class="col-md-4 mt-3">
                     <label class="form-label">سعر الشحن</label>
-                    <input type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
-                        name="client[delivery_cost]" value="{{ $order->delivery_cost }}">
+                    <input @cannot('add_discount', 'App\\Models\Order') readonly @endcannot
+                        type="text" class="form-control @error('delivery_cost') is-invalid @enderror" id="delivery_cost"
+                        @can('add_discount', 'App\\Models\Order') name="client[delivery_cost]" @endcan value="{{ $order->delivery_cost }}">
                 </div>
             </div>
                 <div class="row mt-5">
