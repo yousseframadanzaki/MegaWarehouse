@@ -68,7 +68,7 @@
             <a class="navbar-brand" href="{{ route('store.index') }}">Zioot Store</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 flex-row">
                 <li class="nav-item mx-2">
-                    <a class="nav-link  " href="{{ route('store.add_order') }}" >
+                    <a class="nav-link  " href="{{ route('store.create_order') }}" >
                         <i class="bi bi-cart-fill position-relative" style="font-size: 16px">
                             <span style="font-size: 8px; display: none;" id="cartCount" class="badge bg-danger position-absolute translate-middle bottom-0 start-100">
 

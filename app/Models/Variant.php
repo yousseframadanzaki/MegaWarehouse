@@ -34,4 +34,8 @@ class Variant extends Model
     public function stock() {
         return $this->hasMany(Stock::class);
     }
+
+    public function image() {
+        return $this->hasOne(Media::class,'collection_id')->where('collection','varient')->latestOfMany();
+    }
 }

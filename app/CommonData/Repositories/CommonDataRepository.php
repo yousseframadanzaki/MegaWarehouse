@@ -109,11 +109,12 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
                 $item['name']  = "( {$item->product->name} ) - ( $item->name )";
                 $item['price'] = $item->pivot->price;
                 $item['product'] = $product->first();
+                $item['image'] = $item->image;
                 return $item;
             });
         } else {
             $user = auth()->user();
-            $variants = Variant::with('product')->where('product_id', $product_id)->get();
+            $variants = Variant::with('product', 'image')->where('product_id', $product_id)->get();
             $hide = $this->orderPolicy->hide_quantity($user) ? 1 : 0;
             $variants = $variants->map(function ($variant) use ($hide) {
                 return array_merge($variant->toArray(), ['hide' => $hide]);

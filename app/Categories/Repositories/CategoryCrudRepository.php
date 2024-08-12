@@ -24,14 +24,14 @@ class CategoryCrudRepository implements CategoryCrudRepositoryInterface{
     }
 
     public function get_category_with_products($id){
-        $category = Category::with(['children'])->where('id', $id)->get()->first();
-        $products = $category->products;
-        foreach ($category->children as $child) {
-            $products =  $products->merge($child->products);
-        }
-        $data['category'] = $category;
-        $data['products'] = PaginationHelper::paginate($products,10);
-        return $data;
+        $category = Category::with(['products'])->find($id);
+        // $products = $category->products;
+        // foreach ($category->children as $child) {
+        //     $products =  $products->merge($child->products);
+        // }
+        // $data['category'] = $category;
+        // $data['products'] = PaginationHelper::paginate($products,10);
+        return $category;
     }
 
 }

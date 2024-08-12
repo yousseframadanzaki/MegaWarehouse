@@ -545,5 +545,5 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 Route::group(['prefix' => 'store'], function () {
     Route::get('/', [StoreController::class,'index'])->name('store.index');
     Route::get('/category/{category_id}', [StoreController::class,'show_category'])->name('store.show_category');
-    Route::view('/add_order', 'store.add_order')->name('store.add_order');
+    Route::get('/add_order', [StoreController::class,'create_order'])->name('store.create_order');
 });
