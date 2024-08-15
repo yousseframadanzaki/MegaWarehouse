@@ -52,6 +52,28 @@
             transform: rotate(270deg);
             margin: 0px !important;
         }
+
+        button.increment,
+        button.decrement {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            border: none;
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        button.increment {
+            background-color: green;
+        }
+
+        button.decrement {
+            background-color: rgb(128, 3, 3);
+        }
     </style>
 </head>
 
@@ -100,7 +122,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
     <script>
         window.addEventListener('load', function() {
-            let cartCount = JSON.parse(sessionStorage.getItem('cartCount')) || 0;
+            let cartCount = JSON.parse(localStorage.getItem('cartCount')) || 0;
             if (cartCount > 0)
                 $('#cartCount').show().text(cartCount);
         })

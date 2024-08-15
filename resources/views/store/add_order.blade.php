@@ -24,6 +24,7 @@
                     <h5 class="text-center my-3">بيانات العميل</h5>
                     <hr>
                 </div>
+                <input type="hidden" name="client_id" id="client_id">
                 <div class="col-md-6 col-lg-4 mt-3">
                     <div class="form-group">
                         <label for="client_name">الاسم</label>
@@ -32,10 +33,22 @@
                 </div>
                 <div class="col-md-6 col-lg-4 mt-3">
                     <div class="form-group">
-                        <label for="client_phone">رقم التليفون</label>
-                        <input type="text" class="form-control" name="client[phone]" id="client_phone" required>
+                        <label for="client_phone_1">رقم التليفون</label>
+                        <input type="text" class="form-control fixNumbers" name="client[phone_1]" id="client_phone_1" required>
                     </div>
                 </div>
+                <div class="col-md-6 col-lg-4 mt-3">
+                    <div class="form-group">
+                        <label for="client_phone_2">رقم التليفون 2</label>
+                        <input type="text" class="form-control fixNumbers" name="client[phone_2]" id="client_phone_2" required>
+                    </div>
+                </div>
+                {{-- <div class="col-md-6 col-lg-4 mt-3">
+                    <div class="form-group">
+                        <label for="client_email">الايميل</label>
+                        <input type="text" class="form-control" name="client[email]" id="client_email" required>
+                    </div>
+                </div> --}}
                 <div class="col-md-6 col-lg-4 mt-3">
                     <div class="form-group">
                         <label for="client_address">العنوان</label>
@@ -53,6 +66,8 @@
                         </select>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 col-lg-4 mt-3">
                     <div class="form-group">
                         <label for="city_id">المدينة</label>
@@ -65,6 +80,12 @@
                         <select class="form-select" name="client[area_id]" id="area-select" required></select>
                     </div>
                 </div>
+                <div class="col-md-6 col-lg-4 mt-3">
+                    <div class="form-group">
+                        <label for="delivery_cost">سعر الشحن</label>
+                        <input class="form-control" name="client[delivery_cost]" id="delivery_cost" required min="0" readonly>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -74,7 +95,7 @@
                 </div>
                 <div class="col-12">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" style="min-width: 800px;" id="order_items_table">
+                        <table class="table table-bordered table-striped" id="order-items" style="min-width: 800px;" id="order_items_table">
                             <thead>
                                 <tr>
                                     <th>المنتج</th>
@@ -90,7 +111,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <p>إجمالي الأوردر: <span class=""></span></p>
+                    <p>إجمالي الأوردر: <span class="fw-bold" id="total_order"></span></p>
                 </div>
             </div>
         </form>
@@ -154,12 +175,9 @@
 
     <script>
         $(document).ready(function() {
-            let cart = JSON.parse(sessionStorage.getItem('cart')) || '';
+            let cart = JSON.parse(localStorage.getItem('cart')) || '';
 
             if (cart != '') {
-                console.log(cart.map(item => item.id))
-                console.log(cart)
-
                 $.ajax({
                     url: '/api/get_bulk_variants_data',
                     method: 'GET',
@@ -167,23 +185,27 @@
                         ids: JSON.stringify(cart.map(item => item.id))
                     },
                     success: function(data) {
+                        let sum = 0;
                         $.each(data, function(index, variant) {
                             let template = `
                                 <tr data-id="${variant.id}">
                                     <td>${variant.product.name}</td>
                                     <td>${variant.name}</td>
-                                    <td class="unit_price">${variant.product.price}</td>
+                                    <td class="unit_sale">${variant.product.price}</td>
                                     <td>
-                                        <input type="number" class="form-control quantity" name="order_items[${index}][quantity]" value="${cart[index].quantity}" min="1" required>
+                                        <input type="number" class="form-control quantity" name="items[${index}][quantity]" value="${cart[index].quantity}" min="1" required>
                                     </td>
                                     <td class="total_price_text">${cart[index].quantity * variant.product.price}</td>
-                                    <input type="hidden" class="variant_id" name="order_items[${index}][variant_id]" value="${variant.id}">
-                                    <input type="hidden" class="total_price_input" name="order_items[${index}][price]" value="${cart[index].quantity * variant.product.price}">
+                                    <input type="hidden" name="items[${index}][unit_sale]" value="${variant.product.price}">
+                                    <input type="hidden" name="items[${index}][id]" value="${variant.id}">
                                 </tr>
                             `;
 
-                            $('tbody').append(template);
+                            $('#order-items tbody').append(template);
+                            sum += (cart[index].quantity * variant.product.price);
                         })
+
+                        $('#total_order').text(sum);
                     }
                 })
             }
@@ -194,11 +216,77 @@
                 let total_price_text = $(this).closest('tr').find('.total_price_text');
                 let total_price_input = $(this).closest('tr').find('.total_price_input');
                 let quantity = $(this).val();
-                let unit_price = $(this).closest('tr').find('.unit_price').text();
+                let unit_sale = $(this).closest('tr').find('.unit_sale').text();
 
-                total_price_text.text(unit_price * quantity);
-                total_price_input.val(unit_price * quantity);
+                total_price_text.text(unit_sale * quantity);
+                total_price_input.val(unit_sale * quantity);
+
+                let sum = 0;
+                $('#order-items .total_price_text').each(function () {
+                    sum += Number($(this).text());
+                });
+
+                $('#total_order').text(sum);
             }
         })
+    </script>
+
+    <script>
+        $("#client_phone_1").on('keyup', function() {
+            remove_data();
+
+            var phone = $(this).val();
+
+            if (phone.length > 10) {
+                $.ajax({
+                    url: `/api/clients/${phone}`,
+                    method: "GET",
+                    dataType: "text",
+                }).then(async function(response, textStatus, xhr) {
+                        data = JSON.parse(response);
+
+                        await $.each(data.citites, function(key, value) {
+                            $("#city-select").append('<option value="' + key + '">' + value +
+                                '</option>');
+                        });
+
+                        await $.each(data.areas, function(key, value) {
+                            $("#area-select").append('<option value="' + value.id + '">' + value.name + '</option>');
+                            $("#delivery_cost").val(value.price);
+                        });
+
+                        await add_data(data);
+                    },
+                    async function(response, textStatus, xhr) {
+                        if (textStatus === "error") {
+                            $("#client_id").attr('value', '');
+                        }
+                    })
+            }
+        })
+
+        function add_data(data) {
+            $("#client_name").val(data.client.name);
+            $("#client_phone_2").val(data.client.phone_2);
+            $("#client_address").val(data.client.address);
+            $("#country-select").val(data.client.country_id);
+            $("#city-select").val(data.client.area.city_id);
+            $("#area-select").val(data.client.area_id);
+            $("#client_id").attr('value', data.client.id);
+            $("#city-select, #area-select").select2();
+        }
+
+        function remove_data() {
+            $("#client_name").val("");
+            $("#client_phone_2").val("");
+            $("#client_address").val("");
+            $("#country-select").val("");
+            $("#city-select").val("");
+            $("#area-select").val("");
+            $("#city-select").html("");
+            $("#area-select").html("");
+            $("#client_id").attr('value', '');
+            $("#delivery_cost").val("");
+        }
     </script>
 @endsection

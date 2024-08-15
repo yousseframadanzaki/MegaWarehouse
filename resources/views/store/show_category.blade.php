@@ -66,7 +66,7 @@
         $('#showProductModal').on('show.bs.modal', function(e) {
             let product_id = $(e.relatedTarget).attr('data-id');
             let product_name = $(e.relatedTarget).attr('data-name');
-            let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             if (product_id != old_product_id) {
                 old_product_id = product_id;
@@ -97,7 +97,11 @@
                                                 <div class="quantity-box">
                                                     <div class="d-flex">
                                                         <p class="my-1" style="flex: 1;">الكمية</p>
-                                                        <input type="number" class="form-control quantity border-secondary" min="1" style="flex: 1;">
+                                                        <div>
+                                                            <button class="decrement">-</button>
+                                                            <span class="mx-2 quantity-input" style="font-size: 20px;">0</span>
+                                                            <button class="increment">+</button>
+                                                        </div>
                                                     </div>
                                                     <hr class="my-2">
                                                 </div>
@@ -120,25 +124,35 @@
 
     {{-- order scripts --}}
     <script>
+        $(document).on('mousedown', 'button.increment, button.decrement', function() {
+            let quantityInput = $(this).closest('.quantity-box').find('.quantity-input');
+            let quantity = Number(quantityInput.text());
+            if ($(this).hasClass('increment')) {
+                quantityInput.text(++quantity);
+            } else if ($(this).hasClass('decrement') && quantity > 0) {
+                quantityInput.text(--quantity);
+            }
+        })
+
         $(document).on('click', '.addCart', function() {
             if (!$(this).hasClass('bg-success')) {
                 let variant_id = $(this).data('id');
-                let quantity = $(this).closest('.card-body').find('.quantity').val();
+                let quantity = Number($(this).closest('.quantity-box').find('.quantity-input').text());
                 if (quantity <= 0 || quantity == '')
                     return;
 
-                let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
                 cart.push({id: variant_id, quantity: quantity});
-                sessionStorage.setItem('cart', JSON.stringify(cart));
+                localStorage.setItem('cart', JSON.stringify(cart));
 
                 $(this).closest('.card-body').find('.quantity-box').hide();
                 $(this).addClass('bg-success');
                 $(this).text('تم الاضافة للأوردر بنجاح');
 
-                let cartCount = JSON.parse(sessionStorage.getItem('cartCount')) || 0;
+                let cartCount = JSON.parse(localStorage.getItem('cartCount')) || 0;
                 cartCount++;
-                sessionStorage.setItem('cartCount', cartCount);
+                localStorage.setItem('cartCount', cartCount);
 
                 $('#cartCount').show().text(cartCount);
             }

@@ -113,6 +113,9 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
                 return $item;
             });
         } else {
+            if (!auth()->check())
+                return Variant::with('product', 'image')->where('product_id', $product_id)->get();
+
             $user = auth()->user();
             $variants = Variant::with('product', 'image')->where('product_id', $product_id)->get();
             $hide = $this->orderPolicy->hide_quantity($user) ? 1 : 0;

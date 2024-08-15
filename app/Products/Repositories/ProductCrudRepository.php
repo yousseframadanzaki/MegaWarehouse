@@ -27,6 +27,10 @@ class ProductCrudRepository implements ProductCrudRepositoryInterface{
     }
 
     public function get_product_by_id($product_id){
+        if (!auth()->check()) {
+            return Product::with(['attributes', 'variants'])->findOrFail($product_id);
+        }
+
         $user = auth()->user();
         if ($this->stockPolicy->view_his_quantity($user)) {
         $warehouse_id = $user->warehouse_id;
