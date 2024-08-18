@@ -417,6 +417,7 @@
                                         <th>@lang('global.address')</th>
                                         <th>@lang('global.area_id')</th>
                                         <th>@lang('global.total')</th>
+                                        <th>تاريخ الحالة</th>
                                         <th>@lang('global.created_at')</th>
                                         <th>@lang('global.order_notes')</th>
                                         @can('delete_order', 'App\Models\Order')
@@ -448,6 +449,14 @@
                                             <td>{{$order->address}}</td>
                                             <td>{{$order->city?->name}} - {{$order->area?->name}}</td>
                                             <td>{{$order->total_after_sale}}</td>
+                                            <td>
+                                                @php
+                                                    $last_status = $order->order_status->where('id', $order->status_id)->last();
+                                                @endphp
+                                                @if (!empty($last_status))
+                                                    @date_format($last_status->pivot->created_at)
+                                                @endif
+                                            </td>
                                             <td>@date_format($order->created_at)</td>
                                             <td class="order_notes" data-id="{{$order->id}}">
                                                 <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
