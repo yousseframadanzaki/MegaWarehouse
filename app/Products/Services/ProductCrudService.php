@@ -29,6 +29,13 @@ class ProductCrudService implements ProductCrudServiceInterface
     public function AddProduct($company_id, array $details)
     {
         $details['product_info']['company_id'] = $company_id;
+        if (!empty($details['product_info']['is_store'])) {
+            if ($details['product_info']['is_store'] == 'on') {
+                $details['product_info']['is_store'] = '1';
+            }
+        } else {
+            $details['product_info']['is_store'] = '0';
+        }
         if (!empty($details['product_info']['show_quantity'])) {
             if ($details['product_info']['show_quantity'] == 'on') {
                 $details['product_info']['show_quantity'] = '1';

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\WhatsappCampaign;
 use App\Models\WhatsappDevice;
+use App\Models\Order;
 use Carbon\Carbon;
 
 
@@ -45,6 +46,36 @@ class SendWhatsappMessages extends Command
             $sendNumbers = $campaign->sent_numbers ? explode(',', $campaign->sent_numbers) : [];
 
             foreach ($unsentNumbers as $key => $number) {
+                // $find = [
+                //     '#order_id',
+                //     '#waybill',
+                //     '#client_name',
+                //     '#client_phone_1',
+                //     '#client_phone_2',
+                //     '#address',
+                //     '#city',
+                //     '#area',
+                //     '#total',
+                //     '#status',
+                //     "\n",
+                // ];
+                // $order = Order::where('phone_1', $number)->last();
+                // $replace = [
+                //     $order->order_code,
+                //     $order->waybill,
+                //     $order->name,
+                //     $order->phone_1,
+                //     $order->phone_2,
+                //     $order->address,
+                //     $order->city->name,
+                //     $order->area->name,
+                //     $order->total,
+                //     $order->status->name,
+                //     "<br>"
+                // ];
+                // $campaign_text = str_replace($find, $replace, $campaign->text);
+
+
                 $this->sendMessage($number, $campaign->text, $campaign->media, $device->instance_id);
 
                 $sendNumbers[] = $number;
@@ -71,7 +102,7 @@ class SendWhatsappMessages extends Command
             // Normal message
             $url = "https://whatsbotcloud.com/api/send?type=text&number=2" . $number . "&message=" . urlencode($text) . "&instance_id=" . $instance_id . "&access_token=" . $access_token;
         }
-    
+
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL => $url,
@@ -83,8 +114,8 @@ class SendWhatsappMessages extends Command
         ));
         $result = curl_exec($ch);
         curl_close($ch);
-    
+
         $res = json_decode($result, true);
-    
+
     }
 }

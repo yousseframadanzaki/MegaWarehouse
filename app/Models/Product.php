@@ -24,6 +24,7 @@ class Product extends Model
         'before_sale_price',
         'marketer_commission',
         'is_bundle',
+        'is_store',
     ];
 
     public function supplier() {

@@ -146,6 +146,12 @@
                     </div>
                     <div class="row mb-3 mt-5">
                         <div class="form-check form-switch" style="width: auto;">
+                            <input class="form-check-input" type="checkbox" name="product_info[is_store]" {{ $data['product']->is_store == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">عرض المنتج في المتجر</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-check form-switch" style="width: auto;">
                             <input class="form-check-input" type="checkbox" name="product_info[show_quantity]" {{ $data['product']->show_quantity == 1 ? 'checked' : '' }}>
                             <label class="form-check-label">عرض فقط متوفر أو غير متوفر</label>
                         </div>

@@ -120,6 +120,14 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
+        if (!empty($data['product_info']['is_store'])) {
+            if ($data['product_info']['is_store'] == 'on') {
+                $data['product_info']['is_store'] = '1';
+            }
+        } else {
+            $data['product_info']['is_store'] = '0';
+        }
+
         if (array_key_exists('show_quantity', $data['product_info'])) {
             if ($data['product_info']['show_quantity'] == 'on') {
                 $data['product_info']['show_quantity'] = '1';

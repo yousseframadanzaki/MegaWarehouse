@@ -36,7 +36,7 @@
                                 @foreach ($categories as $cat)
                                    @if($category->id != $cat->id)
                                     <option @if($category->parent_id ===$cat->id) selected @endif value="{{$cat->id}}">{{$cat->name}}</option>
-                                   @endif                                
+                                   @endif
                                 @endforeach
                              </select>
                             @error('parent_id')
@@ -45,6 +45,13 @@
                                 </div>
                             @enderror
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="formFile" class="form-label">المخزن الافتراضي للمتجر</label>
+                        <select class="form-select" name="store_default">
+                            <option value="1" @if ($category->store_default == 1) selected @endif>نعم</option>
+                            <option value="0" @if ($category->store_default == 0) selected @endif>لا</option>
+                        </select>
                     </div>
                 </div>
                 <button class="btn btn-lg btn-primary mt-3 shadow-sm">تعديل تصنيف <i
