@@ -251,7 +251,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function search_orders($company_id, $data) {
         return Order::with(['marketer','admin','status','city','area','order_notes'])->where('company_id', $company_id)->where(function($query) use ($data) {
             $query->whereIn('order_code', $data)->orWhereIn('waybill', $data);
-        })->get();
+        })->paginate(1000);
     }
     public function delete_order($order_id)
     {

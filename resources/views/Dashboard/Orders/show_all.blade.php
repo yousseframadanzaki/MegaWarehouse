@@ -383,7 +383,7 @@
                         </div>
                         <div class="d-flex flex-wrap justify-content-between mt-3">
                             <label>عدد المحدد : <span id="selection-number">0</span></label>
-                            <label>عدد النتائج : {!! $orders->total() !!}</label>
+                            <label>عدد النتائج : <span id="total-result">{!! $orders->total() !!}</span></label>
                         </div>
                         <form action="{{ route('all_orders') }}" method="GET" style="width: fit-content">
                             <div class="d-none" id="searchData">
@@ -462,7 +462,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div dir="ltr" class="mt-4">
+                        <div dir="ltr" class="mt-4 pagination">
                             <div class="mx-auto" style="width: fit-content;">{!! $orders->links() !!}</div>
                             <p class="text-center">يتم عرض {!! $orders->perPage() !!} عنصر في كل صفحة</p>
                         </div>
@@ -787,18 +787,27 @@
         })
 
         $('#searchModal button').click(function() {
-            $('#searchModal').modal('hide');
+            let totalOrders = $('#total-orders');
             let search_data = $('textarea#searchData').val();
+
+            if (search_data.split("\n").length > 1000) {
+                alert('لا يمكنك البحث بأكثر من 1000 عنصر.');
+                return;
+            }
+
+            $('#searchModal').modal('hide');
             $('#orders tbody').html('<td colspan="13" class="text-center"><div id="loading" class="my-4"></div></td>');
+            $('.pagination').hide();
 
             $.ajax({
                 url: '/api/orders/search',
-                method: 'get',
+                method: 'post',
                 dataType: 'json',
                 data: {
                     search_data
                 },
-                success: function(data) {
+                success: function(response) {
+                    data = response.data;
                     $('#orders tbody').html('');
                     $.each(data, function(key, value) {
                         let table_row = `
@@ -830,6 +839,7 @@
 
                         $('#orders tbody').append(table_row);
                     })
+                    $('#total-result').text(response.total);
                 }
             })
         })

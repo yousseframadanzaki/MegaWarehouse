@@ -74,7 +74,7 @@ Route::post('/sectors/{id}/edit_shipping_company', [AreaController::class, 'edit
 Route::post('/sectors/{id}/edit_keywords', [AreaController::class, 'edit_keywords'])->name('edit_keywords');
 Route::get('/order/{order_id}/notes', [OrderNotesController::class, 'notes'])->name('notes');
 Route::POST('/order/{id}/add_note', [OrderNotesController::class, 'create_note'])->name('create_note');
-Route::get('/orders/search', [OrderController::class, 'search_orders'])->name('search_orders');
+Route::POST('/orders/search', [OrderController::class, 'search_orders'])->name('search_orders');
 Route::GET('/area/{id}/get_price', [AreaController::class, 'get_price'])->name('create_note');
 Route::get('/area/{id}/get_keywords', [AreaController::class, 'get_keywords'])->name('get_keywords');
 Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
