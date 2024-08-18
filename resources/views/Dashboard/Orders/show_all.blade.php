@@ -798,10 +798,8 @@
                 data: {
                     search_data
                 },
-                success: function(response) {
+                success: function(data) {
                     $('#orders tbody').html('');
-                    let data = response.data; // we need only data from paginate function.
-
                     $.each(data, function(key, value) {
                         let table_row = `
                             <tr>
