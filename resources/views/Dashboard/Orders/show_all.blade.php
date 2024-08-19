@@ -414,10 +414,9 @@
                                         @if ($host != $hosts['zioot'])
                                             <th hidden>رقم الهاتف 2</th>
                                         @endif
-                                        <th>@lang('global.address')</th>
                                         <th>@lang('global.area_id')</th>
                                         <th>@lang('global.total')</th>
-                                        <th>تاريخ الحالة</th>
+                                        <th>تاريخ أخر حالة</th>
                                         <th>@lang('global.created_at')</th>
                                         <th>@lang('global.order_notes')</th>
                                         @can('delete_order', 'App\Models\Order')
@@ -446,7 +445,6 @@
                                             @if ($host != $hosts['zioot'])
                                                 <td hidden>{{$order->phone_2}}</td>
                                             @endif
-                                            <td>{{$order->address}}</td>
                                             <td>{{$order->city?->name}} - {{$order->area?->name}}</td>
                                             <td>{{$order->total_after_sale}}</td>
                                             <td>
@@ -831,9 +829,9 @@
                                 <td data-status="${value.status.id}">${value.status.name}</td>
                                 <td>${value.name}</td>
                                 <td>${value.phone_1}</td>
-                                <td>${value.address}</td>
                                 <td>${value.city.name} - ${value.area.name}</td>
                                 <td>${value.total}</td>
+                                <td>${format_date(value.status_created_at)}</td>
                                 <td>${format_date(value.created_at)}</td>
                                 <td class="order_notes" data-id="${value.id}">
                                     <span class="btn btn-primary" style="border-radius: 50px">${value.order_notes.length}</span>

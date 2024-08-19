@@ -70,7 +70,6 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $number = !empty($request['page_orders_num']) ? $request['page_orders_num'] : 50;
         $query = Order::with(['marketer','admin','status','city','area','order_notes', 'order_data', 'order_status'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC');
         if (empty($request['no_paginate'])) {
-            unset($request['no_paginate']);
             return $query->paginate($number)->appends($request);
         } else {
             return $query->get();
@@ -249,9 +248,18 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order->update($data);
     }
     public function search_orders($company_id, $data) {
-        return Order::with(['marketer','admin','status','city','area','order_notes'])->where('company_id', $company_id)->where(function($query) use ($data) {
+        $orders = Order::with(['marketer','admin','status','city','area','order_notes'])->where('company_id', $company_id)->where(function($query) use ($data) {
             $query->whereIn('order_code', $data)->orWhereIn('waybill', $data);
         })->paginate(1000);
+
+        $orders->setCollection(
+            $orders->getCollection()->map(function ($order) {
+                $order->status_created_at = $order->order_status->where('id', $order->status_id)->last()->pivot->created_at;
+                return $order;
+            })
+        );
+
+        return $orders;
     }
     public function delete_order($order_id)
     {
