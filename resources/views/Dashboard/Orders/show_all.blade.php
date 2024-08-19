@@ -220,10 +220,11 @@
                         </div>
                         <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.phone_1')</label>
-                            <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
+                            <select class="form-select product_info" id="phone-select" name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">@lang('global.select_phone_1')</option>
                                 @foreach ($clients as $client)
-                                    <option  value="{{ $client->id }}">{{ $client->phone_1 }}</option>
+                                    <option value="{{ $client->id }}">{{ $client->phone_1 }}</option>
+                                    <option value="{{ $client->id }}">{{ $client->phone_2 }}</option>
                                 @endforeach
                             </select>
 
@@ -499,6 +500,18 @@
             $('#shipping_company_id').select2({
                 dropdownParent: $('#statusModal')
             });
+
+            $('#phone-select').on('select2:open', function() {
+                // Find the search input field inside the Select2 dropdown
+                const searchInput = $('.select2-container--open .select2-search__field');
+
+                // Attach an event listener to the search input field
+                searchInput.on('input', function() {
+                    let newValue = $(this).val().trim();
+                    $(this).val(newValue);
+                });
+            });
+
             var city_id = "{!! Request::get('city_id') !!}"
             var area_id = "{!! Request::get('area_id') !!}"
             if(city_id){
