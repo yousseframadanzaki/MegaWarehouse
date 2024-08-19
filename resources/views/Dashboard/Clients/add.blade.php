@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">رقم التليفون <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('phone_1') is-invalid @enderror" name="phone_1"
+                        <input type="text" class="fixNumbers form-control @error('phone_1') is-invalid @enderror" name="phone_1"
                             value="{{ old('phone_1') }}">
                         @error('phone_1')
                             <div class="invalid-feedback">
@@ -43,7 +43,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">رقم التليفون 2 </label>
-                        <input type="text" class="form-control @error('phone_2') is-invalid @enderror" name="phone_2"
+                        <input type="text" class="fixNumbers form-control @error('phone_2') is-invalid @enderror" name="phone_2"
                             value="{{ old('phone_2') }}">
                         @error('phone_2')
                             <div class="invalid-feedback">
