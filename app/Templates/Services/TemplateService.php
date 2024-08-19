@@ -61,7 +61,7 @@ class TemplateService implements TemplateServiceInterface
             $order->address,
             $order->city->name,
             $order->area->name,
-            $order->total,
+            $order->total_after_sale,
             $order->status->name,
             "<br>"
         ];
