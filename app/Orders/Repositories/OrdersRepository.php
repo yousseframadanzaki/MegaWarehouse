@@ -248,7 +248,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order->update($data);
     }
     public function search_orders($company_id, $data) {
-        $orders = Order::with(['marketer','admin','status','city','area','order_notes'])->where('company_id', $company_id)->where(function($query) use ($data) {
+        $orders = Order::with(['marketer','admin','status','city','area','order_notes', 'order_status'])->where('company_id', $company_id)->where(function($query) use ($data) {
             $query->whereIn('order_code', $data)->orWhereIn('waybill', $data);
         })->paginate(1000);
 
@@ -261,6 +261,12 @@ class OrdersRepository implements OrdersRepositoryInterface{
 
         return $orders;
     }
+
+    public function search_orders_no_paginate($company_id, $data) {
+        $orders = Order::with(['marketer','admin','status','city','area','order_notes', 'order_status'])->where('company_id', $company_id)->whereIn('order_code', $data)->get();
+        return $orders;
+    }
+
     public function delete_order($order_id)
     {
         $order = Order::findOrFail($order_id);

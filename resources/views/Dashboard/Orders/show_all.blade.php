@@ -136,7 +136,7 @@
                         <h5 class="text-center mb-3">@lang('global.search_orders')</h5>
                     </div>
                     <div class="col-12">
-                        <textarea name="" id="searchData" class="w-100 form-control" rows="10" placeholder="@lang('global.placeholder_order_search')"></textarea>
+                        <textarea name="" dir="rtl" id="searchData" class="w-100 form-control" rows="10" placeholder="@lang('global.placeholder_order_search')"></textarea>
                     </div>
                 </div>
             </div>

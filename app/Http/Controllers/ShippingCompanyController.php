@@ -116,6 +116,11 @@ class ShippingCompanyController extends Controller
         return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'filteredOrders', 'filteredOrdersNoPaginate'));
     }
 
+    public function shipping_company_reports() {
+        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
+        return view('Dashboard.ShippingCompanies.shipping_company_reports')->with(compact('shipping_companies'));
+    }
+
     public function get_orders_by_status_id(OrdersFilters $filters) {
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(), $filters);
         return response()->json($orders);

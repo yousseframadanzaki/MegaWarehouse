@@ -371,6 +371,9 @@ class OrdersService implements OrdersServiceInterface{
     public function SearchOrders($company_id, $data) {
         return $this->orders_crud_repository->search_orders($company_id, $data);
     }
+    public function SearchOrdersNoPaginate($company_id, $data) {
+        return $this->orders_crud_repository->search_orders_no_paginate($company_id, $data);
+    }
     public function DeleteOrder($order_id) {
         return $this->orders_crud_repository->delete_order($order_id);
     }

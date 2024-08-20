@@ -224,4 +224,39 @@ class OrderController extends Controller
         $variants = $this->ProductCrudService->IncompleteOrdersVariants($this->company_id());
         return view('Dashboard.Orders.incomplete_orders', compact('variants'));
     }
+
+    public function validate_orders(Request $request) {
+        $order_codes = explode("\n", $request->searchOrders);
+        $orders = $this->OrdersService->SearchOrdersNoPaginate($this->company_id(), $order_codes);
+
+        $not_found = array_diff(
+            array_map('strtolower', $order_codes),
+            array_map('strtolower', $orders->pluck('order_code')->toArray()
+        ));
+        $not_related_shipping = [];
+        $not_in_statuses = [];
+
+        foreach ($orders as $order) {
+            if ($order->shipping_company_id != $request->shipping_company_id) {
+                $not_related_shipping[] = $order->order_code;
+                continue;
+            }
+
+            $count = $order->order_status->whereIn('id', [45, 50, 55, 75])->count();
+            if ($count == 0) {
+                $not_in_statuses[] = $order->order_code;
+            }
+        }
+
+        if (count($not_found) > 0 || count($not_in_statuses) > 0 || count($not_related_shipping) > 0) {
+            return response()->json([
+                'error' => true,
+                'not_found' => $not_found,
+                'not_in_statuses' => $not_in_statuses,
+                'not_related_shipping' => $not_related_shipping
+            ]);
+        } else {
+            return response()->json(['orders' => $orders]);
+        }
+    }
 }

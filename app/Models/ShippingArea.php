@@ -14,7 +14,8 @@ class ShippingArea extends Model
     protected $fillable = [
         'area_id',
         'shipping_company_sector_id',
-        'shipping_company_id'
+        'shipping_company_id',
+        'shipping_co_cost'
     ];
 
     public function area()

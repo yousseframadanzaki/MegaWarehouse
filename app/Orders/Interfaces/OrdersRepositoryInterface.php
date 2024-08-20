@@ -16,6 +16,7 @@ interface OrdersRepositoryInterface{
     public function update_order($order_id,$data);
     public function update_after_sale($id,$company_id,$data);
     public function search_orders($company_id, array $data);
+    public function search_orders_no_paginate($company_id, array $data);
     public function delete_order($order_id);
     public function get_shipping_company_id($area_id);
     public function update_shipping_co_cost(array $data);

@@ -186,6 +186,8 @@
                                 </li>
                             @endcanany
                         @endforeach
+
+                        {{-- <li><a class="text-white" href="{{ route('shipping_company_reports') }}">تقارير التوريدات</a></li> --}}
                     @endif
                 </ul>
             </div>
