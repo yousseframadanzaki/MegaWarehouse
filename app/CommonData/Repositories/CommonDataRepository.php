@@ -120,7 +120,14 @@ class CommonDataRepository implements CommonDataRepositoryInterface{
             $variants = Variant::with('product', 'image')->where('product_id', $product_id)->get();
             $hide = $this->orderPolicy->hide_quantity($user) ? 1 : 0;
             $variants = $variants->map(function ($variant) use ($hide) {
-                return array_merge($variant->toArray(), ['hide' => $hide]);
+                return array_merge($variant->toArray(), [
+                    'hide' => $hide,
+                    'warehouses_stock' => $variant->stock()
+                    ->select('warehouse_id')
+                    ->selectRaw('SUM(quantity) as total_quantity')
+                    ->groupBy('warehouse_id')
+                    ->get()
+                ]);
             });
         }
         return $variants;

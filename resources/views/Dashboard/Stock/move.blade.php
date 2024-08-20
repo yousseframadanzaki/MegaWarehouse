@@ -66,9 +66,9 @@
 
                     </div>
                     <div class="col-md-4 @error('product_variants') has-error @enderror">
-                        <label class="form-label">المنتج<span class="text-danger">*</span></label>
+                        <label class="form-label">المنتج<span class="text-danger">*</span><span class="me-3 text-secondary">( اختار المخزن أولا )</span></label>
                         <select class="form-select @error('product_variants') is-invalid @enderror product_info" aria-label="Default  select example"
-                            id="product_id">
+                            id="product_id" disabled>
                             <option value="">اختار المنتج </option>
                             @foreach ($products as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
@@ -182,49 +182,72 @@ $('select.product_info').select2({
     padding: 'resolve',
 });
 
-let loop_index = 0;
-$('#product_id').change(function () {
-    var product_id = $(this).val();
-    var product_name = $(this).find('option:selected').text();
-
-    // $("#variants #accordionExample").html("");
-
-    $.ajax({
-        type:'GET',
-        url:`/api/product/${product_id}/variants`,
-        dataType: "text",
-    }).then((response)=>{
-        data = JSON.parse(response);
-        let template = `
-            <div class="accordion-item rounded mt-3">
-                <h2 class="accordion-header" id="panels-heading${product_id}">
-                    <button class="accordion-button rounded px-4 py-2 get_orders" type="button" data-bs-toggle="collapse" data-bs-target="#panels-collapse${product_id}" aria-expanded="true" aria-controls="panels-collapse${product_id}">
-                        ${product_name}
-                    </button>
-                </h2>
-                <div id="panels-collapse${product_id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
-                    <div class="px-4 py-3">
-        `;
-
-        $.each(data, function (index,item) {
-            template += `
-                <div class="row my-2">
-                    <input type="hidden" name="product_variants[${loop_index}][id]" value="${item.id}"/>
-                    <div class="col-md-4">
-                        <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" name="product_variants[${loop_index++}][quantity]" class="form-control" placeholder="الكمية"/>
-                    </div>
-                </div>
-            `;
-        });
-
-        template += `</div></div></div>`;
-        $("#variants #accordionExample").append(template);
-        $('#product_id :selected').prop('disabled', true);
-    })
+$('#warehouse_id').change(function() {
+    var warehouse_id = $(this).val();
+    if (warehouse_id == '')
+        $('#product_id').prop('disabled', true);
+    else {
+        $('#product_id').prop('disabled', false);
+        $('#variants #accordionExample').html('');
+        $('#product_id option').prop('disabled', false);
+        $('#product_id').val('');
+        $('#product_id').select2();
+    }
 })
+
+$('#product_id').change(function () {
+    get_variants(this);
+})
+
+let loop_index = 0;
+function get_variants(el) {
+    var product_id   = $(el).val();
+    var product_name = $(el).find('option:selected').text();
+
+    if (product_id != '') {
+        $.ajax({
+            type:'GET',
+            url:`/api/product/${product_id}/variants`,
+            dataType: "text",
+        }).then((response)=>{
+            data = JSON.parse(response);
+            let warehouse_id = $('#warehouse_id').val();
+
+            let template = `
+                <div class="accordion-item rounded mt-3">
+                    <h2 class="accordion-header" id="panels-heading${product_id}">
+                        <button class="accordion-button rounded px-4 py-2 get_orders" type="button" data-bs-toggle="collapse" data-bs-target="#panels-collapse${product_id}" aria-expanded="true" aria-controls="panels-collapse${product_id}">
+                            ${product_name}
+                        </button>
+                    </h2>
+                    <div id="panels-collapse${product_id}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" aria-labelledby="panels-heading${product_id}">
+                        <div class="px-4 py-3">
+            `;
+
+            $.each(data, function (index,item) {
+                let from_warehouse = item.warehouses_stock.find(el => el.warehouse_id == warehouse_id)
+                template += `
+                    <div class="row align-items-center my-2">
+                        <input type="hidden" name="product_variants[${loop_index}][id]" value="${item.id}"/>
+                        <div class="col-md-4">
+                            <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
+                        </div>
+                        <div class="col-md-4">
+                            <input type="number" name="product_variants[${loop_index++}][quantity]" class="form-control" placeholder="الكمية" ${(!from_warehouse) || (from_warehouse.total_quantity < 1) ? 'disabled' : ''}/>
+                        </div>
+                        <div class="col-md-4">
+                            المخزون الحالي: ${ (from_warehouse) && (from_warehouse.total_quantity > 0) ? from_warehouse.total_quantity : `${(from_warehouse) && (from_warehouse.total_quantity) ? from_warehouse.total_quantity : 0 } <span class="text-danger"> ( لا يمكن النقل من هذا المخزن )</span>` }
+                        </div>
+                    </div>
+                `;
+            });
+
+            template += `</div></div></div>`;
+            $("#variants #accordionExample").append(template);
+            $('#product_id :selected').prop('disabled', true);
+        })
+    }
+}
 
 $("input#image").change(function (e) {
     const [file] = e.target.files;
@@ -235,7 +258,7 @@ $("input#image").change(function (e) {
 })
 
 $(document).ready(function() {
-$(".save_stock").click(function (){
+    $(".save_stock").click(function (){
         rows = $(".variant_row")
         console.log(rows);
         $.each(rows, function (index,item) {
@@ -247,7 +270,7 @@ $(".save_stock").click(function (){
             save_stock(variant);
         });
         $("#scan_ids").val('');
-            $("#scan-stock").html('');
+        $("#scan-stock").html('');
     });
     var scanned_ids = []
     $("#scan_ids").on('keypress',function(e) {
@@ -279,29 +302,29 @@ $(".save_stock").click(function (){
 
                     })
                 }
-                })
+            })
         }
     });
 });
-function save_stock(item){
-        var index = $('#variants #accordionExample').children().length;
+function save_stock(item) {
+    var index = $('#variants #accordionExample').children().length;
 
-            var template = `
-                <div class="row mt-3">
-                    <input type="hidden" name="product_variants[${index}][id]" value="${item.id}"/>
-                    <div class="col-md-4">
-                        <input type="text" tabindex="-1" class="form-control " readonly value="${item.product_name}" />
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
-                    </div>
-                    <div class="col-md-4">
-                        <input type="number" name="product_variants[${index}][quantity]" class="form-control" placeholder="الكمية"/>
-                    </div>
-                </div>
-            `;
+    var template = `
+        <div class="row mt-3">
+            <input type="hidden" name="product_variants[${index}][id]" value="${item.id}"/>
+            <div class="col-md-4">
+                <input type="text" tabindex="-1" class="form-control " readonly value="${item.product_name}" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" tabindex="-1" class="form-control " readonly value="${item.name}" />
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="product_variants[${index}][quantity]" class="form-control" placeholder="الكمية"/>
+            </div>
+        </div>
+    `;
 
-            $("#variants #accordionExample").append(template);
+    $("#variants #accordionExample").append(template);
 }
 </script>
 @endsection
