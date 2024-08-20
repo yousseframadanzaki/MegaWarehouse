@@ -28,63 +28,66 @@ class SendWhatsappMessages extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
+    public function handle() {
         $now = Carbon::now();
         $campaigns = WhatsappCampaign::where('status', 'pending')
             ->where('schedule_date', '<=', $now)
             ->get();
-
+    
         foreach ($campaigns as $campaign) {
             $device = WhatsappDevice::where('user_id', $campaign->user_id)->first();
             if (!$device) {
                 $this->error("No device found for user_id {$campaign->user_id}");
                 continue;
             }
-
-            $unsentNumbers = explode(',', $campaign->unsent_numbers);
-            $sendNumbers = $campaign->sent_numbers ? explode(',', $campaign->sent_numbers) : [];
-
-            foreach ($unsentNumbers as $key => $number) {
-                // $find = [
-                //     '#order_id',
-                //     '#waybill',
-                //     '#client_name',
-                //     '#client_phone_1',
-                //     '#client_phone_2',
-                //     '#address',
-                //     '#city',
-                //     '#area',
-                //     '#total',
-                //     '#status',
-                //     "\n",
-                // ];
-                // $order = Order::where('phone_1', $number)->last();
-                // $replace = [
-                //     $order->order_code,
-                //     $order->waybill,
-                //     $order->name,
-                //     $order->phone_1,
-                //     $order->phone_2,
-                //     $order->address,
-                //     $order->city->name,
-                //     $order->area->name,
-                //     $order->total,
-                //     $order->status->name,
-                //     "<br>"
-                // ];
-                // $campaign_text = str_replace($find, $replace, $campaign->text);
-
-
-                $this->sendMessage($number, $campaign->text, $campaign->media, $device->instance_id);
-
-                $sendNumbers[] = $number;
-                unset($unsentNumbers[$key]);
-                $campaign->unsent_numbers = implode(',', $unsentNumbers);
-                $campaign->sent_numbers = implode(',', $sendNumbers);
-                $campaign->status = empty($unsentNumbers) ? 'finished' : 'pending';
+    
+            $unsentNumbers = json_decode($campaign->unsent_numbers, true);
+            $sendNumbers = $campaign->sent_numbers ? json_decode($campaign->sent_numbers, true) : [];
+    
+            foreach ($unsentNumbers as $key => $numberData) {
+                $order = Order::find($numberData['order_id']);
+                $replace = [
+                    $order->order_code,
+                    $order->waybill,
+                    $order->name,
+                    $order->phone_1,
+                    $order->phone_2,
+                    $order->address,
+                    $order->city->name,
+                    $order->area->name,
+                    $order->total,
+                    $order->status->name
+                ];
+    
+                $find = [
+                    '#order_id',
+                    '#waybill',
+                    '#client_name',
+                    '#client_phone_1',
+                    '#client_phone_2',
+                    '#address',
+                    '#city',
+                    '#area',
+                    '#total',
+                    '#status'
+                ];
+    
+                $campaignText = str_replace($find, $replace, $campaign->text);
+                $response = $this->sendMessage($numberData['number'], $campaignText, $campaign->media, $device->instance_id);
+    
+                if ($response['status'] == 'success') {
+                    $numberData['status'] = "1";
+                    $sendNumbers[] = $numberData;
+                    unset($unsentNumbers[$key]);
+                } else {
+                    $unsentNumbers[$key]['status'] = "0";
+                }
+    
+                $campaign->unsent_numbers = json_encode(array_values($unsentNumbers));
+                $campaign->sent_numbers = json_encode($sendNumbers);
+                $campaign->status = empty($unsentNumbers) ? 'finished' : 'not sent';
                 $campaign->save();
-
+    
                 sleep($campaign->delay);
             }
         }
@@ -95,14 +98,12 @@ class SendWhatsappMessages extends Command
         $site_url = request()->getHost();
 
         if ($media) {
-            // Message with media
             $media_url = $site_url . "/templates/default/uploads/whatsapp/" . $media;
             $url = "https://whatsbotcloud.com/api/send?type=media&number=2" . $number . "&message=" . urlencode($text) . "&media_url=" . urlencode($media_url) . "&instance_id=" . $instance_id . "&access_token=" . $access_token;
         } else {
-            // Normal message
             $url = "https://whatsbotcloud.com/api/send?type=text&number=2" . $number . "&message=" . urlencode($text) . "&instance_id=" . $instance_id . "&access_token=" . $access_token;
         }
-
+    
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL => $url,
@@ -114,8 +115,7 @@ class SendWhatsappMessages extends Command
         ));
         $result = curl_exec($ch);
         curl_close($ch);
-
         $res = json_decode($result, true);
-
+        return $res;
     }
 }

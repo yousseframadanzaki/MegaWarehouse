@@ -97,11 +97,23 @@ class WhatsappController extends Controller
         $random_delay = rand($data['min_time'], $data['max_time']);
         $data['delay'] = "$random_delay";
         $data['status'] = "pending";
-        $phone_numbers_str = implode(',', $data['phone_numbers']);
         $order_ids_str = implode(',', $data['order_ids']);
         $messages = count($data['phone_numbers']);
+       
+        $phone_numbers = [];
+        $min_length = min(count($data['phone_numbers']), count($data['order_ids']));
+        
+        for ($i = 0; $i < $min_length; $i++) {
+            $phone_numbers[] = [
+                'number' => $data['phone_numbers'][$i],
+                'status' => '0',
+                'order_id' => $data['order_ids'][$i]
+            ];
+        }
+        
         unset($data['phone_numbers']);
-        $data['unsent_numbers'] = "$phone_numbers_str";
+        $data['unsent_numbers'] = $phone_numbers;
+        $data['unsent_numbers'] = json_encode($data['unsent_numbers']);
         $data['order_ids'] = "$order_ids_str";
         $schedule_date = Carbon::createFromFormat('m/d/Y h:i a', $data['schedule_date']);
         $formatted_schedule_date = $schedule_date->format('Y-m-d H:i:s');
