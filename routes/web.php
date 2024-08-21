@@ -152,8 +152,11 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('shipping_company_calculations')
     ->can('view_calculations', 'App\Models\ShippingCompany');
 
-    Route::get('/shipping_company_reports', [ShippingCompanyController::class,'shipping_company_reports'])
-    ->name('shipping_company_reports');
+    Route::get('/shipping_company/reports/add', [ShippingCompanyController::class,'create_shipping_company_report'])
+    ->name('add_shipping_company_report');
+
+    Route::post('/shipping_company/reports/add', [ShippingCompanyController::class,'store_shipping_company_report'])
+    ->name('store_shipping_company_report');
 
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders')

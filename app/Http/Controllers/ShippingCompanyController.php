@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
+use App\PaymentReports\Interfaces\PaymentReportServiceInterface;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Status\Interfaces\StatusServiceInterface;
@@ -23,6 +24,7 @@ class ShippingCompanyController extends Controller
        protected readonly ShippingCompanyServiceInterface $ShippingCompanyService,
        protected readonly ShippingStatusServiceInterface $ShippingStatusService,
        protected readonly ShippingAreaServiceInterface $ShippingAreaService,
+       protected readonly PaymentReportServiceInterface $PaymentReportService,
        protected readonly CommonDataServiceInterface $CommonDataService,
        protected readonly OrdersServiceInterface $OrdersService,
        protected readonly StatusServiceInterface $StatusService,
@@ -116,13 +118,19 @@ class ShippingCompanyController extends Controller
         return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'filteredOrders', 'filteredOrdersNoPaginate'));
     }
 
-    public function shipping_company_reports() {
-        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
-        return view('Dashboard.ShippingCompanies.shipping_company_reports')->with(compact('shipping_companies'));
-    }
-
     public function get_orders_by_status_id(OrdersFilters $filters) {
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(), $filters);
         return response()->json($orders);
+    }
+
+    public function create_shipping_company_report() {
+        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
+        return view('Dashboard.ShippingCompanies.Reports.add')->with(compact('shipping_companies'));
+    }
+
+    public function store_shipping_company_report(Request $request) {
+        $report = $this->PaymentReportService->CreatePaymentReport($request->except('_token'));
+        if (!empty($report->id))
+            return redirect()->route('add_shipping_company_report')->with('success', 'تم إضافة التقرير بنجاح');
     }
 }

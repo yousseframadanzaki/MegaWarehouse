@@ -38,6 +38,7 @@ class Order extends Model
         'order_code',
         'waybill',
         'payment_id',
+        'our_payment_id',
         'shipping_company_id',
         'shipping_co_cost',
         'total_marketer_commission',

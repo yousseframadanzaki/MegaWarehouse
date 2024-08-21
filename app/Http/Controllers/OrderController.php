@@ -225,38 +225,33 @@ class OrderController extends Controller
         return view('Dashboard.Orders.incomplete_orders', compact('variants'));
     }
 
-    public function validate_orders(Request $request) {
+    public function validate_shipping_report_orders(Request $request) {
         $order_codes = explode("\n", $request->searchOrders);
+
         $orders = $this->OrdersService->SearchOrdersNoPaginate($this->company_id(), $order_codes);
+        $lowercased_order_codes = array_map('strtolower', $order_codes);
 
-        $not_found = array_diff(
-            array_map('strtolower', $order_codes),
-            array_map('strtolower', $orders->pluck('order_code')->toArray()
+        $not_found = array_values(array_diff(
+            $lowercased_order_codes,
+            $orders->pluck('order_code')->map('strtolower')->toArray()
         ));
-        $not_related_shipping = [];
-        $not_in_statuses = [];
 
-        foreach ($orders as $order) {
-            if ($order->shipping_company_id != $request->shipping_company_id) {
-                $not_related_shipping[] = $order->order_code;
-                continue;
-            }
+        $not_related_shipping = $orders->where('shipping_company_id', '!=', $request->shipping_company_id)
+        ->pluck('order_code')->toArray();
 
-            $count = $order->order_status->whereIn('id', [45, 50, 55, 75])->count();
-            if ($count == 0) {
-                $not_in_statuses[] = $order->order_code;
-            }
-        }
+        $not_in_statuses = $orders->filter(function ($order) {
+            return $order->order_status->whereIn('id', [45, 50, 55, 75])->count() == 0;
+        })->pluck('order_code')->toArray();
 
-        if (count($not_found) > 0 || count($not_in_statuses) > 0 || count($not_related_shipping) > 0) {
+        if (!empty($not_found) || !empty($not_in_statuses) || !empty($not_related_shipping)) {
             return response()->json([
                 'error' => true,
                 'not_found' => $not_found,
                 'not_in_statuses' => $not_in_statuses,
                 'not_related_shipping' => $not_related_shipping
             ]);
-        } else {
-            return response()->json(['orders' => $orders]);
         }
+
+        return response()->json(['orders' => $orders]);
     }
 }

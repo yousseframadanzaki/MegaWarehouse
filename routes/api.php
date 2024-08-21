@@ -101,5 +101,5 @@ Route::name('api_')->group(function() {
     Route::get('get_all_variants', [ProductController::class, 'get_all_variants']);
     Route::get('get_bulk_variants_data', [ProductController::class, 'get_bulk_variants_data']);
 
-    Route::post('shipping_report/orders/validate', [OrderController::class, 'validate_orders']);
+    Route::post('shipping_report/orders/validate', [OrderController::class, 'validate_shipping_report_orders']);
 });

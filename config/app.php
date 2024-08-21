@@ -194,6 +194,7 @@ return [
         App\Providers\AccountingServiceProvider::class,
         App\Providers\WhatsappServiceProvider::class,
         App\Providers\DashboardServiceProvider::class,
+        App\Providers\PaymentReportServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\AggregateServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
