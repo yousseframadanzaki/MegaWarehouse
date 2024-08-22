@@ -56,7 +56,7 @@
             @endforeach
         @endisset
 
-        @isset ($shipping_company_areas)
+        @if ($shipping_company->active == 1 && !empty($shipping_company_areas))
             @foreach ($shipping_company_areas as $shipping_area)
                 <div class="row mt-3 align-items-center">
                     <div class="col-md-4 fs-5">
@@ -74,7 +74,30 @@
                     </div>
                 </div>
             @endforeach
-        @endisset
+        @elseif ($shipping_company->active == 2 && !empty($areas))
+            <form action="{{ route('update_shipping_areas_active2', $shipping_company->id) }}" method="POST">
+                @csrf
+                <div class="text-start">
+                    <input type="hidden" name="shipping_company_id" value="{{ $shipping_company->id }}">
+                    <button type="submit" class="btn btn-primary my-3">تعديل</button>
+                </div>
+                @foreach ($areas->sortByDesc('city_id') as $area)
+                    <div class="row mt-3 align-items-center area-box">
+                        <div class="col-md-3 fs-5">
+                            <label class="fw-bold">{{$area->id}} - {{ $area->name }} - {{ $area->city->name }}</label>
+                        </div>
+                        <div class="col-md-3 fs-5">
+                            <input type="hidden" name="shipping_areas[{{ $loop->index }}][area_id]" value="{{ $area->id }}">
+                            <input type="number" name="shipping_areas[{{ $loop->index }}][shipping_co_cost]" class="form-control shipping_co_cost" data-city_id="{{ $area->city_id }}" value="{{ $shipping_company->shipping_areas->firstWhere('area_id', $area->id)?->shipping_co_cost }}" min="0">
+                        </div>
+                        <div class="col-md-3 fs-5">
+                            <button type="button" class="btn btn-success applyAllCities" data-city_id="{{ $area->city_id }}">تطبيق علي المحافظة بأكملها</button>
+                        </div>
+                        <hr class="mt-3 mb-0">
+                    </div>
+                @endforeach
+            </form>
+        @endif
 
     </div>
 @endsection
@@ -114,51 +137,59 @@
             })
         }
 
-        $('.area_select').select2();
-        $('.area_select').change(function() {
-            var shipping_area_id = $(this).attr('data-shipping_area_id');
-            var area_mapping_id = $(this).attr('data-area_mapping_id');
-            var area_id = $(this).val();
-            const shipping_company_id = '{!! $shipping_company->id !!}';
-            const data = {
-                shipping_area_id,
-                area_mapping_id,
-                area_id,
-                shipping_company_id
-            }
+        @if ($shipping_company->active == 1)
+            $('.area_select').select2();
+            $('.area_select').change(function() {
+                var shipping_area_id = $(this).attr('data-shipping_area_id');
+                var area_mapping_id = $(this).attr('data-area_mapping_id');
+                var area_id = $(this).val();
+                const shipping_company_id = '{!! $shipping_company->id !!}';
+                const data = {
+                    shipping_area_id,
+                    area_mapping_id,
+                    area_id,
+                    shipping_company_id
+                }
 
-            add_mapping_area(this,data);
-        });
-        function add_mapping_area(element,data) {
-            $.ajax({
-                url: '/api/shipping_area/map',
-                method: 'POST',
-                data: data,
-                dataType: 'json',
-                context:element
-            }).then(response => {
-                if (!response) {
-                    alert('حدث خطأ أثناء التعديل');
-                    $(element).val($(element).attr('data-area_id'));
-                    $(element).select2();
-                    return;
-                }
-                if(response.id){
-                    $(element).attr('data-area_mapping_id',response.id);
-                    $(element).attr('data-area_id', $(element).val());
-                    return;
-                }
-                if (response.message == 'deleted') {
-                    $(element).removeAttr('data-area_mapping_id')
-                    return;
-                }
-                if (response.message != undefined) {
-                    alert(response.message);
-                    $(element).val($(element).attr('data-area_id'));
-                    $(element).select2();
-                    return;
-                }
+                add_mapping_area(this,data);
+            });
+            function add_mapping_area(element,data) {
+                $.ajax({
+                    url: '/api/shipping_area/map',
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    context:element
+                }).then(response => {
+                    if (!response) {
+                        alert('حدث خطأ أثناء التعديل');
+                        $(element).val($(element).attr('data-area_id'));
+                        $(element).select2();
+                        return;
+                    }
+                    if(response.id){
+                        $(element).attr('data-area_mapping_id',response.id);
+                        $(element).attr('data-area_id', $(element).val());
+                        return;
+                    }
+                    if (response.message == 'deleted') {
+                        $(element).removeAttr('data-area_mapping_id')
+                        return;
+                    }
+                    if (response.message != undefined) {
+                        alert(response.message);
+                        $(element).val($(element).attr('data-area_id'));
+                        $(element).select2();
+                        return;
+                    }
+                })
+            }
+        @elseif ($shipping_company->active == 2)
+            $('.applyAllCities').on('click', function() {
+                let city_id = $(this).attr('data-city_id');
+                let cost = $(this).closest('.area-box').find('input.shipping_co_cost').val();
+                $(`.area-box input.shipping_co_cost[data-city_id=${city_id}]`).val(cost);
             })
-        }
+        @endif
     </script>
 @endsection

@@ -129,8 +129,9 @@ class ShippingCompanyController extends Controller
     }
 
     public function store_shipping_company_report(Request $request) {
-        $report = $this->PaymentReportService->CreatePaymentReport($request->except('_token'));
-        if (!empty($report->id))
-            return redirect()->route('add_shipping_company_report')->with('success', 'تم إضافة التقرير بنجاح');
+        $report_id = $this->ShippingCompanyService->CreatePaymentReport($request->except('_token'));
+        if (!empty($report_id))
+            return redirect()->back()->with('success', 'تم إضافة التقرير بنجاح');
+        return redirect()->back()->with('error', 'خطأ في إضافة التقرير');
     }
 }

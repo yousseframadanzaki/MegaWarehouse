@@ -6,6 +6,8 @@ use App\ShippingCompanies\Interfaces\ShippingCompanyRepositoryInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
 use App\Users\Interfaces\UserCrudServiceInterface;
+use App\Orders\Interfaces\OrdersRepositoryInterface;
+use App\PaymentReports\Interfaces\PaymentReportServiceInterface;
 
 use App\MegaAPI\Interfaces\MegaApiServiceInterface;
 
@@ -16,7 +18,9 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         protected readonly ShippingCompanyRepositoryInterface $shipping_company_repository,
         protected readonly ShippingAreaServiceInterface $ShippingAreaService,
         protected readonly MegaApiServiceInterface $MegaApiService,
-        protected readonly UserCrudServiceInterface $UserCrudService
+        protected readonly UserCrudServiceInterface $UserCrudService,
+        protected readonly OrdersRepositoryInterface $OrdersRepository,
+        protected readonly PaymentReportServiceInterface $PaymentReportService
     ) {}
 
     public function AddShippingCompany($company_id,$data){
@@ -161,7 +165,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         }
         $phone_1 = $order->phone_1;
         $phone_2 = $order->phone_2;
-        $price = $order->total;
+        $price = $order->total_after_sale;
         $address = $order->address;
         $client_name = $order->name;
         $order_id = $order->order_code;
@@ -193,5 +197,16 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         );
     }
 
+    public function CreatePaymentReport($data)
+    {
+        // create payment report
+        $payment_report = $this->PaymentReportService->CreatePaymentReport($data['payment_report']);
 
+        if($payment_report) {
+            // update orders
+            $this->OrdersRepository->update_orders(explode("\n", $data['order_ids']), ['our_payment_id' => $payment_report->id]);
+            return $payment_report->id;
+        }
+        return false;
+    }
 }

@@ -15,7 +15,7 @@ class ShippingAreaRepository implements ShippingAreaRepositoryInterface{
             ShippingArea::find($data['area_mapping_id'])->delete();
             return ['message' => 'deleted'];
         }
-        
+
         $row = ShippingArea::where([
             'area_id' => $data['area_id'],
             'shipping_company_id' => $data['shipping_company_id']
@@ -34,7 +34,7 @@ class ShippingAreaRepository implements ShippingAreaRepositoryInterface{
                 'shipping_company_id' => $data['shipping_company_id']
             ]);
         }
-        
+
         return ['message' => 'فشل التسجيل هذه المنطقة مسجلة مسبقا'];
     }
     public function get_area_sector_id($area_id,$shipping_company_id){
@@ -42,5 +42,22 @@ class ShippingAreaRepository implements ShippingAreaRepositoryInterface{
             ['area_id'=>$area_id,
             'shipping_company_id'=>$shipping_company_id
         ])->get()->value('shipping_company_sector_id');
+    }
+
+    public function update_shipping_area_active2($data) {
+        $row = ShippingArea::where([
+            'area_id' => $data['area_id'],
+            'shipping_company_id' => $data['shipping_company_id']
+        ])->first();
+
+        if (empty($row)) {
+            return ShippingArea::create([
+                'area_id' => $data['area_id'],
+                'shipping_company_id' => $data['shipping_company_id'],
+                'shipping_co_cost' => $data['shipping_co_cost']
+            ]);
+        }
+
+        return ShippingArea::find($row->id)->update(['shipping_co_cost' => $data['shipping_co_cost']]);
     }
 }

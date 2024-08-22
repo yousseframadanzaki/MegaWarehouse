@@ -338,6 +338,9 @@ class OrdersService implements OrdersServiceInterface{
 
         return $this->orders_crud_repository->update_order($order_id, $data['client']);
     }
+    public function UpdateOrders($ids, $data) {
+        return $this->orders_crud_repository->update_orders($ids, $data);
+    }
     public function UpdateStock($order_id, $data)
     {
         return $this->StockService->UpdateStock($order_id, $data);

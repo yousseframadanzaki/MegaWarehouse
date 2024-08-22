@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentReport extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'shipping_company_id',
+        'total_cod',
+        'total_shipping_cost',
+        'orders_qty'
+    ];
 }

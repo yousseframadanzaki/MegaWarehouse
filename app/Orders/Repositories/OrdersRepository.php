@@ -184,6 +184,11 @@ class OrdersRepository implements OrdersRepositoryInterface{
         }
         return Order::where('id',$order_id)->update($data);
     }
+
+    public function update_orders($ids, $data) {
+        return Order::whereIn('id', $ids)->orWhereIn('order_code', $ids)->update($data);
+    }
+
     public function check_max_orders($company_id)
     {
         $company = Company::find($company_id);

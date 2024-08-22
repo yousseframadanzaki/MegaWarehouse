@@ -17,4 +17,13 @@ class ShippingAreaController extends Controller
         $data = $this->ShippingAreaService->UpsertMapping($request->all());
         return response()->json($data);
     }
+
+    public function update(Request $request) {
+        $result = $this->ShippingAreaService->UpdateShippingAreaActive2($request->except('_token'));
+        if ($result) {
+            return redirect()->back()->with('success', 'تمت العملية بنجاح');
+        }
+
+        return redirect()->back()->with('error', 'فشل تنفيذ العملية');
+    }
 }

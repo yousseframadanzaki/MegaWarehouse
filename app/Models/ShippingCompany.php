@@ -25,4 +25,8 @@ class ShippingCompany extends Model
     public function orders() {
         return $this->hasMany(Order::class);
     }
+
+    public function shipping_areas() {
+        return $this->hasMany(ShippingArea::class);
+    }
 }

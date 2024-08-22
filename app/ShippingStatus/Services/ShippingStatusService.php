@@ -29,12 +29,16 @@ class ShippingStatusService implements ShippingStatusServiceInterface{
         if(!$shipping_statuses){
             return $shipping_company_statuses;
         }
-        
+
         return $this->pair($shipping_statuses,$shipping_company_statuses);
     }
 
     private function pair($shipping_statuses,$shipping_company_statuses)
     {
+        if (empty($shipping_company_statuses)) {
+            $shipping_company_statuses = [];
+        }
+
         $statuses = array();
         foreach ($shipping_company_statuses as $shipping_company_status) {
             $status = $shipping_statuses->firstWhere('shipping_company_status_id',$shipping_company_status['id']);

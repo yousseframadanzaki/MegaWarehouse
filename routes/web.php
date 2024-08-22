@@ -19,6 +19,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingCompanyController;
+use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
 use App\Http\Controllers\InvoiceController;
@@ -125,6 +126,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     Route::get('/shipping_companies/{shipping_company_id}/sectors', [ShippingCompanyController::class,'show_sectors'])
     ->name('show_shipping_company_sectors')
     ->can('update',['App\Models\ShippingCompany','shipping_company_id']);
+
+    Route::post('/shipping_company_active2/{shipping_company_id}/shipping_areas/update', [ShippingAreaController::class, 'update'])
+    ->name('update_shipping_areas_active2');
 
     Route::get('/shipping_companies/{shipping_company_id}/edit', [ShippingCompanyController::class,'edit'])
     ->name('edit_shipping_company')

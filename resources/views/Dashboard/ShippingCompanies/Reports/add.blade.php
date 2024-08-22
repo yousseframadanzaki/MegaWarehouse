@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label class="form-label fw-bold">الأوردرات <span class="text-secondary"> ( اختار شركة الشحن أولا ) </span></label>
-                                <textarea name="" rows="1" dir="rtl" id="searchOrders" class="w-100 form-control" rows="10" placeholder="" disabled></textarea>
+                                <textarea name="order_ids" rows="1" dir="rtl" id="searchOrders" class="w-100 form-control" rows="10" placeholder="" disabled></textarea>
                             </div>
                             <div class="col-12 mt-4 text-center">
                                 <button type="button" class="btn btn-primary" id="checkOrders" disabled> فحص الأوردرات </button>
@@ -131,6 +131,7 @@
     $('#checkOrders').on('click', function() {
         let searchOrders = $('#searchOrders').val();
         searchOrders = [...new Set(searchOrders.split('\n').map(value => value.trim()))].join('\n');
+        $('#searchOrders').val(searchOrders);
         let shipping_company_id = $('#shipping_company_id').val();
 
         if (searchOrders && shipping_company_id) {
@@ -183,7 +184,7 @@
                         let totalShippingCost = 0;
                         $.each(response.orders, function(index, order) {
                             totalOrdersPrice += order.total_after_sale;
-                            totalShippingCost += order.delivery_cost;
+                            totalShippingCost += order.shipping_co_cost;
 
                             let row = `<tr>
                                 <td><a href="orders/${order.id}" target="_blank">${order.order_code}</a></td>
@@ -192,7 +193,7 @@
                                 <td>${order.phone_1}</td>
                                 <td>${order.city.name}</td>
                                 <td>${order.total_after_sale}</td>
-                                <td>${(order.delivery_cost) ? order.delivery_cost : ''}</td>
+                                <td>${(order.shipping_co_cost) ? order.shipping_co_cost : ''}</td>
                             </tr>`;
                             $('tbody').append(row);
                         })

@@ -21,4 +21,5 @@ interface OrdersRepositoryInterface{
     public function get_shipping_company_id($area_id);
     public function update_shipping_co_cost(array $data);
     public function update_incomplete_orders_status();
+    public function update_orders(array $ids, array $data);
 }
