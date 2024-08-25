@@ -10,11 +10,11 @@
         <div class="row">
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
-                <li><a> تقارير توريدات شركة الشحن </a></li>
+                <li><a href="{{ route('all_payment_reports') }}"> تقارير التوريدات </a></li>
                 <li><a class="link-dark" href=""> إضافة تقرير </a></li>
             </ul>
         </div>
-        <form method="POST" action="{{ route('store_shipping_company_report') }}">
+        <form method="POST" action="{{ route('store_payment_report') }}" enctype="multipart/form-data">
             @csrf
             <div class="row mt-4">
                 <div class="col-12 mx-auto">
@@ -38,42 +38,54 @@
                                 <p class="text-center text-secondary fw-bold mt-3 mb-0" id="checkLoader" style="display: none;">جاري الفحص ...</p>
                             </div>
                             <div class="mt-3" id="messageContainer" style="display: none;">
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-12" id="successData" style="display: none;">
                     <div class="card p-3 shadow-sm mt-4">
-                        <label class="form-label fw-bold mb-3">ملحوظة</label>
-                        <textarea id="summernote" type="text" class="form-control product_info " name="">{!! old('product_info.description') !!}</textarea>
-                        <div class="invalid-feedback">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold mb-2"> أضف ملحوظة </label>
+                                <textarea rows="1" class="form-control product_info" name="payment_report[note]"></textarea>
+                                <div class="invalid-feedback">
 
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold mb-2">أضف صورة</label>
+                                <input class="form-control @error('image') is-invalid @enderror" type="file" id="formFile" name="image">
+                                @error('image')
+                                    <div class="invalid-feedback">
+                                        {{__($message)}}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
-
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-primary my-3 rounded" style="cursor: pointer;" id="addImage">
-                                أضف صورة
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </div>
-                        <div class="input-images" style="cursor:pointer;"></div>
                     </div>
 
                     <div class="card p-3 shadow-sm mt-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="first-child">
-                                <div class="mt-2" id="totalOrders">
+                                <div class="d-inline-block bg-warning rounded-3 py-1 px-2 mt-2" id="totalOrders">
                                     <p class="m-0">عدد الأوردرات : <span class="fw-bold"></span></p>
                                     <input type="hidden" name="payment_report[orders_qty]">
                                 </div>
-                                <div class="mt-2" id="totalOrdersPrice">
-                                    <p class="m-0">إجمالي الأوردرات : <span class="fw-bold"></span></p>
+                                <div class="d-inline-block bg-warning rounded-3 py-1 px-2 mt-2 mx-3" id="totalOrdersPrice">
+                                    <p class="m-0">إجمالي قيمة الأوردرات : <span class="fw-bold"></span></p>
                                     <input type="hidden" name="payment_report[total_cod]">
                                 </div>
-                                <div class="mt-2 mb-4" id="totalShippingCost">
-                                    <p class="m-0">إجمالي تكلفة الشحن : <span class="fw-bold"></span></p>
+                                <div class="d-inline-block bg-warning rounded-3 py-1 px-2 mt-2" id="totalShippingCost">
+                                    <p class="m-0">إجمالي تكلفة شركة الشحن : <span class="fw-bold"></span></p>
                                     <input type="hidden" name="payment_report[total_shipping_cost]">
+                                </div>
+                                <div class="my-3">
+                                    <label  class="form-label fw-bold"> العضو المستلم:  </label>
+                                    <select class="form-select" aria-label="Default select example" name="user_id">
+                                        @foreach ($users as $id => $name)
+                                            <option value="{{ $id }}" @if ($id == auth()->user()->id) selected @endif>{{ $name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="second-child">
@@ -108,15 +120,7 @@
 
 @section('script')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script type="text/javascript" src="{{url('/static/js/image-uploader.js')}}"></script>
-<script>
-    $(document).ready(function() {
-        $('#addImage').on('click', function() {
-            $('.image-uploader input').click();
-        })
-        $('.input-images').imageUploader();
-    })
-</script>
+
 <script>
     $('select').select2();
 
@@ -154,6 +158,14 @@
                         if ((response.not_found).length > 0) {
                             template += `<p class="text-danger mb-2"> أوردرات غير موجودة : <span class="fw-bold">`;
                             $.each(response.not_found, function(index, order_code) {
+                                template += order_code + " , ";
+                            });
+                            template += `</span></p>`;
+                        }
+
+                        if ((response.already_exist_in_reports).length > 0) {
+                            template += `<p class="text-danger mb-2"> أوردرات في تقارير أخري : <span class="fw-bold">`;
+                            $.each(response.already_exist_in_reports, function(index, order_code) {
                                 template += order_code + " , ";
                             });
                             template += `</span></p>`;

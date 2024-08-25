@@ -239,16 +239,19 @@ class OrderController extends Controller
         $not_related_shipping = $orders->where('shipping_company_id', '!=', $request->shipping_company_id)
         ->pluck('order_code')->toArray();
 
+        $already_exist_in_reports = $orders->whereNotNull('payment_report_id')->pluck('order_code')->toArray();
+
         $not_in_statuses = $orders->filter(function ($order) {
             return $order->order_status->whereIn('id', [45, 50, 55, 75])->count() == 0;
         })->pluck('order_code')->toArray();
 
-        if (!empty($not_found) || !empty($not_in_statuses) || !empty($not_related_shipping)) {
+        if (!empty($not_found) || !empty($not_in_statuses) || !empty($not_related_shipping) || !empty($already_exist_in_reports)) {
             return response()->json([
                 'error' => true,
                 'not_found' => $not_found,
                 'not_in_statuses' => $not_in_statuses,
-                'not_related_shipping' => $not_related_shipping
+                'not_related_shipping' => $not_related_shipping,
+                'already_exist_in_reports' => $already_exist_in_reports
             ]);
         }
 

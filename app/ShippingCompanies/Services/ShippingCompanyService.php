@@ -6,9 +6,6 @@ use App\ShippingCompanies\Interfaces\ShippingCompanyRepositoryInterface;
 use App\ShippingCompanies\Interfaces\ShippingCompanyServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
 use App\Users\Interfaces\UserCrudServiceInterface;
-use App\Orders\Interfaces\OrdersRepositoryInterface;
-use App\PaymentReports\Interfaces\PaymentReportServiceInterface;
-
 use App\MegaAPI\Interfaces\MegaApiServiceInterface;
 
 class ShippingCompanyService implements ShippingCompanyServiceInterface{
@@ -18,9 +15,7 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
         protected readonly ShippingCompanyRepositoryInterface $shipping_company_repository,
         protected readonly ShippingAreaServiceInterface $ShippingAreaService,
         protected readonly MegaApiServiceInterface $MegaApiService,
-        protected readonly UserCrudServiceInterface $UserCrudService,
-        protected readonly OrdersRepositoryInterface $OrdersRepository,
-        protected readonly PaymentReportServiceInterface $PaymentReportService
+        protected readonly UserCrudServiceInterface $UserCrudService
     ) {}
 
     public function AddShippingCompany($company_id,$data){
@@ -195,18 +190,5 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
             ['id'=> $shipping_company_id ],
             ['active' => false]
         );
-    }
-
-    public function CreatePaymentReport($data)
-    {
-        // create payment report
-        $payment_report = $this->PaymentReportService->CreatePaymentReport($data['payment_report']);
-
-        if($payment_report) {
-            // update orders
-            $this->OrdersRepository->update_orders(explode("\n", $data['order_ids']), ['our_payment_id' => $payment_report->id]);
-            return $payment_report->id;
-        }
-        return false;
     }
 }

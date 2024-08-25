@@ -20,6 +20,7 @@ class Transaction extends Model
         'delivery_cost',
         'payment_type_id',
         'admin_id',
+        'payment_report_id'
     ];
 
     /**

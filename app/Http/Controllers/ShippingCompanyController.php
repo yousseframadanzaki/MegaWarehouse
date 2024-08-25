@@ -122,16 +122,4 @@ class ShippingCompanyController extends Controller
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(), $filters);
         return response()->json($orders);
     }
-
-    public function create_shipping_company_report() {
-        $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
-        return view('Dashboard.ShippingCompanies.Reports.add')->with(compact('shipping_companies'));
-    }
-
-    public function store_shipping_company_report(Request $request) {
-        $report_id = $this->ShippingCompanyService->CreatePaymentReport($request->except('_token'));
-        if (!empty($report_id))
-            return redirect()->back()->with('success', 'تم إضافة التقرير بنجاح');
-        return redirect()->back()->with('error', 'خطأ في إضافة التقرير');
-    }
 }

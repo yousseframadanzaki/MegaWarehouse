@@ -159,16 +159,20 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->can('view_calculations', 'App\Models\ShippingCompany');
 
     Route::get('/payment_reports', [PaymentReportController::class,'all'])
-    ->name('all_payment_reports');
+    ->name('all_payment_reports')
+    ->can('view', 'App\\Models\PaymentReport');
 
     Route::get('/payment_reports/{id}', [PaymentReportController::class,'show'])
-    ->name('show_payment_report');
+    ->name('show_payment_report')
+    ->can('view', 'App\\Models\PaymentReport');
 
-    Route::get('/shipping_company/payment_reports/add', [ShippingCompanyController::class,'create_shipping_company_report'])
-    ->name('add_shipping_company_report');
+    Route::get('/payment_report/add', [PaymentReportController::class,'create'])
+    ->name('add_payment_report')
+    ->can('add', 'App\\Models\PaymentReport');
 
-    Route::post('/shipping_company/payment_reports/add', [ShippingCompanyController::class,'store_shipping_company_report'])
-    ->name('store_shipping_company_report');
+    Route::post('/payment_report/add', [PaymentReportController::class,'store'])
+    ->name('store_payment_report')
+    ->can('add', 'App\\Models\PaymentReport');
 
     Route::get('/orders', [OrderController::class,'all'])
     ->name('all_orders')

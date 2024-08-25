@@ -186,9 +186,6 @@
                                 </li>
                             @endcanany
                         @endforeach
-
-                        <li><a class="text-white" href="{{ route('add_shipping_company_report') }}">إضافة تقرير توريد</a></li>
-                        <li><a class="text-white" href="{{ route('all_payment_reports') }}">عرض تقرير توريد</a></li>
                     @endif
                 </ul>
             </div>
