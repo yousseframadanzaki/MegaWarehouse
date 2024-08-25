@@ -342,9 +342,11 @@
                 <div class="card shadow-sm p-3 mb-4">
                     <div class="d-flex justify-content-start">
                         @foreach ($filters as $key => $value)
-                            <div class=" sidebar-bg d-flex align-items-center 1 m-1 @if ($key == 'date_type' && !array_key_exists('date_from', $filters) && !array_key_exists('date_to', $filters)) d-none @endif" style="color: white;padding: 6px;border-radius: 6px;">
-                                {{ __('global.' . $key) }}: {{$value}}
-                            </div>
+                            @if ($value != '' && $value != "")
+                                <div class=" sidebar-bg d-flex align-items-center 1 m-1 @if ($key == 'date_type' && !array_key_exists('date_from', $filters) && !array_key_exists('date_to', $filters)) d-none @endif" style="color: white;padding: 6px;border-radius: 6px;">
+                                    {{ __('global.' . $key) }}: {{$value}}
+                                </div>
+                            @endif
                         @endforeach
                     </div>
                 </div>

@@ -19,6 +19,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShippingCompanyController;
+use App\Http\Controllers\PaymentReportController;
 use App\Http\Controllers\ShippingAreaController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\MarketerController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\store\StoreController;
+use App\Models\PaymentReport;
 
 Route::get('/',function (){
     if(auth()->user()->is_admin){
@@ -156,10 +158,16 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('shipping_company_calculations')
     ->can('view_calculations', 'App\Models\ShippingCompany');
 
-    Route::get('/shipping_company/reports/add', [ShippingCompanyController::class,'create_shipping_company_report'])
+    Route::get('/payment_reports', [PaymentReportController::class,'all'])
+    ->name('all_payment_reports');
+
+    Route::get('/payment_reports/{id}', [PaymentReportController::class,'show'])
+    ->name('show_payment_report');
+
+    Route::get('/shipping_company/payment_reports/add', [ShippingCompanyController::class,'create_shipping_company_report'])
     ->name('add_shipping_company_report');
 
-    Route::post('/shipping_company/reports/add', [ShippingCompanyController::class,'store_shipping_company_report'])
+    Route::post('/shipping_company/payment_reports/add', [ShippingCompanyController::class,'store_shipping_company_report'])
     ->name('store_shipping_company_report');
 
     Route::get('/orders', [OrderController::class,'all'])

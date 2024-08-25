@@ -11,8 +11,8 @@ class PaymentReportService implements PaymentReportServiceInterface {
         protected readonly PaymentReportRepositoryInterface $payment_report_repository,
     ) {}
 
-    public function GetPaymentReports() {
-        return $this->payment_report_repository->get_payment_reports();
+    public function GetPaymentReports($filters, $request = []) {
+        return $this->payment_report_repository->get_payment_reports($filters, $request);
     }
 
     public function GetPaymentReportById($id) {
