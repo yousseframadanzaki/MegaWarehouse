@@ -16,6 +16,8 @@ use App\Products\Interfaces\VariantStockServiceInterface;
 use App\OrderNotes\Interfaces\OrderNotesServiceInterface;
 use App\Accounting\Interfaces\TransactionServiceInterface;
 
+use Illuminate\Support\Facades\DB;
+
 class OrdersService implements OrdersServiceInterface{
 
     public function __construct(
@@ -33,71 +35,71 @@ class OrdersService implements OrdersServiceInterface{
     ) {}
 
     public function AddOrder($user,array $order_details){
-
-        // if(!$this->checkMaxOrders($user->company_id)){
-        //     return false;
-        // }
-        if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
-            $order_details['status_id'] = '5';
-        }else{
-            $order_details['status_id'] = '1';
-        }
-
-        $client = $this->ClientCrudService->GetClientByPhone($order_details['client']['phone_1']);
-        if(empty($client)) {
-            $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);
-        }
-        $order_details['client_id'] = $client->id;
-        $order_details['admin_id'] = $user->id;
-        $order_details['company_id'] = $user->company_id;
-        $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
-        $note = $order_details['client']['note'];
-        unset($order_details['client']['note']);
-        $order = $this->orders_crud_repository->create_order($order_details);
-        if ($order_details['client_type'] != 'standard' || $order_details['service_type'] != 'تسليم و تحصيل')
-        {
-            $order->order_data()->create([
-                'client_type' => $order_details['client_type'],
-                'service_type' => $order_details['service_type'],
-                'order_id' => $order->id,
-            ]);
-        }
-
-        $shipping_company_id = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
-        $shipping_company = $this->ShippingCompanyService->GetShippingCompany($shipping_company_id);
-        if($shipping_company->active == 1){
-            $data['shipping_company_id'] = $shipping_company->id;
-            $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
-            if(!$shipment){
-                return false;
+        return DB::transaction(function () use ($order_details, $user) {
+            // if(!$this->checkMaxOrders($user->company_id)){
+            //     return false;
+            // }
+            if(!$this->StockService->CheckItemsAvailable($order_details['items'])){
+                $order_details['status_id'] = '5';
+            }else{
+                $order_details['status_id'] = '1';
             }
-            $this->orders_crud_repository->update_order($order->id,
-                array(
-                    'waybill'=>$shipment['waybill'],
-                    'shipping_company_id'=>$data['shipping_company_id'],
-                )
-            );
-        } else {
-            $this->orders_crud_repository->update_order($order->id,
-                array(
-                    'shipping_company_id'=>$order->area->shipping_company_id,
-                )
-            );
-        }
 
-        if (!empty($note)) {
-            $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
-        }
+            $client = $this->ClientCrudService->GetClientByPhone($order_details['client']['phone_1']);
+            if(empty($client)) {
+                $client = $this->ClientCrudService->CreateClient($user->company_id,$order_details['client']);
+            }
+            $order_details['client_id'] = $client->id;
+            $order_details['admin_id'] = $user->id;
+            $order_details['company_id'] = $user->company_id;
+            $order_details['order_code'] = $this->orders_crud_repository->get_order_code($user->company_id);
+            $note = $order_details['client']['note'];
+            unset($order_details['client']['note']);
+            $order = $this->orders_crud_repository->create_order($order_details);
+            if ($order_details['client_type'] != 'standard' || $order_details['service_type'] != 'تسليم و تحصيل')
+            {
+                $order->order_data()->create([
+                    'client_type' => $order_details['client_type'],
+                    'service_type' => $order_details['service_type'],
+                    'order_id' => $order->id,
+                ]);
+            }
 
-        $order_details['type'] = 'sell';
-        $order_details['order_id'] = $order->id;
+            $shipping_company_id = $this->orders_crud_repository->get_shipping_company_id($order->area_id);
+            $shipping_company = $this->ShippingCompanyService->GetShippingCompany($shipping_company_id);
+            if($shipping_company->active == 1){
+                $data['shipping_company_id'] = $shipping_company->id;
+                $shipment = $this->ShippingCompanyService->SendShipment($order,$data);
+                if(!$shipment){
+                    return false;
+                }
+                $this->orders_crud_repository->update_order($order->id,
+                    array(
+                        'waybill'=>$shipment['waybill'],
+                        'shipping_company_id'=>$data['shipping_company_id'],
+                    )
+                );
+            } else {
+                $this->orders_crud_repository->update_order($order->id,
+                    array(
+                        'shipping_company_id'=>$order->area->shipping_company_id,
+                    )
+                );
+            }
 
-        $this->StockService->CreateOperation($user,$order_details);
+            if (!empty($note)) {
+                $this->OrderNotesService->AddNote($order->id,$note,$user->id,$user->company_id);
+            }
 
-        $this->CartService->EmptyCart();
+            $order_details['type'] = 'sell';
+            $order_details['order_id'] = $order->id;
 
-        return $order;
+            $this->StockService->CreateOperation($user,$order_details);
 
+            $this->CartService->EmptyCart();
+
+            return $order;
+        });
     }
 
     public function GetCompanyOrders($company_id,$filters, $request = []) {

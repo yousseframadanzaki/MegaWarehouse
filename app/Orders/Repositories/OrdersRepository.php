@@ -79,7 +79,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
     public function get_order_code($company_id) {
         $company_code = Company::find($company_id)->code;
 
-        $last_order = Order::where('company_id', $company_id)->latest()->first();
+        $last_order = Order::where('company_id', $company_id)->orderBy('id', 'DESC')->lockForUpdate()->first();
         $last_order_code = !empty($last_order) ? $last_order->order_code : $company_code . '0';
 
         $order_code = $company_code . ((int)str_replace($company_code, "", $last_order_code) + 1);
@@ -315,7 +315,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
 
         $orders = Order::whereIn('id', $updated_ids)->get();
 
-        foreach ($orders as $order) {
+        foreach ($orders as $order)
             $this->change_order_status($order->id, ['status_id' => 6]);
 
         return true;
