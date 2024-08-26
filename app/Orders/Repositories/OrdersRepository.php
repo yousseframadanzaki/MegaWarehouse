@@ -125,7 +125,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $order = Order::findOrfail($order_id);
         $order->status_id = $data['status_id'];
         $order->save();
-        $note = isset($data['note']) ? $data['note'] : '';
+        $note = !empty($data['note']) ? $data['note'] : '';
 
         $order->order_status()->newPivotStatement()->where(['order_id'=>$order_id,'current'=>true])->update(['current'=>false]);
 
@@ -313,6 +313,13 @@ class OrdersRepository implements OrdersRepositoryInterface{
             }
         }
 
-        return Order::whereIn('id', $updated_ids)->update(['status_id' => 6]);
+        $orders = Order::whereIn('id', $updated_ids)->get();
+
+        foreach ($orders as $order) {
+            $data = ['status_id' => 6];
+            $this->change_order_status($order->id, $data);
+        }
+
+        return true;
     }
 }
