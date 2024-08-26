@@ -28,7 +28,8 @@ class SendWhatsappMessages extends Command
     /**
      * Execute the console command.
      */
-    public function handle() {
+    public function handle()
+    {
         $now = Carbon::now();
         $campaigns = WhatsappCampaign::where('status', 'pending')
             ->where('schedule_date', '<=', $now)
@@ -45,6 +46,12 @@ class SendWhatsappMessages extends Command
             $sendNumbers = $campaign->sent_numbers ? json_decode($campaign->sent_numbers, true) : [];
     
             foreach ($unsentNumbers as $key => $numberData) {
+                $number = $numberData['number'];
+    
+                if (in_array($number, array_column($sendNumbers, 'number'))) {
+                    continue;
+                }
+    
                 $order = Order::find($numberData['order_id']);
                 $replace = [
                     $order->order_code,
@@ -75,20 +82,22 @@ class SendWhatsappMessages extends Command
                 $campaignText = str_replace($find, $replace, $campaign->text);
                 $response = $this->sendMessage($numberData['number'], $campaignText, $campaign->media, $device->instance_id);
     
-                if ($response['status'] == 'success') {
-                    $numberData['status'] = "1";
-                    $sendNumbers[] = $numberData;
-                    unset($unsentNumbers[$key]);
-                } else {
-                    $unsentNumbers[$key]['status'] = "0";
-                }
+                $numberData['status'] = $response['status'] == 'success' ? "1" : "0";
+                $logEntry = "Number: {$numberData['number']}, Status: {$response['status']}" . PHP_EOL;
+                file_put_contents(storage_path('app/campaign_logs.txt'), $logEntry, FILE_APPEND);
     
+                $sendNumbers[] = $numberData;
+                unset($unsentNumbers[$key]);
+                
                 $campaign->unsent_numbers = json_encode(array_values($unsentNumbers));
                 $campaign->sent_numbers = json_encode($sendNumbers);
-                $campaign->status = empty($unsentNumbers) ? 'finished' : 'not sent';
                 $campaign->save();
-    
                 sleep($campaign->delay);
+            }
+    
+            if (empty($unsentNumbers)) {
+                $campaign->status = 'finished';
+                $campaign->save();
             }
         }
     }
