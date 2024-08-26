@@ -14,8 +14,10 @@ use App\Orders\Filters\ShippingCompanyFilter;
 use App\Orders\Filters\WaybillFilter;
 use App\Orders\Filters\ProductFilter;
 use App\Orders\Filters\VariantFilter;
+use App\Orders\Filters\AdminFilter;
 
 use App\Models\Client;
+use App\Models\User;
 use App\Models\Status;
 use App\Models\City;
 use App\Models\Area;
@@ -40,6 +42,7 @@ class OrdersFilters
         'marketer_id'   => MarketerFilter::class,
         'shipping_company_id'   => ShippingCompanyFilter::class,
         'waybill'   => WaybillFilter::class,
+        'admin_id' => AdminFilter::class,
         'date_type' => '',
     ];
 
@@ -111,6 +114,9 @@ class OrdersFilters
             if($key == 'variant_id'){
                 $filters['variant_id'] = Variant::findOrfail($value)->name;
                 continue;
+            }
+            if($key == 'admin_id'){
+                $filters['admin_id'] = User::findOrfail($value)->name;
             }
         }
         return $filters;

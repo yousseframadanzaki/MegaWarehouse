@@ -47,6 +47,7 @@ class OrderController extends Controller
         $products = $this->CommonDataService->GetCompanyProducts($this->company_id(),$filters);
         $filters = $filters->get_values();
         $shipping_companies = $this->CommonDataService->GetCompanyShippingCompanies($this->company_id());
+        $admins = $this->CommonDataService->GetUsersByRoleType($this->company_id(), 1)->pluck('name', 'id');
         return view('Dashboard.Orders.show_all')->with(
             compact(
                 'orders',
@@ -56,6 +57,7 @@ class OrderController extends Controller
                 'marketers',
                 'shipping_companies',
                 'products',
+                'admins',
                 'filters'
             ));
     }

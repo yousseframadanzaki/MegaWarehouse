@@ -206,7 +206,7 @@
                             <input class="form-control" name="order_code" id=""
                                 value="{{ Request::get('order_code') }}">
                         </div>
-                        <div class="col-md-4 mt-3">
+                        {{-- <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.client_id')</label>
                             <select class="form-select product_info"  name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">@lang('global.select_client')</option>
@@ -217,14 +217,30 @@
                             <div class="invalid-feedback name">
 
                             </div>
+                        </div> --}}
+
+                        <div class="col-md-4 mt-3">
+                            <label class="form-label">الأدمن</label>
+                            <select class="form-select product_info"  name="admin_id" style="padding: 0.375rem 0.75rem;">
+                                <option value="">اختر الأدمن</option>
+                                @foreach ($admins as $id => $name)
+                                    <option @if(Request::get('admin_id') == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback name">
+
+                            </div>
                         </div>
+
                         <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.phone_1')</label>
                             <select class="form-select product_info" id="phone-select" name="client_id" style="padding: 0.375rem 0.75rem;">
                                 <option value="">@lang('global.select_phone_1')</option>
                                 @foreach ($clients as $client)
-                                    <option value="{{ $client->id }}">{{ $client->phone_1 }}</option>
-                                    <option value="{{ $client->id }}">{{ $client->phone_2 }}</option>
+                                    <option value="{{ $client->id }}" @if(Request::get('client_id') == $client->id) selected @endif>{{ $client->phone_1 }}</option>
+                                    @if (!empty($client->phone_2))
+                                        <option value="{{ $client->id }}" @if(Request::get('client_id') == $client->id) selected @endif>{{ $client->phone_2 }}</option>
+                                    @endif
                                 @endforeach
                             </select>
 
