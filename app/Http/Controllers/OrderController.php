@@ -230,23 +230,37 @@ class OrderController extends Controller
     public function validate_shipping_report_orders(Request $request) {
         $order_codes = explode("\n", $request->searchOrders);
 
+        // Step 1: Fetch all orders based on provided order codes and company ID
         $orders = $this->OrdersService->SearchOrdersNoPaginate($this->company_id(), $order_codes);
-        $lowercased_order_codes = array_map('strtolower', $order_codes);
 
-        $not_found = array_values(array_diff(
-            $lowercased_order_codes,
-            $orders->pluck('order_code')->map('strtolower')->toArray()
-        ));
+        // Step 2: Initialize arrays to hold orders in different categories
+        $not_found = [];
+        $not_related_shipping = [];
+        $already_exist_in_reports = [];
+        $not_in_statuses = [];
 
-        $not_related_shipping = $orders->where('shipping_company_id', '!=', $request->shipping_company_id)
-        ->pluck('order_code')->toArray();
+        // Step 3: Get all order codes found in the database
+        $found_order_codes = $orders->pluck('order_code')->toArray();
 
-        $already_exist_in_reports = $orders->whereNotNull('payment_report_id')->pluck('order_code')->toArray();
+        // Step 4: Determine orders that were not found
+        $not_found = array_values(array_diff($order_codes, $found_order_codes));
 
-        $not_in_statuses = $orders->filter(function ($order) {
-            return $order->order_status->whereIn('id', [45, 50, 55, 75])->count() == 0;
-        })->pluck('order_code')->toArray();
+        // Step 5: Filter through found orders and categorize them
+        foreach ($orders as $order) {
+            if (in_array($order->code, $not_found)) {
+                continue; // Skip orders already categorized as not found
+            }
 
+            if ($order->shipping_company_id != $request->shipping_company_id) {
+                $not_related_shipping[] = $order->order_code;
+            } elseif ($order->payment_report_id !== null) {
+                $already_exist_in_reports[] = $order->order_code;
+            } elseif ($order->order_status->whereIn('id', [45, 50, 55, 75])->count() == 0) {
+                $not_in_statuses[] = $order->order_code;
+            }
+        }
+
+        // Step 6: Return any errors
         if (!empty($not_found) || !empty($not_in_statuses) || !empty($not_related_shipping) || !empty($already_exist_in_reports)) {
             return response()->json([
                 'error' => true,
@@ -257,6 +271,7 @@ class OrderController extends Controller
             ]);
         }
 
+        // Step 7: Return valid orders
         return response()->json(['orders' => $orders]);
     }
 }

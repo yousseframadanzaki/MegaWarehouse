@@ -134,7 +134,7 @@
 
     $('#checkOrders').on('click', function() {
         let searchOrders = $('#searchOrders').val();
-        searchOrders = [...new Set(searchOrders.split('\n').map(value => value.trim()))].join('\n');
+        searchOrders = [...new Set(searchOrders.split('\n').map(value => value.trim().toUpperCase()))].join('\n');
         $('#searchOrders').val(searchOrders);
         let shipping_company_id = $('#shipping_company_id').val();
 
