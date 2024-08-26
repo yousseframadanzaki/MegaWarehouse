@@ -316,9 +316,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
         $orders = Order::whereIn('id', $updated_ids)->get();
 
         foreach ($orders as $order) {
-            $data = ['status_id' => 6];
-            $this->change_order_status($order->id, $data);
-        }
+            $this->change_order_status($order->id, ['status_id' => 6]);
 
         return true;
     }
