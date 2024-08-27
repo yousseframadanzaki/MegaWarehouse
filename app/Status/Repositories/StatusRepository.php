@@ -7,13 +7,9 @@ use App\Models\Status;
 
 
 class StatusRepository implements StatusRepositoryInterface{
-    public function update_status($status_id,$edit_order){
-        return Status::where(['id'=>$status_id])
-        ->update(['edit_order'=>$edit_order]);
-    }
-    public function update_related_shipping($data) {
-        return Status::where(['id'=>$data['id']])
-        ->update(['related_shipping'=>$data['related_shipping']]);
+    public function update_status($status_id, array $data){
+        return Status::find($status_id)
+        ->update($data);
     }
     public function add_related_status($status_id, $related_status){
         $status = Status::find($status_id);
@@ -36,17 +32,7 @@ class StatusRepository implements StatusRepositoryInterface{
             return true;
         }
     }
-
-    public function update_status_color($data) {
-        return Status::where(['id'=>$data['id']])->update(['color' => $data['color']]);
-    }
-
     public function get_statues() {
         return Status::get();
-    }
-
-    public function update_show_all_orders($data) {
-        return Status::where(['id'=>$data['id']])
-        ->update(['show_all_orders'=>$data['show_all_orders']]);
     }
 }

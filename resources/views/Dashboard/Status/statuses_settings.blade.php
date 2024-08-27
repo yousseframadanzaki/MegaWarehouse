@@ -103,14 +103,14 @@
         $("#statusModal").modal('show');
     });
     $(".edit_btn").click(function(){
-        var token = $('#token').val();
+        var _token = $('#token').val();
         var id = $(this).attr('data-id');
         var edit_order = $(this).prop('checked') ? 1 : 0;
         $.ajax({
-            type: 'POST',
             url: `/api/statuses/${id}/settings`,
-            dataType: "text",
-            data: { token,edit_order },
+            method: "POST",
+            data: { _token, edit_order },
+            dataType: "text"
         }).then((response) => {
             if (response) {
                 show_success('تم تعديل الحالة بنجاح');
@@ -118,14 +118,14 @@
         });
     });
     $(".related_shipping_btn").click(function(){
-        var token = $('#token').val();
+        var _token = $('#token').val();
         var id = $(this).attr('data-id');
         var related_shipping = $(this).prop('checked') ? 1 : 0;
         $.ajax({
+            url: `/api/statuses/${id}/settings`,
             type: 'POST',
-            url: `/api/statuses/${id}/related_shipping`,
-            dataType: "text",
-            data: { token,related_shipping,id },
+            data: { _token,related_shipping },
+            dataType: "text"
         }).then((response) => {
             if (response) {
                 show_success('تم تعديل الحالة بنجاح');
@@ -133,14 +133,30 @@
         });
     });
     $(".show_all_orders_btn").click(function(){
-        var token = $('#token').val();
+        var _token = $('#token').val();
         var id = $(this).attr('data-id');
         var show_all_orders = $(this).prop('checked') ? 1 : 0;
         $.ajax({
+            url: `/api/statuses/${id}/settings`,
             type: 'POST',
-            url: `/api/statuses/${id}/show_all_orders`,
-            dataType: "text",
-            data: { token,show_all_orders,id },
+            data: { _token,show_all_orders },
+            dataType: "text"
+        }).then((response) => {
+            if (response) {
+                show_success('تم تعديل الحالة بنجاح');
+            }
+        });
+    });
+    $('input[type=color]').on('change', function() {
+        _token = $('#token').val();
+        color = $(this).val();
+        id = $(this).attr('data-id');
+
+        $.ajax({
+            url: `/api/statuses/${id}/settings`,
+            type: 'POST',
+            data: { _token, color},
+            dataType: "text"
         }).then((response) => {
             if (response) {
                 show_success('تم تعديل الحالة بنجاح');
@@ -189,22 +205,6 @@
                 var td = $(`td[data-id='${status_id}']`);
                 var badge = td.find(`div:has(i[data-status='${related_status}'])`);
                 badge.remove();
-            }
-        });
-    });
-    $('input[type=color]').on('change', function() {
-        _token = $('#token').val();
-        color = $(this).val();
-        id = $(this).attr('data-id');
-
-        $.ajax({
-            type: 'POST',
-            url: `/api/statuses/${id}/color`,
-            dataType: "text",
-            data: { _token, color, id},
-        }).then((response) => {
-            if (response) {
-                show_success('تم تعديل الحالة بنجاح');
             }
         });
     });

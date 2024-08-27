@@ -79,12 +79,9 @@ Route::name('api_')->group(function() {
     Route::GET('/area/{id}/get_price', [AreaController::class, 'get_price'])->name('get_price');
     Route::get('/area/{id}/get_keywords', [AreaController::class, 'get_keywords'])->name('get_keywords');
     Route::get('client/{id}/get_templates', [ClientController::class, 'get_templates'])->name('get_templates');
-    Route::post('statuses/{id}/settings', [StatusController::class, 'update_status'])->name('update_edit_order');
-    Route::post('statuses/{id}/related_shipping', [StatusController::class, 'update_related_shipping'])->name('update_related_shipping');
-    Route::post('statuses/{id}/show_all_orders', [StatusController::class, 'update_show_all_orders']);
+    Route::POST('statuses/{id}/settings', [StatusController::class, 'update_status']);
     Route::POST('statuses/{id}/add_status', [StatusController::class, 'add_related_status'])->name('add_status');
     Route::POST('statuses/related_status/{related_status}/remove', [StatusController::class, 'remove_related_status'])->name('remove_status');
-    Route::POST('statuses/{id}/color', [StatusController::class, 'update_status_color']);
     Route::get('payment_category/{payment_category}/data', [AccountingController::class, 'get_payment_category_data']);
     Route::get('payment_type/{id}/userdata', [AccountingController::class, 'get_payment_type_userdata']);
     Route::get('campaign/get_qr_code/{instance_id}',[WhatsappController::class, 'get_qr_code']);

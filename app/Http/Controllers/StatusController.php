@@ -29,21 +29,8 @@ class StatusController extends Controller
         return view('Dashboard.Status.statuses_settings',compact('statuses'));
     }
     public function update_status($status_id, Request $request){
-        $data = $request->all();
-        $edit_order = $data['edit_order'];
-        $status = $this->StatusService->UpdateStatus($status_id,$edit_order);
-        return response()->json($status);
-    }
-    public function update_related_shipping(Request $request){
-        $status = $this->StatusService->UpdateRelatedShipping($request->except("_token"));
-        return response()->json($status);
-    }
-    public function update_show_all_orders(Request $request) {
-        $status = $this->StatusService->UpdateShowAllOrders($request->except("_token"));
-        return response()->json($status);
-    }
-    public function update_status_color(Request $request) {
-        $status = $this->StatusService->UpdateStatusColor($request->except("_token"));
+        $data = $request->except('_token');
+        $status = $this->StatusService->UpdateStatus($status_id, $data);
         return response()->json($status);
     }
     public function add_related_status($status_id, Request $request){

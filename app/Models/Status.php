@@ -10,6 +10,15 @@ class Status extends Model
     use HasFactory;
     use EagerLoadPivotTrait;
 
+    protected $fillable = [
+        'name',
+        'related_status',
+        'edit_order',
+        'related_shipping',
+        'show_all_orders',
+        'color'
+    ];
+
     public function getRelatedStatuses()
     {
         if ($this->related_status) {
