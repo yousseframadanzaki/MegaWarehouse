@@ -18,6 +18,9 @@ class StatusService implements StatusServiceInterface{
     public function UpdateRelatedShipping($data) {
         return $this->status_crud_repository->update_related_shipping($data);
     }
+    public function UpdateShowAllOrders($data) {
+        return $this->status_crud_repository->update_show_all_orders($data);
+    }
     public function AddRelatedStatus($status_id,$related_status){
         return $this->status_crud_repository->add_related_status($status_id,$related_status);
     }

@@ -44,4 +44,9 @@ class StatusRepository implements StatusRepositoryInterface{
     public function get_statues() {
         return Status::get();
     }
+
+    public function update_show_all_orders($data) {
+        return Status::where(['id'=>$data['id']])
+        ->update(['show_all_orders'=>$data['show_all_orders']]);
+    }
 }

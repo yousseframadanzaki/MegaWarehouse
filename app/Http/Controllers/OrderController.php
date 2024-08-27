@@ -41,7 +41,7 @@ class OrderController extends Controller
         // dd($request->all());
         $clients = $this->CommonDataService->GetCompanyClients($this->company_id());
         $cities = $this->CommonDataService->GetCities();
-        $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id());
+        $statuses = $this->CommonDataService->GetCompanyStatuses($this->company_id())->where('show_all_orders', 1);
         $marketers = $this->CommonDataService->GetCompanyMarketers($this->company_id());
         $orders = $this->OrdersService->GetCompanyOrders($this->company_id(),$filters, $request->all());
         $products = $this->CommonDataService->GetCompanyProducts($this->company_id(),$filters);

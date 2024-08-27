@@ -35,11 +35,15 @@ class StatusController extends Controller
         return response()->json($status);
     }
     public function update_related_shipping(Request $request){
-        $status = $this->StatusService->UpdateRelatedShipping($request->all());
+        $status = $this->StatusService->UpdateRelatedShipping($request->except("_token"));
+        return response()->json($status);
+    }
+    public function update_show_all_orders(Request $request) {
+        $status = $this->StatusService->UpdateShowAllOrders($request->except("_token"));
         return response()->json($status);
     }
     public function update_status_color(Request $request) {
-        $status = $this->StatusService->UpdateStatusColor($request->all());
+        $status = $this->StatusService->UpdateStatusColor($request->except("_token"));
         return response()->json($status);
     }
     public function add_related_status($status_id, Request $request){

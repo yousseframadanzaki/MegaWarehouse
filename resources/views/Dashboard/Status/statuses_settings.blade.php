@@ -41,6 +41,7 @@
         <thead>
             <th>الحالة</th>
             <th>لون الحالة</th>
+            <th>صفحة جميع الأوردرات</th>
             <th>السماح بتعديل الأوردر</th>
             <th class="text-center"> قيد الشحن </th>
             <th>الحالات التابعة</th>
@@ -50,6 +51,11 @@
             <tr>
                 <td>{{ $status->name }}</td>
                 <td class="text-center"><input type="color" style="cursor: pointer" value="{{ $status->color }}" data-id="{{ $status->id }}"></td>
+                <td style="width: 145px;">
+                    <div class="form-check" style="margin-left: 50px;">
+                        <input data-id="{{ $status->id }}" style="width: 20px;height: 20px;" class="form-check-input show_all_orders_btn" type="checkbox" {{ $status->show_all_orders == 1 ? 'checked' : '' }}>
+                    </div>
+                </td>
                 <td style="width: 145px;">
                     <div class="form-check" style="margin-left: 50px;">
                         <input data-id="{{ $status->id }}" style="width: 20px;height: 20px;" class="form-check-input edit_btn" type="checkbox" name="edit_order" {{ $status->edit_order == 1 ? 'checked' : '' }}>
@@ -126,86 +132,101 @@
             }
         });
     });
-        $(".add_related_status").click(function(e){
-            id = $(this).attr('data-id');
-            token = $('#token').val();
-            related_status = $("#status_id").val();
-            selectedOption = $('#status_id option:selected');
-            status = selectedOption.text();
-            $.ajax({
-                type: 'POST',
-                url: `/api/statuses/${id}/add_status`,
-                dataType: "text",
-                data: { token,related_status },
-            }).then((response) => {
+    $(".show_all_orders_btn").click(function(){
+        var token = $('#token').val();
+        var id = $(this).attr('data-id');
+        var show_all_orders = $(this).prop('checked') ? 1 : 0;
+        $.ajax({
+            type: 'POST',
+            url: `/api/statuses/${id}/show_all_orders`,
+            dataType: "text",
+            data: { token,show_all_orders,id },
+        }).then((response) => {
+            if (response) {
+                show_success('تم تعديل الحالة بنجاح');
+            }
+        });
+    });
+    $(".add_related_status").click(function(e){
+        id = $(this).attr('data-id');
+        token = $('#token').val();
+        related_status = $("#status_id").val();
+        selectedOption = $('#status_id option:selected');
+        status = selectedOption.text();
+        $.ajax({
+            type: 'POST',
+            url: `/api/statuses/${id}/add_status`,
+            dataType: "text",
+            data: { token,related_status },
+        }).then((response) => {
+        data = JSON.parse(response)
+            if (data == true){
+                show_succes('تم اضافة الحالة نجاح');
+                var td = $(`td[data-id='${id}']`);
+                var newBadge = `<div style="background-color: #6e35ae; font-size: 14px;" class="badge p-2">${status}
+                                    <span class="icon-class">
+                                        <i data-status="${related_status}" data-id="${id}"  class="bi bi-trash status_remove" style="cursor: pointer;"></i>
+                                    </span>
+                                </div>`;
+                td.append(newBadge);
+            }
+        });
+    });
+    $(".status_remove").click(function(e){
+        related_status = $(this).attr('data-status');
+        related_status_name = $(".related_status_" + related_status).text();
+        status_id = $(this).attr('data-id');
+        token = $('#token').val();
+        $.ajax({
+            type: 'POST',
+            url: `/api/statuses/related_status/${related_status}/remove`,
+            dataType: "text",
+            data: { token,status_id },
+        }).then((response) => {
             data = JSON.parse(response)
-                if (data == true){
-                    show_succes('تم اضافة الحالة نجاح');
-                    var td = $(`td[data-id='${id}']`);
-                    var newBadge = `<div style="background-color: #6e35ae; font-size: 14px;" class="badge p-2">${status}
-                                        <span class="icon-class">
-                                            <i data-status="${related_status}" data-id="${id}"  class="bi bi-trash status_remove" style="cursor: pointer;"></i>
-                                        </span>
-                                    </div>`;
-                    td.append(newBadge);
-                }
-            });
+            if (data == true){
+                show_success(`تم حذف ${related_status_name} من الحالات التابعة`);
+                var td = $(`td[data-id='${status_id}']`);
+                var badge = td.find(`div:has(i[data-status='${related_status}'])`);
+                badge.remove();
+            }
         });
-        $(".status_remove").click(function(e){
-            related_status = $(this).attr('data-status');
-            related_status_name = $(".related_status_" + related_status).text();
-            status_id = $(this).attr('data-id');
-            token = $('#token').val();
-            $.ajax({
-                type: 'POST',
-                url: `/api/statuses/related_status/${related_status}/remove`,
-                dataType: "text",
-                data: { token,status_id },
-            }).then((response) => {
-                data = JSON.parse(response)
-                if (data == true){
-                    show_success(`تم حذف ${related_status_name} من الحالات التابعة`);
-                    var td = $(`td[data-id='${status_id}']`);
-                    var badge = td.find(`div:has(i[data-status='${related_status}'])`);
-                    badge.remove();
-                }
-            });
-        });
-        $('input[type=color]').on('change', function() {
-            _token = $('#token').val();
-            color = $(this).val();
-            id = $(this).attr('data-id');
+    });
+    $('input[type=color]').on('change', function() {
+        _token = $('#token').val();
+        color = $(this).val();
+        id = $(this).attr('data-id');
 
-            $.ajax({
-                type: 'POST',
-                url: `/api/statuses/${id}/color`,
-                dataType: "text",
-                data: { _token, color, id},
-            }).then((response) => {
-                if (response) {
-                    show_success('تم تعديل الحالة بنجاح');
-                }
-            });
+        $.ajax({
+            type: 'POST',
+            url: `/api/statuses/${id}/color`,
+            dataType: "text",
+            data: { _token, color, id},
+        }).then((response) => {
+            if (response) {
+                show_success('تم تعديل الحالة بنجاح');
+            }
         });
-        function show_success(message){
-            var template = `
-            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
-                <strong>${message}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            `;
-            $('#message').append(template);
-            $('#message').fadeIn();
-        };
-        function show_succes(message){
-            var template = `
-            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
-                <strong>${message}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            `;
-            $('.message').append(template);
-            $('.message').fadeIn();
-        };
+    });
+    function show_success(message){
+        var template = `
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            <strong>${message}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        `;
+        $('#message').append(template);
+        $('#message').fadeIn();
+    };
+    function show_succes(message){
+        var template = `
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+            <strong>${message}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        `;
+        $('.message').append(template);
+        $('.message').fadeIn();
+    };
 </script>
 @endsection
