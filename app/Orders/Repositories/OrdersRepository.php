@@ -182,7 +182,9 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $total_after_sale = str_replace(',', '', $data['total_after_sale']);
             $data['total_after_sale'] =  $total_after_sale + $data['delivery_cost'];
         }
-        return Order::where('id',$order_id)->update($data);
+        $order = Order::find($order_id);
+        $order->update($data);
+        return count($order->getChanges());
     }
 
     public function update_orders($ids, $data) {

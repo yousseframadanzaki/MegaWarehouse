@@ -582,14 +582,14 @@
             dataType: "text",
         }).then((response) => {
             data = JSON.parse(response);
-            console.log(data);
             $(".notes-list").html("");
             data.forEach(note => {
                 var template = `
                             <div>
-                                <div class="btn-group me-2" style="">${note.admin.name} : ${note.note}</div>
-                                <div class="col-md-12" style="margin: 5px;"><span>${note.formatted_created_at}</span></div>
-                                <hr class="col-md-12" style="margin: 10px; border-color: #ddd">
+                                <div class="col-12 fw-bold" style="font-size: 16px;">${note.admin.name}</div>
+                                <div class="col-12 my-2">${note.note}</div>
+                                <div class="col-12 fw-bold" style="font-size: 13px;"><span>${note.formatted_created_at}</span></div>
+                                <hr class="col-12" style="border-color: #333">
                             </div>
                         `;
                 $(".notes-list").append(template);

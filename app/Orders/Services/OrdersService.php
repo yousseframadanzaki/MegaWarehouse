@@ -328,6 +328,8 @@ class OrdersService implements OrdersServiceInterface{
         //     return false;
         // }
 
+        $old_order = $this->GetOrder($order_id);
+
         $old_items = isset($data['old_items']) ? $data['old_items'] : array();
         $new_items = isset($data['items']) ? $data['items'] : array();
 
@@ -338,7 +340,51 @@ class OrdersService implements OrdersServiceInterface{
         $this->UpdateStock($order_id, $old_items);
         $this->AddStock(auth()->user(), $order_id, $new_items);
 
-        return $this->orders_crud_repository->update_order($order_id, $data['client']);
+        $updated = $this->orders_crud_repository->update_order($order_id, $data['client']);
+        if ($updated) {
+            $updated_order = $this->GetOrder($order_id);
+            $note = $this->ChangedDataNote($old_order, $updated_order, $old_items, $new_items);
+            $this->OrderNotesService->AddNote($order_id, $note, auth()->user()->id, auth()->user()->company_id);
+        }
+        return true;
+    }
+    public function ChangedDataNote($old_order, $updated_order, $old_items, $new_items) {
+        $note = "<p class='text-success mb-2'>" . "تم تعديل الأوردر" . "</p>";
+        $order_stocks = $old_order->stocks;
+        foreach ($old_items as $old_item) {
+            $stock = $order_stocks->firstWhere('variant_id', $old_item['id']);
+            if ($stock->unit_price != $old_item['unit_sale'] || $stock->unit_price != $old_item['unit_sale'] || abs($stock->quantity) != $old_item['quantity']) {
+                if ($stock->unit_price != $old_item['unit_sale']) {
+                    $note .= "المتغير ( {$stock->variant->name} ) : " . " تم تغيير سعر الوحدة " . " من {$stock->unit_price} إلي {$old_item['unit_sale']}" . "<br>";
+                }
+                if (abs($stock->quantity) != $old_item['quantity']) {
+                    $stock_quantity = abs($stock->quantity);
+                    $note .= "المتغير ( {$stock->variant->name} ) : " . " تم تغيير الكمية " . " من {$stock_quantity} إلي {$old_item['quantity']}" . "<br>";
+                }
+                if ($stock->warehouse_id != $old_item['warehouse_id']) {
+                    $note .= "المتغير ( {$stock->variant->name} ) : " . " تم تغيير المخزن " . " من {$stock->warehouse->name} إلي {$old_item['warehouse_name']}" . "<br>";
+                }
+            }
+        }
+
+        if (count($new_items) > 0) {
+            $note .= "<p class='text-primary my-2'>" . "المنتجات المضافة للأوردر" . "</p>";
+            foreach ($new_items as $new_item) {
+                $note .= "تم إضافة المنتج ( {$new_item['variant_name']} ) للأوردر بسعر {$new_item['unit_price_after_sale']} و كمية {$new_item['quantity']}" . "<br>";
+            }
+        }
+
+        $changedOrderColumns = array_keys(array_diff_assoc($updated_order->getOriginal(), $old_order->getOriginal()));
+        $changedOrderColumns = array_diff($changedOrderColumns, ['updated_at']);
+
+        if (count($changedOrderColumns) > 0) {
+            $note .= "<p class='text-primary my-2'>" . "بيانات الأوردر التي تم تعديلها" . "</p>";
+            foreach ($changedOrderColumns as $column) {
+                $note .= "تم تغيير " . trans("global.$column") . " : من ( {$old_order->$column} ) إلي ( {$updated_order->$column} )" . "<br>";
+            }
+        }
+
+        return $note;
     }
     public function UpdateOrders($ids, $data) {
         return $this->orders_crud_repository->update_orders($ids, $data);

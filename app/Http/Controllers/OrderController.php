@@ -104,8 +104,6 @@ class OrderController extends Controller
     public function update_order($order_id, Request $request){
         $data = $request->all();
         $order = $this->OrdersService->UpdateOrder($order_id, $data);
-        $note = 'تم تعديل بيانات الأوردر';
-        $order_note = $this->OrderNotesService->AddOrderNote($order_id, $note, auth()->user()->id, $this->company_id());
 
         if($order){
             return redirect()->route('show_order', [$order_id])->with('success','order_edited_success');

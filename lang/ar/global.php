@@ -34,6 +34,7 @@ return [
     "sell"=>"بيع",
     "move"=>"نقل",
     "sku"=>"sku",
+    "name"=>"الاسم",
     "waybill"=>"رقم البوليصة",
     "product_name"=>"اسم المنتج",
     "client_id"=>"العميل",
@@ -160,6 +161,7 @@ return [
     "role_id" => "الادارة",
     "select_role" => "اختار الادارة",
     "phone_1" => "رقم الهاتف",
+    "phone_2" => "رقم الهاتف 2",
     "button_search" => "بحث",
     "image" => "صورة",
     "user_name" => "اسم العضو",
@@ -224,8 +226,10 @@ return [
     "alert_order_deleted_success" => "تم حذف الاوردر بنجاح",
     "address" => "العنوان",
     "total" => "الاجمالى",
+    "total_after_sale" => "إجمالي بعد الخصم",
+    "delivery_cost" => "تكلفة الشحن",
 
-    // add order page
+    // add order page.
 
     "quantity" => "الكمية",
     "" => "",

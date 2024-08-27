@@ -289,6 +289,7 @@
                                     <td class="total_price_after_sale">{{abs($item->quantity) * $item->unit_price_after_sale}}</td>
                                     <td class="fs-5 text-danger"><a data-id="{{ $item->variant->id }}" onclick="remove_variant(this, {{ $item->id }})" style="cursor: pointer;"><i class="bi bi-trash3"></i></a></td>
 
+                                    <input type="hidden" class="warehouse_name" name="old_items[{{ $loop->index }}][warehouse_name]"/>
                                     <input type="hidden" name="old_items[{{ $loop->index }}][id]" value="{{ $item->variant->id }}"/>
                                 </tr>
                             @endforeach
@@ -395,10 +396,10 @@
             $("#variant_id").append(`<option value="">اختار المتغير</option>`)
             data.forEach(element => {
                 if (data.length == 1) { // if only one option add selected attribute and call ajax function.
-                    $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                    $("#variant_id").append(`<option selected data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" data-name="${element.name}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
                     variant_select_change($("#variant_id"));
                 } else {
-                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
+                    $("#variant_id").append(`<option data-hide="${element.hide}" data-confirm="${element.product.confirm_order}" data-show="${element.product.show_quantity}" data-quantity=${element.quantity} data-price="${element.price}" data-name="${element.name}" value="${element.id}">${element.name} (السعر: ${element.price})</option>`)
                 }
             })
             $('#variant_id').select2({
@@ -448,13 +449,13 @@
 
         if(product_id && variant_id && warehouse_id && quantity) {
             $("#addToCartModal").modal('hide');
-            
+
             var variant_found = $(`#items tr#${variant_id}`); // check if the variant is already found.
 
             if (variant_found.length == 0) {    // new variant.
                 var warehouses_select = $("#warehouses_select").html();
                 var productName = $("#product_id option:selected").text();
-                var variantName = $("#variant_id option:selected").text();
+                var variantName = $("#variant_id option:selected").attr('data-name');
                 var warehouseName = $("#warehouse_id option:selected").text();
                 var total = variant_price * quantity;
                 var index = $('#items tr').length;
@@ -481,13 +482,13 @@
                         <td class="fs-5"><a class="removee_variant text-danger" style="cursor: pointer" data-id="${variant_id}"><i class="bi bi-trash3"></i></a></td>
                         <input type="hidden" name="items[${index}][id]" value="${variant_id}"/>
                         <input type="hidden" name="items[${index}][unit_price]" value="${variant_price}"/>
+                        <input type="hidden" name="items[${index}][variant_name]" value="${variantName}"/>
                     </tr>
                 `;
 
                 $("#items").append(template);
                 $(`#items tr#${variant_id} .warehouse`).val(warehouse_id);
             } else {    // exist old variant.
-                console.log(variant_id + '    ' + variant_found);
                 variant_found.find('.warehouse').val(warehouse_id);
                 variant_found.find('.quantity').val(quantity);
                 variant_found.find('.total_price').text(variant_price * quantity);
@@ -660,5 +661,10 @@
         $('.total_after_sale_input').val(formattedTotalAfterSale);
         this.submit();
     });
+
+    $('select.warehouse').change(function () {
+        warehouse_name = $(this).find('option:selected').text();
+        $(this).closest('tr').find('input.warehouse_name').val(warehouse_name);
+    })
 </script>
 @endsection
