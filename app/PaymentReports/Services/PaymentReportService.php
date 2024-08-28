@@ -57,8 +57,10 @@ class PaymentReportService implements PaymentReportServiceInterface {
             ];
             $this->TransactionService->AddTransaction($transaction_data);
             // add image
-            $image = $this->FileUploadService->handle($data['image'], 'payment_reports',$auth_user->company_id,$payment_report->id);
-            $this->MediaCrudService->save($image);
+            if (!empty($data['image'])) {
+                $image = $this->FileUploadService->handle($data['image'], 'payment_reports',$auth_user->company_id,$payment_report->id);
+                $this->MediaCrudService->save($image);
+            }
 
             return $payment_report->id;
         }
