@@ -92,7 +92,7 @@ class OrdersFilters
                 continue;
             }
             if($key == 'city_id'){
-                $filters['city_id'] = City::findOrfail($value)->name;
+                $filters['city_id'] = json_encode(City::whereIn('id', explode(",", $value[0]))->pluck('name')->toArray(), JSON_UNESCAPED_UNICODE);
                 continue;
             }
             if($key == 'area_id'){

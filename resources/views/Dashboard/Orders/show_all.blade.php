@@ -275,7 +275,7 @@
 
                         <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.city_id')</label>
-                            <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id"
+                            <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id[]" multiple
                                 id="city_id">
                                 <option value="">@lang('global.select_city') </option>
                                 @foreach ($cities as $id => $name)
@@ -556,24 +556,7 @@
                 });
             });
 
-            var city_id = "{!! Request::get('city_id') !!}"
-            var area_id = "{!! Request::get('area_id') !!}"
-            if(city_id){
-                $.ajax({
-                    type:'GET',
-                    url:`/api/city/${city_id}/areas`,
-                    dataType: "text",
-                }).then((response)=>{
-                    data = JSON.parse(response);
-                    $('#area_id').html('<option value="">@lang("global.select_area")</option>');
-                    $.each(data, function (key,value) {
-                        $("#area_id").append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    if(area_id){
-                        $("#area_id").val(area_id);
-                    }
-                })
-            }
+            
 
             var product_id = "{!! Request::get('product_id') !!}"
             var variant_id = "{!! Request::get('variant_id') !!}"
