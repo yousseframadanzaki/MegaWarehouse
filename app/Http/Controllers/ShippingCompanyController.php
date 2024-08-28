@@ -38,7 +38,9 @@ class ShippingCompanyController extends Controller
 
     public function show($shipping_company_id) {
         $shipping_company = $this->ShippingCompanyService->GetShippingCompany($shipping_company_id);
-        $shipping_company_statuses = $this->ShippingStatusService->GetShippingCompanyStatuses($shipping_company);
+        $shipping_company_statuses = [];
+        if ($shipping_company->active == 1)
+            $shipping_company_statuses = $this->ShippingStatusService->GetShippingCompanyStatuses($shipping_company);
         $statuses = $this->CommonDataService->GetCompanyStatuses();
         return view('Dashboard.ShippingCompanies.show_one')->with(compact('statuses','shipping_company','shipping_company_statuses'));
     }
