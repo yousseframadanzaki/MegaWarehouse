@@ -138,4 +138,15 @@ class ProductVariantsRepository implements ProductVariantsRepositoryInterface{
             ->whereIn('order_id', $orders_ids);
         })->get();
     }
+
+    public function get_variants_by_orders(array $order_ids) {
+        return Variant::withWhereHas('stock', function ($query) use ($order_ids) {
+            $query->whereIn('order_id', $order_ids);
+        })
+        ->get()->map(function($variant) {
+            $variant->product_name = $variant->product->name;
+            $variant->total_quantity = $variant->stock->sum('quantity') * -1;
+            return $variant;
+        });
+    }
 }

@@ -266,4 +266,10 @@ class ProductController extends Controller
         $variants = $this->ProductCrudService->GetBulkVariantsData($variant_ids);
         return response()->json($variants);
     }
+
+    public function get_variants_by_orders(Request $request) {
+        $order_ids = explode(",", $request->order_ids);
+        $variants = $this->ProductCrudService->GetVariantsByOrders($order_ids);
+        return response()->json($variants);
+    }
 }

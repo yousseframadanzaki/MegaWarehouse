@@ -163,4 +163,8 @@ class ProductCrudService implements ProductCrudServiceInterface
     public function IncompleteOrdersVariants($company_id) {
         return $this->product_variants_repository->incomplete_orders_variants($company_id);
     }
+
+    public function GetVariantsByOrders(array $order_ids) {
+        return $this->product_variants_repository->get_variants_by_orders($order_ids);
+    }
 }

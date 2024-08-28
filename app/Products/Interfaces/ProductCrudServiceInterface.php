@@ -16,4 +16,5 @@ interface ProductCrudServiceInterface{
     public function GetVariantShelfData(array $data);
     public function IncompleteOrdersVariants($company_id);
     public function GetAllVariants($page);
+    public function GetVariantsByOrders(array $order_ids);
 }

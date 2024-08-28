@@ -54,6 +54,29 @@
         font-weight: bold;
     }
 </style>
+<div class="modal fade" id="PrintOrdersVariantsModal" tabindex="-1" aria-labelledby="PrintOrdersVariantsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <h5 class="mb-3 fw-bold title text-center">منتجات الأوردرات</h5>
+                <table class="table hover-table">
+                    <thead>
+                        <tr>
+                            <th>اسم المنتج</th>
+                            <th class="text-center">الكمية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="variantsData">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -148,38 +171,38 @@
 </div>
 <div class="modal fade" id="content-note" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" style="width:60%;">
-            <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
-                <div class="modal-header">
-                    <h3 class="modal-title mx-auto">@lang('global.order_notes')</h3>
+        <div class="modal-content" style="padding:10px;max-height:600px;overflow:auto">
+            <div class="modal-header">
+                <h3 class="modal-title mx-auto">@lang('global.order_notes')</h3>
+            </div>
+            <div class="modal-body" style="min-height:150px ; overflow: auto;font-size:14px">
+                <div class="comment-main-level clearfix" style="margin-bottom:10px">
+                    <div class="">
+                        <div class="comment-box"
+                            style="-webkit-box-shadow: none;-moz-box-shadow: none; box-shadow: none;">
+                            <div class="comment-head"
+                            style="border:none;background: none;padding: 0px;">
+                            <textarea class=" col-md-12 form-control input-circle recordNots"
+                                        placeholder="@lang('global.placeholder_add_note')"
+                                            rows="4"></textarea>
+                                    <div class="col-md-6 " style="margin-top:25px">
+                                    <div class="add_notes_btn" style="">
+                                </div>
+                                </div>
+                            <div id="mess" style="display:none"> </div>
+                        </div>
                 </div>
-                <div class="modal-body" style="min-height:150px ; overflow: auto;font-size:14px">
-                    <div class="comment-main-level clearfix" style="margin-bottom:10px">
-                        <div class="">
-                            <div class="comment-box"
-                                style="-webkit-box-shadow: none;-moz-box-shadow: none; box-shadow: none;">
-                                <div class="comment-head"
-                                style="border:none;background: none;padding: 0px;">
-                                <textarea class=" col-md-12 form-control input-circle recordNots"
-                                            placeholder="@lang('global.placeholder_add_note')"
-                                                rows="4"></textarea>
-                                        <div class="col-md-6 " style="margin-top:25px">
-                                        <div class="add_notes_btn" style="">
-                                    </div>
-                                    </div>
-                                <div id="mess" style="display:none"> </div>
-                            </div>
-                    </div>
-                </div>
-                </div>
-                    <div class="row">
-                        <div style="border: 1px solid #ddd">
-                            <h4 style="padding: 15px 10px;background: #eee;margin: 0">
-                                @lang('global.previous_notes')</h4>
-                        <div class="notes-list">
-                    </div>
+            </div>
+            </div>
+                <div class="row">
+                    <div style="border: 1px solid #ddd">
+                        <h4 style="padding: 15px 10px;background: #eee;margin: 0">
+                            @lang('global.previous_notes')</h4>
+                    <div class="notes-list">
                 </div>
             </div>
         </div>
+    </div>
 <!-- /.modal-content -->
 </div>
 <!-- /.modal-dialog -->
@@ -385,6 +408,9 @@
                     </div>
                     <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
                         <div class="btn btn-warning"> @lang('global.export_orders_excel') <i class="bi bi-file-excel-fill"></i></div>
+                    </div>
+                    <div class="me-2 my-1">
+                        <div class="btn btn-warning" id="PrintOrdersVariantsButton"> طباعة كميات منتجات الأوردرات <i class="bi bi-printer-fill"></i></div>
                     </div>
                     @can('whatsapp_order', ['App\\Models\WhatsappCampaign'])
                     <div class="me-2 my-1">
@@ -937,6 +963,48 @@
 
             form.find('#searchData').append([searchFormNotEmptyInputs, searchFormNotEmptySelects]);
             form.submit();
+        })
+
+        $('#PrintOrdersVariantsButton').on('click', function(e) {
+            let ids = get_checked_orders();
+            if(ids.length < 1){
+                alert('@lang("global.alert_shipping_min")');
+                return;
+            }
+
+            $('#PrintOrdersVariantsModal').modal('show');
+
+            let _token = $("#token").val();
+            let tbody = $('#PrintOrdersVariantsModal').find('tbody');
+            tbody.html('');
+            let order_ids = ids.join(",");
+
+            $.ajax({
+                url: `/api/orders/variants`,
+                method: 'POST',
+                data: {
+                    _token, order_ids
+                },
+                success: function(data) {
+                    $.each(data, function(index, variant) {
+                        let name = '';
+
+                        if (variant.product_name == variant.name) {
+                            name = variant.product_name;
+                        } else {
+                            name = `( ${variant.product_name} ) - ( ${variant.name} )`;
+                        }
+
+                        let row = `
+                            <tr>
+                                <td>${name}</td>
+                                <td class="text-center">${variant.total_quantity}</td>
+                            </tr>
+                        `;
+                        tbody.append(row);
+                    })
+                }
+            });
         })
     </script>
 @endsection
