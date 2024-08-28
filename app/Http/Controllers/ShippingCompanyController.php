@@ -47,7 +47,9 @@ class ShippingCompanyController extends Controller
 
     public function show_sectors($shipping_company_id) {
         $shipping_company = $this->ShippingCompanyService->GetShippingCompany($shipping_company_id);
-        $shipping_company_areas = $this->ShippingAreaService->GetShippingCompanyAreas($shipping_company);
+        $shipping_company_areas = [];
+        if ($shipping_company->active == 1)
+            $shipping_company_areas = $this->ShippingAreaService->GetShippingCompanyAreas($shipping_company);
         $areas = $this->CommonDataService->GetAreas();
         return view('Dashboard.ShippingCompanies.show_one')->with(compact('areas','shipping_company','shipping_company_areas'));
     }
