@@ -88,7 +88,7 @@
                                 <label class="form-label">@lang('global.status_id')</label>
                                 <select id="status_id" name="status_id" style="width: 100%" required>
                                     <option value="">@lang('global.select_status')</option>
-                                    @foreach ($statuses as $status)
+                                    @foreach ($statuses->where('show_all_orders', 1) as $status)
                                         <option  value="{{ $status->id }}">{{ $status->name }}</option>
                                     @endforeach
                                 </select>
