@@ -107,15 +107,13 @@
                                                 <th class="align-middle"> تسليم <br> ( ناجح - جزئي - استبدال ) </th>
                                                 <th class="align-middle">إجمالي المحصل</th>
                                                 <th class="align-middle">إجمالي تكلفة الشحن</th>
+                                                <th class="align-middle">إجمالي صافي الأوردر</th>
                                                 <th class="align-middle">نسبة التسليم</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @php
-                                                $total_orders = $filteredOrdersNoPaginate->filter(function ($order) {
-                                                    $found = $order->order_status->where('id', 33)->first();
-                                                    return !empty($found);
-                                                })->count();
+                                                $total_orders = $filteredOrdersNoPaginate->count();
                                                 $success_orders = $filteredOrdersNoPaginate->filter(function ($order) {
                                                     $found = $order->order_status->whereIn('id', [45, 50, 55])->first();
                                                     return !empty($found);
@@ -130,12 +128,14 @@
                                                 <td>{{ $success_orders }}</td>
                                                 <td>{{ $total_after_sale }}</td>
                                                 <td>{{ $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
+                                                <td>{{ $total_after_sale - $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
                                                 <td>{{ number_format($success_orders / (($total_orders > 0) ? $total_orders : 1) * 100, 2, '.', '') }} %</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                @if (false)
+
+                                {{-- @if (false) --}}
                                     <div class="table-responsive mt-3">
                                         <table class="table table-striped">
                                             <thead>
@@ -144,26 +144,32 @@
                                                     <th>الأوردر</th>
                                                     <th>رقم البوليصة</th>
                                                     <th>اسم العميل</th>
+                                                    <th>رقم الهاتف</th>
+                                                    <th>رقم الهاتف 2</th>
                                                     <th>المنطقة</th>
                                                     <th>الحالة النهائية</th>
                                                     <th>الحالة الحالية</th>
                                                     <th>مبلغ التحصيل</th>
                                                     <th>تكلفة الشحن</th>
+                                                    <th>صافي الأوردر</th>
                                                     <th>تاريخ التوريد</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($filteredOrders as $order)
+                                                @foreach ($paginatedOrders as $order)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
                                                         <td>{{ $order->waybill??'لا يوجد' }}</td>
                                                         <td>{{ $order->client->name }}</td>
+                                                        <td>{{ $order->phone_1 }}</td>
+                                                        <td>{{ $order->phone_2 }}</td>
                                                         <td>{{ $order->area->name }}</td>
                                                         <td></td>
                                                         <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
                                                         <td>{{ $order->total_after_sale }}</td>
                                                         <td>{{ $order->shipping_co_cost }}</td>
+                                                        <td>{{ $order->total_after_sale - $order->shipping_co_cost }}</td>
                                                         <td></td>
                                                     </tr>
                                                 @endforeach
@@ -171,9 +177,9 @@
                                         </table>
                                     </div>
                                     <div class="d-flex justify-content-center mt-3">
-                                        {!! $filteredOrders->links() !!}
+                                        {!! $paginatedOrders->links() !!}
                                     </div>
-                                @endif
+                                {{-- @endif --}}
                             </div>
                         </div>
                     </div>

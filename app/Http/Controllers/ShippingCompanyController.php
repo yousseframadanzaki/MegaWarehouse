@@ -116,10 +116,26 @@ class ShippingCompanyController extends Controller
     public function shipping_company_calculations(OrdersFilters $filters, Request $request) {
         $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
         $shipping_company = !empty($request->shipping_company_id) ? $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id) : null;
-        $filteredOrders = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
+        $filteredOrdersPaginate = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
+
+        $filteredOrders = $filteredOrdersPaginate->getCollection()->filter(function ($order) {
+            $found = $order->order_status->where('id', 33)->first();
+            return !empty($found);
+        });
+        $paginatedOrders = new \Illuminate\Pagination\LengthAwarePaginator(
+            $filteredOrders->values(), // The filtered collection values
+            $filteredOrdersPaginate->total(), // The original total number of items
+            $filteredOrdersPaginate->perPage(), // Items per page
+            $filteredOrdersPaginate->currentPage(), // Current page
+            ['path' => $filteredOrdersPaginate->path()] // Path for pagination links
+        );
+
         $request->merge(['no_paginate' => 'yes']);
-        $filteredOrdersNoPaginate = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
-        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'filteredOrders', 'filteredOrdersNoPaginate'));
+        $filteredOrdersNoPaginate = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all())->filter(function ($order) {
+            $found = $order->order_status->where('id', 33)->first();
+            return !empty($found);
+        });
+        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'paginatedOrders', 'filteredOrdersNoPaginate'));
     }
 
     public function get_orders_by_status_id(OrdersFilters $filters) {
