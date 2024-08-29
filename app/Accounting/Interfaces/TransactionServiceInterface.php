@@ -8,4 +8,5 @@ interface TransactionServiceInterface{
     public function GetCompanyTransactions($company_id, $filters);
     public function AddTransaction($transaction_data);
     public function getUserTransactions($company_id, $user_id);
+    public function GetTransactionsToShippingCompanies();
 }

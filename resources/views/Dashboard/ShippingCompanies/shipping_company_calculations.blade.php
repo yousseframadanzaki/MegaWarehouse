@@ -44,6 +44,18 @@
             </div>
 
             @if (!empty($shipping_company))
+                @php
+                    $total_orders = $filteredOrdersNoPaginate->count();
+                    $success_orders = $filteredOrdersNoPaginate->filter(function ($order) {
+                        $found = $order->order_status->whereIn('id', [45, 50, 55])->first();
+                        return !empty($found);
+                    })->count();
+                    $total_after_sale = $filteredOrdersNoPaginate->filter(function ($order) {
+                        $found = $order->order_status->whereIn('id', [45, 50, 55, 75])->first();
+                        return !empty($found);
+                    })->sum('total_after_sale');
+                @endphp
+
                 <div class="col-12">
                     <div class="card p-3 shadow-sm mt-4">
                         <div class="row">
@@ -53,7 +65,7 @@
                             <div class="col-12 col-md-4 mt-3">
                                 <div class="card text-center text-white py-2 btn-primary">
                                     <h6>الرصيد الحالي</h6>
-                                    <p class="mb-0">---</p>
+                                    <p class="mb-0">{{ $total_after_sale - $transactionsToShipping->sum('value') }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mt-3">
@@ -112,17 +124,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $total_orders = $filteredOrdersNoPaginate->count();
-                                                $success_orders = $filteredOrdersNoPaginate->filter(function ($order) {
-                                                    $found = $order->order_status->whereIn('id', [45, 50, 55])->first();
-                                                    return !empty($found);
-                                                })->count();
-                                                $total_after_sale = $filteredOrdersNoPaginate->filter(function ($order) {
-                                                    $found = $order->order_status->whereIn('id', [45, 50, 55, 75])->first();
-                                                    return !empty($found);
-                                                })->sum('total_after_sale');
-                                            @endphp
                                             <tr>
                                                 <td>{{ $total_orders }}</td>
                                                 <td>{{ $success_orders }}</td>

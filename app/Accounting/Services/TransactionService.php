@@ -54,4 +54,9 @@ class TransactionService implements TransactionServiceInterface{
     {
         return $this->transaction_repository->get_transactions_by_user_id($company_id, $user_id);
     }
+
+    public function GetTransactionsToShippingCompanies()
+    {
+        return $this->transaction_repository->get_transactions_to_shipping_companies();
+    }
 }

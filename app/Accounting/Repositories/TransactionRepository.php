@@ -3,6 +3,7 @@
 namespace App\Accounting\Repositories;
 
 use App\Models\Transaction;
+use App\Models\ShippingCompany;
 
 use App\Accounting\Interfaces\TransactionRepositoryInterface;
 
@@ -38,5 +39,16 @@ class TransactionRepository implements TransactionRepositoryInterface{
         })
         ->orderBy('created_at','DESC')
         ->paginate(20);
+    }
+
+    public function get_transactions_to_shipping_companies() {
+        $company_id = auth()->user()->company_id;
+        $user_ids = ShippingCompany::where('company_id', $company_id)->pluck('user_id');
+        return Transaction::with([
+            'from_user',
+            'to_user',
+            'payment_type',
+        ])
+        ->where('company_id', $company_id)->whereIn('to', $user_ids)->get();
     }
 }

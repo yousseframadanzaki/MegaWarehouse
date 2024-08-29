@@ -10,6 +10,7 @@ use App\ShippingStatus\Interfaces\ShippingStatusServiceInterface;
 use App\ShippingAreas\Interfaces\ShippingAreaServiceInterface;
 use App\PaymentReports\Interfaces\PaymentReportServiceInterface;
 use App\CommonData\Interfaces\CommonDataServiceInterface;
+use App\Accounting\Interfaces\TransactionServiceInterface;
 use App\Orders\Interfaces\OrdersServiceInterface;
 use App\Status\Interfaces\StatusServiceInterface;
 
@@ -28,6 +29,7 @@ class ShippingCompanyController extends Controller
        protected readonly CommonDataServiceInterface $CommonDataService,
        protected readonly OrdersServiceInterface $OrdersService,
        protected readonly StatusServiceInterface $StatusService,
+       protected readonly TransactionServiceInterface $TransactionService
     ) {}
 
     public function all()
@@ -135,7 +137,8 @@ class ShippingCompanyController extends Controller
             $found = $order->order_status->where('id', 33)->first();
             return !empty($found);
         });
-        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'paginatedOrders', 'filteredOrdersNoPaginate'));
+        $transactionsToShipping = $this->TransactionService->GetTransactionsToShippingCompanies();
+        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'paginatedOrders', 'filteredOrdersNoPaginate', 'transactionsToShipping'));
     }
 
     public function get_orders_by_status_id(OrdersFilters $filters) {
