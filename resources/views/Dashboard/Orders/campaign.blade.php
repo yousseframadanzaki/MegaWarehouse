@@ -36,6 +36,9 @@
     label {
         font-weight: bold;
     }
+    .air-datepicker-global-container {
+        direction: ltr;
+    }
 </style>
 <div class="modal fade" id="AddDeviceModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog" style="width:60%;">
@@ -96,12 +99,14 @@
         <div id="mess" style="display: none;"></div>
         <div id="message_dg" style="display:none;"></div>
         <div class="row">
+            @if($devices->isEmpty())
             <div class="d-flex justify-content-between my-2">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddDeviceModal">إضافة جهاز</button>
                     <p id="expirationDate" data-expire="{{ $user_points->expire_date }}" class="fw-bold">
                         رصيد نقاط الواتساب: {{ $user_points->points }} نقطة
                     </p>
             </div>
+            @endif
             <div class="col-12 mb-4">
                 <div class="card shadow-sm p-3">
                     <div class="d-flex justify-content-between my-2">
