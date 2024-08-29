@@ -31,19 +31,30 @@ class SendWhatsappMessages extends Command
     public function handle()
     {
         $now = Carbon::now();
-        $campaigns = WhatsappCampaign::where('status', 'pending')
+        $campaigns = WhatsappCampaign::whereNotIn('status', ['hold', 'finished'])
             ->where('schedule_date', '<=', $now)
             ->get();
+            // $Entry = "Is: {$campaigns}" . PHP_EOL;
+            // file_put_contents(storage_path('app/campaigns_logs.txt'), $Entry, FILE_APPEND);
     
         foreach ($campaigns as $campaign) {
             $device = WhatsappDevice::where('user_id', $campaign->user_id)->first();
-            if (!$device) {
-                $this->error("No device found for user_id {$campaign->user_id}");
-                continue;
-            }
     
             $unsentNumbers = json_decode($campaign->unsent_numbers, true);
             $sendNumbers = $campaign->sent_numbers ? json_decode($campaign->sent_numbers, true) : [];
+            
+            if (!is_array($sendNumbers)) {
+                $sendNumbers = [];
+            }
+    
+            $delay = explode(",", trim($campaign->delay));
+            $delayFrom = 0;
+            $delayTo = 0;
+    
+            if (count($delay) === 2) {
+                $delayFrom = (int)trim($delay[0]);
+                $delayTo = (int)trim($delay[1]);
+            }
     
             foreach ($unsentNumbers as $key => $numberData) {
                 $number = $numberData['number'];
@@ -63,7 +74,7 @@ class SendWhatsappMessages extends Command
                     $order->city->name,
                     $order->area->name,
                     $order->total,
-                    $order->status->name
+                    $order->status->name 
                 ];
     
                 $find = [
@@ -80,19 +91,30 @@ class SendWhatsappMessages extends Command
                 ];
     
                 $campaignText = str_replace($find, $replace, $campaign->text);
+    
                 $response = $this->sendMessage($numberData['number'], $campaignText, $campaign->media, $device->instance_id);
     
-                $numberData['status'] = $response['status'] == 'success' ? "1" : "0";
-                $logEntry = "Number: {$numberData['number']}, Status: {$response['status']}" . PHP_EOL;
-                file_put_contents(storage_path('app/campaign_logs.txt'), $logEntry, FILE_APPEND);
+                if ($response && isset($response['status'])) {
+                    $numberData['status'] = $response['status'] == 'success' ? "1" : "0";
+                } else {
+                    $numberData['status'] = "0";
+                }
+    
+                // $logEntry = "Number: {$numberData['number']}, Status: {$numberData['status']}" . PHP_EOL;
+                // file_put_contents(storage_path('app/campaign_logs.txt'), $logEntry, FILE_APPEND);
     
                 $sendNumbers[] = $numberData;
                 unset($unsentNumbers[$key]);
-                
+    
                 $campaign->unsent_numbers = json_encode(array_values($unsentNumbers));
                 $campaign->sent_numbers = json_encode($sendNumbers);
                 $campaign->save();
-                sleep($campaign->delay);
+    
+                $newDelay = rand($delayFrom, $delayTo);
+                $campaign->next_time = $now->addSeconds($newDelay);
+                $campaign->save();
+    
+                break;
             }
     
             if (empty($unsentNumbers)) {
@@ -112,7 +134,7 @@ class SendWhatsappMessages extends Command
         } else {
             $url = "https://whatsbotcloud.com/api/send?type=text&number=2" . $number . "&message=" . urlencode($text) . "&instance_id=" . $instance_id . "&access_token=" . $access_token;
         }
-    
+
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL => $url,
@@ -124,7 +146,7 @@ class SendWhatsappMessages extends Command
         ));
         $result = curl_exec($ch);
         curl_close($ch);
-        $res = json_decode($result, true);
-        return $res;
+
+        return json_decode($result, true);
     }
 }
