@@ -92,11 +92,11 @@ class OrdersFilters
                 continue;
             }
             if($key == 'city_id'){
-                $filters['city_id'] = json_encode(City::whereIn('id', explode(",", $value[0]))->pluck('name')->toArray(), JSON_UNESCAPED_UNICODE);
+                $filters['city_id'] = str_replace(['"', '[', ']', ','], ['', '', '', ', '], json_encode(City::whereIn('id', explode(",", $value[0]))->pluck('name')->toArray(), JSON_UNESCAPED_UNICODE));
                 continue;
             }
             if($key == 'area_id'){
-                $filters['area_id'] = Area::findOrfail($value)->name;
+                $filters['area_id'] = str_replace(['"', '[', ']', ','], ['', '', '', ', '], json_encode(Area::whereIn('id', explode(",", $value[0]))->pluck('name')->toArray(), JSON_UNESCAPED_UNICODE));
                 continue;
             }
             if($key == 'marketer_id'){

@@ -278,14 +278,17 @@
                             <select class="form-select product_info" @if(Request::get('city_id')) src="this.trigger('change')" @endif  name="city_id[]" multiple
                                 id="city_id">
                                 <option value="">@lang('global.select_city') </option>
+                                @php
+                                    $request_city_ids = explode(",", Request::get('city_id')[0]);
+                                @endphp
                                 @foreach ($cities as $id => $name)
-                                    <option @if(Request::get('city_id') == $id) selected @endif value="{{ $id }}">{{ $name }}</option>
+                                    <option @if(in_array($id, $request_city_ids)) selected @endif value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.area_id')</label>
-                            <select class="form-select product_info"  name="area_id"
+                            <select class="form-select product_info"  name="area_id[]" multiple
                                 id="area_id">
                                 <option value="">@lang('global.select_area')</option>
 
@@ -556,7 +559,23 @@
                 });
             });
 
+            var city_id = JSON.parse('{!! json_encode(Request::get('city_id')[0] ?? '', JSON_UNESCAPED_UNICODE) !!}');
+            var area_id = JSON.parse('{!! json_encode(Request::get('area_id')[0] ?? '', JSON_UNESCAPED_UNICODE) !!}');
             
+            if(city_id.length == 1){
+                city_id = city_id[0];
+                $.ajax({
+                    type:'GET',
+                    url:`/api/city/${city_id}/areas`,
+                    dataType: "text",
+                }).then((response)=>{
+                    data = JSON.parse(response);
+                    $('#area_id').html('<option value="">@lang("global.select_area")</option>');
+                    $.each(data, function (key,value) {
+                        $("#area_id").append(`<option value="${value.id}" ${area_id.includes(value.id) ? 'selected' : ''}>${value.name}</option>`);
+                    });
+                })
+            }
 
             var product_id = "{!! Request::get('product_id') !!}"
             var variant_id = "{!! Request::get('variant_id') !!}"
@@ -579,8 +598,12 @@
         })
 
         $("#city_id").change(function () {
-            var city_id = this.value;
+            var city_id = $(this).val();
             $("#area_id").html('');
+            if (city_id.length > 1) {
+                return;
+            }
+            city_id = city_id[0];
             $.ajax({
                 type:'GET',
                 url:`/api/city/${city_id}/areas`,
