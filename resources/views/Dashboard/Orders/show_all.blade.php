@@ -280,7 +280,7 @@
                                 <option value="">@lang('global.select_city') </option>
                                 @php
                                     $request_city_ids = [];
-                                    if (!empty($request_city_ids))
+                                    if (!empty(Request::get('city_id')))
                                         $request_city_ids = explode(",", Request::get('city_id')[0]);
                                 @endphp
                                 @foreach ($cities as $id => $name)
