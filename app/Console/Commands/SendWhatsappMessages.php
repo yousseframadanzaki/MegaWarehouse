@@ -49,7 +49,7 @@ class SendWhatsappMessages extends Command
     
             $delay = explode(",", trim($campaign->delay));
             $delayFrom = 0;
-            $delayTo = 0;
+            $delayTo = 5;
     
             if (count($delay) === 2) {
                 $delayFrom = (int)trim($delay[0]);
@@ -73,7 +73,7 @@ class SendWhatsappMessages extends Command
                     $order->address,
                     $order->city->name,
                     $order->area->name,
-                    $order->total,
+                    $order->total_after_sale,
                     $order->status->name 
                 ];
     
