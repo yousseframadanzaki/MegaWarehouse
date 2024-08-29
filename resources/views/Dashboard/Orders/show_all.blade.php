@@ -131,21 +131,21 @@
         <div class="modal-content">
             <form action="{{route('print_orders')}}" method="POST" enctype="multipart/form-data" id="print_form">
                 @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label class="form-label">@lang('global.way_bill_print')</label>
-                                <select id="print_id" class="form-select" name="print_id" style="width: 100%" required>
-                                    <option value=""> @lang('global.choose')</option>
-                                    <option value="1" selected> @lang('global.way_bill_type_1')</option>
-                                    <option value="2"> @lang('global.way_bill_type_2')</option>
-                                </select>
-                            </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">@lang('global.way_bill_print')</label>
+                            <select id="print_id" class="form-select" name="print_id" style="width: 100%" required>
+                                <option value=""> @lang('global.choose')</option>
+                                <option value="1" selected> @lang('global.way_bill_type_1')</option>
+                                <option value="2"> @lang('global.way_bill_type_2')</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary print">@lang('global.button_print')</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary print">@lang('global.button_print')</button>
+                </div>
             </form>
         </div>
     </div>
@@ -279,7 +279,9 @@
                                 id="city_id">
                                 <option value="">@lang('global.select_city') </option>
                                 @php
-                                    $request_city_ids = explode(",", Request::get('city_id')[0]);
+                                    $request_city_ids = [];
+                                    if (!empty($request_city_ids))
+                                        $request_city_ids = explode(",", Request::get('city_id')[0]);
                                 @endphp
                                 @foreach ($cities as $id => $name)
                                     <option @if(in_array($id, $request_city_ids)) selected @endif value="{{ $id }}">{{ $name }}</option>
@@ -376,6 +378,8 @@
                     </div>
                 </form>
             </div>
+
+            <button onclick="window.print()"></button>
 
             @if($filters)
                 <h5 class="my-3">
