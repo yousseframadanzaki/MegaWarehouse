@@ -26,12 +26,22 @@
                     <label class="fw-bold"> لينك الشركة :</label>
                     <label>{{ $shipping_company->url }}</label>
                 </div>
+                <div class="col-md-3 fs-5">
+                    <label class="fw-bold"> إنتجريشن :</label>
+                    @if ($shipping_company->active == 1)
+                        <label class="d-inline-block p-1 bg-success text-white">مفعل</label>
+                    @else
+                        <label class="d-inline-block p-1 bg-danger text-white">غير مفعل</label>
+                    @endif
+                </div>
             </div>
         </div>
         <ul class="nav nav-tabs mt-3">
-            <li class="nav-item">
-                <a class="nav-link @isset ($shipping_company_statuses)active @endisset" aria-current="page" href="{{route('show_shipping_company',$shipping_company->id)}}">حالات الشركة</a>
-            </li>
+            @if ($shipping_company->active == 1)
+                <li class="nav-item">
+                    <a class="nav-link @isset ($shipping_company_statuses)active @endisset" aria-current="page" href="{{route('show_shipping_company',$shipping_company->id)}}">حالات الشركة</a>
+                </li>
+            @endif
             <li class="nav-item">
                 <a class="nav-link @isset ($shipping_company_areas)active @endisset" href="{{route('show_shipping_company_sectors',$shipping_company->id)}}">مناطق الشركة</a>
             </li>
