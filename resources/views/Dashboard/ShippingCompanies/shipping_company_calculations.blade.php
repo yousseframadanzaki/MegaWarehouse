@@ -11,7 +11,7 @@
         }
     </style>
 
-    <div class="p-3">
+    <div class="no-print p-3">
         <div class="row">
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">الرئيسية</a></li>
@@ -83,7 +83,7 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 no-print">
                                 <form action="" dir="rtl">
                                     <div class="row">
                                         <div class="col-12">
@@ -111,6 +111,9 @@
                             </div>
                             <div class="col-12">
                                 <hr>
+                                <div class="mb-3 no-print">
+                                    <button class="btn btn-primary" onclick="window.print()">طباعة</button>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped text-center">
                                         <thead>
@@ -188,6 +191,97 @@
             @endif
         </div>
     </div>
+
+    <!-- Print Section --> 
+    @if (!empty($shipping_company))
+        <div class="show-print d-none">
+            <div class="row">
+                <h3 class="text-center mb-3">تقرير حسابات شركة الشحن</h3>
+                <div class="card">
+                    <div class="col-12">
+                        <div>
+                            <p>شركة الشحن: <span class="fw-bold">{{ $shipping_company->name }}</span></p>
+                            <p>تاريخ البحث: من <span class="fw-bold">( {{ Request::get('date_from') }} )</span> إلي <span class="fw-bold">( {{ Request::get('date_to') }} )</span></p>
+                        </div>
+                        <hr>
+                        <div class="mb-3 no-print">
+                            <button class="btn btn-primary" onclick="window.print()">طباعة</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th class="align-middle">عدد الأوردرات <br> ( تم الشحن ) </th>
+                                        <th class="align-middle"> تسليم <br> ( ناجح - جزئي - استبدال ) </th>
+                                        <th class="align-middle">إجمالي المحصل</th>
+                                        <th class="align-middle">إجمالي تكلفة الشحن</th>
+                                        <th class="align-middle">إجمالي صافي الأوردر</th>
+                                        <th class="align-middle">نسبة التسليم</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ $total_orders }}</td>
+                                        <td>{{ $success_orders }}</td>
+                                        <td>{{ $total_after_sale }}</td>
+                                        <td>{{ $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
+                                        <td>{{ $total_after_sale - $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
+                                        <td>{{ number_format($success_orders / (($total_orders > 0) ? $total_orders : 1) * 100, 2, '.', '') }} %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{-- @if (false) --}}
+                            <div class="table-responsive mt-3">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>الأوردر</th>
+                                            <th>رقم البوليصة</th>
+                                            <th>اسم العميل</th>
+                                            <th>رقم الهاتف</th>
+                                            <th>رقم الهاتف 2</th>
+                                            <th>المنطقة</th>
+                                            <th>الحالة النهائية</th>
+                                            <th>الحالة الحالية</th>
+                                            <th>مبلغ التحصيل</th>
+                                            <th>تكلفة الشحن</th>
+                                            <th>صافي الأوردر</th>
+                                            <th>تاريخ التوريد</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($paginatedOrders as $order)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
+                                                <td>{{ $order->waybill??'لا يوجد' }}</td>
+                                                <td>{{ $order->client->name }}</td>
+                                                <td>{{ $order->phone_1 }}</td>
+                                                <td>{{ $order->phone_2 }}</td>
+                                                <td>{{ $order->area->name }}</td>
+                                                <td></td>
+                                                <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
+                                                <td>{{ $order->total_after_sale }}</td>
+                                                <td>{{ $order->shipping_co_cost }}</td>
+                                                <td>{{ $order->total_after_sale - $order->shipping_co_cost }}</td>
+                                                <td></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-center mt-3">
+                                {!! $paginatedOrders->links() !!}
+                            </div>
+                        {{-- @endif --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @section('script')

@@ -64,6 +64,35 @@
                 width: 80%;
             }
         }
+
+        @media print {
+            body, .card, table, td, th {
+                background-color: white !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .show-print {
+                display: block !important;
+            }
+
+            #main .main-content {
+                width: 95% !important;
+                margin: auto !important;
+            }
+
+            .card {
+                box-shadow: none !important;
+                border-top-width: 3px !important;
+                border-bottom-width: 3px !important;
+                border-right: none !important;
+                border-left: none !important;
+                border-radius: 20px;
+                padding: 20px 0px !important;
+            }
+        }
     </style>
 </head>
 @php
@@ -192,6 +221,14 @@
             <div class="col " id="main">
                 @include('partials.flash-messages')
                 <div class="main-content">
+                    <div class="show-print d-none">
+                        <div class="d-flex justify-content-between align-items-center mt-5 mb-2">
+                            <img src="{{asset('/logo.png')}}" alt="Logo here" width="55" height="55">
+                            <h3 class="fw-bold">{{ auth()->user()->company->name }}</h3>
+                        </div>
+                        <hr class="mb-3">
+                    </div>
+
                     @yield('content')
                 </div>
             </div>

@@ -20,7 +20,7 @@
                 display: none !important;
             }
 
-            .print-show {
+            .show-print {
                 display: block !important;
             }
 
@@ -142,13 +142,7 @@
                 <button class="btn btn-primary no-print" style="cursor: pointer;" onclick="window.print()">
                     طباعة
                 </button>
-                <div class="print-show d-none">
-                    <div class="d-flex justify-content-between align-items-center mt-5 mb-2">
-                        <img src="{{asset('/logo.png')}}" alt="Logo here" width="55" height="55">
-                        <h3 class="fw-bold">{{ $invoice->stocks[0]->company->name }}</h3>
-                    </div>
-                    <hr class="mb-5">
-
+                <div class="show-print d-none">
                     <h5 class="my-4">اسم المستلم : -------------------------</h5>
                     <h5 class="mb-5">التوقيع : -------------------------------</h5>
                 </div>
@@ -198,9 +192,9 @@
                     </div>
                 </div>
             @else
-                <h3 class="text-center mb-4 print-show d-none">فاتورة رقم {{ $invoice->id }}</h3>
+                <h3 class="text-center mb-4 show-print d-none">فاتورة رقم {{ $invoice->id }}</h3>
                 <div class="card border border-secondary p-3 shadow-sm mt-3">
-                    <div class="row mt-3 print-show d-none">
+                    <div class="row mt-3 show-print d-none">
                         <div class="col-12">
                             <h5 class="mb-3">الأدمن: {{ $invoice->stocks[0]->admin->name }}</h5>
                             <h5 class="mb-3">التاريخ: {{ date_format($invoice->created_at, 'd-m-Y (h:i a)') }}</h5>
