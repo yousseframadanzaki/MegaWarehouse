@@ -54,12 +54,16 @@
         font-weight: bold;
     }
 </style>
-<div class="modal fade" id="PrintOrdersVariantsModal" tabindex="-1" aria-labelledby="PrintOrdersVariantsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+<div class="modal fade no-print" id="OrdersVariantsModal" tabindex="-1" aria-labelledby="OrdersVariantsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered no-print">
+        <div class="modal-content no-print">
 
             <div class="modal-body">
-                <h5 class="mb-3 fw-bold title text-center">منتجات الأوردرات</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold title text-center">منتجات الأوردرات</h5>
+                    <button class="btn btn-primary" id="ordersProductsPrintButton">طباعة</button>
+                </div>
+
                 <table class="table hover-table">
                     <thead>
                         <tr>
@@ -209,7 +213,7 @@
 </div>
 </div>
 
-    <div class="p-3">
+    <div class="p-3 no-print">
         <div class="row">
             <ul class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}">@lang('global.dashboard')</a></li>
@@ -528,6 +532,10 @@
         </div>
     </div>
 <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+
+<div class="show-print" id="ordersProductsPrint">
+    <h3 class="text-center mb-3">منتجات الاوردرات</h3>
+</div>
 @endsection
 
 @section('script')
@@ -980,10 +988,10 @@
                 return;
             }
 
-            $('#PrintOrdersVariantsModal').modal('show');
+            $('#OrdersVariantsModal').modal('show');
 
             let _token = $("#token").val();
-            let tbody = $('#PrintOrdersVariantsModal').find('tbody');
+            let tbody = $('#OrdersVariantsModal').find('tbody');
             tbody.html('');
             let order_ids = ids.join(",");
 
@@ -1013,6 +1021,15 @@
                     })
                 }
             });
+        })
+    </script>
+    <script>
+        $('#OrdersVariantsModal').on('shown.bs.modal', function () {
+            $('#ordersProductsPrintButton').on('click', function() {
+                ordersProductsTable = $(this).closest('.modal-body').find('table').clone();
+                $('#ordersProductsPrint').append(ordersProductsTable);
+                window.print();
+            })
         })
     </script>
 @endsection

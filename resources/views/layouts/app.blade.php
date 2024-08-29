@@ -92,6 +92,24 @@
                 border-radius: 20px;
                 padding: 20px 0px !important;
             }
+
+            /* Hide the modal backdrop */
+            .modal-backdrop {
+                display: none !important;
+            }
+
+            /* Ensure the modal content is fully visible and not blurred */
+            .modal {
+                position: static !important;
+                overflow: visible !important;
+            }
+            
+            /* Remove any potential background blur effect */
+            .modal-open .modal {
+                -webkit-backdrop-filter: none !important;
+                backdrop-filter: none !important;
+                background-color: #fff !important; /* Change background to white */
+            }
         }
     </style>
 </head>
