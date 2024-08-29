@@ -379,8 +379,6 @@
                 </form>
             </div>
 
-            <button onclick="window.print()"></button>
-
             @if($filters)
                 <h5 class="my-3">
                     @lang('global.search_results_number') {!! $orders->total() !!}
