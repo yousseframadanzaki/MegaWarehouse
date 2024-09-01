@@ -191,4 +191,8 @@ class ShippingCompanyService implements ShippingCompanyServiceInterface{
             ['active' => false]
         );
     }
+
+    public function GetShippingCompanyCalculations($shipping_company_id, $orders_filters) {
+        return $this->shipping_company_repository->get_shipping_company_calculations($shipping_company_id, $orders_filters);
+    }
 }

@@ -44,18 +44,6 @@
             </div>
 
             @if (!empty($shipping_company))
-                @php
-                    $total_orders = $filteredOrdersNoPaginate->count();
-                    $success_orders = $filteredOrdersNoPaginate->filter(function ($order) {
-                        $found = $order->order_status->whereIn('id', [45, 50, 55])->first();
-                        return !empty($found);
-                    })->count();
-                    $total_after_sale = $filteredOrdersNoPaginate->filter(function ($order) {
-                        $found = $order->order_status->whereIn('id', [45, 50, 55, 75])->first();
-                        return !empty($found);
-                    })->sum('total_after_sale');
-                @endphp
-
                 <div class="col-12">
                     <div class="card p-3 shadow-sm mt-4">
                         <div class="row">
@@ -65,7 +53,7 @@
                             <div class="col-12 col-md-4 mt-3">
                                 <div class="card text-center text-white py-2 btn-primary">
                                     <h6>الرصيد الحالي</h6>
-                                    <p class="mb-0">{{ $total_after_sale - $transactionsToShipping->sum('value') }}</p>
+                                    <p class="mb-0">{{ $shipping_data['total_after_sale'] - $shipping_data['sum_transactions_to_shipping'] }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mt-3">
@@ -128,62 +116,60 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>{{ $total_orders }}</td>
-                                                <td>{{ $success_orders }}</td>
-                                                <td>{{ $total_after_sale }}</td>
-                                                <td>{{ $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
-                                                <td>{{ $total_after_sale - $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
-                                                <td>{{ number_format($success_orders / (($total_orders > 0) ? $total_orders : 1) * 100, 2, '.', '') }} %</td>
+                                                <td>{{ $shipping_data['total_orders'] }}</td>
+                                                <td>{{ $shipping_data['success_orders'] }}</td>
+                                                <td>{{ $shipping_data['total_after_sale'] }}</td>
+                                                <td>{{ $shipping_data['total_shipping_co_cost'] }}</td>
+                                                <td>{{ $shipping_data['total_after_sale'] - $shipping_data['total_shipping_co_cost'] }}</td>
+                                                <td>{{ number_format($shipping_data['success_orders'] / (($shipping_data['total_orders'] > 0) ? $shipping_data['total_orders'] : 1) * 100, 2, '.', '') }} %</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
 
-                                {{-- @if (false) --}}
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-striped">
-                                            <thead>
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>الأوردر</th>
+                                                <th>رقم البوليصة</th>
+                                                <th>اسم العميل</th>
+                                                <th>رقم الهاتف</th>
+                                                <th>رقم الهاتف 2</th>
+                                                <th>المنطقة</th>
+                                                <th>الحالة النهائية</th>
+                                                <th>الحالة الحالية</th>
+                                                <th>مبلغ التحصيل</th>
+                                                <th>تكلفة الشحن</th>
+                                                <th>صافي الأوردر</th>
+                                                <th>تاريخ التوريد</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($paginated_orders as $order)
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>الأوردر</th>
-                                                    <th>رقم البوليصة</th>
-                                                    <th>اسم العميل</th>
-                                                    <th>رقم الهاتف</th>
-                                                    <th>رقم الهاتف 2</th>
-                                                    <th>المنطقة</th>
-                                                    <th>الحالة النهائية</th>
-                                                    <th>الحالة الحالية</th>
-                                                    <th>مبلغ التحصيل</th>
-                                                    <th>تكلفة الشحن</th>
-                                                    <th>صافي الأوردر</th>
-                                                    <th>تاريخ التوريد</th>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
+                                                    <td>{{ $order->waybill??'لا يوجد' }}</td>
+                                                    <td>{{ $order->client->name }}</td>
+                                                    <td>{{ $order->phone_1 }}</td>
+                                                    <td>{{ $order->phone_2 }}</td>
+                                                    <td>{{ $order->area->name }}</td>
+                                                    <td></td>
+                                                    <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
+                                                    <td>{{ $order->total_after_sale }}</td>
+                                                    <td>{{ $order->shipping_co_cost }}</td>
+                                                    <td>{{ $order->total_after_sale - $order->shipping_co_cost }}</td>
+                                                    <td></td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($paginatedOrders as $order)
-                                                    <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
-                                                        <td>{{ $order->waybill??'لا يوجد' }}</td>
-                                                        <td>{{ $order->client->name }}</td>
-                                                        <td>{{ $order->phone_1 }}</td>
-                                                        <td>{{ $order->phone_2 }}</td>
-                                                        <td>{{ $order->area->name }}</td>
-                                                        <td></td>
-                                                        <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
-                                                        <td>{{ $order->total_after_sale }}</td>
-                                                        <td>{{ $order->shipping_co_cost }}</td>
-                                                        <td>{{ $order->total_after_sale - $order->shipping_co_cost }}</td>
-                                                        <td></td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="d-flex justify-content-center mt-3">
-                                        {!! $paginatedOrders->links() !!}
-                                    </div>
-                                {{-- @endif --}}
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="d-flex justify-content-center mt-3">
+                                    {!! $paginated_orders->links() !!}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -192,7 +178,7 @@
         </div>
     </div>
 
-    <!-- Print Section --> 
+    <!-- Print Section -->
     @if (!empty($shipping_company))
         <div class="show-print d-none">
             <div class="row">
@@ -221,62 +207,57 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ $total_orders }}</td>
-                                        <td>{{ $success_orders }}</td>
-                                        <td>{{ $total_after_sale }}</td>
-                                        <td>{{ $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
-                                        <td>{{ $total_after_sale - $filteredOrdersNoPaginate->sum('shipping_co_cost') }}</td>
-                                        <td>{{ number_format($success_orders / (($total_orders > 0) ? $total_orders : 1) * 100, 2, '.', '') }} %</td>
+                                        <td>{{ $shipping_data['total_orders'] }}</td>
+                                        <td>{{ $shipping_data['success_orders'] }}</td>
+                                        <td>{{ $shipping_data['total_after_sale'] }}</td>
+                                        <td>{{ $shipping_data['total_shipping_co_cost'] }}</td>
+                                        <td>{{ $shipping_data['total_after_sale'] - $shipping_data['total_shipping_co_cost'] }}</td>
+                                        <td>{{ number_format($shipping_data['success_orders'] / (($shipping_data['total_orders'] > 0) ? $shipping_data['total_orders'] : 1) * 100, 2, '.', '') }} %</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        {{-- @if (false) --}}
-                            <div class="table-responsive mt-3">
-                                <table class="table table-striped">
-                                    <thead>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>الأوردر</th>
+                                        <th>رقم البوليصة</th>
+                                        <th>اسم العميل</th>
+                                        <th>رقم الهاتف</th>
+                                        <th>رقم الهاتف 2</th>
+                                        <th>المنطقة</th>
+                                        <th>الحالة النهائية</th>
+                                        <th>الحالة الحالية</th>
+                                        <th>مبلغ التحصيل</th>
+                                        <th>تكلفة الشحن</th>
+                                        <th>صافي الأوردر</th>
+                                        <th>تاريخ التوريد</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($paginated_orders as $order)
                                         <tr>
-                                            <th>#</th>
-                                            <th>الأوردر</th>
-                                            <th>رقم البوليصة</th>
-                                            <th>اسم العميل</th>
-                                            <th>رقم الهاتف</th>
-                                            <th>رقم الهاتف 2</th>
-                                            <th>المنطقة</th>
-                                            <th>الحالة النهائية</th>
-                                            <th>الحالة الحالية</th>
-                                            <th>مبلغ التحصيل</th>
-                                            <th>تكلفة الشحن</th>
-                                            <th>صافي الأوردر</th>
-                                            <th>تاريخ التوريد</th>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
+                                            <td>{{ $order->waybill??'لا يوجد' }}</td>
+                                            <td>{{ $order->client->name }}</td>
+                                            <td>{{ $order->phone_1 }}</td>
+                                            <td>{{ $order->phone_2 }}</td>
+                                            <td>{{ $order->area->name }}</td>
+                                            <td></td>
+                                            <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
+                                            <td>{{ $order->total_after_sale }}</td>
+                                            <td>{{ $order->shipping_co_cost }}</td>
+                                            <td>{{ $order->total_after_sale - $order->shipping_co_cost }}</td>
+                                            <td></td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($paginatedOrders as $order)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
-                                                <td>{{ $order->waybill??'لا يوجد' }}</td>
-                                                <td>{{ $order->client->name }}</td>
-                                                <td>{{ $order->phone_1 }}</td>
-                                                <td>{{ $order->phone_2 }}</td>
-                                                <td>{{ $order->area->name }}</td>
-                                                <td></td>
-                                                <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
-                                                <td>{{ $order->total_after_sale }}</td>
-                                                <td>{{ $order->shipping_co_cost }}</td>
-                                                <td>{{ $order->total_after_sale - $order->shipping_co_cost }}</td>
-                                                <td></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="d-flex justify-content-center mt-3">
-                                {!! $paginatedOrders->links() !!}
-                            </div>
-                        {{-- @endif --}}
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

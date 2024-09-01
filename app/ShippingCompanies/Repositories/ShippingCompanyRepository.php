@@ -3,6 +3,8 @@
 namespace App\ShippingCompanies\Repositories;
 
 use App\Models\ShippingCompany;
+use App\Models\Order;
+use App\Models\Transaction;
 use App\ShippingCompanies\Interfaces\ShippingCompanyRepositoryInterface;
 
 class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
@@ -21,6 +23,45 @@ class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
         return ShippingCompany::where(['id'=>$id])->update($data);
     }
 
+    public function get_shipping_company_calculations($shipping_company_id, $orders_filters) {
+        $company_id = auth()->user()->company_id;
+        $shipping_user_id = ShippingCompany::findOrFail($shipping_company_id)->user_id;
 
+        $query = Order::where([
+            'company_id' => $company_id
+        ])->whereHas('order_status', function($query) {
+            $query->where('order_status.id', 33);
+        })->filter($orders_filters);
+
+        // Get total orders count
+        $orders = $query->selectRaw('COALESCE(SUM(shipping_co_cost), 0) AS total_shipping_co_cost, COUNT(id) AS total_orders')->first();
+
+        // Get success orders count
+        $success_orders = $query->whereHas('order_status', function($query) {
+                $query->whereIn('order_status.id', [45, 50, 55]);
+            })
+            ->count();
+
+        // Get the sum of total_after_sale for specific statuses
+        $total_after_sale = $query->whereHas('order_status', function($query) {
+                $query->whereIn('order_status.id', [45, 50, 55, 75]);
+            })
+            ->sum('total_after_sale');
+
+        $sum_transactions_to_shipping = Transaction::where([
+            'company_id' => $company_id,
+            'to' => $shipping_user_id
+        ])->sum('value');
+
+        $data = [
+            'total_orders' => $orders->total_orders,
+            'success_orders' => $success_orders,
+            'total_after_sale' => $total_after_sale,
+            'total_shipping_co_cost' => $orders->total_shipping_co_cost,
+            'sum_transactions_to_shipping' => $sum_transactions_to_shipping
+        ];
+
+        return $data;
+    }
 
 }
