@@ -6,6 +6,7 @@ use App\Models\ShippingCompany;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\ShippingCompanies\Interfaces\ShippingCompanyRepositoryInterface;
+use Carbon\Carbon;
 
 class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
 
@@ -27,19 +28,23 @@ class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
         $company_id = auth()->user()->company_id;
         $shipping_user_id = ShippingCompany::findOrFail($shipping_company_id)->user_id;
 
-        $query = Order::with(['area', 'city', 'status', 'order_status'])->where([
+        $query = Order::with(['area', 'city', 'status'])->where([
             'company_id' => $company_id,
             'shipping_company_id' => $shipping_company_id
-        ])->whereHas('order_status', function($query) use ($request) {
-            $query->where('statuses.id', 33);
-            if (!empty($request->date_from))
-                $query->where('order_status.created_at', '>=', $request->date_from);
-            if (!empty($request->date_to))
-                $query->where('order_status.created_at', '<=', $request->date_to);
+        ])->withWhereHas('order_status', function($query) use ($request) {
+            $query->where('order_status.status_id', 33);
+            if (!empty($request['date_from'])) {
+                $date = Carbon::parse($request['date_from']);
+                $query->where('order_status.created_at', '>=', $date);
+            }
+            if (!empty($request['date_to'])){
+                $date = Carbon::parse($request['date_to']);
+                $query->where('order_status.created_at', '<=', $date);
+            }
         });
 
         // Get paginated orders
-        $paginated_orders = clone ($query)->paginate(50)->appends($request);
+        $paginated_orders = clone ($query)->paginate(50);
 
         // Get total orders count
         $orders = $query->selectRaw('COALESCE(SUM(shipping_co_cost), 0) AS total_shipping_co_cost, COUNT(id) AS total_orders')->first();
