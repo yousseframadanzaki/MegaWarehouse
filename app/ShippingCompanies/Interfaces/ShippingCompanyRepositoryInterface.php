@@ -8,5 +8,5 @@ interface ShippingCompanyRepositoryInterface{
     public function get_shipping_companies_by_company_id($company_id);
     public function get_shipping_company_by_id($id);
     public function update_shipping_company_by_id($id,$data);
-    public function get_shipping_company_calculations($shipping_company_id, $orders_filters);
+    public function get_shipping_company_calculations($shipping_company_id, $orders_filters, $request);
 }

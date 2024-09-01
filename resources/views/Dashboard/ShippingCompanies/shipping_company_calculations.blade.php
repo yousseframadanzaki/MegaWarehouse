@@ -147,7 +147,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($paginated_orders as $order)
+                                            @foreach ($data['orders'] as $order)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
@@ -168,7 +168,7 @@
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
-                                    {!! $paginated_orders->links() !!}
+                                    {!! $data['orders']->links() !!}
                                 </div>
                             </div>
                         </div>
@@ -238,7 +238,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($paginated_orders as $order)
+                                    @foreach ($data['orders'] as $order)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>

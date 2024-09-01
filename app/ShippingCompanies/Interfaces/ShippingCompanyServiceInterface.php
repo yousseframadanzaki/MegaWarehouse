@@ -12,5 +12,5 @@ interface ShippingCompanyServiceInterface{
     public function SendShipmentV2($order,$shipping_company_id);
     public function Activate($shipping_company_id);
     public function Deactivate($shipping_company_id);
-    public function GetShippingCompanyCalculations($shipping_company_id, $orders_filters);
+    public function GetShippingCompanyCalculations($shipping_company_id, $orders_filters, $request);
 }

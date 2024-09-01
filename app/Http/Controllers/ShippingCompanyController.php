@@ -118,21 +118,7 @@ class ShippingCompanyController extends Controller
     public function shipping_company_calculations(OrdersFilters $filters, Request $request) {
         $shipping_companies = $this->ShippingCompanyService->GetCompanyShippingCompanies($this->company_id());
         $shipping_company = !empty($request->shipping_company_id) ? $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id) : null;
-
-        $filtered_orders_paginate = $this->OrdersService->GetCompanyOrders(auth()->user()->company_id, $filters, $request->all());
-        $filtered_orders = $filtered_orders_paginate->getCollection()->filter(function ($order) {
-            $found = $order->order_status->where('id', 33)->first();
-            return !empty($found);
-        });
-        $paginated_orders = new \Illuminate\Pagination\LengthAwarePaginator(
-            $filtered_orders->values(), // The filtered collection values
-            $filtered_orders_paginate->total(), // The original total number of items
-            $filtered_orders_paginate->perPage(), // Items per page
-            $filtered_orders_paginate->currentPage(), // Current page
-            ['path' => $filtered_orders_paginate->path()] // Path for pagination links
-        );
-
-        $shipping_data = !empty($shipping_company) ? $this->ShippingCompanyService->GetShippingCompanyCalculations($shipping_company->id, $filters) : [];
+        $shipping_data = !empty($shipping_company) ? $this->ShippingCompanyService->GetShippingCompanyCalculations($shipping_company->id, $filters, $request->all()) : [];
 
         return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'paginated_orders', 'shipping_data'));
     }
