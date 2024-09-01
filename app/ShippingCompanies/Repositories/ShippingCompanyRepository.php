@@ -27,14 +27,19 @@ class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
         $company_id = auth()->user()->company_id;
         $shipping_user_id = ShippingCompany::findOrFail($shipping_company_id)->user_id;
 
-        $query = Order::where([
-            'company_id' => $company_id
-        ])->whereHas('order_status', function($query) {
+        $query = Order::with(['area', 'city', 'status', 'order_status'])->where([
+            'company_id' => $company_id,
+            'shipping_company_id' => $shipping_company_id
+        ])->whereHas('order_status', function($query) use ($request) {
             $query->where('statuses.id', 33);
-        })->filter($orders_filters);
+            if (!empty($request->date_from))
+                $query->where('order_status.created_at', '>=', $request->date_from);
+            if (!empty($request->date_to))
+                $query->where('order_status.created_at', '<=', $request->date_to);
+        });
 
         // Get paginated orders
-        $paginated_orders = $query->paginate(50)->appends($request);
+        $paginated_orders = clone ($query)->paginate(50)->appends($request);
 
         // Get total orders count
         $orders = $query->selectRaw('COALESCE(SUM(shipping_co_cost), 0) AS total_shipping_co_cost, COUNT(id) AS total_orders')->first();

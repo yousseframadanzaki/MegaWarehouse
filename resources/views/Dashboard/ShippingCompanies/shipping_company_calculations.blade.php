@@ -147,7 +147,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data['orders'] as $order)
+                                            @foreach ($shipping_data['orders'] as $order)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
@@ -155,7 +155,7 @@
                                                     <td>{{ $order->client->name }}</td>
                                                     <td>{{ $order->phone_1 }}</td>
                                                     <td>{{ $order->phone_2 }}</td>
-                                                    <td>{{ $order->area->name }}</td>
+                                                    <td>{{ $order->area?->name }}</td>
                                                     <td></td>
                                                     <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
                                                     <td>{{ $order->total_after_sale }}</td>
@@ -168,7 +168,7 @@
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
-                                    {!! $data['orders']->links() !!}
+                                    {!! $shipping_data['orders']->links() !!}
                                 </div>
                             </div>
                         </div>
@@ -238,7 +238,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data['orders'] as $order)
+                                    @foreach ($shipping_data['orders'] as $order)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td><a href="{{ route('show_order', ['order_id' => $order->id]) }}">{{ $order->order_code }}</a></td>
@@ -246,7 +246,7 @@
                                             <td>{{ $order->client->name }}</td>
                                             <td>{{ $order->phone_1 }}</td>
                                             <td>{{ $order->phone_2 }}</td>
-                                            <td>{{ $order->area->name }}</td>
+                                            <td>{{ $order->area?->name }}</td>
                                             <td></td>
                                             <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};">{{ $order->status->name }}</td>
                                             <td>{{ $order->total_after_sale }}</td>

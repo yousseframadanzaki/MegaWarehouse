@@ -120,7 +120,7 @@ class ShippingCompanyController extends Controller
         $shipping_company = !empty($request->shipping_company_id) ? $this->ShippingCompanyService->GetShippingCompany($request->shipping_company_id) : null;
         $shipping_data = !empty($shipping_company) ? $this->ShippingCompanyService->GetShippingCompanyCalculations($shipping_company->id, $filters, $request->all()) : [];
 
-        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'paginated_orders', 'shipping_data'));
+        return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'shipping_data'));
     }
 
     public function get_orders_by_status_id(OrdersFilters $filters) {
