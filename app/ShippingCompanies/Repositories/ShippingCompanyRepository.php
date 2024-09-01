@@ -24,55 +24,71 @@ class ShippingCompanyRepository implements ShippingCompanyRepositoryInterface{
         return ShippingCompany::where(['id'=>$id])->update($data);
     }
 
-    public function get_shipping_company_calculations($shipping_company_id, $orders_filters, $request) {
+    public function get_shipping_company_calculations($shipping_company_id, $orders_filters, $request)
+    {
         $company_id = auth()->user()->company_id;
         $shipping_user_id = ShippingCompany::findOrFail($shipping_company_id)->user_id;
 
-        $query = Order::with(['area', 'city', 'status'])->where([
-            'company_id' => $company_id,
-            'shipping_company_id' => $shipping_company_id
-        ])->withWhereHas('order_status', function($query) use ($request) {
-            $query->where('order_status.status_id', 33);
-            if (!empty($request['date_from'])) {
-                $date = Carbon::parse($request['date_from']);
-                $query->where('order_status.created_at', '>=', $date);
-            }
-            if (!empty($request['date_to'])){
-                $date = Carbon::parse($request['date_to']);
-                $query->where('order_status.created_at', '<=', $date);
-            }
-        });
+        $total_relatedshipping_orders = Order::with(['area', 'city', 'status'])
+            ->where([
+                'company_id' => $company_id,
+                'shipping_company_id' => $shipping_company_id
+            ])->whereHas('order_status', function($query) {
+                $query->where('related_shipping', 1);
+            })->count();
+
+        // Base query for orders
+        $query = Order::with(['area', 'city', 'status'])
+            ->where([
+                'company_id' => $company_id,
+                'shipping_company_id' => $shipping_company_id
+            ])
+            ->whereHas('order_status', function($query) use ($request) {
+                $query->where('order_status.status_id', 33);
+
+                if (!empty($request['date_from'])) {
+                    $date_from = Carbon::parse($request['date_from']);
+                    $query->where('order_status.created_at', '>=', $date_from);
+                }
+
+                if (!empty($request['date_to'])) {
+                    $date_to = Carbon::parse($request['date_to']);
+                    $query->where('order_status.created_at', '<=', $date_to);
+                }
+            });
 
         // Get paginated orders
-        $paginated_orders = clone ($query)->paginate(50);
+        $paginated_orders = $query->clone()->orderBy('created_at', 'desc')->paginate(50)->appends($request);
 
-        // Get total orders count
-        $orders = $query->selectRaw('COALESCE(SUM(shipping_co_cost), 0) AS total_shipping_co_cost, COUNT(id) AS total_orders')->first();
+        // Get total orders and shipping cost
+        $ordersSummary = $query->selectRaw('COALESCE(SUM(shipping_co_cost), 0) AS total_shipping_co_cost, COUNT(id) AS total_orders')
+            ->first();
 
         // Get success orders count
-        $success_orders = $query->whereHas('order_status', function($query) {
-                $query->whereIn('statuses.id', [45, 50, 55]);
-            })
-            ->count();
+        $success_orders = $query->clone()->whereHas('order_status', function($query) {
+            $query->whereIn('statuses.id', [45, 50, 55]);
+        })->count();
 
         // Get the sum of total_after_sale for specific statuses
-        $total_after_sale = $query->whereHas('order_status', function($query) {
-                $query->whereIn('statuses.id', [45, 50, 55, 75]);
-            })
-            ->sum('total_after_sale');
+        $total_after_sale = $query->clone()->whereHas('order_status', function($query) {
+            $query->whereIn('statuses.id', [45, 50, 55, 75]);
+        })->sum('total_after_sale');
 
+        // Calculate the sum of transactions to the shipping company
         $sum_transactions_to_shipping = Transaction::where([
             'company_id' => $company_id,
             'to' => $shipping_user_id
         ])->sum('value');
 
+        // Prepare data for the response
         $data = [
             'orders' => $paginated_orders,
-            'total_orders' => $orders->total_orders,
+            'total_orders' => $ordersSummary->total_orders,
             'success_orders' => $success_orders,
             'total_after_sale' => $total_after_sale,
-            'total_shipping_co_cost' => $orders->total_shipping_co_cost,
-            'sum_transactions_to_shipping' => $sum_transactions_to_shipping
+            'total_shipping_co_cost' => $ordersSummary->total_shipping_co_cost,
+            'sum_transactions_to_shipping' => $sum_transactions_to_shipping,
+            'total_relatedshipping_orders' => $total_relatedshipping_orders
         ];
 
         return $data;

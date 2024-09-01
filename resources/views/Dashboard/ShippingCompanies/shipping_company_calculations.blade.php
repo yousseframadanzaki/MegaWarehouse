@@ -59,7 +59,7 @@
                             <div class="col-12 col-md-4 mt-3">
                                 <div class="card text-center text-white py-2 btn-primary">
                                     <h6>أوردرات قيد الشحن</h6>
-                                    <p class="mb-0">{{ $shipping_company->orders->where('status.related_shipping', 1)->count() }}</p>
+                                    <p class="mb-0">{{ $shipping_data['total_relatedshipping_orders'] }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 mt-3">
