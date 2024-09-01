@@ -132,7 +132,7 @@ class ShippingCompanyController extends Controller
             ['path' => $filtered_orders_paginate->path()] // Path for pagination links
         );
 
-        $shipping_data = $this->ShippingCompanyService->GetShippingCompanyCalculations($shipping_company->id, $filters);
+        $shipping_data = !empty($shipping_company) ? $this->ShippingCompanyService->GetShippingCompanyCalculations($shipping_company->id, $filters) : [];
 
         return view('Dashboard.ShippingCompanies.shipping_company_calculations', compact('shipping_companies', 'shipping_company', 'paginated_orders', 'shipping_data'));
     }
