@@ -29,9 +29,9 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CommonDataController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WhatsappController;
+use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\store\StoreController;
-use App\Models\PaymentReport;
 
 Route::get('/',function (){
     if(auth()->user()->is_admin){
@@ -562,6 +562,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::post('whatsapp/device/add', [WhatsappController::class,'add_device'])
     ->name('add_whatsapp_device');
+
+    Route::get('profit-report/show', [ProfitReportController::class,'get_report_stats'])
+    ->name('show_profit_report');
 });
 
 Route::group(['prefix' => 'store'], function () {
