@@ -8,4 +8,5 @@ interface OrderNotesServiceInterface{
     public function AddOrderNote($order_id,$note,$admin_id,$company_id);
     public function GetOrderNote($note_id);
     public function UpdateOrderNote($note_id, $details);
+    public function UpdateNoteActive($note_id);
 }

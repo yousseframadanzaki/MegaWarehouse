@@ -10,6 +10,13 @@ use App\Models\User;
 class OrderNotes extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'order_id',
+        'admin_id',
+        'note',
+        'company_id',
+        'active'
+    ];
 
     public function orders()
     {

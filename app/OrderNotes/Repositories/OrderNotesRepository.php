@@ -15,7 +15,7 @@ class OrderNotesRepository implements OrderNotesRepositoryInterface{
         $order_note->note = $note;
         $order_note->admin_id = $admin_id;
         $order_note->company_id = $company_id;
-        $order_note->active = 1;
+        $order_note->active = 0;
         return $order_note->save();
     }
     public function get_order_notes($order_id){
@@ -32,7 +32,17 @@ class OrderNotesRepository implements OrderNotesRepositoryInterface{
         $order_note->admin_id = $admin_id;
         $order_note->company_id = $company_id;
         $order_note->active = is_array($note) ? $note['active'] : 0;
-        return $order_note->save();
+        if ($order_note->save()) {
+            if (is_array($note)) {
+                OrderNotes::where('order_id', $order_id)
+                ->where('id', '!=', $order_note->id)
+                ->where('active', 1)
+                ->update(['active' => 0]);
+            }
+            return true;
+        }
+        else
+            return false;
     }
 
     public function get_order_note($note_id) {
@@ -40,7 +50,14 @@ class OrderNotesRepository implements OrderNotesRepositoryInterface{
     }
 
     public function update_order_note($note_id, $details) {
-        $order_note = $this->get_order_note($note_id);
+        $order_note = OrderNotes::find($note_id);
         return $order_note->update($details);
+    }
+
+    public function update_note_active($note_id) {
+        $order_note = OrderNotes::find($note_id);
+        OrderNotes::where('order_id', $order_note->order_id)
+        ->where('active', 1)->update(['active' => 0]);
+        return $order_note->update(['active' => 1]);
     }
 }

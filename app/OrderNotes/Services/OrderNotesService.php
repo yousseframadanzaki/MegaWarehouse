@@ -27,4 +27,7 @@ class OrderNotesService implements OrderNotesServiceInterface{
     public function UpdateOrderNote($note_id, $details) {
         $this->order_notes_crud_repository->update_order_note($note_id, $details);
     }
+    public function UpdateNoteActive($note_id) {
+        return $this->order_notes_crud_repository->update_note_active($note_id);
+    }
 }

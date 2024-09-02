@@ -583,12 +583,18 @@
         }).then((response) => {
             data = JSON.parse(response);
             $(".notes-list").html("");
-            data.forEach(note => {
+            data.forEach((note, index) => {
                 var template = `
                             <div>
                                 <div class="col-12 fw-bold" style="font-size: 16px;">${note.admin.name}</div>
                                 <div class="col-12 my-2">${note.note}</div>
                                 <div class="col-12 fw-bold" style="font-size: 13px;"><span>${note.formatted_created_at}</span></div>
+                                <div class="col-12 mt-3">
+                                    <div class="d-inline-flex align-items-centerv border border-secondary p-1 rounded">
+                                        <input type="radio" name="active" id="ActiveCheck${index}" data-id="${note.id}" ${note.active == 1 ? 'checked' : ''}>
+                                        <label for="ActiveCheck${index}" style="user-select: none;" class="me-1">تظهر في البوليصة</label>
+                                    </div>
+                                </div>
                                 <hr class="col-12" style="border-color: #333">
                             </div>
                         `;
@@ -630,6 +636,26 @@
             }
         });
     };
+
+    $(document).on('change', 'input[type="radio"][name="active"]', function() {
+        if (this.checked) {
+            let note_id = $(this).data('id');
+            $.ajax({
+                url: `/api/note/${note_id}/active`,
+                method: 'POST',
+                data: {
+                    _token: $("#token").val()
+                },
+                success: function(response) {
+                    if (response === true) {
+                        alert('تم تعديل الملاحظة بنجاح');
+                    } else {
+                        alert('فشل تعديل الملاحظة بنجاح');
+                    }
+                }
+            })
+        }
+    })
 
     function show_success(message) {
         var template = `

@@ -29,5 +29,10 @@ class OrderNotesController extends Controller
         $new_note = $this->OrderNotesService->AddOrderNote($order_id,$note,$admin_id,$company_id);
         return response()->json($new_note, 200);
     }
-
+    public function update_note_active($note_id) {
+        if ($this->OrderNotesService->UpdateNoteActive($note_id))
+            return response()->json(true, 200);
+        else
+            return response()->json(false, 200);
+    }
 }
