@@ -425,9 +425,9 @@
     <div class="row mt-3">
         <div class="card p-3 shadow-sm">
             <div class="card">
-                <div class="card-header" id="headingOne">
+                <div class="card-header p-0" id="headingOne">
                     <h5 class="mb-0">
-                        <button data-id="{{$order->id}}" class="nav-link order_notes" data-bs-toggle="collapse" data-bs-target="#order-notes-collapse">
+                        <button data-id="{{$order->id}}" class="nav-link order_notes d-inline-block w-100 text-end px-3 py-3" data-bs-toggle="collapse" data-bs-target="#order-notes-collapse">
                             ملاحظات الطلب
                         </button>
                     </h5>
