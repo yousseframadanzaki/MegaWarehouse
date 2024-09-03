@@ -64,8 +64,8 @@
             <div class="card p-3 shadow-sm bg-green">
                 <div>
                     <h4 class="mb-3">المتوسطات</h4>
-                    <p>متوسط سعر الأوردر: <strong>{{ $data['sum_total_after_sale'] / (($data['total_orders']) ? $data['total_orders'] : 1) }}</strong></p>
-                    <p>متوسط تكلفة شحن الأوردر: <strong>{{ $data['sum_shipping_co_cost'] / (($data['total_orders']) ? $data['total_orders'] : 1) }}</strong></p>
+                    <p>متوسط سعر الأوردر: <strong>{{ round($data['sum_total_after_sale'] / (($data['total_orders']) ? $data['total_orders'] : 1)) }}</strong></p>
+                    <p>متوسط تكلفة شحن الأوردر: <strong>{{ round($data['sum_shipping_co_cost'] / (($data['total_orders']) ? $data['total_orders'] : 1)) }}</strong></p>
                 </div>
             </div>
         </div>
