@@ -10,6 +10,7 @@ use App\Models\OrderStatus;
 use App\Models\OrderNotes;
 use App\Models\Area;
 use App\Models\Stock;
+use Carbon\Carbon;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -138,6 +139,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
             'admin_id'=> (isset($data['admin_id']) ? $data['admin_id'] : NULL),
             'note'=> $note,
             'current'=> true,
+            'postponed_at' => (!empty($data['postponed_at']) ? Carbon::parse($data['postponed_at']) : NULL)
         ]]);
         $id = $order->order_status()->get()[0]->pivot->id;
         return $id;

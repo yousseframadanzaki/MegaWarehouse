@@ -109,6 +109,12 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="row mt-4" style="display: none;" id="postponed_container">
+                            <div class="col-md-12">
+                                <label class="form-label">تاريخ التأجيل</label>
+                                <input class="form-control datetimeplugin" name="postponed_at" required>
+                            </div>
+                        </div>
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <label class="form-label">@lang('global.note')</label>
@@ -762,8 +768,14 @@
         });
         $('#status_id').change(function () {
             var status_id = $(this).val();
-            if(status_id == '30'){
-                $("#shipping_company_select").fadeIn();
+            $("#shipping_company_select, #postponed_container").hide();
+            $("#postponed_container input").prop('disabled', true);
+
+            if (status_id == '30') {
+                $("#shipping_company_select").fadeIn(); 
+            } else if (status_id == '110') {
+                $("#postponed_container").fadeIn();
+                $("#postponed_container input").prop('disabled', false);
             }
         });
         function exportTableToExcel(orders, filename = '') {

@@ -70,7 +70,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row mt-3" style="display: none;" id="shipping_company_select" required>
+                    <div class="row mt-3" style="display: none;" id="shipping_company_select">
                         <div class="col-md-12">
                             <label class="form-label">شركة الشحن</label>
                             <select id="shipping_company_id" name="shipping_company_id" style="width: 100%">
@@ -82,7 +82,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row" style="display: none;" id="variant_inputs" required>
+                    <div class="row" style="display: none;" id="variant_inputs">
                         <div class="col-md-9 mt-3">
                             <label class="form-label">المتغير</label>
                         </div>
@@ -102,7 +102,13 @@
                             </div>
                         @endforeach
                     </div>
-                    <div class="row mt-3">
+                    <div class="row mt-4" style="display: none;" id="postponed_container">
+                        <div class="col-md-12">
+                            <label class="form-label">تاريخ التأجيل</label>
+                            <input type="datetime-local" class="form-control" name="postponed_at" required>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
                         <div class="col-md-12">
                             <label class="form-label">ملاحظة</label>
                             <textarea class="form-control" name="note" id="note" rows="3"></textarea>
@@ -248,6 +254,12 @@
                     <label class="fw-bold"> حالة :</label>
                     <label class="p-1 {{ $order->status->color == '#f9fafc' ? 'text-dark' : 'text-white' }}" style="background-color: {{ $order->status->color }};">{{$order->status->name}}</label>
                 </div>
+                @if ($order->status_id == 110)
+                    <div class="col-md-4 fs-5 mb-1">
+                        <label class="fw-bold"> تاريخ التأجيل :</label>
+                        @date_format($order->order_status->sortByDesc('order_status.created_at')->first()->pivot->postponed_at)
+                    </div>
+                @endif
                 <div class="col-md-4 fs-5 mb-1">
                     <label class="fw-bold"> رقم البوليصة :</label>
                     <label>{{$order->waybill}}</label>
@@ -457,6 +469,7 @@
 @section('script')
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
     $('.print_order').click(function() {
         $("#print_order_form").submit();
@@ -468,12 +481,6 @@
         $('select').select2({
             dropdownParent: $('#statusModal')
         });
-        // $('#status_id').select2({
-        //     dropdownParent: $('#statusModal')
-        // });
-        // $('select').select2({
-        //     dropdownParent: $('#statusModal')
-        // });
     })
     const uid = function() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -534,6 +541,10 @@
     })
     $('#status_id').change(function() {
         var status_id = $(this).val();
+
+        $("#shipping_company_select, #variant_inputs, #postponed_container").hide();
+        $("#variant_inputs select, #variant_inputs input, #postponed_container input").prop('disabled', true);
+
         if (status_id == '30') {
             $("#shipping_company_select").fadeIn();
         } else if (status_id == '50' || status_id == '90') {
@@ -542,9 +553,9 @@
             if (status_id == '90') {
                 $("#variant_inputs .variant_quantity").val(0);
             }
-        } else {
-            $("#shipping_company_select, #variant_inputs").hide();
-            $("#variant_inputs select, #variant_inputs input").prop('disabled', true);
+        } else if (status_id == '110') {
+            $("#postponed_container").fadeIn();
+            $("#postponed_container input").prop('disabled', false);
         }
     })
     $('#variant_id').change(function() {
