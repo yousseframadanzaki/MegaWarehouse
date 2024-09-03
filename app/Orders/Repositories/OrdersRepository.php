@@ -10,7 +10,6 @@ use App\Models\OrderStatus;
 use App\Models\OrderNotes;
 use App\Models\Area;
 use App\Models\Stock;
-use App\Models\Transaction;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -67,13 +66,18 @@ class OrdersRepository implements OrdersRepositoryInterface{
     }
 
     public function get_company_orders($company_id,$filters,$request){
+        $auth_user = auth()->user();
+
         $number = !empty($request['page_orders_num']) ? $request['page_orders_num'] : 50;
         $query = Order::with(['marketer','admin','status','city','area','order_notes', 'order_data', 'order_status'])->where(['company_id'=>$company_id])->filter($filters)->orderBy('created_at','DESC');
-        if (empty($request['no_paginate'])) {
-            return $query->paginate($number)->appends($request);
-        } else {
-            return $query->get();
+
+        if ($auth_user->role->user_type_id == 3) {
+            $query->where('marketer_id', $auth_user->marketer->id);
+        } else if ($auth_user->role->user_type_id == 4) {
+            $query->where('shipping_company_id', $auth_user->shipping_company->id);
         }
+
+        return $query->paginate($number)->appends($request);
     }
 
     public function get_order_code($company_id) {

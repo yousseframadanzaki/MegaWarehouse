@@ -97,4 +97,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Supplier::class);
     }
+
+    public function shipping_company() {
+        return $this->hasOne(ShippingCompany::class);
+    }
 }

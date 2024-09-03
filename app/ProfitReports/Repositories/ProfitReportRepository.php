@@ -6,7 +6,6 @@ use App\ProfitReports\Interfaces\ProfitReportRepositoryInterface;
 
 use App\Models\Order;
 use App\Models\Stock;
-use App\Models\ShippingCompany;
 use App\Models\Transaction;
 
 class ProfitReportRepository implements ProfitReportRepositoryInterface {

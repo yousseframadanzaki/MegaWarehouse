@@ -314,15 +314,17 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 mt-3">
-                            <label class="form-label">@lang('global.marketer_id')</label>
-                            <select class="form-select product_info" name="marketer_id">
-                                <option value="">@lang('global.select_marketer')</option>
-                                @foreach ($marketers as $marketer)
-                                    <option  @if(Request::get('marketer_id') == $marketer->id) selected @endif value="{{ $marketer->id }}">{{ $marketer->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (auth()->user()->role->user_type_id != 3)
+                            <div class="col-md-4 mt-3">
+                                <label class="form-label">@lang('global.marketer_id')</label>
+                                <select class="form-select product_info" name="marketer_id">
+                                    <option value="">@lang('global.select_marketer')</option>
+                                    @foreach ($marketers as $marketer)
+                                        <option  @if(Request::get('marketer_id') == $marketer->id) selected @endif value="{{ $marketer->id }}">{{ $marketer->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.product_id')</label>
                             <select class="form-select product_info" name="product_id" id="product_id">
@@ -359,15 +361,17 @@
                                 <option @if(Request::get('date_type') == 'الحالات') selected @endif value="الحالات">الحالات</option>
                             </select>
                         </div>
-                        <div class="col-md-4 mt-3">
-                            <label class="form-label">@lang('global.shipping_company_id')</label>
-                            <select class="form-select product_info" name="shipping_company_id">
-                                <option value="">@lang('global.select_shipping_company')</option>
-                                @foreach ($shipping_companies as $shipping_company)
-                                    <option @if(Request::get('shipping_company_id') == $shipping_company->id) selected @endif value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (auth()->user()->role->user_type_id != 4)
+                            <div class="col-md-4 mt-3">
+                                <label class="form-label">@lang('global.shipping_company_id')</label>
+                                <select class="form-select product_info" name="shipping_company_id">
+                                    <option value="">@lang('global.select_shipping_company')</option>
+                                    @foreach ($shipping_companies as $shipping_company)
+                                        <option @if(Request::get('shipping_company_id') == $shipping_company->id) selected @endif value="{{ $shipping_company->id }}">{{ $shipping_company->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="col-md-4 mt-3">
                             <label class="form-label">@lang('global.way_bill')</label>
                             <input class="form-control" name="waybill" id=""
@@ -400,140 +404,138 @@
                 </div>
             @endif
 
-                <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-wrap flex-row align-items-center">
-                    @can('edit_change_status','App\\Models\Order')
-                    <div class="me-2 my-1">
-                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> @lang('global.update_status') <i class="bi bi-pencil-fill"></i></div>
-                    </div>
-                    @endcan
-                    <div class="me-2 my-1">
-                        <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> @lang('global.way_bill_print') <i class="bi bi-printer-fill"></i></div>
-                    </div>
-                    <div class="me-2 my-1">
-                        <form method="POST" action="{{route('print_labels')}}" id="print_label">
-                            @csrf
-                        <div class="btn btn-warning print_label"> @lang('global.label_print') <i class="bi bi-printer"></i></div>
-                        </form>
-                    </div>
-                    <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
-                        <div class="btn btn-warning"> @lang('global.export_orders_excel') <i class="bi bi-file-excel-fill"></i></div>
-                    </div>
-                    <div class="me-2 my-1">
-                        <div class="btn btn-warning" id="PrintOrdersVariantsButton"> طباعة كميات منتجات الأوردرات <i class="bi bi-printer-fill"></i></div>
-                    </div>
-                    @can('whatsapp_order', ['App\\Models\WhatsappCampaign'])
-                    <div class="me-2 my-1">
-                        <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
-                            <button type="submit" disabled class="btn btn-warning"> @lang('global.whatsapp') <i class="bi bi-whatsapp"></i></div>
-                        </form>
-                    </div>
-                    @endcan
+            <div class="card p-3 mb-2 mt-2 shadow-sm d-flex flex-wrap flex-row align-items-center">
+                @can('edit_change_status','App\\Models\Order')
+                <div class="me-2 my-1">
+                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#statusModal"> @lang('global.update_status') <i class="bi bi-pencil-fill"></i></div>
                 </div>
-
-                <div class="row">
-                    <div class="card p-3 shadow-sm">
-                        <div>
-                            <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">@lang('global.button_search_orders')</button>
-                        </div>
-                        <div class="d-flex flex-wrap justify-content-between mt-3">
-                            <label>عدد المحدد : <span id="selection-number">0</span></label>
-                            <label>عدد النتائج : <span id="total-result">{!! $orders->total() !!}</span></label>
-                        </div>
-                        <form action="{{ route('all_orders') }}" method="GET" style="width: fit-content">
-                            <div class="d-none" id="searchData">
-
-                            </div>
-                            <select name="page_orders_num" class="py-1 mt-4 border border-gray rounded" style="outline: none;" id="page_orders_num_select">
-                                <option value="50" @if ($orders->perPage() == "50") selected @endif>50</option>
-                                <option value="250" @if ($orders->perPage() == "250") selected @endif>250</option>
-                                <option value="500" @if ($orders->perPage() == "500") selected @endif>500</option>
-                                <option value="1000" @if ($orders->perPage() == "1000") selected @endif>1000</option>
-                            </select>
-                        </form>
-                        <div class="table-responsive px-0">
-                            <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
-                                <thead>
-                                    <tr>
-                                        <th class="del_from_excel"><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
-                                        <th>@lang('global.order_code')</th>
-                                        @if ($host != $hosts['zioot'])
-                                            <th hidden>شركة الشحن</th>
-                                        @endif
-                                        <th>@lang('global.way_bill')</th>
-                                        <th>@lang('global.admin_id')</th>
-                                        <th>@lang('global.marketer_id')</th>
-                                        <th>@lang('global.status_id')</th>
-                                        <th>@lang('global.client_id')</th>
-                                        <th>@lang('global.phone_1')</th>
-                                        @if ($host != $hosts['zioot'])
-                                            <th hidden>رقم الهاتف 2</th>
-                                        @endif
-                                        <th>@lang('global.area_id')</th>
-                                        <th>@lang('global.total')</th>
-                                        <th>تاريخ أخر حالة</th>
-                                        <th>@lang('global.created_at')</th>
-                                        <th>@lang('global.order_notes')</th>
-                                        @can('delete_order', 'App\Models\Order')
-                                            <th class="del_from_excel">@lang('global.actions')</th>
-                                        @endcan
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($orders as $order)
-                                        <tr>
-                                            <td class="del_from_excel"><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
-                                            <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
-                                            @if ($host != $hosts['zioot'])
-                                                <td hidden>{{ $order->shipping_company?->name }}</td>
-                                            @endif
-                                            <td>{{ $order->waybill?? 'لا يوجد' }}</td>
-                                            <td>{{$order->admin->name}}</td>
-                                            <td>
-                                                @isset($order->marketer->name)
-                                                    {{$order->marketer->name}}
-                                                @endisset
-                                            </td>
-                                            <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
-                                            <td>{{$order->name}}</td>
-                                            <td>{{$order->phone_1}}</td>
-                                            @if ($host != $hosts['zioot'])
-                                                <td hidden>{{$order->phone_2}}</td>
-                                            @endif
-                                            <td>{{$order->city?->name}} - {{$order->area?->name}}</td>
-                                            <td>{{$order->total_after_sale}}</td>
-                                            <td>
-                                                @php
-                                                    $last_status = $order->order_status->where('id', $order->status_id)->last();
-                                                @endphp
-                                                @if (!empty($last_status))
-                                                    @date_format($last_status->pivot->created_at)
-                                                @endif
-                                            </td>
-                                            <td>@date_format($order->created_at)</td>
-                                            <td class="order_notes" data-id="{{$order->id}}">
-                                                <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
-                                            </td>
-                                            @can('delete_order', 'App\Models\Order')
-                                                <td class="del_from_excel">
-                                                    <i class="bi bi-trash text-danger delete-button" style="font-size: 20px; cursor: pointer;" data-id="{{$order->id}}" data-code="{{$order->order_code}}"></i>
-                                                </td>
-                                            @endcan
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div dir="ltr" class="mt-4 pagination">
-                            <div class="mx-auto" style="width: fit-content;">{!! $orders->links() !!}</div>
-                            <p class="text-center">يتم عرض {!! $orders->perPage() !!} عنصر في كل صفحة</p>
-                        </div>
-                    </div>
+                @endcan
+                <div class="me-2 my-1">
+                    <div class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#PrintModal"> @lang('global.way_bill_print') <i class="bi bi-printer-fill"></i></div>
                 </div>
+                <div class="me-2 my-1">
+                    <form method="POST" action="{{route('print_labels')}}" id="print_label">
+                        @csrf
+                    <div class="btn btn-warning print_label"> @lang('global.label_print') <i class="bi bi-printer"></i></div>
+                    </form>
+                </div>
+                <div class="me-2 my-1" onclick="exportTableToExcel('orders', 'كل الأوردارات')">
+                    <div class="btn btn-warning"> @lang('global.export_orders_excel') <i class="bi bi-file-excel-fill"></i></div>
+                </div>
+                <div class="me-2 my-1">
+                    <div class="btn btn-warning" id="PrintOrdersVariantsButton"> طباعة كميات منتجات الأوردرات <i class="bi bi-printer-fill"></i></div>
+                </div>
+                @can('whatsapp_order', ['App\\Models\WhatsappCampaign'])
+                <div class="me-2 my-1">
+                    <form action="{{ route('show_campaign') }}" method="GET" id="whatsappForm" target="_blank">
+                        <button type="submit" disabled class="btn btn-warning"> @lang('global.whatsapp') <i class="bi bi-whatsapp"></i></div>
+                    </form>
+                </div>
+                @endcan
+            </div>
+
+            <div class="card p-3 shadow-sm">
+                <div>
+                    <button class="btn btn-primary my-2" data-bs-target="#searchModal" data-bs-toggle="modal">@lang('global.button_search_orders')</button>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between mt-3">
+                    <label>عدد المحدد : <span id="selection-number">0</span></label>
+                    <label>عدد النتائج : <span id="total-result">{!! $orders->total() !!}</span></label>
+                </div>
+                <form action="{{ route('all_orders') }}" method="GET" style="width: fit-content">
+                    <div class="d-none" id="searchData">
+
+                    </div>
+                    <select name="page_orders_num" class="py-1 mt-4 border border-gray rounded" style="outline: none;" id="page_orders_num_select">
+                        <option value="50" @if ($orders->perPage() == "50") selected @endif>50</option>
+                        <option value="250" @if ($orders->perPage() == "250") selected @endif>250</option>
+                        <option value="500" @if ($orders->perPage() == "500") selected @endif>500</option>
+                        <option value="1000" @if ($orders->perPage() == "1000") selected @endif>1000</option>
+                    </select>
+                </form>
+                <div class="table-responsive px-0">
+                    <table class="mt-3 table table-hover" id="orders" style="min-width: 1100px;">
+                        <thead>
+                            <tr>
+                                <th class="del_from_excel"><input type="checkbox" class="form-check-input" name="" id="check_all"></th>
+                                <th>@lang('global.order_code')</th>
+                                @if ($host != $hosts['zioot'])
+                                    <th hidden>شركة الشحن</th>
+                                @endif
+                                <th>@lang('global.way_bill')</th>
+                                <th>@lang('global.admin_id')</th>
+                                <th>@lang('global.marketer_id')</th>
+                                <th>@lang('global.status_id')</th>
+                                <th>@lang('global.client_id')</th>
+                                <th>@lang('global.phone_1')</th>
+                                @if ($host != $hosts['zioot'])
+                                    <th hidden>رقم الهاتف 2</th>
+                                @endif
+                                <th>@lang('global.area_id')</th>
+                                <th>@lang('global.total')</th>
+                                <th>تاريخ أخر حالة</th>
+                                <th>@lang('global.created_at')</th>
+                                <th>@lang('global.order_notes')</th>
+                                @can('delete_order', 'App\Models\Order')
+                                    <th class="del_from_excel">@lang('global.actions')</th>
+                                @endcan
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($orders as $order)
+                                <tr>
+                                    <td class="del_from_excel"><input type="checkbox" class="order_id form-check-input" value="{{$order->id}}"></td>
+                                    <td><a href="{{route('show_order',$order->id)}}">{{$order->order_code}}</a></td>
+                                    @if ($host != $hosts['zioot'])
+                                        <td hidden>{{ $order->shipping_company?->name }}</td>
+                                    @endif
+                                    <td>{{ $order->waybill?? 'لا يوجد' }}</td>
+                                    <td>{{$order->admin->name}}</td>
+                                    <td>
+                                        @isset($order->marketer->name)
+                                            {{$order->marketer->name}}
+                                        @endisset
+                                    </td>
+                                    <td style="background-color: {{ $order->status->color }}; color: {{ $order->status->color == '#f9fafc' ? 'black' : 'white' }};" data-status="{{$order->status->id}}">{{$order->status->name}}</td>
+                                    <td>{{$order->name}}</td>
+                                    <td>{{$order->phone_1}}</td>
+                                    @if ($host != $hosts['zioot'])
+                                        <td hidden>{{$order->phone_2}}</td>
+                                    @endif
+                                    <td>{{$order->city?->name}} - {{$order->area?->name}}</td>
+                                    <td>{{$order->total_after_sale}}</td>
+                                    <td>
+                                        @php
+                                            $last_status = $order->order_status->where('id', $order->status_id)->last();
+                                        @endphp
+                                        @if (!empty($last_status))
+                                            @date_format($last_status->pivot->created_at)
+                                        @endif
+                                    </td>
+                                    <td>@date_format($order->created_at)</td>
+                                    <td class="order_notes" data-id="{{$order->id}}">
+                                        <span class="btn btn-primary" style="border-radius: 50px">{{ $order->order_notes()->count() }}</span>
+                                    </td>
+                                    @can('delete_order', 'App\Models\Order')
+                                        <td class="del_from_excel">
+                                            <i class="bi bi-trash text-danger delete-button" style="font-size: 20px; cursor: pointer;" data-id="{{$order->id}}" data-code="{{$order->order_code}}"></i>
+                                        </td>
+                                    @endcan
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div dir="ltr" class="mt-4 pagination justify-content-center">
+                    <div style="width: fit-content;"></div>
+                    <p>يتم عرض 50 عنصر في كل صفحة</p>
+                </div>
+            </div>
         </div>
     </div>
 <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 
-<div class="show-print" id="ordersProductsPrint">
+<div class="show-print d-none" id="ordersProductsPrint">
     <h3 class="text-center mb-3">منتجات الاوردرات</h3>
 </div>
 @endsection
@@ -571,7 +573,7 @@
 
             var city_id = JSON.parse('{!! json_encode(Request::get('city_id')[0] ?? '', JSON_UNESCAPED_UNICODE) !!}');
             var area_id = JSON.parse('{!! json_encode(Request::get('area_id')[0] ?? '', JSON_UNESCAPED_UNICODE) !!}');
-            
+
             if(city_id.length == 1){
                 city_id = city_id[0];
                 $.ajax({
