@@ -184,9 +184,10 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $total = str_replace(',', '', $data['total']);
             $data['total'] = $total + $data['delivery_cost'];
         }
-        if (isset($data['total_after_sale']) && !empty($data['delivery_cost'])) {
-            $total_after_sale = str_replace(',', '', $data['total_after_sale']);
-            $data['total_after_sale'] =  $total_after_sale + $data['delivery_cost'];
+        if (isset($data['total_after_sale'])) {
+            $data['total_after_sale'] = str_replace(',', '', $data['total_after_sale']);
+            if (!empty($data['delivery_cost']))
+                $data['total_after_sale'] = $data['total_after_sale'] + $data['delivery_cost'];
         }
         $order = Order::find($order_id);
         $order->update($data);
