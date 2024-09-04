@@ -22,4 +22,5 @@ interface OrdersRepositoryInterface{
     public function update_shipping_co_cost(array $data);
     public function update_incomplete_orders_status();
     public function update_orders(array $ids, array $data);
+    public function get_postponed_orders_by_date();
 }

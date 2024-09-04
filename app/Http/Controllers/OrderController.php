@@ -272,4 +272,9 @@ class OrderController extends Controller
         // Step 7: Return valid orders
         return response()->json(['orders' => $orders]);
     }
+
+    public function get_postponed_orders_by_date() {
+        $rows = $this->OrdersService->GetPostponedOrdersByDate();
+        return view('Dashboard.Orders.postponed_orders', compact('rows'));
+    }
 }

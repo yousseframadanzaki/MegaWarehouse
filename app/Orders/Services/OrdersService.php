@@ -431,5 +431,8 @@ class OrdersService implements OrdersServiceInterface{
     public function UpdateIncompleteOrdersStatus() {
         return $this->orders_crud_repository->update_incomplete_orders_status();
     }
+    public function GetPostponedOrdersByDate() {
+        return $this->orders_crud_repository->get_postponed_orders_by_date();
+    }
 }
 

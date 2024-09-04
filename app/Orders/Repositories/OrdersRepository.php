@@ -11,6 +11,7 @@ use App\Models\OrderNotes;
 use App\Models\Area;
 use App\Models\Stock;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OrdersRepository implements OrdersRepositoryInterface{
 
@@ -328,5 +329,20 @@ class OrdersRepository implements OrdersRepositoryInterface{
             $this->change_order_status($order->id, ['status_id' => 6]);
 
         return true;
+    }
+    public function get_postponed_orders_by_date() {
+        return OrderStatus::where(['status_id' => 110, 'current' => 1])
+        ->whereNotNull('postponed_at')
+        ->whereHas('order', function($query) {
+            $query->where('company_id', auth()->user()->company_id);
+        })
+        ->select(
+            DB::raw('DATE(postponed_at) as postponed_date'),
+            DB::raw('COUNT(order_id) as postponed_orders_count'),
+            DB::raw('GROUP_CONCAT(order_id) as order_ids')
+        )
+        ->groupBy(DB::raw('DATE(postponed_at)'))
+        ->orderBy('postponed_date')
+        ->get();
     }
 }

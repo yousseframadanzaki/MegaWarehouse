@@ -21,4 +21,5 @@ interface OrdersServiceInterface{
     public function UpdateShippingCoCostCallback(array $data);
     public function UpdateIncompleteOrdersStatus();
     public function UpdateOrders(array $ids, array $data);
+    public function GetPostponedOrdersByDate();
 }

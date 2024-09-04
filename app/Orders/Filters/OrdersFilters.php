@@ -15,6 +15,7 @@ use App\Orders\Filters\WaybillFilter;
 use App\Orders\Filters\ProductFilter;
 use App\Orders\Filters\VariantFilter;
 use App\Orders\Filters\AdminFilter;
+use App\Orders\Filters\OrderIdFilter;
 
 use App\Models\Client;
 use App\Models\User;
@@ -30,6 +31,7 @@ class OrdersFilters
 {
 
     protected $filters = [
+        'order_ids' => OrderIdFilter::class,
         'order_code' => OrderCodeFilter::class,
         'client_id' => ClientFilter::class,
         'status_id' => StatusFilter::class,
@@ -119,6 +121,7 @@ class OrdersFilters
                 $filters['admin_id'] = User::findOrfail($value)->name;
             }
         }
+        unset($filters['order_ids']);
         return $filters;
     }
 

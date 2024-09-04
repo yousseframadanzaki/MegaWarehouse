@@ -565,6 +565,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
 
     Route::get('profit-report/show', [ProfitReportController::class,'get_report_stats'])
     ->name('show_profit_report');
+
+    Route::get('postponed-orders', [OrderController::class, 'get_postponed_orders_by_date'])
+    ->name('show_postponed_orders');
 });
 
 Route::group(['prefix' => 'store'], function () {
