@@ -31,6 +31,7 @@ class CreateProductRequest extends FormRequest
             'product_info.marketer_commission'=>'nullable|numeric',
             'product_info.before_sale_price'=>'nullable|numeric|gt:product_info.price',
             'product_info.cost'=>'required|numeric',
+            'product_info.drive'=>'nullable|url'
         ];
     }
 }

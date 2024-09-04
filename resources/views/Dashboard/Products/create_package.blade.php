@@ -85,6 +85,15 @@
                         </div>
                         @enderror
                     </div>
+                    <div class="col-md-4 mt-4">
+                        <label class="form-label"> لينك درايف </label>
+                        <input type="text" class="form-control product_info @error('product_info.drive') is-invalid @enderror" name="product_info[drive]" value="{{ old('product_info.drive') }}">
+                        @error('product_info.drive')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+                    </div>
                 </div>
                 <div class="row mb-3 mt-5">
                     <div class="form-check form-switch" style="width: auto;">

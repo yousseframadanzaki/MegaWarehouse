@@ -146,15 +146,20 @@
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center my-4">
                 <div class="badge p-2 mb-2" style="background: rgb(8 47 73)"><h1 class="m-0 p-0">{{$product->name}}</h1></div>
-                @if ($product->is_bundle == 0)
-                    @can('edit','App\\Models\Product')
-                        <div>
-                            <a class="btn btn-primary" href="{{route('edit_product',$product->id)}}"> <i class="bi bi-pencil-square"></i> تعديل </a>
-                        </div>
-                    @endcan
-                @else
-                    <a class="btn btn-dark" style="cursor: context-menu;"> باكيدج <i class="bi bi-bag"></i> </a>
-                @endif
+                <div class="d-inline-flex align-items-center">
+                    @if (!empty($product->drive))
+                        <a href="{{ $product->drive }}" style="text-decoration: underline !important;">شاهد محتوي المنتج</a>
+                    @endif
+                    @if ($product->is_bundle == 0)
+                        @can('edit','App\\Models\Product')
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="{{route('edit_product',$product->id)}}"> <i class="bi bi-pencil-square"></i> تعديل </a>
+                            </div>
+                        @endcan
+                    @else
+                        <a class="btn btn-dark me-3" style="cursor: context-menu;"> باكيدج <i class="bi bi-bag"></i> </a>
+                    @endif
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-3 fs-5 mb-2"><span style="font-weight: 600;">السعر: </span><span>{{$product->price}}</span></div>

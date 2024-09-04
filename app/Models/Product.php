@@ -25,6 +25,7 @@ class Product extends Model
         'marketer_commission',
         'is_bundle',
         'is_store',
+        'drive'
     ];
 
     public function supplier() {
