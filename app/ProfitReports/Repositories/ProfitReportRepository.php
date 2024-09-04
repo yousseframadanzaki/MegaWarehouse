@@ -26,7 +26,11 @@ class ProfitReportRepository implements ProfitReportRepositoryInterface {
             ->first();
 
         $paid_commissions = Transaction::where(['company_id' => $company_id, 'payment_type_id' => 3])->sum('value');
-        $orders_cost = Stock::where('type', 'sell')->whereIn('order_id', $order_ids)->selectRaw('SUM(ABS(quantity) * unit_cost) as total_orders_cost')->value('total_orders_cost');
+        $orders_cost = Stock::where('type', 'sell')->whereIn('order_id', $order_ids)->selectRaw('COALESCE(SUM(ABS(quantity) * unit_cost), 0) as total_orders_cost')->value('total_orders_cost');
+        $expenses = Transaction::where(['company_id' => $company_id])
+            ->whereHas('payment_type', function($query) {
+                $query->where('category', 'Expense');
+            })->sum('value');
 
         $data = [
             'total_orders' => $orders_aggregated->total_orders,
@@ -34,7 +38,8 @@ class ProfitReportRepository implements ProfitReportRepositoryInterface {
             'sum_shipping_co_cost' => $orders_aggregated->sum_shipping_co_cost,
             'sum_total_marketer_commission' => $orders_aggregated->sum_total_marketer_commission,
             'paid_commissions' => $paid_commissions,
-            'orders_cost' => $orders_cost
+            'orders_cost' => $orders_cost,
+            'expenses' => $expenses
         ];
 
         return $data;

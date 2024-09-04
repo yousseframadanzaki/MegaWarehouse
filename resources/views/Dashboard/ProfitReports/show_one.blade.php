@@ -33,7 +33,7 @@
         <div class="col-12 col-md-6">
             <div class="card p-3 shadow-sm bg-green">
                 <div>
-                    <h4 class="mb-3">ملخص المبيعات</h4>
+                    <h4 class="mb-3">المبيعات</h4>
                     <p>إجمالي قيمة المبيعات: <strong>{{ $data['sum_total_after_sale'] }}</strong></p>
                     <p>عدد الأوردرات المسلمة (ناجح - جزئي - استبدال): <strong>{{ $data['total_orders'] }}</strong></p>
                 </div>
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3 mb-4">
         <div class="col-12 col-md-6">
             <div class="card p-3 shadow-sm bg-red">
                 <div>
@@ -57,6 +57,25 @@
                     <p>إجمالي عمولات المسوقين: <strong>{{ $data['sum_total_marketer_commission'] }}</strong></p>
                     <p>عمولات المسوقين المدفوعة: <strong>{{ $data['paid_commissions'] }}</strong></p>
                     <p>عمولات المسوقين المتبقية: <strong>{{ $data['sum_total_marketer_commission'] - $data['paid_commissions'] }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card p-3 shadow-sm bg-red">
+                <div>
+                    <h4 class="mb-3">المصروفات</h4>
+                    <p>المصروفات: <strong>{{ $data['expenses'] }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <hr>
+        <div class="col-12 col-md-6">
+            <div class="card p-3 shadow-sm bg-green">
+                <div>
+                    <h4 class="mb-3">الأرباح</h4>
+                    <p> الأرباح: <strong>{{ $data['sum_total_after_sale'] - $data['orders_cost'] - $data['sum_total_marketer_commission'] - $data['expenses'] }}</strong></p>
                 </div>
             </div>
         </div>
