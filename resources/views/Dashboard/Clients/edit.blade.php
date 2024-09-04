@@ -19,7 +19,7 @@
             <div class="card p-5 shadow-sm">
                 <h1 class="text-center">تعديل عميل </h1>
                 <div class="row mb-3 mt-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">الاسم <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                             value="{{ $client->name }}">
@@ -29,7 +29,7 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">رقم التليفون <span class="text-danger">*</span></label>
                         <input type="text" class="fixNumbers form-control @error('phone_1') is-invalid @enderror" name="phone_1"
                             value="{{ $client->phone_1 }}">
@@ -39,9 +39,7 @@
                             </div>
                         @enderror
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">رقم التليفون 2 </label>
                         <input type="text" class="fixNumbers form-control @error('phone_2') is-invalid @enderror" name="phone_2"
                             value="{{ $client->phone_2 }}">
@@ -51,7 +49,9 @@
                             </div>
                         @enderror
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
                         <label class="form-label">عنوان <span class="text-danger">*</span><i class="bi bi-map-marker">
                             </i></label>
                         <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
@@ -60,6 +60,15 @@
                             <div class="invalid-feedback">
                                 {{ __($message) }}
                             </div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"> إحداثيات الموقع الجغرافي ( <a href="https://www.google.com/maps/" target="_blank">خرائط جوجل</a> )</label>
+                        <input type="text" class="fixNumbers form-control" name="location" id="location" value="{{ old('location', $client->location) }}">
+                        @error('location')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
                         @enderror
                     </div>
                 </div>

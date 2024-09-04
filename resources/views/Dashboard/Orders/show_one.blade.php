@@ -215,6 +215,10 @@
                     <label class="fw-bold">المنطقة :</label>
                     <label>{{$order->area->name}}</label>
                 </div>
+                <div class="col-md-4 fs-5 mb-1 mt-2">
+                    <label class="fw-bold">الموقع الجغرافي :</label>
+                    <label><a href="https://www.google.com/maps?q={{ $order->client->location }}" target="_blank">{{$order->client->location}}</a></label>
+                </div>
             </div>
             <div class="row mt-5">
                 <h3 class="mb-4">بيانات الاوردر</h3>
@@ -255,9 +259,12 @@
                     <label class="p-1 {{ $order->status->color == '#f9fafc' ? 'text-dark' : 'text-white' }}" style="background-color: {{ $order->status->color }};">{{$order->status->name}}</label>
                 </div>
                 @if ($order->status_id == 110)
+                    @php
+                        $postponedAt = optional($order->order_status()->wherePivot('current', 1)->first())->pivot->postponed_at;
+                    @endphp
                     <div class="col-md-4 fs-5 mb-1">
                         <label class="fw-bold"> تاريخ التأجيل :</label>
-                        @date_format($order->order_status->sortByDesc('order_status.created_at')->first()->pivot->postponed_at)
+                        <label class="p-1 {{ $order->status->color == '#f9fafc' ? 'text-dark' : 'text-white' }}" style="background-color: {{ $order->status->color }};">{{ \Carbon\Carbon::parse($postponedAt)->format('Y-m-d h:i:s a') }}</label>
                     </div>
                 @endif
                 <div class="col-md-4 fs-5 mb-1">

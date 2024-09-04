@@ -184,10 +184,23 @@
                     </div>
 
                     <div class="col-md-4 mt-3">
+                        <label class="form-label"> إحداثيات الموقع الجغرافي ( <a href="https://www.google.com/maps/" target="_blank">خرائط جوجل</a> )</label>
+                        <input type="text" class="fixNumbers form-control" name="client[location]" id="location" value="{{ old('client.location') }}">
+                        @error('client.location')
+                        <div class="invalid-feedback">
+                            {{ __($message) }}
+                        </div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-4 mt-3">
                         <label class="form-label">ملاحظة <i class="bi bi-map-marker">
                             </i></label>
                         <input type="text" class="form-control @error('clientnote') is-invalid @enderror" id="note" name="client[note]" value="{{ old('client.note') }}">
                     </div>
+                </div>
+
+                <div class="row">
                     <div class="col-md-4 mt-3">
                         <label class="form-label">لينك فيسبوك <i class="bi bi-facebook"> </i></label>
                         <input type="text" class="form-control" name="client[links][facebook]" value="{{ old('client.links.facebook') }}">
@@ -406,6 +419,7 @@
         $("#country-select").val(data.client.country_id);
         $("#city-select").val(data.client.area.city_id);
         $("#area-select").val(data.client.area_id);
+        $("#location").val(data.client.location);
         $("#order_form #client_id").attr('value', data.client.id);
         $("#city-select, #area-select").select2();
     }
@@ -419,6 +433,7 @@
         $("#area-select").val("");
         $("#city-select").html("");
         $("#area-select").html("");
+        $("#location").html("");
         $("#order_form #client_id").attr('value', '');
     }
     $(window).on('load', function() { country_select("#country-select") });

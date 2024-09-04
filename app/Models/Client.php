@@ -20,6 +20,7 @@ class Client extends Model
         'links',
         'client_group_id',
         'company_id',
+        'location'
     ];
 
     public function getLinksAttribute($links)
