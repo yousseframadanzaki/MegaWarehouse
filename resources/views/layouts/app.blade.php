@@ -17,6 +17,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url('/static/css/image-uploader.css') }}" />
     <link rel="icon" type="image/x-icon" href="/public/tab_icon.png">
     <style>
+        .w-fit-content {
+            width: fit-content !important;
+        }
+
         .sidebar {
             overflow-y: auto;
         }
@@ -103,7 +107,7 @@
                 position: static !important;
                 overflow: visible !important;
             }
-            
+
             /* Remove any potential background blur effect */
             .modal-open .modal {
                 -webkit-backdrop-filter: none !important;
@@ -153,7 +157,13 @@
                             <strong>{{ auth()->user()->name }}</strong>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark text-small shadow" style="position: absolute;" aria-labelledby="dropdownUser1">
-
+                            @if (auth()->user()->role->user_type_id == 3)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('show_marketer_balance', auth()->user()->marketer->id) }}">
+                                        عرض حساباتك
+                                    </a>
+                                </li>
+                            @endif
                             <li>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

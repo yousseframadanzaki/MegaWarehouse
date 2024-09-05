@@ -24,6 +24,7 @@
             <div class="card p-5 shadow-sm">
                 <h1 class="text-center mt-3">
                     <img src="{{ asset($marketer->user->avatar->path ?? '') }}" class="rounded" style="width: 100px; height: 100px;">
+                    <p class="my-2 text-center"><a href="{{ route('show_marketer_balance', $marketer->id) }}" style="font-size: 14px; text-decoration: underline !important;">الذهاب لصفحة رصيد المسوق</a></p>
                 </h1>
                 <div class="row mb-3 mt-4">
                     <div class="col-md-4">

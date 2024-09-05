@@ -7,4 +7,5 @@ interface MarketerCrudServiceInterface{
     public function UpdateMarketer($client_id,array $details);
     public function GetCompanyMarketers($company_id);
     public function GetMarketer($client_id);
+    public function GetMarketerBalanceData($marketer_id);
 }

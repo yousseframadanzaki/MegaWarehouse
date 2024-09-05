@@ -396,6 +396,9 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth','IsNotAdmin']],fun
     ->name('edit_marketer')
     ->can('edit', 'App\\Models\Marketer');
 
+    Route::get('/marketers/{marketer_id}/balance', [MarketerController::class,'show_marketer_balance'])
+    ->name('show_marketer_balance');
+
     Route::post('/marketers/{maeketer_id}/edit', [MarketerController::class,'update'])
     ->name('update_marketer')
     ->can('update',['App\Models\Marketer','maeketer_id']);

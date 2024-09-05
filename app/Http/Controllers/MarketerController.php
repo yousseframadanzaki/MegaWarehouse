@@ -62,4 +62,9 @@ class MarketerController extends Controller
         $marketer = $this->MarketerCrudService->GetMarketer($marketer_id);
         return view("Dashboard.Marketers.show_one", compact('marketer'));
     }
+
+    public function show_marketer_balance($marketer_id) {
+        $data = $this->MarketerCrudService->GetMarketerBalanceData($marketer_id);
+        return view('Dashboard.Marketers.show_balance', compact('data'));
+    }
 }

@@ -7,4 +7,5 @@ interface MarketerCrudRepositoryInterface{
     public function update_marketer($marketer_id,array $details);
     public function get_marketers_by_company_id($company_id);
     public function get_marketer_by_id($id);
+    public function get_marketer_balance_data($marketer_id);
 }

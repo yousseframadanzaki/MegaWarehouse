@@ -63,4 +63,7 @@ class MarketerCrudService implements MarketerCrudServiceInterface{
        return $this->marketer_crud_repository->get_marketer_by_id($id);
     }
 
+    public function GetMarketerBalanceData($marketer_id) {
+        return $this->marketer_crud_repository->get_marketer_balance_data($marketer_id);
+    }
 }

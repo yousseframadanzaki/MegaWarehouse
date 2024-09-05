@@ -35,7 +35,7 @@
                             <td>{{ $marketer->phone_number }}</td>
                             <td>{{ $marketer->orders_count }}</td>
                             <td>{{ $marketer->total_commission - 0 }}</td>
-                            <td>{{ $marketer->total_commission - $marketer->user->total_transactions }}</td>
+                            <td><a href="{{ route('show_marketer_balance', $marketer->id) }}">{{ $marketer->total_commission - $marketer->user->total_transactions }}</a></td>
                             <td>{{ $marketer->page_name }}</td>
                             <td>
                                 @isset($marketer->links)
