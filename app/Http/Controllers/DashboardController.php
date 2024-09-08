@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Dashboard\Interfaces\DashboardServiceInterface;
-
+use App\Models\Status;
 
 class DashboardController extends Controller
 {
@@ -18,7 +18,8 @@ class DashboardController extends Controller
     }
 
     public function index() {
-        $data = $this->DashboardService->GetCityOrdersCount();
-        return view('Dashboard.welcome',compact('data'));
+        $city_orders_data = $this->DashboardService->GetCityOrdersCount();
+        $status_orders_data = $this->DashboardService->GetStatusOrdersCount();
+        return view('Dashboard.welcome',compact('city_orders_data', 'status_orders_data'));
     }
 }

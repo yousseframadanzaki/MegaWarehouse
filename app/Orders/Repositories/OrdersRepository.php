@@ -341,7 +341,7 @@ class OrdersRepository implements OrdersRepositoryInterface{
             DB::raw('COUNT(order_id) as postponed_orders_count'),
             DB::raw('GROUP_CONCAT(order_id) as order_ids')
         )
-        ->groupBy(DB::raw('DATE(postponed_at)'))
+        ->groupBy('postponed_date')
         ->orderBy('postponed_date')
         ->get();
     }

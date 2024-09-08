@@ -37,6 +37,14 @@ class DashboardService implements DashboardServiceInterface
         return $data;
     }
 
+    public function GetStatusOrdersCount() {
+        $status_orders_data = $this->DashboardRepository->get_status_orders_count();
+        return [
+            'names' => $status_orders_data->pluck('name'),
+            'orders_count' => $status_orders_data->pluck('orders_count'),
+        ];
+    }
+
     function getColor($index) {
         $cssColors = [
             'rgba(255, 0, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)', 'rgba(255, 255, 0, 0.2)',
